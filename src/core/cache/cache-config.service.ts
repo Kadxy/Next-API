@@ -9,13 +9,19 @@ export class CacheConfigService implements CacheOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createCacheOptions(): CacheModuleOptions {
-    const redisUrl = this.configService.get<string>('REDIS_URL');
+    const redisUrl = this.configService.getOrThrow<string>('REDIS_URL');
 
     return {
-      store: redisStore,
       url: redisUrl,
-      ttl: 60 * 60 * 24, // 24 hours default TTL
-      max: 10000, // maximum number of items in cache
+
+      // Use the redisStore as the store
+      store: redisStore,
+
+      // 24 hours default TTL
+      ttl: 60 * 60 * 24,
+
+      // maximum number of items in cache
+      max: 10000,
     } as RedisClientOptions;
   }
 }

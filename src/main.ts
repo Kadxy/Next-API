@@ -1,10 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
-import { AllExceptionsFilter } from './common/exceptions/all-exceptions.filter';
+import { AllExceptionsFilter } from './common/exceptions';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -25,17 +24,14 @@ async function bootstrap() {
     }),
   );
 
-  // 应用JWT认证守卫
-  const reflector = app.get('Reflector');
-  app.useGlobalGuards(new JwtAuthGuard(reflector));
-
   // 启用CORS
   app.enableCors();
 
   // 启动服务器
-  const port = configService.get<number>('PORT', 3000);
+  const port = configService.getOrThrow<number>('PORT');
   await app.listen(port);
 
   console.log(`World AI 服务器运行在端口: ${port}`);
 }
+
 bootstrap();

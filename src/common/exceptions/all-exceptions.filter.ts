@@ -1,6 +1,6 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
-import { ErrorResponse } from '../interceptors/transform.interceptor';
+import { DEFAULT_ERROR_RESPONSE } from './index';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -8,9 +8,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    response.status(200).json({
-      success: false,
-      msg: 'Internal server error',
-    } as ErrorResponse);
+    response.status(200).json(DEFAULT_ERROR_RESPONSE);
   }
 }

@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 项目结构
+- /src/core：核心服务（数据库、缓存）
+- /src/auth：身份验证，包括JWT 和 API_KEY
+- /src/common：全局配置（全局响应拦截转换器、Swagger配置等）

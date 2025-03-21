@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigModule } from './config/config.module';
-import { UserModule } from './user/user.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { ConfigModule } from './core/config/config.module';
+import { PrismaModule } from './core/prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { RedisModule } from './common/cache/redis.module';
+import { RedisModule } from './core/cache/redis.module';
 
 @Module({
-  imports: [ConfigModule, PrismaModule, RedisModule, AuthModule, UserModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [ConfigModule, PrismaModule, RedisModule, AuthModule],
 })
 export class AppModule {}
