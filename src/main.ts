@@ -43,7 +43,7 @@ async function bootstrap() {
   );
 
   // 启用CORS
-  app.enableCors();
+  app.enableCors({ origin: true, credentials: true });
 
   // 启动服务器
   const port = configService.getOrThrow<number>('PORT');
