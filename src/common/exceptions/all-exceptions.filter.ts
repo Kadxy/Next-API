@@ -1,4 +1,9 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpStatus,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { DEFAULT_ERROR_RESPONSE } from './index';
 
@@ -8,6 +13,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    response.status(200).json(DEFAULT_ERROR_RESPONSE);
+    response.status(HttpStatus.OK).json(DEFAULT_ERROR_RESPONSE);
   }
 }

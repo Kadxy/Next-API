@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { GlobalErrorResponse } from './index';
+import { DEFAULT_ERROR_RESPONSE, GlobalErrorResponse } from './index';
 
 export class BusinessException extends HttpException {
   constructor(
-    message: string = 'Internal server error',
+    message: string = DEFAULT_ERROR_RESPONSE.msg,
     status: HttpStatus = HttpStatus.OK,
   ) {
     super({ success: false, msg: message } as GlobalErrorResponse, status);

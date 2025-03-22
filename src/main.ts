@@ -31,7 +31,7 @@ async function bootstrap() {
   const port = configService.getOrThrow<number>('PORT');
   await app.listen(port);
 
-  console.log(`World AI 服务器运行在端口: ${port}`);
+  console.log(`World AI Server is running on port: ${port}`);
 }
 
 bootstrap();
