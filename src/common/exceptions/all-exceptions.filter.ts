@@ -5,7 +5,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { DEFAULT_ERROR_RESPONSE } from './index';
+import { DEFAULT_ERROR_MSG, GlobalErrorResponse } from './index';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -13,6 +13,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    response.status(HttpStatus.OK).json(DEFAULT_ERROR_RESPONSE);
+    const resJson: GlobalErrorResponse = {
+      success: false,
+      msg: DEFAULT_ERROR_MSG,
+    };
+
+    response.status(HttpStatus.OK).json(resJson);
   }
 }

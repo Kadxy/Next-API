@@ -1,13 +1,9 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard, RequestWithUser } from './auth.guard';
 import { AuthService } from './auth.service';
-import {
-  EmailLoginDto,
-  LoginResponseDto,
-  SelfResponseDto,
-} from './dto/email-login.dto';
-import { SendEmailCodeDto } from './dto/send-email-code.dto';
+import { EmailLoginDto } from './dto/email-login.dto';
+import { SendEmailLoginCodeDto } from './dto/send-email-login-code.dto';
 import { JwtTokenService } from './jwt.service';
 
 @ApiTags('Authentication')
@@ -18,38 +14,38 @@ export class AuthController {
     private readonly jwtTokenService: JwtTokenService,
   ) {}
 
-  @ApiOperation({ summary: 'Send Email Verification Code' })
   @Post('/verification/email')
-  async sendEmailLoginCode(@Body() body: SendEmailCodeDto): Promise<void> {
+  @ApiOperation({ summary: 'Send Email Verification Code' })
+  @ApiBody({ type: SendEmailLoginCodeDto })
+  async sendEmailLoginCode(@Body() body: SendEmailLoginCodeDto): Promise<void> {
     return this.authService.sendEmailLoginCode(body);
   }
 
-  @ApiOperation({ summary: 'Login' })
-  @ApiResponse({ type: LoginResponseDto })
   @Post('/login/email')
+  @ApiOperation({ summary: 'Login' })
+  @ApiBody({ type: EmailLoginDto })
   async login(@Body() loginDto: EmailLoginDto) {
     return this.authService.emailLogin(loginDto);
   }
 
-  @ApiOperation({ summary: 'Logout Current Device' })
-  @UseGuards(AuthGuard)
   @Post('/logout')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Logout Current Device' })
   async logout(@Req() req: RequestWithUser) {
     const authorization = req?.headers?.authorization;
     return this.authService.logout(this.jwtTokenService.extract(authorization));
   }
 
-  @ApiOperation({ summary: 'Logout All Devices' })
-  @UseGuards(AuthGuard)
   @Post('/logout/all')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Logout All Devices' })
   async logoutAll(@Req() req: RequestWithUser) {
     return this.authService.logoutAll(req.user.uid);
   }
 
-  @ApiOperation({ summary: 'Get Current User' })
-  @ApiResponse({ type: SelfResponseDto })
-  @UseGuards(AuthGuard)
   @Get('/self')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get Current User' })
   async account(@Req() req: RequestWithUser) {
     return this.authService.getSelf(req.user.uid);
   }

@@ -4,6 +4,7 @@ import { User } from '@prisma/client';
 import { Request as ExpressRequest } from 'express';
 import { UnauthorizedException } from '../../common/exceptions';
 import { JWT_ERR_MESSAGE, JwtTokenService } from './jwt.service';
+import {JWT_TOKEN_NAME} from "../../main";
 
 export interface RequestWithUser extends ExpressRequest {
   user: JwtPayload;
@@ -28,7 +29,7 @@ export interface JwtPayload {
 export type JwtSignPayload = Omit<JwtPayload, 'iat' | 'exp'>;
 
 @Injectable()
-@ApiBearerAuth('jwt')
+@ApiBearerAuth(JWT_TOKEN_NAME)
 export class AuthGuard implements CanActivate {
   constructor(private readonly jwtTokenService: JwtTokenService) {}
 

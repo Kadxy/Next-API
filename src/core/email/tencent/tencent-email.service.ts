@@ -49,20 +49,21 @@ export class TencentEmailService {
     }
   }
 
-  async sendLoginCode(email: string, code: string): Promise<boolean> {
+  async sendLoginCode(email: string, code: string) {
     try {
       const params = {
         FromEmailAddress: `"${this.fromName}" <${this.fromAddress}>`,
         Destination: [email],
         Template: {
-          TemplateID: this.configService.get<number>('TENCENT_SES_TEMPLATE_ID'),
+          TemplateID: this.configService.getOrThrow<number>(
+            'TENCENT_SES_LOGIN_CODE_TEMPLATE_ID',
+          ),
           TemplateData: JSON.stringify({ code }),
         },
         Subject: 'World AI Login Code',
       };
 
       await this.sesClient.SendEmail(params);
-      return true;
     } catch (error) {
       this.logger.error(`Failed to send, error: ${error?.stack}`);
       this.feishuWebhookService

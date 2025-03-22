@@ -1,10 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { Decimal } from '@prisma/client/runtime/library';
 import { CACHE_KEYS, getCacheKey } from '../../core/cache/chche.constant';
 import { Cache } from 'cache-manager';
 import { FeishuWebhookService } from '../../core/feishu-webhook/feishu-webhook.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
 export class UserService {
@@ -15,6 +16,7 @@ export class UserService {
 
   constructor(
     private readonly prisma: PrismaService,
+    @Inject(CACHE_MANAGER)
     private readonly cacheService: Cache,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}

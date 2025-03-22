@@ -1,5 +1,5 @@
 export * from './business.exception';
-export * from './http-exception.filter';
+export * from './business-exception.filter';
 export * from './all-exceptions.filter';
 
 export type GlobalResponse<T> = GlobalSuccessResponse<T> | GlobalErrorResponse;
@@ -14,7 +14,4 @@ export interface GlobalErrorResponse {
   msg: string;
 }
 
-export const DEFAULT_ERROR_RESPONSE: GlobalErrorResponse = {
-  success: false,
-  msg: 'Internal server error',
-};
+export const DEFAULT_ERROR_MSG = 'Internal server error';

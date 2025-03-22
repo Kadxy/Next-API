@@ -9,6 +9,7 @@ import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { JwtTokenService } from './jwt.service';
+import { FeishuWebhookModule } from '../../core/feishu-webhook/feishu-webhook.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { JwtTokenService } from './jwt.service';
     UserModule,
     HttpModule,
     ConfigModule,
+    FeishuWebhookModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),

@@ -8,7 +8,7 @@ import {
 import { TencentEmailService } from '../../core/email/tencent/tencent-email.service';
 import { UserService } from '../user/user.service';
 import { EmailLoginDto } from './dto/email-login.dto';
-import { SendEmailCodeDto } from './dto/send-email-code.dto';
+import { SendEmailLoginCodeDto } from './dto/send-email-login-code.dto';
 import { JwtTokenService } from './jwt.service';
 import { Cache } from '@nestjs/cache-manager';
 import {
@@ -29,7 +29,7 @@ export class AuthService {
   ) {}
 
   // 发送邮箱登录验证码
-  async sendEmailLoginCode(data: SendEmailCodeDto) {
+  async sendEmailLoginCode(data: SendEmailLoginCodeDto) {
     const { email } = data;
     const limitCacheKey = getCacheKey(CACHE_KEYS.EMAIL_LIMIT, email);
     const codeCacheKey = getCacheKey(CACHE_KEYS.LOGIN_EMAIL_CODE, email);

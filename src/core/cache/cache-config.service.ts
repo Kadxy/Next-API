@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CacheModuleOptions, CacheOptionsFactory } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-yet';
 import { DEFAULT_CACHE_TTL } from './chche.constant';
+import Keyv from 'keyv';
+import KeyvRedis from '@keyv/redis';
 
 @Injectable()
 export class CacheConfigService implements CacheOptionsFactory {
@@ -16,7 +17,15 @@ export class CacheConfigService implements CacheOptionsFactory {
     const redisUrl = this.configService.getOrThrow<string>('REDIS_URL');
 
     return {
-      store: await redisStore({ url: redisUrl, ttl: DEFAULT_CACHE_TTL }),
+      store: {
+        create: () =>
+          new Keyv({
+            store: new KeyvRedis(redisUrl),
+            namespace: 'cache',
+            ttl: DEFAULT_CACHE_TTL,
+          }),
+      },
+      isGlobal: true,
     };
   }
 }
