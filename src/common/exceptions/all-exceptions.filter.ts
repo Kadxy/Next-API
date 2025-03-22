@@ -6,18 +6,29 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { DEFAULT_ERROR_MSG, GlobalErrorResponse } from './index';
+import { BusinessException } from './business.exception';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  catch(_exception: unknown, host: ArgumentsHost) {
+  catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
+    // 默认错误响应
+    let status = HttpStatus.OK;
+    let message = DEFAULT_ERROR_MSG;
+
+    // 如果是业务异常，使用业务异常的状态码和消息
+    if (exception instanceof BusinessException) {
+      status = exception.statusCode;
+      message = exception.message;
+    }
+
     const resJson: GlobalErrorResponse = {
       success: false,
-      msg: DEFAULT_ERROR_MSG,
+      msg: message,
     };
 
-    response.status(HttpStatus.OK).json(resJson);
+    response.status(status).json(resJson);
   }
 }

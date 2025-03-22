@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 import { Request as ExpressRequest } from 'express';
 import { UnauthorizedException } from '../../common/exceptions';
 import { JWT_ERR_MESSAGE, JwtTokenService } from './jwt.service';
-import {JWT_TOKEN_NAME} from "../../main";
+import { JWT_TOKEN_NAME } from '../../main';
 
 export interface RequestWithUser extends ExpressRequest {
   user: JwtPayload;
@@ -37,7 +37,12 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<ExpressRequest>();
 
     try {
-      const { authorization } = request?.headers;
+      // 确保request和headers都存在
+      if (!request || !request.headers) {
+        throw new UnauthorizedException(JWT_ERR_MESSAGE.INVALID_TOKEN);
+      }
+
+      const { authorization } = request.headers;
       const token = this.jwtTokenService.extract(authorization);
 
       // 将 payload 附加到 request 对象中

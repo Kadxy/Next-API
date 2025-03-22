@@ -5,6 +5,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { AllExceptionsFilter } from './common/exceptions';
 import { setupApiDoc } from './api-doc.config';
+import { BusinessException } from './common/exceptions/business.exception';
+import { ValidationError } from 'class-validator';
 
 export const BASE_URL = 'http://localhost:9527';
 export const SCALAR_PATH = '/scalar';
@@ -29,6 +31,14 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        const firstError = validationErrors[0];
+        const message =
+          firstError && firstError.constraints
+            ? Object.values(firstError.constraints)[0]
+            : 'Validation failed';
+        throw new BusinessException(message);
+      },
     }),
   );
 

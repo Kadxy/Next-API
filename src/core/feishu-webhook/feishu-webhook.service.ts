@@ -19,7 +19,7 @@ export class FeishuWebhookService {
   private readonly httpsAgent: HttpsAgent;
 
   constructor(
-    private config: ConfigService,
+    private readonly config: ConfigService,
     private readonly httpService: HttpService,
   ) {
     this.url = this.config.getOrThrow<string>('FEISHU_WEBHOOK_URL');
@@ -61,10 +61,10 @@ export class FeishuWebhookService {
       );
 
       if (response.status === HttpStatus.OK) {
-        this.logger.log(['Success:', JSON.stringify(response.data)].join(' '));
+        this.logger.log(['Send success:', JSON.stringify(response.data)].join(' '));
       }
     } catch (error) {
-      this.logger.error(['Failed:', error.message].join(' '));
+      this.logger.error(['Send failed:', error.message].join(' '));
     }
   }
 

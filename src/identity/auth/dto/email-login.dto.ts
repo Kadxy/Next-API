@@ -1,13 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, Length, Matches } from 'class-validator';
+import { IsEmail, IsString, Length } from 'class-validator';
 
 export class EmailLoginDto {
   @ApiProperty({
     description: 'Email address for login',
-    example: 'example@nextchat.dev',
+    example: 'example@worldai.app',
     format: 'email',
   })
-  @IsEmail({}, { message: 'Please enter a valid email address' })
+  @IsEmail(
+    {
+      domain_specific_validation: true,
+      host_blacklist: ['temp-mail'],
+    },
+    { message: 'Please enter a valid email address' },
+  )
   email: string;
 
   @ApiProperty({ description: 'Verification code' })
