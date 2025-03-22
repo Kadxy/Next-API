@@ -26,6 +26,10 @@ export const CACHE_KEYS = {
     KEY: 'jwt-blacklist:{token}',
     EXPIRE: days(1),
   },
+  GITHUB_STATE: {
+    KEY: 'github-state:{state}',
+    EXPIRE: minutes(3),
+  },
 } as const;
 
 export const CACHE_FLAG = {

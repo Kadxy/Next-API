@@ -12,7 +12,7 @@ export class GitHubAuthController {
   @ApiOperation({ summary: 'GitHub OAuth Login' })
   @ApiBody({ type: GitHubAuthDto })
   async githubLogin(@Body() authDto: GitHubAuthDto) {
-    return this.githubAuthService.githubLogin(authDto.code);
+    return this.githubAuthService.githubLogin(authDto);
   }
 
   @Get('/config')
