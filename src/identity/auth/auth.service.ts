@@ -25,7 +25,7 @@ export class AuthService {
     private readonly tencentEmailService: TencentEmailService,
     private readonly userService: UserService,
     private readonly jwtTokenService: JwtTokenService,
-    private readonly cacheService: Cache,
+    private readonly cacheManager: Cache,
   ) {}
 
   // 发送邮箱登录验证码
@@ -35,7 +35,7 @@ export class AuthService {
     const codeCacheKey = getCacheKey(CACHE_KEYS.LOGIN_EMAIL_CODE, email);
 
     // 检查发送频率限制
-    if (await this.cacheService.get(limitCacheKey)) {
+    if (await this.cacheManager.get(limitCacheKey)) {
       this.logger.debug(`Email[${email}] sending too frequently`);
       throw new TooManyRequestsException();
     }
@@ -43,25 +43,25 @@ export class AuthService {
     try {
       // 生成验证码
       const code = this.generateRandomCode();
-      this.logger.debug(`Email[${email}], Code[${code}`);
+      this.logger.debug(`Email[${email}], Code[${code}]`);
 
       // 并行发送验证码和设置缓存
-      await Promise.all([
+      await Promise.allSettled([
         this.tencentEmailService.sendLoginCode(email, code),
-        this.cacheService.set(
+        this.cacheManager.set(
           codeCacheKey,
           code,
           CACHE_KEYS.LOGIN_EMAIL_CODE.EXPIRE,
         ),
-        this.cacheService.set(
+        this.cacheManager.set(
           limitCacheKey,
           CACHE_FLAG.EXIST,
           CACHE_KEYS.EMAIL_LIMIT.EXPIRE,
         ),
       ]);
     } catch (error) {
-      this.cacheService.del(limitCacheKey).catch();
-      this.cacheService.del(codeCacheKey).catch();
+      this.cacheManager.del(limitCacheKey).catch();
+      this.cacheManager.del(codeCacheKey).catch();
       this.logger.error(error?.stack);
       throw new BusinessException();
     }
@@ -72,11 +72,12 @@ export class AuthService {
     const { email, code } = data;
 
     // 检查验证码
-    const cachedCode = await this.cacheService.get<string>(
+    const cachedCode = await this.cacheManager.get<string>(
       getCacheKey(CACHE_KEYS.LOGIN_EMAIL_CODE, email),
     );
 
     if (!cachedCode || cachedCode !== code) {
+      this.logger.debug(`Email[${email}], Code[${code}], CachedCode[${cachedCode}]`);
       throw new BusinessException('Invalid code or code expired');
     }
 

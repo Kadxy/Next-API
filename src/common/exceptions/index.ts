@@ -1,5 +1,4 @@
 export * from './business.exception';
-export * from './business-exception.filter';
 export * from './all-exceptions.filter';
 
 export type GlobalResponse<T> = GlobalSuccessResponse<T> | GlobalErrorResponse;

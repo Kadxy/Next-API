@@ -4,7 +4,7 @@ import {
   ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { FastifyReply } from 'fastify';
 import { DEFAULT_ERROR_MSG, GlobalErrorResponse } from './index';
 import { BusinessException } from './business.exception';
 
@@ -12,7 +12,7 @@ import { BusinessException } from './business.exception';
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
+    const response = ctx.getResponse<FastifyReply>();
 
     // 默认错误响应
     let status = HttpStatus.OK;
@@ -29,6 +29,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       msg: message,
     };
 
-    response.status(status).json(resJson);
+    response.status(status).send(resJson);
   }
 }

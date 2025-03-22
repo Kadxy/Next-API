@@ -1,30 +1,30 @@
-const _getTTL = (counts: number, type: 's' | 'm' | 'h' | 'd') => {
-  const seconds = { s: 1, m: 60, h: 3600, d: 86400 }[type];
-  return counts * seconds;
-};
+// https://docs.nestjs.com/techniques/caching#interacting-with-the-cache-store
 
-export const DEFAULT_CACHE_TTL = _getTTL(1, 'h');
+import { hours, minutes, days } from '@nestjs/throttler';
+
+// Default cache TTL: 5 minutes
+export const DEFAULT_CACHE_TTL = minutes(5);
 
 export const CACHE_KEYS = {
   USER_INFO_UID: {
     KEY: 'user-info:{uid}',
-    EXPIRE: _getTTL(3, 'h'),
+    EXPIRE: hours(3),
   },
   EMAIL_LIMIT: {
     KEY: 'email-limit:{email}',
-    EXPIRE: _getTTL(1, 'm'),
+    EXPIRE: minutes(1),
   },
   LOGIN_EMAIL_CODE: {
     KEY: 'login-email-code:{email}',
-    EXPIRE: _getTTL(10, 'm'),
+    EXPIRE: minutes(10),
   },
   JWT_VERSION: {
     KEY: 'jwt-version:{uid}',
-    EXPIRE: _getTTL(1, 'd'),
+    EXPIRE: days(1),
   },
   JWT_BLACKLIST: {
     KEY: 'jwt-blacklist:{token}',
-    EXPIRE: _getTTL(1, 'd'),
+    EXPIRE: days(1),
   },
 } as const;
 

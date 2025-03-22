@@ -1,28 +1,28 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { User } from '@prisma/client';
-import { Request as ExpressRequest } from 'express';
+import { FastifyRequest } from 'fastify';
 import { UnauthorizedException } from '../../common/exceptions';
 import { JWT_ERR_MESSAGE, JwtTokenService } from './jwt.service';
 import { JWT_TOKEN_NAME } from '../../main';
 
-export interface RequestWithUser extends ExpressRequest {
-  user: JwtPayload;
+export interface RequestWithUser extends FastifyRequest {
+  user: User;
 }
 
 /** JWT 载荷 */
 export interface JwtPayload {
-  /** 用户UUID */
-  uid: User['uid'];
+  /** 用户ID */
+  uid: string;
 
-  /** 令牌版本 */
-  version: number;
+  /** 令牌过期时间，Unix timestamp */
+  exp: number;
 
-  /** 令牌创建时间，由 JWT 库自动生成 */
+  /** 令牌签发时间，Unix timestamp */
   iat: number;
 
-  /** 令牌过期时间，由 JWT 库自动生成 */
-  exp: number;
+  /** 令牌版本，用于判断是否需要刷新 */
+  version?: number;
 }
 
 /** 用于签发新令牌的载荷 */
@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate {
   constructor(private readonly jwtTokenService: JwtTokenService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<ExpressRequest>();
+    const request = context.switchToHttp().getRequest<FastifyRequest>();
 
     try {
       // 确保request和headers都存在
@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
       }
 
       const { authorization } = request.headers;
-      const token = this.jwtTokenService.extract(authorization);
+      const token = this.jwtTokenService.extract(authorization as string);
 
       // 将 payload 附加到 request 对象中
       (request as RequestWithUser)['user'] =

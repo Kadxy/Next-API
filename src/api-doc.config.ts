@@ -1,9 +1,8 @@
-import { INestApplication } from '@nestjs/common';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { apiReference } from '@scalar/nestjs-api-reference';
 
 export function setupApiDoc(
-  app: INestApplication,
+  app: NestFastifyApplication,
   docsPath: string,
   openapiPath: string,
   jwtTokenName: string,
@@ -31,21 +30,13 @@ export function setupApiDoc(
 
   const document = SwaggerModule.createDocument(app, config, {});
 
-  // Setup OpenAPI JSON route
-  app.use(openapiPath, (_req: any, res: any) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(document, null, 2));
-  });
+  // Setup Swagger documentation with built-in UI
+  SwaggerModule.setup(docsPath, app, document);
 
-  // Configure Scalar API Reference
-  app.use(
-    docsPath,
-    apiReference({
-      theme: 'default',
-      spec: {
-        url: openapiPath,
-      },
-      cdn: 'https://cdn.jsdelivr.net/npm/@scalar/api-reference@latest',
-    }),
-  );
+  // Also provide raw OpenAPI JSON at a separate endpoint
+  const jsonOpenApiSpec = JSON.stringify(document, null, 2);
+  const fastifyInstance = app.getHttpAdapter().getInstance();
+  fastifyInstance.get(openapiPath, (_, reply) => {
+    reply.header('Content-Type', 'application/json').send(jsonOpenApiSpec);
+  });
 }

@@ -20,9 +20,9 @@ import { FeishuWebhookModule } from '../../core/feishu-webhook/feishu-webhook.mo
     FeishuWebhookModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+        secret: configService.getOrThrow<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: `${configService.get<number>('JWT_EXPIRES_DAYS')}d`,
+          expiresIn: `${configService.getOrThrow<number>('JWT_EXPIRES_IN')}`,
         },
       }),
       inject: [ConfigService],

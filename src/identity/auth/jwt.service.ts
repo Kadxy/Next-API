@@ -65,7 +65,7 @@ export class JwtTokenService {
     return this.jwtService.signAsync(payload);
   }
 
-  async verify(jwtToken: string): Promise<JwtPayload> {
+  async verify(jwtToken: string): Promise<User> {
     try {
       // Verify signature
       const payload = await this.jwtService.verifyAsync<JwtPayload>(jwtToken);
@@ -83,7 +83,7 @@ export class JwtTokenService {
       this.logger.debug(`Token verified: ${JSON.stringify(payload)}`);
 
       // Return user info
-      return payload;
+      return this.userService.getCachedUser(payload.uid);
     } catch (error) {
       throw error instanceof UnauthorizedException
         ? error
