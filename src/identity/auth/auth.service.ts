@@ -46,7 +46,7 @@ export class AuthService {
       this.logger.debug(`Email[${email}], Code[${code}]`);
 
       // 并行发送验证码和设置缓存
-      await Promise.allSettled([
+      await Promise.all([
         this.tencentEmailService.sendLoginCode(email, code),
         this.cacheManager.set(
           codeCacheKey,
@@ -77,7 +77,9 @@ export class AuthService {
     );
 
     if (!cachedCode || cachedCode !== code) {
-      this.logger.debug(`Email[${email}], Code[${code}], CachedCode[${cachedCode}]`);
+      this.logger.debug(
+        `Email[${email}], Code[${code}], CachedCode[${cachedCode}]`,
+      );
       throw new BusinessException('Invalid code or code expired');
     }
 

@@ -25,13 +25,16 @@ export function setupApiDoc(
       jwtTokenName,
     )
     .setExternalDoc('OpenAPI JSON', openapiPath)
-    .addServer([baseUrl].join('/'), 'Current server')
+    .addServer([baseUrl].join('/'), 'Development server')
+    .addServer('', 'Production server')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config, {});
+  const document = SwaggerModule.createDocument(app, config, {
+    autoTagControllers: true,
+  });
 
   // Setup Swagger documentation with built-in UI
-  SwaggerModule.setup(docsPath, app, document);
+  SwaggerModule.setup(docsPath, app, document, {});
 
   // Also provide raw OpenAPI JSON at a separate endpoint
   const jsonOpenApiSpec = JSON.stringify(document, null, 2);

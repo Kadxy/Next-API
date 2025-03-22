@@ -73,10 +73,29 @@ export class UserService {
     return user;
   }
 
-  // 从数据库获取用户
+  // 从数据库获取用户 - 通过邮箱
   async getUserByEmail(email: User['email']): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
+      include: { wallet: { select: { balance: true } } },
+    });
+
+    // 更新缓存
+    if (user) {
+      await this.cacheService.set(
+        getCacheKey(CACHE_KEYS.USER_INFO_UID, user.uid),
+        user,
+        CACHE_KEYS.USER_INFO_UID.EXPIRE,
+      );
+    }
+
+    return user;
+  }
+
+  // 从数据库获取用户 - 通过GitHub ID
+  async getUserByGithubId(githubId: User['githubId']): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { githubId },
       include: { wallet: { select: { balance: true } } },
     });
 
