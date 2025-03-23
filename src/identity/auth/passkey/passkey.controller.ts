@@ -68,7 +68,7 @@ export class PasskeyController {
   }
 
   // === 管理接口 ===
-  @Get('list')
+  @Get('')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'List User Passkeys' })
   async getUserPasskeys(@Req() req: RequestWithUser) {
@@ -76,7 +76,7 @@ export class PasskeyController {
     return this.passkeyService.getUserPasskeys(user.id);
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Delete a Passkey' })
   @ApiParam({ name: 'id', description: 'Passkey ID' })

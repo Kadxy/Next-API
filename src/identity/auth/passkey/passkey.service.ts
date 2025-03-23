@@ -186,7 +186,6 @@ export class PasskeyService {
         CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
         state,
       );
-      this.logger.debug(`cacheKey: ${cacheKey}`);
       await this.cacheService.set<PublicKeyCredentialRequestOptionsJSON>(
         cacheKey,
         options,
@@ -216,7 +215,6 @@ export class PasskeyService {
         state,
       );
 
-      this.logger.debug(`cacheKey: ${cacheKey}`);
       const options =
         await this.cacheService.get<PublicKeyCredentialRequestOptionsJSON>(
           cacheKey,
@@ -290,20 +288,13 @@ export class PasskeyService {
    * 删除用户的 passkey
    * @param userId 用户ID
    * @param passkeyId passkey ID
-   * @throws BusinessException 如果 passkey 不存在
    */
   async deletePasskey(userId: User['id'], passkeyId: Passkey['id']) {
-    const passkey = await this.prisma.passkey.findFirst({
-      where: { id: passkeyId, userId },
-    });
-
-    if (!passkey) {
-      throw new BusinessException('Passkey not found');
+    try {
+      await this.prisma.passkey.delete({ where: { id: passkeyId, userId } });
+    } catch (error) {
+      throw new ErrorHandler(error, this.logger);
     }
-
-    await this.prisma.passkey.delete({ where: { id: passkeyId } });
-
-    return { success: true };
   }
 
   /**

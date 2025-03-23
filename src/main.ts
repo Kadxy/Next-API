@@ -51,6 +51,7 @@ async function bootstrap() {
     origin: true,
     credentials: true,
     maxAge: 365 * 24 * 60 * 60,
+    methods: '*',
   });
 
   // 应用全局响应转换拦截器
