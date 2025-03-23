@@ -12,12 +12,12 @@ export class GoogleAuthController {
   @ApiOperation({ summary: 'Google OAuth Login' })
   @ApiBody({ type: GoogleAuthDto })
   async googleLogin(@Body() authDto: GoogleAuthDto) {
-    return this.googleAuthService.googleLogin(authDto);
+    return this.googleAuthService.login(authDto);
   }
 
   @Get('/config')
   @ApiOperation({ summary: 'Get Google OAuth Config' })
   getGoogleConfig() {
-    return this.googleAuthService.getGoogleConfig();
+    return this.googleAuthService.getConfig();
   }
 }

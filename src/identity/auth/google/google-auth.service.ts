@@ -10,49 +10,10 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import { Cache } from 'cache-manager';
 import { GoogleAuthDto } from './dto/google-auth.dto';
-
-interface GoogleTokenResponse {
-  /** Google Access Token */
-  access_token: string;
-
-  /** Google Token Type */
-  token_type: 'Bearer' | string;
-
-  /** Google ID Token */
-  id_token: string;
-
-  /** Google Expires In */
-  expires_in: number;
-
-  /** Google Refresh Token */
-  refresh_token?: string;
-
-  /** Google Scope */
-  scope?: string;
-}
-
-export interface GoogleUserResponse {
-  /** Google User ID */
-  id: string;
-
-  /** Google Email */
-  email: string;
-
-  /** Google Email Verified */
-  email_verified: boolean;
-
-  /** Google Name */
-  name: string;
-
-  /** Google Given Name */
-  given_name: string;
-
-  /** Google Family Name */
-  family_name: string;
-
-  /** Google Picture URL */
-  picture: string;
-}
+import {
+  GoogleTokenResponse,
+  GoogleUserResponse,
+} from './google-auth.interface';
 
 @Injectable()
 export class GoogleAuthService {
@@ -83,7 +44,7 @@ export class GoogleAuthService {
   }
 
   // Google OAuth 登录 (code + state)
-  async googleLogin(dto: GoogleAuthDto) {
+  async login(dto: GoogleAuthDto) {
     const { code, state } = dto;
 
     // 1. 检查 state 是否合法
@@ -109,19 +70,18 @@ export class GoogleAuthService {
 
     try {
       // 2. 使用 code 获取 access_token
-      const { access_token } = await this.getGoogleAccessToken(code);
+      const { access_token } = await this.getAccessToken(code);
 
       // 3. 使用 access_token 获取用户信息
-      const googleUser = await this.getGoogleUserInfo(access_token);
-      this.logger.debug(googleUser);
+      const googleUser = await this.getUserInfo(access_token);
       const {
         id,
-        name,
-        given_name,
-        family_name,
         email,
         email_verified,
         picture,
+        name,
+        given_name,
+        family_name,
       } = googleUser;
       const googleId = id;
 
@@ -157,7 +117,7 @@ export class GoogleAuthService {
   }
 
   // 获取 Google App/Client 配置信息
-  async getGoogleConfig() {
+  async getConfig() {
     const clientId = this.clientId;
     const redirectUri = this.redirectUri;
     const state = Math.random().toString(36).substring(2, 15);
@@ -181,9 +141,7 @@ export class GoogleAuthService {
   }
 
   // 获取 Google Access Token
-  private async getGoogleAccessToken(
-    code: string,
-  ): Promise<GoogleTokenResponse> {
+  private async getAccessToken(code: string): Promise<GoogleTokenResponse> {
     try {
       const response = await firstValueFrom(
         this.httpService.post(
@@ -212,9 +170,7 @@ export class GoogleAuthService {
   }
 
   // 获取 Google User Info
-  private async getGoogleUserInfo(
-    accessToken: string,
-  ): Promise<GoogleUserResponse> {
+  private async getUserInfo(accessToken: string): Promise<GoogleUserResponse> {
     try {
       const response = await firstValueFrom(
         this.httpService.get(this.userInfoUrl, {

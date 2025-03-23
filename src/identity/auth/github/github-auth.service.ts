@@ -10,40 +10,10 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import { Cache } from 'cache-manager';
 import { GitHubAuthDto } from './dto/github-auth.dto';
-
-interface GitHubTokenResponse {
-  /** Github Access Token(ghu_xxx) */
-  access_token: string;
-
-  /** GitHub Scope */
-  scope: '' | string;
-
-  /** GitHub Token Type */
-  token_type: 'bearer' | string;
-
-  /** GitHub Refresh Token(ghr_xxx) */
-  refresh_token?: string;
-
-  /** GitHub Expires In */
-  expires_in?: number;
-}
-
-export interface GitHubUserResponse {
-  /** GitHub User ID */
-  id: number;
-
-  /** GitHub Username(unique in github) */
-  login: string;
-
-  /** GitHub Avatar URL */
-  avatar_url: string;
-
-  /** GitHub Name */
-  name: string | null;
-
-  /** GitHub Email */
-  email: string | null;
-}
+import {
+  GitHubTokenResponse,
+  GitHubUserResponse,
+} from './github-auth.interface';
 
 @Injectable()
 export class GitHubAuthService {
@@ -73,7 +43,7 @@ export class GitHubAuthService {
   }
 
   // GitHub OAuth 登录 (code + state)
-  async githubLogin(dto: GitHubAuthDto) {
+  async login(dto: GitHubAuthDto) {
     const { code, state } = dto;
 
     // 1. 检查 state 是否合法
@@ -99,23 +69,23 @@ export class GitHubAuthService {
 
     try {
       // 2. 使用 code 获取 access_token
-      const { access_token } = await this.getGitHubAccessToken(code);
+      const { access_token } = await this.getAccessToken(code);
 
       // 3. 使用 access_token 获取用户信息
-      const githubUser = await this.getGitHubUserInfo(access_token);
+      const githubUser = await this.getUserInfo(access_token);
       const { id, login, name, email, avatar_url } = githubUser;
-      const githubId = id.toString();
-      if (!githubId) {
+      const gitHubId = id.toString();
+      if (!gitHubId) {
         throw new BusinessException('Missing required github id');
       }
 
       // 4. 检查用户是否已存在
-      let user = await this.userService.getUserByGithubId(githubId);
+      let user = await this.userService.getUserByGitHubId(gitHubId);
 
       // 5. 用户不存在则创建新用户
       if (!user) {
         user = await this.userService.createUser({
-          githubId,
+          gitHubId,
           ...((login || name) && { displayName: login || name }),
           ...(email && { email }),
           ...(avatar_url && { avatar: avatar_url }),
@@ -136,7 +106,7 @@ export class GitHubAuthService {
   }
 
   // 获取 GitHub App/Client 配置信息
-  async getGitHubConfig() {
+  async getConfig() {
     const clientId = this.clientId;
     const redirectUri = this.redirectUri;
     const state = Math.random().toString(36).substring(2, 15);
@@ -156,9 +126,7 @@ export class GitHubAuthService {
   }
 
   // 获取 GitHub Access Token
-  private async getGitHubAccessToken(
-    code: string,
-  ): Promise<GitHubTokenResponse> {
+  private async getAccessToken(code: string): Promise<GitHubTokenResponse> {
     try {
       const response = await firstValueFrom(
         this.httpService.post(
@@ -185,9 +153,7 @@ export class GitHubAuthService {
   }
 
   // 获取 GitHub User Info
-  private async getGitHubUserInfo(
-    accessToken: string,
-  ): Promise<GitHubUserResponse> {
+  private async getUserInfo(accessToken: string): Promise<GitHubUserResponse> {
     try {
       const response = await firstValueFrom(
         this.httpService.get(this.userUrl, {
