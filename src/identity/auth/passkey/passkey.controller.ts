@@ -5,20 +5,23 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PasskeyService } from './passkey.service';
 import { AuthGuard, RequestWithUser } from '../auth.guard';
 import {
-  PasskeyRegistrationStartDto,
-  PasskeyRegistrationFinishDto,
-} from '../dto/passkey-register.dto';
-import {
-  PasskeyAuthenticationStartDto,
-  PasskeyAuthenticationFinishDto,
-} from '../dto/passkey-auth.dto';
+  AuthenticationResponseJSON,
+  RegistrationResponseJSON,
+} from '@simplewebauthn/server';
 
 @ApiTags('Passkey Authentication')
 @Controller('auth/passkey')
@@ -29,54 +32,48 @@ export class PasskeyController {
   @Get('register')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Start Passkey Registration' })
-  async startRegistration(@Req() req: RequestWithUser) {
-    return this.passkeyService.generateRegistrationOptions(req.user);
+  async generateRegistrationOptions(@Req() req: RequestWithUser) {
+    const { user } = req;
+    return this.passkeyService.generateRegistrationOptions(user);
   }
 
   @Post('register')
   @UseGuards(AuthGuard)
+  @ApiBody({ type: Object })
   @ApiOperation({ summary: 'Complete Passkey Registration' })
-  @ApiBody({ type: PasskeyRegistrationFinishDto })
-  async finishRegistration(
+  async verifyRegistrationResponse(
     @Req() req: RequestWithUser,
-    @Body() body: PasskeyRegistrationFinishDto,
+    @Body() body: RegistrationResponseJSON,
   ) {
-    return this.passkeyService.verifyRegistrationResponse(
-      req.user.id,
-      body.attestationResponse,
-    );
+    const { user } = req;
+    return this.passkeyService.verifyRegistrationResponse(user.id, body);
   }
 
   // === Authentication ===
-  @Post('login/start')
+  @Get('authentication')
   @ApiOperation({ summary: 'Start Passkey Authentication' })
-  @ApiBody({ type: PasskeyAuthenticationStartDto })
-  async startAuthentication(
-    @Req() req: RequestWithUser,
-    @Body() body: PasskeyAuthenticationStartDto,
-  ) {
-    return this.passkeyService.generateAuthenticationOptions(req.user);
+  async generateAuthenticationOptions() {
+    return this.passkeyService.generateAuthenticationOptions();
   }
 
-  @Post('login/finish')
+  @Post('authentication')
+  @ApiQuery({ name: 'state', type: String, required: true })
+  @ApiBody({ type: Object })
   @ApiOperation({ summary: 'Complete Passkey Authentication' })
-  @ApiBody({ type: PasskeyAuthenticationFinishDto })
-  async finishAuthentication(
-    @Req() req: RequestWithUser,
-    @Body() body: PasskeyAuthenticationFinishDto,
+  async verifyAuthenticationResponse(
+    @Query('state') state: string,
+    @Body() body: AuthenticationResponseJSON,
   ) {
-    return this.passkeyService.verifyAuthenticationResponse(
-      req.user.id,
-      body.assertionResponse,
-    );
+    return this.passkeyService.verifyAuthenticationResponse(state, body);
   }
 
   // === 管理接口 ===
   @Get('list')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'List User Passkeys' })
-  async listPasskeys(@Req() req: RequestWithUser) {
-    return this.passkeyService.getUserPasskeys(req.user.id);
+  async getUserPasskeys(@Req() req: RequestWithUser) {
+    const { user } = req;
+    return this.passkeyService.getUserPasskeys(user.id);
   }
 
   @Delete(':id')
@@ -84,6 +81,7 @@ export class PasskeyController {
   @ApiOperation({ summary: 'Delete a Passkey' })
   @ApiParam({ name: 'id', description: 'Passkey ID' })
   async deletePasskey(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.passkeyService.deletePasskey(req.user.id, parseInt(id));
+    const { user } = req;
+    return this.passkeyService.deletePasskey(user.id, id);
   }
 }

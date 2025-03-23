@@ -39,14 +39,14 @@ model User {
 
 model Passkey {
   id             String @id @db.VarChar(255) // Base64URLString
-  publicKey      Bytes // 存储为二进制数据，对应Uint8Array
+  publicKey      Bytes // 存储为二进制数据，对应 Uint8Array
   webAuthnUserID String @db.VarChar(255) // Base64URLString
-  counter        BigInt @default(0) // 使用BigInt来应对timestamp作为计数器的情况
+  counter        BigInt @default(0) // 使用 BigInt 来应对 timestamp 作为计数器的情况
 
   // WebAuthn additional fields
-  transports String? @db.VarChar(255) // CSV格式存储传输方式数组,'ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb'
-  deviceType String  @default("singleDevice") @db.VarChar(32) // singleDevice或multiDevice
-  backedUp   Boolean @default(false) // 替代原先的backupState
+  transports String? @db.VarChar(255) // JSON字符串格式存储传输方式数组,'ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb'
+  deviceType String  @default("singleDevice") @db.VarChar(32) // singleDevice 或 multiDevice
+  backedUp   Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

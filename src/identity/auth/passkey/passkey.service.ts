@@ -24,7 +24,6 @@ import { JwtTokenService } from '../jwt.service';
 @Injectable()
 export class PasskeyService {
   private readonly logger = new Logger(PasskeyService.name);
-  // Relying Party (RP)
 
   /**
    * Human-readable title for your website
@@ -168,28 +167,26 @@ export class PasskeyService {
    * Generate authentication options
    * One endpoint (GET) needs to return the result of a call to generateAuthenticationOptions():
    */
-  async generateAuthenticationOptions(user: User) {
-    const { id: userId } = user;
+  async generateAuthenticationOptions() {
     try {
-      // 1. Retrieve any of the user's previously-registered authenticators
-      const userPasskeys = await this.getUserPasskeys(userId);
+      // 0. 生成一个基于时间戳的唯一标识
+      const state = new Date().getTime() + Math.floor(Math.random() * 1000000);
 
-      // 2. Generate authentication options
+      // 1. Generate authentication options
       const options: PublicKeyCredentialRequestOptionsJSON =
         await generateAuthenticationOptions({
           rpID: this.rpID,
           // Require users to use a previously-registered authenticator
-          allowCredentials: userPasskeys.map((passkey) => ({
-            id: passkey.id, // 使用passkey的id作为凭证ID
-            transports: this.parseTransports(passkey.transports), // 解析transports
-          })),
+          // In this case, allow user select any passkey
+          allowCredentials: [],
         });
 
       // 3. Remember this challenge for this user
       const cacheKey = getCacheKey(
         CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
-        userId,
+        state,
       );
+      this.logger.debug(`cacheKey: ${cacheKey}`);
       await this.cacheService.set<PublicKeyCredentialRequestOptionsJSON>(
         cacheKey,
         options,
@@ -197,7 +194,7 @@ export class PasskeyService {
       );
 
       // 5. Return the options
-      return options;
+      return { state, options };
     } catch (error) {
       throw new ErrorHandler(error, this.logger);
     }
@@ -209,15 +206,17 @@ export class PasskeyService {
    * startAuthentication() method and then verify it:
    */
   async verifyAuthenticationResponse(
-    userId: User['id'],
+    state: string,
     response: AuthenticationResponseJSON,
   ) {
     try {
       // 1. Get `options.challenge` that was saved above
       const cacheKey = getCacheKey(
         CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
-        userId,
+        state,
       );
+
+      this.logger.debug(`cacheKey: ${cacheKey}`);
       const options =
         await this.cacheService.get<PublicKeyCredentialRequestOptionsJSON>(
           cacheKey,
@@ -229,12 +228,12 @@ export class PasskeyService {
       }
 
       // 2. Get passkey
-      const passkey = await this.getUserPasskey(userId, response.id);
+      const passkey = await this.getPasskey(response.id);
       if (!passkey) {
         throw new BusinessException('Passkey not found');
       }
 
-      // 2. Verify authentication response
+      // 3. Verify authentication response
       const verification = await verifyAuthenticationResponse({
         response,
         expectedChallenge: options.challenge,
@@ -247,21 +246,26 @@ export class PasskeyService {
           transports: this.parseTransports(passkey.transports),
         },
       });
-      const { verified } = verification;
+      const { verified, authenticationInfo } = verification;
 
       if (!verified) {
         throw new BusinessException('Passkey Authentication failed');
       }
 
-      // 3. Update passkey counter
-      if (
-        verification.authenticationInfo.newCounter !== Number(passkey.counter)
-      ) {
+      // 4. Update passkey counter asynchronously
+      if (authenticationInfo.newCounter !== Number(passkey.counter)) {
         this.updatePasskeyCounter(
           passkey.id,
-          verification.authenticationInfo.newCounter,
+          authenticationInfo.newCounter,
         ).catch();
       }
+
+      // 5. Find the user and generate token
+      const user = await this.userService.getUserById(passkey.userId);
+      const token = await this.jwtTokenService.sign(user);
+
+      // 6. Return the user and token
+      return { user, token };
     } catch (error) {
       throw new ErrorHandler(error, this.logger);
     }
@@ -304,13 +308,10 @@ export class PasskeyService {
 
   /**
    * 获取用户的 passkey
-   * @param userId 用户ID
-   * @param passkeyId passkey ID
+   * @param id passkey ID
    */
-  private async getUserPasskey(userId: User['id'], passkeyId: Passkey['id']) {
-    return this.prisma.passkey.findFirst({
-      where: { id: passkeyId, userId },
-    });
+  private async getPasskey(id: Passkey['id']) {
+    return this.prisma.passkey.findUnique({ where: { id } });
   }
 
   //////////////////////////////////////////
