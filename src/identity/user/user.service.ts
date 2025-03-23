@@ -111,6 +111,25 @@ export class UserService {
     return user;
   }
 
+  // 从数据库获取用户 - 通过Google ID
+  async getUserByGoogleId(googleId: User['googleId']): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { googleId },
+      include: { wallet: { select: { balance: true } } },
+    });
+
+    // 更新缓存
+    if (user) {
+      await this.cacheService.set(
+        getCacheKey(CACHE_KEYS.USER_INFO_UID, user.uid),
+        user,
+        CACHE_KEYS.USER_INFO_UID.EXPIRE,
+      );
+    }
+
+    return user;
+  }
+
   // 生成用户昵称，格式为：User_{random_string}
   private generateDisplayName(): string {
     return [

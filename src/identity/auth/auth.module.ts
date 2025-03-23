@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { JwtTokenService } from './jwt.service';
 import { FeishuWebhookModule } from '../../core/feishu-webhook/feishu-webhook.module';
 import { GitHubAuthModule } from './github/github-auth.module';
+import { GoogleAuthModule } from './google/google-auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { GitHubAuthModule } from './github/github-auth.module';
     ConfigModule,
     FeishuWebhookModule,
     GitHubAuthModule,
+    GoogleAuthModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         secret: configService.getOrThrow<string>('JWT_SECRET'),

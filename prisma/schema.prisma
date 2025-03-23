@@ -8,47 +8,47 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  uid       String   @unique @default(uuid())
-  
-  displayName String? // Common name for user's display name (not username which implies uniqueness)
-  avatar    String?
+  id  Int    @id @default(autoincrement())
+  uid String @unique @default(uuid())
 
-  email     String?   @unique
-  phone     String?  @unique
-  githubId  String?  @unique
-  googleId  String?  @unique
-  appleId   String?  @unique
-  
+  displayName String? // Common name for user's display name (not username which implies uniqueness)
+  avatar      String? @db.Text
+
+  email    String? @unique
+  phone    String? @unique
+  githubId String? @unique
+  googleId String? @unique
+  appleId  String? @unique
+
   // 2FA support
   twoFactorEnabled Boolean @default(false)
   twoFactorSecret  String?
-  
+
   // User status
-  isActive  Boolean @default(true)
+  isActive Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relations
-  passkeys  Passkey[]
-  wallet    Wallet?
+  passkeys Passkey[]
+  wallet   Wallet?
 
   @@map("users")
 }
 
 model Passkey {
-  id          Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  credentialId String   @unique
+  credentialId String @unique
   publicKey    String
-  counter      Int      @default(0)
-  
-  name         String?  // Optional name for the passkey
-  lastUsed     DateTime?
-  
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  counter      Int    @default(0)
+
+  name     String? // Optional name for the passkey
+  lastUsed DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   user   User @relation(fields: [userId], references: [id])
@@ -70,4 +70,3 @@ model Wallet {
 
   @@map("wallets")
 }
-

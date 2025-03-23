@@ -30,6 +30,10 @@ export const CACHE_KEYS = {
     KEY: 'github-state:{state}',
     EXPIRE: minutes(3),
   },
+  GOOGLE_STATE: {
+    KEY: 'google-state:{state}',
+    EXPIRE: minutes(3),
+  },
 } as const;
 
 export const CACHE_FLAG = {
