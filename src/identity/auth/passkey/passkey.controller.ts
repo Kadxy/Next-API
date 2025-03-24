@@ -28,6 +28,7 @@ import {
   ListPasskeysResponseDto,
   UpdatePasskeyDisplayNameRequestDto,
 } from './dto/passkeys.dto';
+import { LoginResponseDto } from 'src/identity/user/dto/user.dto';
 
 @ApiTags('Passkey Authentication')
 @Controller('auth/passkey')
@@ -66,6 +67,7 @@ export class PasskeyController {
   @ApiQuery({ name: 'state', type: String, required: true })
   @ApiBody({ type: Object })
   @ApiOperation({ summary: 'Complete Passkey Authentication' })
+  @ApiResponse({ type: LoginResponseDto })
   async verifyAuthenticationResponse(
     @Query('state') state: string,
     @Body() body: AuthenticationResponseJSON,

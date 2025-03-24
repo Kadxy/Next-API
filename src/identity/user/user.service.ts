@@ -21,6 +21,13 @@ export class UserService {
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}
 
+  async updateLastLoginAt(id: User['id']) {
+    await this.prisma.user.update({
+      where: { id },
+      data: { lastLoginAt: new Date() },
+    });
+  }
+
   // 创建用户
   async createUser(data: Prisma.UserCreateInput) {
     this.logger.log(`Creating user with data: ${JSON.stringify(data)}`);

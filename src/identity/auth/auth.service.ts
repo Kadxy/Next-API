@@ -16,6 +16,7 @@ import {
   CACHE_KEYS,
   getCacheKey,
 } from '../../core/cache/chche.constant';
+import { removeUserExcludedFields } from '../user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -95,7 +96,7 @@ export class AuthService {
       // 5. 生成 JWT token
       const token = await this.jwtTokenService.sign(user);
 
-      return { token, user };
+      return { token, user: removeUserExcludedFields(user) };
     } catch (error) {
       this.logger.error(error?.stack);
       throw new BusinessException();
@@ -110,7 +111,7 @@ export class AuthService {
         throw new BusinessException('User not found');
       }
 
-      return user;
+      return removeUserExcludedFields(user);
     } catch (error) {
       this.logger.error(error?.stack);
       throw new BusinessException();

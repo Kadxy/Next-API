@@ -9,6 +9,9 @@ export class ListPasskeysResponseData {
   @ApiProperty({ description: 'Passkey Display Name', example: 'My Passkey' })
   displayName: string;
 
+  @ApiProperty({ description: 'Passkey Last Used At' })
+  lastUsedAt: string;
+
   @ApiProperty({ description: 'Passkey Created At' })
   createdAt: string;
 

@@ -14,6 +14,7 @@ import {
   GoogleTokenResponse,
   GoogleUserResponse,
 } from './google-auth.interface';
+import { removeUserExcludedFields } from 'src/identity/user/dto/user.dto';
 
 @Injectable()
 export class GoogleAuthService {
@@ -94,7 +95,7 @@ export class GoogleAuthService {
     // 5. 生成JWT令牌
     const token = await this.jwtTokenService.sign(user);
 
-    return { user, token };
+    return { user: removeUserExcludedFields(user), token };
   }
 
   // 获取 Google App/Client 配置信息

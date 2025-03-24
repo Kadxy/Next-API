@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard, RequestWithUser } from './auth.guard';
 import { AuthService } from './auth.service';
 import { EmailLoginDto } from './dto/email-login.dto';
 import { SendEmailLoginCodeDto } from './dto/send-email-login-code.dto';
 import { JwtTokenService } from './jwt.service';
+import { LoginResponseDto, UserResponseDto } from '../user/dto/user.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -24,6 +25,7 @@ export class AuthController {
   @Post('/login/email')
   @ApiOperation({ summary: 'Login' })
   @ApiBody({ type: EmailLoginDto })
+  @ApiResponse({ type: LoginResponseDto })
   async login(@Body() loginDto: EmailLoginDto) {
     return this.authService.emailLogin(loginDto);
   }
@@ -46,6 +48,7 @@ export class AuthController {
   @Get('/self')
   @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get Current User' })
+  @ApiResponse({ type: UserResponseDto })
   async account(@Req() req: RequestWithUser) {
     return this.authService.getSelf(req.user.uid);
   }

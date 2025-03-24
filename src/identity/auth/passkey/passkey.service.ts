@@ -20,6 +20,7 @@ import { BusinessException } from '../../../common/exceptions';
 import { CACHE_KEYS, getCacheKey } from '../../../core/cache/chche.constant';
 import { UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
+import { removeUserExcludedFields } from 'src/identity/user/dto/user.dto';
 
 @Injectable()
 export class PasskeyService {
@@ -245,7 +246,7 @@ export class PasskeyService {
     const token = await this.jwtTokenService.sign(user);
 
     // 6. Return the user and token
-    return { user, token };
+    return { user: removeUserExcludedFields(user), token };
   }
 
   ////////////////////////
@@ -256,7 +257,7 @@ export class PasskeyService {
    * 获取用户的所有 passkeys - 管理员
    * @param userId 用户ID
    */
-  async getUserPasskeys(userId: User['id']) {
+  private async getUserPasskeys(userId: User['id']) {
     return this.prisma.passkey.findMany({
       where: { userId, isDeleted: false },
       select: { id: true, transports: true },
@@ -275,6 +276,7 @@ export class PasskeyService {
         displayName: true,
         createdAt: true,
         updatedAt: true,
+        lastUsedAt: true,
       },
     });
   }
@@ -302,7 +304,8 @@ export class PasskeyService {
    * @param passkeyId passkey ID
    */
   async deletePasskey(userId: User['id'], passkeyId: Passkey['id']) {
-    return this.prisma.passkey.update({
+    // not return, because it contains bigint type, which cannot be serialized
+    await this.prisma.passkey.update({
       where: { id: passkeyId, userId, isDeleted: false },
       data: { isDeleted: true },
     });
@@ -371,7 +374,7 @@ export class PasskeyService {
   ) {
     return this.prisma.passkey.update({
       where: { id: passkeyId, isDeleted: false },
-      data: { counter: BigInt(newCounter) },
+      data: { counter: BigInt(newCounter), lastUsedAt: new Date() },
     });
   }
 
