@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import { BusinessException, ErrorHandler } from '../../../common/exceptions';
+import { BusinessException } from '../../../common/exceptions';
 import { UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
 import { Agent } from 'node:https';
@@ -46,74 +46,55 @@ export class GoogleAuthService {
   // Google OAuth 登录 (code + state)
   async login(dto: GoogleAuthDto) {
     const { code, state } = dto;
+    const cacheKey = getCacheKey(CACHE_KEYS.GOOGLE_STATE, state);
 
     // 1. 检查 state 是否合法
-    try {
-      const cachedState = await this.cacheManager.get(
-        getCacheKey(CACHE_KEYS.GOOGLE_STATE, state),
-      );
-      if (!cachedState) {
-        throw new BusinessException('Invalid state');
-      }
-
-      // 异步删除 state(不关心删除是否成功)
-      this.cacheManager
-        .del(getCacheKey(CACHE_KEYS.GOOGLE_STATE, state))
-        .catch();
-    } catch (error) {
-      throw new ErrorHandler(
-        error,
-        this.logger,
-        'Google authentication failed',
-      );
+    const cachedState = await this.cacheManager.get(cacheKey);
+    if (!cachedState) {
+      throw new BusinessException('Invalid state');
     }
 
-    try {
-      // 2. 使用 code 获取 access_token
-      const { access_token } = await this.getAccessToken(code);
+    // 1.1 异步删除 state(不关心删除是否成功)
+    this.cacheManager.del(cacheKey).catch();
 
-      // 3. 使用 access_token 获取用户信息
-      const googleUser = await this.getUserInfo(access_token);
-      const {
-        id,
-        email,
-        email_verified,
-        picture,
-        name,
-        given_name,
-        family_name,
-      } = googleUser;
-      const googleId = id;
+    // 2. 使用 code 获取 access_token
+    const { access_token } = await this.getAccessToken(code);
 
-      if (!googleId) {
-        throw new BusinessException('Missing required google id');
-      }
+    // 3. 使用 access_token 获取用户信息
+    const googleUser = await this.getUserInfo(access_token);
+    const {
+      id,
+      email,
+      email_verified,
+      picture,
+      name,
+      given_name,
+      family_name,
+    } = googleUser;
+    const googleId = id;
 
-      // 4. 检查用户是否已存在
-      let user = await this.userService.getUserByGoogleId(googleId);
-
-      // 5. 用户不存在则创建新用户
-      const displayName = name || `${given_name} ${family_name}`.trim();
-      if (!user) {
-        user = await this.userService.createUser({
-          googleId,
-          ...(displayName && { displayName }),
-          ...(email && email_verified && { email }),
-          ...(picture && { avatar: picture }),
-        });
-      }
-
-      // 6. 生成JWT令牌
-      const token = await this.jwtTokenService.sign(user);
-
-      return { user, token };
-    } catch (error) {
-      throw new ErrorHandler(
-        error,
-        this.logger,
-        'Google authentication failed',
-      );
+    if (!googleId) {
+      throw new BusinessException('Missing required google id');
     }
+
+    // 4. 检查用户是否已存在
+    let user = await this.userService.getUserByGoogleId(googleId);
+
+    // 4.1 用户不存在则创建新用户
+    const displayName = name || `${given_name} ${family_name}`.trim();
+    if (!user) {
+      user = await this.userService.createUser({
+        googleId,
+        ...(displayName && { displayName }),
+        ...(email && email_verified && { email }),
+        ...(picture && { avatar: picture }),
+      });
+    }
+
+    // 5. 生成JWT令牌
+    const token = await this.jwtTokenService.sign(user);
+
+    return { user, token };
   }
 
   // 获取 Google App/Client 配置信息

@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import { BusinessException, ErrorHandler } from '../../../common/exceptions';
+import { BusinessException } from '../../../common/exceptions';
 import { UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
 import { Agent } from 'node:https';
@@ -46,63 +46,45 @@ export class GitHubAuthService {
   async login(dto: GitHubAuthDto) {
     const { code, state } = dto;
 
+    const cacheKey = getCacheKey(CACHE_KEYS.GITHUB_STATE, state);
+
     // 1. 检查 state 是否合法
-    try {
-      const cachedState = await this.cacheManager.get(
-        getCacheKey(CACHE_KEYS.GITHUB_STATE, state),
-      );
-      if (!cachedState) {
-        throw new BusinessException('Invalid state');
-      }
-
-      // 异步删除 state(不关心删除是否成功)
-      this.cacheManager
-        .del(getCacheKey(CACHE_KEYS.GITHUB_STATE, state))
-        .catch();
-    } catch (error) {
-      throw new ErrorHandler(
-        error,
-        this.logger,
-        'GitHub authentication failed',
-      );
+    const cachedState = await this.cacheManager.get(cacheKey);
+    if (!cachedState) {
+      throw new BusinessException('Invalid state');
     }
 
-    try {
-      // 2. 使用 code 获取 access_token
-      const { access_token } = await this.getAccessToken(code);
+    // 1.1 异步删除 state(不关心删除是否成功)
+    this.cacheManager.del(cacheKey).catch();
 
-      // 3. 使用 access_token 获取用户信息
-      const githubUser = await this.getUserInfo(access_token);
-      const { id, login, name, email, avatar_url } = githubUser;
-      const gitHubId = id.toString();
-      if (!gitHubId) {
-        throw new BusinessException('Missing required github id');
-      }
+    // 2. 使用 code 获取 access_token
+    const { access_token } = await this.getAccessToken(code);
 
-      // 4. 检查用户是否已存在
-      let user = await this.userService.getUserByGitHubId(gitHubId);
-
-      // 5. 用户不存在则创建新用户
-      if (!user) {
-        user = await this.userService.createUser({
-          gitHubId,
-          ...((login || name) && { displayName: login || name }),
-          ...(email && { email }),
-          ...(avatar_url && { avatar: avatar_url }),
-        });
-      }
-
-      // 6. 生成JWT令牌
-      const token = await this.jwtTokenService.sign(user);
-
-      return { user, token };
-    } catch (error) {
-      throw new ErrorHandler(
-        error,
-        this.logger,
-        'GitHub authentication failed',
-      );
+    // 3. 使用 access_token 获取用户信息
+    const githubUser = await this.getUserInfo(access_token);
+    const { id, login, name, email, avatar_url } = githubUser;
+    const gitHubId = id.toString();
+    if (!gitHubId) {
+      throw new BusinessException('Missing required github id');
     }
+
+    // 4. 检查用户是否已存在
+    let user = await this.userService.getUserByGitHubId(gitHubId);
+
+    // 4.1 用户不存在则创建新用户
+    if (!user) {
+      user = await this.userService.createUser({
+        gitHubId,
+        ...((login || name) && { displayName: login || name }),
+        ...(email && { email }),
+        ...(avatar_url && { avatar: avatar_url }),
+      });
+    }
+
+    // 5. 生成JWT令牌
+    const token = await this.jwtTokenService.sign(user);
+
+    return { user, token };
   }
 
   // 获取 GitHub App/Client 配置信息

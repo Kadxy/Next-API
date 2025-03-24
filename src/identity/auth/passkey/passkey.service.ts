@@ -16,7 +16,7 @@ import type {
   AuthenticatorTransportFuture,
   VerifiedRegistrationResponse,
 } from '@simplewebauthn/server';
-import { BusinessException, ErrorHandler } from '../../../common/exceptions';
+import { BusinessException } from '../../../common/exceptions';
 import { CACHE_KEYS, getCacheKey } from '../../../core/cache/chche.constant';
 import { UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
@@ -67,51 +67,45 @@ export class PasskeyService {
    */
   async generateRegistrationOptions(user: User) {
     const { id: userId, uid: userUid } = user;
-    try {
-      // 1. Retrieve any of the user's previously-registered authenticators
-      const userPasskeys = await this.getUserPasskeys(userId);
 
-      // 2. Generate registration options
-      const options: PublicKeyCredentialCreationOptionsJSON =
-        await generateRegistrationOptions({
-          rpName: this.rpName,
-          rpID: this.rpID,
-          userName: userUid.replaceAll('-', ''), // 使用UID去除`-`作为UserName
-          // Don't prompt users for additional information about the authenticator
-          // (Recommended for smoother UX)
-          attestationType: 'none',
-          // Prevent users from re-registering existing authenticators
-          excludeCredentials: userPasskeys.map((passkey) => ({
-            id: passkey.id,
-            // Optional
-            transports: this.parseTransports(passkey.transports),
-          })),
-          // See "Guiding use of authenticators via authenticatorSelection" below
-          authenticatorSelection: {
-            // Defaults
-            residentKey: 'preferred',
-            userVerification: 'preferred',
-            // Optional
-            authenticatorAttachment: 'platform',
-          },
-        });
+    // 1. Retrieve any of the user's previously-registered authenticators
+    const userPasskeys = await this.getUserPasskeys(userId);
 
-      // 3. Remember these options for the user - save to cache
-      const cacheKey = getCacheKey(
-        CACHE_KEYS.WEBAUTHN_REGISTER_OPTIONS,
-        userId,
-      );
-      await this.cacheService.set<PublicKeyCredentialCreationOptionsJSON>(
-        cacheKey,
-        options,
-        CACHE_KEYS.WEBAUTHN_REGISTER_OPTIONS.EXPIRE,
-      );
+    // 2. Generate registration options
+    const options: PublicKeyCredentialCreationOptionsJSON =
+      await generateRegistrationOptions({
+        rpName: this.rpName,
+        rpID: this.rpID,
+        userName: userUid.replaceAll('-', ''), // 使用UID去除`-`作为UserName
+        // Don't prompt users for additional information about the authenticator
+        // (Recommended for smoother UX)
+        attestationType: 'none',
+        // Prevent users from re-registering existing authenticators
+        excludeCredentials: userPasskeys.map((passkey) => ({
+          id: passkey.id,
+          // Optional
+          transports: this.parseTransports(passkey.transports),
+        })),
+        // See "Guiding use of authenticators via authenticatorSelection" below
+        authenticatorSelection: {
+          // Defaults
+          residentKey: 'preferred',
+          userVerification: 'preferred',
+          // Optional
+          authenticatorAttachment: 'platform',
+        },
+      });
 
-      // 5. Return the options
-      return options;
-    } catch (error) {
-      throw new ErrorHandler(error, this.logger);
-    }
+    // 3. Remember these options for the user - save to cache
+    const cacheKey = getCacheKey(CACHE_KEYS.WEBAUTHN_REGISTER_OPTIONS, userId);
+    await this.cacheService.set<PublicKeyCredentialCreationOptionsJSON>(
+      cacheKey,
+      options,
+      CACHE_KEYS.WEBAUTHN_REGISTER_OPTIONS.EXPIRE,
+    );
+
+    // 5. Return the options
+    return options;
   }
 
   /**
@@ -123,40 +117,33 @@ export class PasskeyService {
     userId: User['id'],
     response: RegistrationResponseJSON,
   ) {
-    try {
-      // 1. Get `options.challenge` that was saved above
-      const cacheKey = getCacheKey(
-        CACHE_KEYS.WEBAUTHN_REGISTER_OPTIONS,
-        userId,
+    // 1. Get `options.challenge` that was saved above
+    const cacheKey = getCacheKey(CACHE_KEYS.WEBAUTHN_REGISTER_OPTIONS, userId);
+    const options =
+      await this.cacheService.get<PublicKeyCredentialCreationOptionsJSON>(
+        cacheKey,
       );
-      const options =
-        await this.cacheService.get<PublicKeyCredentialCreationOptionsJSON>(
-          cacheKey,
-        );
-      if (!options) {
-        throw new BusinessException(
-          'Registration challenge expired or not found',
-        );
-      }
-
-      // 2. Verify registration response
-      const verification = await verifyRegistrationResponse({
-        response,
-        expectedChallenge: options.challenge,
-        expectedOrigin: this.origin,
-        expectedRPID: this.rpID,
-      });
-      const { verified, registrationInfo } = verification;
-
-      if (!verified) {
-        throw new BusinessException('Passkey registration verification failed');
-      }
-
-      // 3. Save Passkey
-      await this.createPasskey(userId, options, registrationInfo);
-    } catch (error) {
-      throw new ErrorHandler(error, this.logger);
+    if (!options) {
+      throw new BusinessException(
+        'Registration challenge expired or not found',
+      );
     }
+
+    // 2. Verify registration response
+    const verification = await verifyRegistrationResponse({
+      response,
+      expectedChallenge: options.challenge,
+      expectedOrigin: this.origin,
+      expectedRPID: this.rpID,
+    });
+    const { verified, registrationInfo } = verification;
+
+    if (!verified) {
+      throw new BusinessException('Passkey registration verification failed');
+    }
+
+    // 3. Save Passkey
+    await this.createPasskey(userId, options, registrationInfo);
   }
 
   //////////////////////////////////////////////////////////
@@ -168,35 +155,31 @@ export class PasskeyService {
    * One endpoint (GET) needs to return the result of a call to generateAuthenticationOptions():
    */
   async generateAuthenticationOptions() {
-    try {
-      // 0. 生成一个基于时间戳的唯一标识
-      const state = new Date().getTime() + Math.floor(Math.random() * 1000000);
+    // 0. 生成一个基于时间戳的唯一标识
+    const state = new Date().getTime() + Math.floor(Math.random() * 1000000);
 
-      // 1. Generate authentication options
-      const options: PublicKeyCredentialRequestOptionsJSON =
-        await generateAuthenticationOptions({
-          rpID: this.rpID,
-          // Require users to use a previously-registered authenticator
-          // In this case, allow user select any passkey
-          allowCredentials: [],
-        });
+    // 1. Generate authentication options
+    const options: PublicKeyCredentialRequestOptionsJSON =
+      await generateAuthenticationOptions({
+        rpID: this.rpID,
+        // Require users to use a previously-registered authenticator
+        // In this case, allow user select any passkey
+        allowCredentials: [],
+      });
 
-      // 3. Remember this challenge for this user
-      const cacheKey = getCacheKey(
-        CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
-        state,
-      );
-      await this.cacheService.set<PublicKeyCredentialRequestOptionsJSON>(
-        cacheKey,
-        options,
-        CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS.EXPIRE,
-      );
+    // 3. Remember this challenge for this user
+    const cacheKey = getCacheKey(
+      CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
+      state,
+    );
+    await this.cacheService.set<PublicKeyCredentialRequestOptionsJSON>(
+      cacheKey,
+      options,
+      CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS.EXPIRE,
+    );
 
-      // 5. Return the options
-      return { state, options };
-    } catch (error) {
-      throw new ErrorHandler(error, this.logger);
-    }
+    // 5. Return the options
+    return { state, options };
   }
 
   /**
@@ -208,65 +191,61 @@ export class PasskeyService {
     state: string,
     response: AuthenticationResponseJSON,
   ) {
-    try {
-      // 1. Get `options.challenge` that was saved above
-      const cacheKey = getCacheKey(
-        CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
-        state,
+    // 1. Get `options.challenge` that was saved above
+    const cacheKey = getCacheKey(
+      CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
+      state,
+    );
+
+    const options =
+      await this.cacheService.get<PublicKeyCredentialRequestOptionsJSON>(
+        cacheKey,
       );
-
-      const options =
-        await this.cacheService.get<PublicKeyCredentialRequestOptionsJSON>(
-          cacheKey,
-        );
-      if (!options) {
-        throw new BusinessException(
-          'Authentication challenge expired or not found',
-        );
-      }
-
-      // 2. Get passkey
-      const passkey = await this.getPasskey(response.id);
-      if (!passkey) {
-        throw new BusinessException('Passkey not found');
-      }
-
-      // 3. Verify authentication response
-      const verification = await verifyAuthenticationResponse({
-        response,
-        expectedChallenge: options.challenge,
-        expectedOrigin: this.origin,
-        expectedRPID: this.rpID,
-        credential: {
-          id: passkey.id,
-          publicKey: passkey.publicKey,
-          counter: Number(passkey.counter),
-          transports: this.parseTransports(passkey.transports),
-        },
-      });
-      const { verified, authenticationInfo } = verification;
-
-      if (!verified) {
-        throw new BusinessException('Passkey Authentication failed');
-      }
-
-      // 4. Update passkey counter asynchronously
-      if (authenticationInfo.newCounter !== Number(passkey.counter)) {
-        this.updatePasskeyCounter(
-          passkey.id,
-          authenticationInfo.newCounter,
-        ).catch();
-      }
-
-      // 5. Find the user and generate token
-      const user = await this.userService.getUserById(passkey.userId);
-      const token = await this.jwtTokenService.sign(user);
-
-      // 6. Return the user and token
-      return { user, token };
-    } catch (error) {
-      throw new ErrorHandler(error, this.logger);
+    if (!options) {
+      throw new BusinessException(
+        'Authentication challenge expired or not found',
+      );
     }
+
+    // 2. Get passkey
+    const passkey = await this.getPasskey(response.id);
+    if (!passkey) {
+      throw new BusinessException('Passkey not found');
+    }
+
+    // 3. Verify authentication response
+    const verification = await verifyAuthenticationResponse({
+      response,
+      expectedChallenge: options.challenge,
+      expectedOrigin: this.origin,
+      expectedRPID: this.rpID,
+      credential: {
+        id: passkey.id,
+        publicKey: passkey.publicKey,
+        counter: Number(passkey.counter),
+        transports: this.parseTransports(passkey.transports),
+      },
+    });
+    const { verified, authenticationInfo } = verification;
+
+    if (!verified) {
+      throw new BusinessException('Passkey Authentication failed');
+    }
+
+    // 4. Update passkey counter asynchronously
+    if (authenticationInfo.newCounter !== Number(passkey.counter)) {
+      this.updatePasskeyCounter(
+        passkey.id,
+        authenticationInfo.newCounter,
+      ).catch();
+    }
+
+    // 5. Find the user and generate token
+    const user = await this.userService.getUserById(passkey.userId);
+    const token = await this.jwtTokenService.sign(user);
+
+    // 6. Return the user and token
+    return { user, token };
   }
 
   ////////////////////////
@@ -274,13 +253,46 @@ export class PasskeyService {
   ////////////////////////
 
   /**
-   * 获取用户的所有 passkeys
+   * 获取用户的所有 passkeys - 管理员
    * @param userId 用户ID
    */
   async getUserPasskeys(userId: User['id']) {
     return this.prisma.passkey.findMany({
-      where: { userId },
+      where: { userId, isDeleted: false },
       select: { id: true, transports: true },
+    });
+  }
+
+  /**
+   * 获取用户的所有 passkeys - 展示给用户
+   * @param userId 用户ID
+   */
+  async listUserPasskeys(userId: User['id']) {
+    return this.prisma.passkey.findMany({
+      where: { userId, isDeleted: false },
+      select: {
+        id: true,
+        displayName: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
+
+  /**
+   * 更新 passkey 的 displayName
+   * @param userId 用户ID
+   * @param passkeyId passkey ID
+   * @param displayName 新的 displayName
+   */
+  async updatePasskeyDisplayName(
+    userId: User['id'],
+    passkeyId: Passkey['id'],
+    displayName: Passkey['displayName'],
+  ) {
+    return this.prisma.passkey.update({
+      where: { id: passkeyId, userId, isDeleted: false },
+      data: { displayName },
     });
   }
 
@@ -290,11 +302,10 @@ export class PasskeyService {
    * @param passkeyId passkey ID
    */
   async deletePasskey(userId: User['id'], passkeyId: Passkey['id']) {
-    try {
-      await this.prisma.passkey.delete({ where: { id: passkeyId, userId } });
-    } catch (error) {
-      throw new ErrorHandler(error, this.logger);
-    }
+    return this.prisma.passkey.update({
+      where: { id: passkeyId, userId, isDeleted: false },
+      data: { isDeleted: true },
+    });
   }
 
   /**
@@ -302,7 +313,7 @@ export class PasskeyService {
    * @param id passkey ID
    */
   private async getPasskey(id: Passkey['id']) {
-    return this.prisma.passkey.findUnique({ where: { id } });
+    return this.prisma.passkey.findUnique({ where: { id, isDeleted: false } });
   }
 
   //////////////////////////////////////////
@@ -359,7 +370,7 @@ export class PasskeyService {
     newCounter: number,
   ) {
     return this.prisma.passkey.update({
-      where: { id: passkeyId },
+      where: { id: passkeyId, isDeleted: false },
       data: { counter: BigInt(newCounter) },
     });
   }

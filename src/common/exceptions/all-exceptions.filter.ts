@@ -7,9 +7,11 @@ import {
 import { FastifyReply } from 'fastify';
 import { DEFAULT_ERROR_MSG, GlobalErrorResponse } from './index';
 import { BusinessException } from './business.exception';
-
+import { Prisma } from '@prisma/client';
+import { Logger } from '@nestjs/common';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
+  private readonly logger = new Logger(AllExceptionsFilter.name);
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
@@ -18,17 +20,45 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let status = HttpStatus.OK;
     let message = DEFAULT_ERROR_MSG;
 
-    // 如果是业务异常，使用业务异常的状态码和消息
-    if (exception instanceof BusinessException) {
-      status = exception.statusCode;
-      message = exception.message;
+    switch (true) {
+      case exception instanceof BusinessException:
+        status = exception.statusCode;
+        message = exception.message;
+        break;
+
+      case exception instanceof Prisma.PrismaClientKnownRequestError:
+        switch (exception.code) {
+          case 'P2002': // 唯一约束冲突
+            message = 'Record already exists';
+            break;
+          case 'P2025': // 记录未找到
+            message = 'Record not found';
+            break;
+          default:
+            this.logger.error(
+              `Prisma known request error,
+              code: ${exception.code},
+              message: ${exception.message},
+              stack: ${exception.stack}`,
+            );
+        }
+        break;
+
+      case exception instanceof Prisma.PrismaClientUnknownRequestError:
+        this.logger.error(
+          `Prisma unknown request error,
+          code: ${exception.name},
+          message: ${exception.message},
+          stack: ${exception.stack}`,
+        );
+        break;
+
+      default:
+        this.logger.error(`Unknown error, error: ${exception}`);
     }
 
-    const resJson: GlobalErrorResponse = {
-      success: false,
-      msg: message,
-    };
+    const responseJson: GlobalErrorResponse = { success: false, msg: message };
 
-    response.status(status).send(resJson);
+    response.status(status).send(responseJson);
   }
 }

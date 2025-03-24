@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Req,
@@ -14,6 +15,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiQuery,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { PasskeyService } from './passkey.service';
@@ -22,6 +24,10 @@ import {
   AuthenticationResponseJSON,
   RegistrationResponseJSON,
 } from '@simplewebauthn/server';
+import {
+  ListPasskeysResponseDto,
+  UpdatePasskeyDisplayNameRequestDto,
+} from './dto/passkeys.dto';
 
 @ApiTags('Passkey Authentication')
 @Controller('auth/passkey')
@@ -67,13 +73,34 @@ export class PasskeyController {
     return this.passkeyService.verifyAuthenticationResponse(state, body);
   }
 
-  // === 管理接口 ===
-  @Get('')
+  // === 用户管理接口 ===
+  @Get()
   @UseGuards(AuthGuard)
+  @ApiResponse({ type: ListPasskeysResponseDto })
   @ApiOperation({ summary: 'List User Passkeys' })
   async getUserPasskeys(@Req() req: RequestWithUser) {
     const { user } = req;
-    return this.passkeyService.getUserPasskeys(user.id);
+    return this.passkeyService.listUserPasskeys(user.id);
+  }
+
+  @Patch('/:id')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Update Passkey Display Name' })
+  @ApiBody({ type: UpdatePasskeyDisplayNameRequestDto })
+  @ApiParam({ name: 'id', description: 'Passkey ID' })
+  async updatePasskeyDisplayName(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+    @Body() body: UpdatePasskeyDisplayNameRequestDto,
+  ) {
+    const { user } = req;
+    const { displayName } = body;
+    // 不能 return, 因为包含了 bigint 类型，无法序列化
+    await this.passkeyService.updatePasskeyDisplayName(
+      user.id,
+      id,
+      displayName,
+    );
   }
 
   @Delete('/:id')

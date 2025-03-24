@@ -38,15 +38,20 @@ model User {
 }
 
 model Passkey {
-  id             String @id @db.VarChar(255) // Base64URLString
+  id             String @id @unique @db.VarChar(255) // Base64URLString
   publicKey      Bytes // 存储为二进制数据，对应 Uint8Array
   webAuthnUserID String @db.VarChar(255) // Base64URLString
   counter        BigInt @default(0) // 使用 BigInt 来应对 timestamp 作为计数器的情况
+
+  displayName String @default("") // 名称，用户自定义
 
   // WebAuthn additional fields
   transports String? @db.VarChar(255) // JSON字符串格式存储传输方式数组,'ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb'
   deviceType String  @default("singleDevice") @db.VarChar(32) // singleDevice 或 multiDevice
   backedUp   Boolean @default(false)
+
+  // 是否已删除
+  isDeleted Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -55,10 +60,11 @@ model Passkey {
   user   User @relation(fields: [userId], references: [id])
   userId Int
 
-  @@unique([webAuthnUserID, userId]) // 联合唯一约束提高用户隐私保护
   @@index([id])
+  @@index([userId, isDeleted])
+  @@index([id, userId, isDeleted])
   @@index([webAuthnUserID])
-  @@index([userId])
+  @@unique([webAuthnUserID, userId]) // 联合唯一约束提高用户隐私保护
   @@map("passkeys")
 }
 
