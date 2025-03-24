@@ -56,7 +56,7 @@ export class TencentEmailService {
         Destination: [email],
         Template: {
           TemplateID: Number(
-            this.configService.getOrThrow<number>(
+            this.configService.getOrThrow<string>(
               'TENCENT_SES_LOGIN_CODE_TEMPLATE_ID',
             ),
           ),
