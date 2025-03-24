@@ -234,12 +234,10 @@ export class PasskeyService {
     }
 
     // 4. Update passkey counter asynchronously
-    if (authenticationInfo.newCounter !== Number(passkey.counter)) {
-      this.updatePasskeyCounter(
-        passkey.id,
-        authenticationInfo.newCounter,
-      ).catch();
-    }
+    this.updatePasskeyCounter(
+      passkey.id,
+      authenticationInfo.newCounter,
+    ).catch();
 
     // 5. Find the user and generate token
     const user = await this.userService.getUserById(passkey.userId);

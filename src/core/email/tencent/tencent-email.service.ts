@@ -55,8 +55,10 @@ export class TencentEmailService {
         FromEmailAddress: `"${this.fromName}" <${this.fromAddress}>`,
         Destination: [email],
         Template: {
-          TemplateID: this.configService.getOrThrow<number>(
-            'TENCENT_SES_LOGIN_CODE_TEMPLATE_ID',
+          TemplateID: Number(
+            this.configService.getOrThrow<number>(
+              'TENCENT_SES_LOGIN_CODE_TEMPLATE_ID',
+            ),
           ),
           TemplateData: JSON.stringify({ code }),
         },
