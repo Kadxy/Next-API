@@ -50,19 +50,27 @@ export class TencentEmailService {
   }
 
   async sendLoginCode(email: string, code: string) {
+    const data = {
+      code,
+      productName: 'Next API',
+      expiryTime: '5 分钟',
+      verificationUrl: `http://localhost:5173/login?email_verification_callback=1&email=${email}&code=${code}`,
+      logoUrl: 'https://worldai.com/logo.png',
+    };
+
     try {
       const params = {
         FromEmailAddress: `"${this.fromName}" <${this.fromAddress}>`,
         Destination: [email],
+        Subject: 'Next API Login Code',
         Template: {
           TemplateID: Number(
             this.configService.getOrThrow<string>(
               'TENCENT_SES_LOGIN_CODE_TEMPLATE_ID',
             ),
           ),
-          TemplateData: JSON.stringify({ code }),
+          TemplateData: JSON.stringify(data),
         },
-        Subject: 'World AI Login Code',
       };
 
       await this.sesClient.SendEmail(params);
