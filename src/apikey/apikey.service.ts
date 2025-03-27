@@ -55,7 +55,7 @@ export class ApikeyService implements OnModuleInit {
   }
 
   // 创建 APIKEY，返回原始密钥（仅在创建时返回）
-  async createApiKey(userId: User['id']) {
+  async createApiKey(userId: User['id'], displayName: string) {
     // 1. 生成随机字符串
     const randomStr = this.cryptoService.generateRandomString();
 
@@ -69,7 +69,9 @@ export class ApikeyService implements OnModuleInit {
     const hashKey = this.cryptoService.hashString(rawKey);
 
     // 5. 创建记录
-    await this.prisma.apiKey.create({ data: { userId, hashKey, preview } });
+    await this.prisma.apiKey.create({
+      data: { userId, hashKey, preview, displayName },
+    });
 
     // 6. 将新密钥添加到布隆过滤器
     const filter = this.bloomFilterService.getFilter(
