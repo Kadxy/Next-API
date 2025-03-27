@@ -16,8 +16,7 @@ export class UserService {
 
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(CACHE_MANAGER)
-    private readonly cacheService: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}
 

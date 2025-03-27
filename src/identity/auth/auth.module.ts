@@ -3,24 +3,21 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { EmailModule } from '../../core/email/email.module';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { JwtTokenService } from './jwt.service';
-import { FeishuWebhookModule } from '../../core/feishu-webhook/feishu-webhook.module';
 import { GitHubAuthModule } from './github/github-auth.module';
 import { GoogleAuthModule } from './google/google-auth.module';
 import { PasskeyModule } from './passkey/passkey.module';
-
+import { CoreModule } from 'src/core/core.module';
 @Module({
   imports: [
-    EmailModule,
+    CoreModule,
     UserModule,
     HttpModule,
     ConfigModule,
-    FeishuWebhookModule,
     GitHubAuthModule,
     GoogleAuthModule,
     PasskeyModule,

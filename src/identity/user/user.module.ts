@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from '../../core/prisma/prisma.module';
 import { UserService } from './user.service';
-import { FeishuWebhookModule } from '../../core/feishu-webhook/feishu-webhook.module';
+import { CoreModule } from 'src/core/core.module';
 
 @Module({
-  imports: [PrismaModule, FeishuWebhookModule],
+  imports: [CoreModule],
   providers: [UserService],
   exports: [UserService],
 })

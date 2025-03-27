@@ -42,6 +42,10 @@ export const CACHE_KEYS = {
     KEY: 'webauthn-authentication-options:{userId}',
     EXPIRE: minutes(5),
   },
+  API_KEY: {
+    KEY: 'api-key:{hashKey}',
+    EXPIRE: minutes(10),
+  },
 } as const;
 
 export const CACHE_FLAG = {

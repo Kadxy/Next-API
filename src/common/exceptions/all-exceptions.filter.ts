@@ -27,20 +27,22 @@ export class AllExceptionsFilter implements ExceptionFilter {
         break;
 
       case exception instanceof Prisma.PrismaClientKnownRequestError:
+        this.logger.error(
+          `Prisma known request error,
+              code: ${exception.code},
+              message: ${exception.message},
+              stack: ${exception.stack}`,
+        );
         switch (exception.code) {
           case 'P2002': // 唯一约束冲突
             message = 'Record already exists';
             break;
+          case 'P2000': // 长度过长
+            message = 'Content too long';
+            break;
           case 'P2025': // 记录未找到
             message = 'Record not found';
             break;
-          default:
-            this.logger.error(
-              `Prisma known request error,
-              code: ${exception.code},
-              message: ${exception.message},
-              stack: ${exception.stack}`,
-            );
         }
         break;
 
