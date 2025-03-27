@@ -90,7 +90,7 @@ model ApiKey {
   userId      Int
   hashKey     String  @unique @db.VarChar(64)
   preview     String  @db.VarChar(8)
-  displayName String  @default(cuid())
+  displayName String  @default("API Key")
   isDeleted   Boolean @default(false)
 
   lastUsedAt DateTime?

@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { CryptoService } from '../core/crypto/crypto.service';
@@ -12,6 +12,7 @@ import { UnauthorizedException } from 'src/common/exceptions';
 export class ApikeyService implements OnModuleInit {
   static readonly API_KEY_PREFIX = 'sk';
   private static readonly BLOOM_FILTER_NAME = 'api_keys';
+  private readonly logger = new Logger(ApikeyService.name);
   private readonly listSelect: Prisma.ApiKeySelect = {
     hashKey: true,
     preview: true,
@@ -111,7 +112,7 @@ export class ApikeyService implements OnModuleInit {
     });
   }
 
-  // 验证 APIKEY，返回 APIKEY 记录
+  // 验证 APIKEY，返回 APIKEY 记录(不排除删除的)
   async verifyApiKey(apiKey: string): Promise<ApiKey> {
     // 检查传入参数格式
     if (!apiKey || typeof apiKey !== 'string') {
@@ -138,6 +139,7 @@ export class ApikeyService implements OnModuleInit {
       ApikeyService.BLOOM_FILTER_NAME,
     );
     if (filter && !filter.mightContain(hashKey)) {
+      this.logger.debug('Bloom filter check failed');
       throw new UnauthorizedException('Invalid API key');
     }
 

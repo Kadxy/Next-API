@@ -57,4 +57,10 @@ export class ApikeyController {
     const { user } = req;
     return this.apikeyService.deleteApiKey(user.id, hashKey);
   }
+
+  // @Get('verify/:apiKey')
+  // @ApiOperation({ summary: '验证API密钥' })
+  // async verifyApiKey(@Param('apiKey') apiKey: string) {
+  //   return this.apikeyService.verifyApiKey(apiKey);
+  // }
 }
