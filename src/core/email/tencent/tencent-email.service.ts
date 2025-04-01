@@ -54,8 +54,8 @@ export class TencentEmailService {
       code,
       productName: 'Next API',
       expiryTime: '5 分钟',
-      verificationUrl: `http://localhost:5173/login?email_verification_callback=1&email=${email}&code=${code}`,
-      logoUrl: 'https://worldai.com/logo.png',
+      verificationPath: `login?email_verification_callback=1&email=${email}&code=${code}`,
+      logoPath: 'favicon.ico',
     };
 
     try {
