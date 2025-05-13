@@ -131,12 +131,22 @@ export class PasskeyService {
     }
 
     // 2. Verify registration response
-    const verification = await verifyRegistrationResponse({
-      response,
-      expectedChallenge: options.challenge,
-      expectedOrigin: this.origin,
-      expectedRPID: this.rpID,
-    });
+    let verification;
+    try {
+      verification = await verifyRegistrationResponse({
+        response,
+        expectedChallenge: options.challenge,
+        expectedOrigin: this.origin,
+        expectedRPID: this.rpID,
+
+        // 添加 passkey 时无需用户使用生物识别或其他方式在设备验证
+        requireUserVerification: false,
+      });
+    } catch (error) {
+      this.logger.error(`Passkey registration verification failed: ${error}`);
+      throw new BusinessException(error.message);
+    }
+
     const { verified, registrationInfo } = verification;
 
     if (!verified) {
