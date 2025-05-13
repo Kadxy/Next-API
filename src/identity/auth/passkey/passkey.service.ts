@@ -166,6 +166,10 @@ export class PasskeyService {
         // Require users to use a previously-registered authenticator
         // In this case, allow user select any passkey
         allowCredentials: [],
+
+        // 如果用户没有验证身份，会报错 Error: User verification required, but user could not be verified
+        // 比如 MacBook 的 Touch ID 在盒盖时，会报错，需要显示设置为 required
+        userVerification: 'required',
       });
 
     // 3. Remember this challenge for this user
@@ -192,6 +196,8 @@ export class PasskeyService {
     state: string,
     response: AuthenticationResponseJSON,
   ) {
+    // this.logger.debug(`verifyAuthenticationResponse: ${state}`);
+
     // 1. Get `options.challenge` that was saved above
     const cacheKey = getCacheKey(
       CACHE_KEYS.WEBAUTHN_AUTHENTICATION_OPTIONS,
@@ -213,20 +219,30 @@ export class PasskeyService {
     if (!passkey) {
       throw new BusinessException('Passkey not found');
     }
+    this.logger.debug(
+      `id: ${passkey.id}, publicKey: ${passkey.publicKey}, counter: ${passkey.counter}, transports: ${passkey.transports}`,
+    );
 
     // 3. Verify authentication response
-    const verification = await verifyAuthenticationResponse({
-      response,
-      expectedChallenge: options.challenge,
-      expectedOrigin: this.origin,
-      expectedRPID: this.rpID,
-      credential: {
-        id: passkey.id,
-        publicKey: passkey.publicKey,
-        counter: Number(passkey.counter),
-        transports: this.parseTransports(passkey.transports),
-      },
-    });
+    let verification;
+    try {
+      verification = await verifyAuthenticationResponse({
+        response,
+        expectedChallenge: options.challenge,
+        expectedOrigin: this.origin,
+        expectedRPID: this.rpID,
+        credential: {
+          id: passkey.id,
+          publicKey: passkey.publicKey,
+          counter: Number(passkey.counter),
+          transports: this.parseTransports(passkey.transports),
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Passkey authentication error: ${error.message}`);
+      throw new BusinessException(error.message);
+    }
+
     const { verified, authenticationInfo } = verification;
 
     if (!verified) {
