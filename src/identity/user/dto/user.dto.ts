@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { User } from '../../../../prisma/generated/prisma/client';
 import { createResponseDto } from 'src/common/interceptors/transform.interceptor';
 
 export class UserResponseData {

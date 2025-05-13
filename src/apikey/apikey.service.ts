@@ -4,7 +4,7 @@ import { PrismaService } from '../core/prisma/prisma.service';
 import { CryptoService } from '../core/crypto/crypto.service';
 import { BloomFilterService } from '../core/bloom-filter/bloom-filter.service';
 import { Cache } from '@nestjs/cache-manager';
-import { ApiKey, Prisma, User } from '@prisma/client';
+import { ApiKey, Prisma, User } from '../../prisma/generated/prisma/client';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import { UnauthorizedException } from 'src/common/exceptions';
 
@@ -48,9 +48,9 @@ export class ApikeyService implements OnModuleInit {
 
       // 添加到布隆过滤器
       filter.addAll(apiKeys.map((key) => key.hashKey));
-      console.log(`布隆过滤器已初始化，共加载 ${apiKeys.length} 个API密钥`);
+      console.log(`Bloom filter initialized with ${apiKeys.length} API keys`);
     } catch (error) {
-      console.error('布隆过滤器初始化失败', error);
+      console.error('Failed to initialize bloom filter', error);
     }
   }
 
@@ -165,9 +165,17 @@ export class ApikeyService implements OnModuleInit {
     this.cacheManager
       .set(cacheKey, record, CACHE_KEYS.API_KEY.EXPIRE)
       .catch((err) => {
-        console.error('缓存API密钥失败', err);
+        console.error('Failed to cache API key', err);
       });
 
     return record;
+  }
+
+  // 更新 APIKEY 最后使用时间(默认使用当前时间)
+  async updateLastUsedAt(hashKey: ApiKey['hashKey'], lastUsedAt = new Date()) {
+    await this.prisma.apiKey.update({
+      where: { hashKey, isDeleted: false },
+      data: { lastUsedAt },
+    });
   }
 }

@@ -8,6 +8,8 @@ import { DEFAULT_CACHE_TTL } from './core/cache/chche.constant';
 import { ApikeyModule } from './apikey/apikey.module';
 import { CoreModule } from './core/core.module';
 import { ConfigModule } from './core/config/config.module';
+import { GatewayModule } from './gateway/gateway.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 @Module({
   imports: [
     // https://docs.nestjs.com/techniques/caching#interacting-with-the-cache-store
@@ -23,11 +25,13 @@ import { ConfigModule } from './core/config/config.module';
       isGlobal: true,
       inject: [ConfigService],
     }),
+    EventEmitterModule.forRoot(),
     ConfigModule,
     AuthModule,
     UserModule,
     ApikeyModule,
     CoreModule,
+    GatewayModule,
   ],
 })
 export class AppModule {}

@@ -30,7 +30,7 @@ export function setupApiDoc(
     .addServer('', 'Production server')
     .build();
 
-  const document = SwaggerModule.createDocument(app, config, {
+  const document = SwaggerModule.createDocument(app as any, config, {
     autoTagControllers: true,
   });
 

@@ -84,7 +84,7 @@ async function bootstrap() {
   const listenHost = configService.getOrThrow<string>('LISTEN_HOST');
   await app.listen(port, listenHost);
 
-  console.log(`---> World AI Server is running on PORT[${port}]`);
+  console.log(`Server is running on PORT[${port}]`);
   console.log('API DOCS: ', `${BASE_URL}${SCALAR_PATH}`);
   console.log('OPENAPI JSON: ', `${BASE_URL}${OPENAPI_PATH}`);
 }
