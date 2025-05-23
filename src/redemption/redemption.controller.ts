@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard, RequestWithUser } from 'src/identity/auth/auth.guard';
 import { AdminAuthGuard } from 'src/identity/auth/admin-auth.guard';
@@ -8,13 +8,22 @@ import {
   CreateRedemptionCodeResponseDto,
   RedeemCodeDto,
   RedeemCodeResponseDto,
+  GetAllRedemptionCodesResponseDto,
 } from './dto/redemption.dto';
 
 @Controller('redemption')
 export class RedemptionController {
   constructor(private readonly redemptionService: RedemptionService) {}
 
-  @Post('code')
+  @Get()
+  @ApiOperation({ summary: '获取所有兑换码' })
+  @ApiResponse({ type: GetAllRedemptionCodesResponseDto })
+  @UseGuards(AdminAuthGuard) // require admin
+  async getAllRedemptionCodes() {
+    return await this.redemptionService.getAllRedemptionCodes();
+  }
+
+  @Post()
   @ApiOperation({ summary: '创建兑换码' })
   @ApiBody({ type: CreateRedemptionCodeDto })
   @ApiResponse({ type: CreateRedemptionCodeResponseDto })

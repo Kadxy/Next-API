@@ -37,6 +37,9 @@ export class UserResponseData {
   @ApiProperty({ description: 'User Is Active' })
   isActive: boolean;
 
+  @ApiProperty({ description: 'User Is Admin' })
+  isAdmin: boolean;
+
   @ApiProperty({ description: 'User Created At' })
   createdAt: string;
 

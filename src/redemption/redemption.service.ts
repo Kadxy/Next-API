@@ -121,6 +121,21 @@ export class RedemptionService {
   }
 
   /**
+   * 获取所有兑换码
+   * @returns 兑换码列表
+   */
+  async getAllRedemptionCodes() {
+    return await this.prisma.redemptionCode.findMany({
+      where: { isDeleted: false },
+      include: {
+        redeemer: {
+          select: { id: true, uid: true, displayName: true, email: true },
+        },
+      },
+    });
+  }
+
+  /**
    * 生成兑换码
    * @example abcdabcdabcdabcd
    * @returns 兑换码（小写）

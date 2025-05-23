@@ -57,3 +57,13 @@ export class RedeemCodeResponseDto {
   @ApiProperty({ description: '最新余额', example: '2' })
   balance: string;
 }
+
+export class GetAllRedemptionCodesResponseDto {
+  @ApiProperty({
+    description: '兑换码列表',
+    type: [CreateRedemptionCodeResponseDto],
+  })
+  list: (CreateRedemptionCodeResponseDto & {
+    redeemer: { id: string; uid: string; displayName: string; email: string };
+  })[];
+}
