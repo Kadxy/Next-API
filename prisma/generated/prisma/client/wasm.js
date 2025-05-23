@@ -133,6 +133,7 @@ exports.Prisma.UserScalarFieldEnum = {
   twoFactorSecret: 'twoFactorSecret',
   isActive: 'isActive',
   isDeleted: 'isDeleted',
+  isAdmin: 'isAdmin',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
@@ -174,6 +175,19 @@ exports.Prisma.ApiKeyScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RedemptionCodeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  amount: 'amount',
+  remark: 'remark',
+  isUsed: 'isUsed',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  expiredAt: 'expiredAt',
+  redeemerId: 'redeemerId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -209,12 +223,18 @@ exports.Prisma.ApiKeyOrderByRelevanceFieldEnum = {
   displayName: 'displayName'
 };
 
+exports.Prisma.RedemptionCodeOrderByRelevanceFieldEnum = {
+  code: 'code',
+  remark: 'remark'
+};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
   Passkey: 'Passkey',
   Wallet: 'Wallet',
-  ApiKey: 'ApiKey'
+  ApiKey: 'ApiKey',
+  RedemptionCode: 'RedemptionCode'
 };
 
 /**

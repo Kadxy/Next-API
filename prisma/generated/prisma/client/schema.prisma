@@ -27,15 +27,17 @@ model User {
   // User status
   isActive  Boolean @default(true)
   isDeleted Boolean @default(false)
+  isAdmin   Boolean @default(false)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   lastLoginAt DateTime?
 
   // Relations
-  wallet   Wallet?
-  passkeys Passkey[]
-  apiKeys  ApiKey[]
+  wallet      Wallet?
+  passkeys    Passkey[]
+  apiKeys     ApiKey[]
+  redeemCodes RedemptionCode[]
 
   @@map("users")
 }
@@ -104,4 +106,23 @@ model ApiKey {
   @@index([hashKey, isDeleted])
   @@index([userId, isDeleted, createdAt])
   @@map("api_keys")
+}
+
+model RedemptionCode {
+  id        Int     @id @default(autoincrement())
+  code      String  @unique @db.VarChar(16) // display: ABCD-ABCD-ABCD-ABCD, db: abcdabcdabcdabcd
+  amount    Int     @db.Int
+  remark    String? @db.VarChar(255) // 备注，用于记录兑换码用途
+  isUsed    Boolean @default(false)
+  isDeleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiredAt DateTime
+
+  // Relations
+  redeemer   User? @relation(fields: [redeemerId], references: [id])
+  redeemerId Int?
+
+  @@map("redeem_codes")
 }

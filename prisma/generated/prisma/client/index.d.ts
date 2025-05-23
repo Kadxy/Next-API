@@ -33,6 +33,11 @@ export type Wallet = $Result.DefaultSelection<Prisma.$WalletPayload>
  * 
  */
 export type ApiKey = $Result.DefaultSelection<Prisma.$ApiKeyPayload>
+/**
+ * Model RedemptionCode
+ * 
+ */
+export type RedemptionCode = $Result.DefaultSelection<Prisma.$RedemptionCodePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -198,6 +203,16 @@ export class PrismaClient<
     * ```
     */
   get apiKey(): Prisma.ApiKeyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.redemptionCode`: Exposes CRUD operations for the **RedemptionCode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RedemptionCodes
+    * const redemptionCodes = await prisma.redemptionCode.findMany()
+    * ```
+    */
+  get redemptionCode(): Prisma.RedemptionCodeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -641,7 +656,8 @@ export namespace Prisma {
     User: 'User',
     Passkey: 'Passkey',
     Wallet: 'Wallet',
-    ApiKey: 'ApiKey'
+    ApiKey: 'ApiKey',
+    RedemptionCode: 'RedemptionCode'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -660,7 +676,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passkey" | "wallet" | "apiKey"
+      modelProps: "user" | "passkey" | "wallet" | "apiKey" | "redemptionCode"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -928,6 +944,72 @@ export namespace Prisma {
           }
         }
       }
+      RedemptionCode: {
+        payload: Prisma.$RedemptionCodePayload<ExtArgs>
+        fields: Prisma.RedemptionCodeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RedemptionCodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RedemptionCodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload>
+          }
+          findFirst: {
+            args: Prisma.RedemptionCodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RedemptionCodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload>
+          }
+          findMany: {
+            args: Prisma.RedemptionCodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload>[]
+          }
+          create: {
+            args: Prisma.RedemptionCodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload>
+          }
+          createMany: {
+            args: Prisma.RedemptionCodeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.RedemptionCodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload>
+          }
+          update: {
+            args: Prisma.RedemptionCodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload>
+          }
+          deleteMany: {
+            args: Prisma.RedemptionCodeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RedemptionCodeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.RedemptionCodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RedemptionCodePayload>
+          }
+          aggregate: {
+            args: Prisma.RedemptionCodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRedemptionCode>
+          }
+          groupBy: {
+            args: Prisma.RedemptionCodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RedemptionCodeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RedemptionCodeCountArgs<ExtArgs>
+            result: $Utils.Optional<RedemptionCodeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1016,6 +1098,7 @@ export namespace Prisma {
     passkey?: PasskeyOmit
     wallet?: WalletOmit
     apiKey?: ApiKeyOmit
+    redemptionCode?: RedemptionCodeOmit
   }
 
   /* Types for Logging */
@@ -1112,11 +1195,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     passkeys: number
     apiKeys: number
+    redeemCodes: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     passkeys?: boolean | UserCountOutputTypeCountPasskeysArgs
     apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
+    redeemCodes?: boolean | UserCountOutputTypeCountRedeemCodesArgs
   }
 
   // Custom InputTypes
@@ -1142,6 +1227,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ApiKeyWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRedeemCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RedemptionCodeWhereInput
   }
 
 
@@ -1182,6 +1274,7 @@ export namespace Prisma {
     twoFactorSecret: string | null
     isActive: boolean | null
     isDeleted: boolean | null
+    isAdmin: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     lastLoginAt: Date | null
@@ -1200,6 +1293,7 @@ export namespace Prisma {
     twoFactorSecret: string | null
     isActive: boolean | null
     isDeleted: boolean | null
+    isAdmin: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     lastLoginAt: Date | null
@@ -1218,6 +1312,7 @@ export namespace Prisma {
     twoFactorSecret: number
     isActive: number
     isDeleted: number
+    isAdmin: number
     createdAt: number
     updatedAt: number
     lastLoginAt: number
@@ -1246,6 +1341,7 @@ export namespace Prisma {
     twoFactorSecret?: true
     isActive?: true
     isDeleted?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
     lastLoginAt?: true
@@ -1264,6 +1360,7 @@ export namespace Prisma {
     twoFactorSecret?: true
     isActive?: true
     isDeleted?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
     lastLoginAt?: true
@@ -1282,6 +1379,7 @@ export namespace Prisma {
     twoFactorSecret?: true
     isActive?: true
     isDeleted?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
     lastLoginAt?: true
@@ -1387,6 +1485,7 @@ export namespace Prisma {
     twoFactorSecret: string | null
     isActive: boolean
     isDeleted: boolean
+    isAdmin: boolean
     createdAt: Date
     updatedAt: Date
     lastLoginAt: Date | null
@@ -1424,12 +1523,14 @@ export namespace Prisma {
     twoFactorSecret?: boolean
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lastLoginAt?: boolean
     wallet?: boolean | User$walletArgs<ExtArgs>
     passkeys?: boolean | User$passkeysArgs<ExtArgs>
     apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
+    redeemCodes?: boolean | User$redeemCodesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1448,16 +1549,18 @@ export namespace Prisma {
     twoFactorSecret?: boolean
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lastLoginAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "twoFactorEnabled" | "twoFactorSecret" | "isActive" | "isDeleted" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "twoFactorEnabled" | "twoFactorSecret" | "isActive" | "isDeleted" | "isAdmin" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     wallet?: boolean | User$walletArgs<ExtArgs>
     passkeys?: boolean | User$passkeysArgs<ExtArgs>
     apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
+    redeemCodes?: boolean | User$redeemCodesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -1467,6 +1570,7 @@ export namespace Prisma {
       wallet: Prisma.$WalletPayload<ExtArgs> | null
       passkeys: Prisma.$PasskeyPayload<ExtArgs>[]
       apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
+      redeemCodes: Prisma.$RedemptionCodePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1481,6 +1585,7 @@ export namespace Prisma {
       twoFactorSecret: string | null
       isActive: boolean
       isDeleted: boolean
+      isAdmin: boolean
       createdAt: Date
       updatedAt: Date
       lastLoginAt: Date | null
@@ -1827,6 +1932,7 @@ export namespace Prisma {
     wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     passkeys<T extends User$passkeysArgs<ExtArgs> = {}>(args?: Subset<T, User$passkeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasskeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     apiKeys<T extends User$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    redeemCodes<T extends User$redeemCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$redeemCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1868,6 +1974,7 @@ export namespace Prisma {
     readonly twoFactorSecret: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly isDeleted: FieldRef<"User", 'Boolean'>
+    readonly isAdmin: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly lastLoginAt: FieldRef<"User", 'DateTime'>
@@ -2278,6 +2385,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
+  }
+
+  /**
+   * User.redeemCodes
+   */
+  export type User$redeemCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    where?: RedemptionCodeWhereInput
+    orderBy?: RedemptionCodeOrderByWithRelationInput | RedemptionCodeOrderByWithRelationInput[]
+    cursor?: RedemptionCodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RedemptionCodeScalarFieldEnum | RedemptionCodeScalarFieldEnum[]
   }
 
   /**
@@ -5341,6 +5472,1051 @@ export namespace Prisma {
 
 
   /**
+   * Model RedemptionCode
+   */
+
+  export type AggregateRedemptionCode = {
+    _count: RedemptionCodeCountAggregateOutputType | null
+    _avg: RedemptionCodeAvgAggregateOutputType | null
+    _sum: RedemptionCodeSumAggregateOutputType | null
+    _min: RedemptionCodeMinAggregateOutputType | null
+    _max: RedemptionCodeMaxAggregateOutputType | null
+  }
+
+  export type RedemptionCodeAvgAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    redeemerId: number | null
+  }
+
+  export type RedemptionCodeSumAggregateOutputType = {
+    id: number | null
+    amount: number | null
+    redeemerId: number | null
+  }
+
+  export type RedemptionCodeMinAggregateOutputType = {
+    id: number | null
+    code: string | null
+    amount: number | null
+    remark: string | null
+    isUsed: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    expiredAt: Date | null
+    redeemerId: number | null
+  }
+
+  export type RedemptionCodeMaxAggregateOutputType = {
+    id: number | null
+    code: string | null
+    amount: number | null
+    remark: string | null
+    isUsed: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    expiredAt: Date | null
+    redeemerId: number | null
+  }
+
+  export type RedemptionCodeCountAggregateOutputType = {
+    id: number
+    code: number
+    amount: number
+    remark: number
+    isUsed: number
+    isDeleted: number
+    createdAt: number
+    updatedAt: number
+    expiredAt: number
+    redeemerId: number
+    _all: number
+  }
+
+
+  export type RedemptionCodeAvgAggregateInputType = {
+    id?: true
+    amount?: true
+    redeemerId?: true
+  }
+
+  export type RedemptionCodeSumAggregateInputType = {
+    id?: true
+    amount?: true
+    redeemerId?: true
+  }
+
+  export type RedemptionCodeMinAggregateInputType = {
+    id?: true
+    code?: true
+    amount?: true
+    remark?: true
+    isUsed?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    expiredAt?: true
+    redeemerId?: true
+  }
+
+  export type RedemptionCodeMaxAggregateInputType = {
+    id?: true
+    code?: true
+    amount?: true
+    remark?: true
+    isUsed?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    expiredAt?: true
+    redeemerId?: true
+  }
+
+  export type RedemptionCodeCountAggregateInputType = {
+    id?: true
+    code?: true
+    amount?: true
+    remark?: true
+    isUsed?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    expiredAt?: true
+    redeemerId?: true
+    _all?: true
+  }
+
+  export type RedemptionCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RedemptionCode to aggregate.
+     */
+    where?: RedemptionCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RedemptionCodes to fetch.
+     */
+    orderBy?: RedemptionCodeOrderByWithRelationInput | RedemptionCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RedemptionCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RedemptionCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RedemptionCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RedemptionCodes
+    **/
+    _count?: true | RedemptionCodeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RedemptionCodeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RedemptionCodeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RedemptionCodeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RedemptionCodeMaxAggregateInputType
+  }
+
+  export type GetRedemptionCodeAggregateType<T extends RedemptionCodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateRedemptionCode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRedemptionCode[P]>
+      : GetScalarType<T[P], AggregateRedemptionCode[P]>
+  }
+
+
+
+
+  export type RedemptionCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RedemptionCodeWhereInput
+    orderBy?: RedemptionCodeOrderByWithAggregationInput | RedemptionCodeOrderByWithAggregationInput[]
+    by: RedemptionCodeScalarFieldEnum[] | RedemptionCodeScalarFieldEnum
+    having?: RedemptionCodeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RedemptionCodeCountAggregateInputType | true
+    _avg?: RedemptionCodeAvgAggregateInputType
+    _sum?: RedemptionCodeSumAggregateInputType
+    _min?: RedemptionCodeMinAggregateInputType
+    _max?: RedemptionCodeMaxAggregateInputType
+  }
+
+  export type RedemptionCodeGroupByOutputType = {
+    id: number
+    code: string
+    amount: number
+    remark: string | null
+    isUsed: boolean
+    isDeleted: boolean
+    createdAt: Date
+    updatedAt: Date
+    expiredAt: Date
+    redeemerId: number | null
+    _count: RedemptionCodeCountAggregateOutputType | null
+    _avg: RedemptionCodeAvgAggregateOutputType | null
+    _sum: RedemptionCodeSumAggregateOutputType | null
+    _min: RedemptionCodeMinAggregateOutputType | null
+    _max: RedemptionCodeMaxAggregateOutputType | null
+  }
+
+  type GetRedemptionCodeGroupByPayload<T extends RedemptionCodeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RedemptionCodeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RedemptionCodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RedemptionCodeGroupByOutputType[P]>
+            : GetScalarType<T[P], RedemptionCodeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RedemptionCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    amount?: boolean
+    remark?: boolean
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    expiredAt?: boolean
+    redeemerId?: boolean
+    redeemer?: boolean | RedemptionCode$redeemerArgs<ExtArgs>
+  }, ExtArgs["result"]["redemptionCode"]>
+
+
+
+  export type RedemptionCodeSelectScalar = {
+    id?: boolean
+    code?: boolean
+    amount?: boolean
+    remark?: boolean
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    expiredAt?: boolean
+    redeemerId?: boolean
+  }
+
+  export type RedemptionCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "amount" | "remark" | "isUsed" | "isDeleted" | "createdAt" | "updatedAt" | "expiredAt" | "redeemerId", ExtArgs["result"]["redemptionCode"]>
+  export type RedemptionCodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    redeemer?: boolean | RedemptionCode$redeemerArgs<ExtArgs>
+  }
+
+  export type $RedemptionCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RedemptionCode"
+    objects: {
+      redeemer: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      code: string
+      amount: number
+      remark: string | null
+      isUsed: boolean
+      isDeleted: boolean
+      createdAt: Date
+      updatedAt: Date
+      expiredAt: Date
+      redeemerId: number | null
+    }, ExtArgs["result"]["redemptionCode"]>
+    composites: {}
+  }
+
+  type RedemptionCodeGetPayload<S extends boolean | null | undefined | RedemptionCodeDefaultArgs> = $Result.GetResult<Prisma.$RedemptionCodePayload, S>
+
+  type RedemptionCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RedemptionCodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RedemptionCodeCountAggregateInputType | true
+    }
+
+  export interface RedemptionCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RedemptionCode'], meta: { name: 'RedemptionCode' } }
+    /**
+     * Find zero or one RedemptionCode that matches the filter.
+     * @param {RedemptionCodeFindUniqueArgs} args - Arguments to find a RedemptionCode
+     * @example
+     * // Get one RedemptionCode
+     * const redemptionCode = await prisma.redemptionCode.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RedemptionCodeFindUniqueArgs>(args: SelectSubset<T, RedemptionCodeFindUniqueArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RedemptionCode that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RedemptionCodeFindUniqueOrThrowArgs} args - Arguments to find a RedemptionCode
+     * @example
+     * // Get one RedemptionCode
+     * const redemptionCode = await prisma.redemptionCode.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RedemptionCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, RedemptionCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RedemptionCode that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RedemptionCodeFindFirstArgs} args - Arguments to find a RedemptionCode
+     * @example
+     * // Get one RedemptionCode
+     * const redemptionCode = await prisma.redemptionCode.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RedemptionCodeFindFirstArgs>(args?: SelectSubset<T, RedemptionCodeFindFirstArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RedemptionCode that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RedemptionCodeFindFirstOrThrowArgs} args - Arguments to find a RedemptionCode
+     * @example
+     * // Get one RedemptionCode
+     * const redemptionCode = await prisma.redemptionCode.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RedemptionCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, RedemptionCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RedemptionCodes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RedemptionCodeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RedemptionCodes
+     * const redemptionCodes = await prisma.redemptionCode.findMany()
+     * 
+     * // Get first 10 RedemptionCodes
+     * const redemptionCodes = await prisma.redemptionCode.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const redemptionCodeWithIdOnly = await prisma.redemptionCode.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RedemptionCodeFindManyArgs>(args?: SelectSubset<T, RedemptionCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RedemptionCode.
+     * @param {RedemptionCodeCreateArgs} args - Arguments to create a RedemptionCode.
+     * @example
+     * // Create one RedemptionCode
+     * const RedemptionCode = await prisma.redemptionCode.create({
+     *   data: {
+     *     // ... data to create a RedemptionCode
+     *   }
+     * })
+     * 
+     */
+    create<T extends RedemptionCodeCreateArgs>(args: SelectSubset<T, RedemptionCodeCreateArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RedemptionCodes.
+     * @param {RedemptionCodeCreateManyArgs} args - Arguments to create many RedemptionCodes.
+     * @example
+     * // Create many RedemptionCodes
+     * const redemptionCode = await prisma.redemptionCode.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RedemptionCodeCreateManyArgs>(args?: SelectSubset<T, RedemptionCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a RedemptionCode.
+     * @param {RedemptionCodeDeleteArgs} args - Arguments to delete one RedemptionCode.
+     * @example
+     * // Delete one RedemptionCode
+     * const RedemptionCode = await prisma.redemptionCode.delete({
+     *   where: {
+     *     // ... filter to delete one RedemptionCode
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RedemptionCodeDeleteArgs>(args: SelectSubset<T, RedemptionCodeDeleteArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RedemptionCode.
+     * @param {RedemptionCodeUpdateArgs} args - Arguments to update one RedemptionCode.
+     * @example
+     * // Update one RedemptionCode
+     * const redemptionCode = await prisma.redemptionCode.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RedemptionCodeUpdateArgs>(args: SelectSubset<T, RedemptionCodeUpdateArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RedemptionCodes.
+     * @param {RedemptionCodeDeleteManyArgs} args - Arguments to filter RedemptionCodes to delete.
+     * @example
+     * // Delete a few RedemptionCodes
+     * const { count } = await prisma.redemptionCode.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RedemptionCodeDeleteManyArgs>(args?: SelectSubset<T, RedemptionCodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RedemptionCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RedemptionCodeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RedemptionCodes
+     * const redemptionCode = await prisma.redemptionCode.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RedemptionCodeUpdateManyArgs>(args: SelectSubset<T, RedemptionCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one RedemptionCode.
+     * @param {RedemptionCodeUpsertArgs} args - Arguments to update or create a RedemptionCode.
+     * @example
+     * // Update or create a RedemptionCode
+     * const redemptionCode = await prisma.redemptionCode.upsert({
+     *   create: {
+     *     // ... data to create a RedemptionCode
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RedemptionCode we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RedemptionCodeUpsertArgs>(args: SelectSubset<T, RedemptionCodeUpsertArgs<ExtArgs>>): Prisma__RedemptionCodeClient<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RedemptionCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RedemptionCodeCountArgs} args - Arguments to filter RedemptionCodes to count.
+     * @example
+     * // Count the number of RedemptionCodes
+     * const count = await prisma.redemptionCode.count({
+     *   where: {
+     *     // ... the filter for the RedemptionCodes we want to count
+     *   }
+     * })
+    **/
+    count<T extends RedemptionCodeCountArgs>(
+      args?: Subset<T, RedemptionCodeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RedemptionCodeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RedemptionCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RedemptionCodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RedemptionCodeAggregateArgs>(args: Subset<T, RedemptionCodeAggregateArgs>): Prisma.PrismaPromise<GetRedemptionCodeAggregateType<T>>
+
+    /**
+     * Group by RedemptionCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RedemptionCodeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RedemptionCodeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RedemptionCodeGroupByArgs['orderBy'] }
+        : { orderBy?: RedemptionCodeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RedemptionCodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRedemptionCodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RedemptionCode model
+   */
+  readonly fields: RedemptionCodeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RedemptionCode.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RedemptionCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    redeemer<T extends RedemptionCode$redeemerArgs<ExtArgs> = {}>(args?: Subset<T, RedemptionCode$redeemerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RedemptionCode model
+   */
+  interface RedemptionCodeFieldRefs {
+    readonly id: FieldRef<"RedemptionCode", 'Int'>
+    readonly code: FieldRef<"RedemptionCode", 'String'>
+    readonly amount: FieldRef<"RedemptionCode", 'Int'>
+    readonly remark: FieldRef<"RedemptionCode", 'String'>
+    readonly isUsed: FieldRef<"RedemptionCode", 'Boolean'>
+    readonly isDeleted: FieldRef<"RedemptionCode", 'Boolean'>
+    readonly createdAt: FieldRef<"RedemptionCode", 'DateTime'>
+    readonly updatedAt: FieldRef<"RedemptionCode", 'DateTime'>
+    readonly expiredAt: FieldRef<"RedemptionCode", 'DateTime'>
+    readonly redeemerId: FieldRef<"RedemptionCode", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RedemptionCode findUnique
+   */
+  export type RedemptionCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which RedemptionCode to fetch.
+     */
+    where: RedemptionCodeWhereUniqueInput
+  }
+
+  /**
+   * RedemptionCode findUniqueOrThrow
+   */
+  export type RedemptionCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which RedemptionCode to fetch.
+     */
+    where: RedemptionCodeWhereUniqueInput
+  }
+
+  /**
+   * RedemptionCode findFirst
+   */
+  export type RedemptionCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which RedemptionCode to fetch.
+     */
+    where?: RedemptionCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RedemptionCodes to fetch.
+     */
+    orderBy?: RedemptionCodeOrderByWithRelationInput | RedemptionCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RedemptionCodes.
+     */
+    cursor?: RedemptionCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RedemptionCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RedemptionCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RedemptionCodes.
+     */
+    distinct?: RedemptionCodeScalarFieldEnum | RedemptionCodeScalarFieldEnum[]
+  }
+
+  /**
+   * RedemptionCode findFirstOrThrow
+   */
+  export type RedemptionCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which RedemptionCode to fetch.
+     */
+    where?: RedemptionCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RedemptionCodes to fetch.
+     */
+    orderBy?: RedemptionCodeOrderByWithRelationInput | RedemptionCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RedemptionCodes.
+     */
+    cursor?: RedemptionCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RedemptionCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RedemptionCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RedemptionCodes.
+     */
+    distinct?: RedemptionCodeScalarFieldEnum | RedemptionCodeScalarFieldEnum[]
+  }
+
+  /**
+   * RedemptionCode findMany
+   */
+  export type RedemptionCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which RedemptionCodes to fetch.
+     */
+    where?: RedemptionCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RedemptionCodes to fetch.
+     */
+    orderBy?: RedemptionCodeOrderByWithRelationInput | RedemptionCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RedemptionCodes.
+     */
+    cursor?: RedemptionCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RedemptionCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RedemptionCodes.
+     */
+    skip?: number
+    distinct?: RedemptionCodeScalarFieldEnum | RedemptionCodeScalarFieldEnum[]
+  }
+
+  /**
+   * RedemptionCode create
+   */
+  export type RedemptionCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RedemptionCode.
+     */
+    data: XOR<RedemptionCodeCreateInput, RedemptionCodeUncheckedCreateInput>
+  }
+
+  /**
+   * RedemptionCode createMany
+   */
+  export type RedemptionCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RedemptionCodes.
+     */
+    data: RedemptionCodeCreateManyInput | RedemptionCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RedemptionCode update
+   */
+  export type RedemptionCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RedemptionCode.
+     */
+    data: XOR<RedemptionCodeUpdateInput, RedemptionCodeUncheckedUpdateInput>
+    /**
+     * Choose, which RedemptionCode to update.
+     */
+    where: RedemptionCodeWhereUniqueInput
+  }
+
+  /**
+   * RedemptionCode updateMany
+   */
+  export type RedemptionCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RedemptionCodes.
+     */
+    data: XOR<RedemptionCodeUpdateManyMutationInput, RedemptionCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which RedemptionCodes to update
+     */
+    where?: RedemptionCodeWhereInput
+    /**
+     * Limit how many RedemptionCodes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RedemptionCode upsert
+   */
+  export type RedemptionCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RedemptionCode to update in case it exists.
+     */
+    where: RedemptionCodeWhereUniqueInput
+    /**
+     * In case the RedemptionCode found by the `where` argument doesn't exist, create a new RedemptionCode with this data.
+     */
+    create: XOR<RedemptionCodeCreateInput, RedemptionCodeUncheckedCreateInput>
+    /**
+     * In case the RedemptionCode was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RedemptionCodeUpdateInput, RedemptionCodeUncheckedUpdateInput>
+  }
+
+  /**
+   * RedemptionCode delete
+   */
+  export type RedemptionCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+    /**
+     * Filter which RedemptionCode to delete.
+     */
+    where: RedemptionCodeWhereUniqueInput
+  }
+
+  /**
+   * RedemptionCode deleteMany
+   */
+  export type RedemptionCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RedemptionCodes to delete
+     */
+    where?: RedemptionCodeWhereInput
+    /**
+     * Limit how many RedemptionCodes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RedemptionCode.redeemer
+   */
+  export type RedemptionCode$redeemerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * RedemptionCode without action
+   */
+  export type RedemptionCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RedemptionCode
+     */
+    select?: RedemptionCodeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RedemptionCode
+     */
+    omit?: RedemptionCodeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RedemptionCodeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5367,6 +6543,7 @@ export namespace Prisma {
     twoFactorSecret: 'twoFactorSecret',
     isActive: 'isActive',
     isDeleted: 'isDeleted',
+    isAdmin: 'isAdmin',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     lastLoginAt: 'lastLoginAt'
@@ -5420,6 +6597,22 @@ export namespace Prisma {
   export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
 
 
+  export const RedemptionCodeScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    amount: 'amount',
+    remark: 'remark',
+    isUsed: 'isUsed',
+    isDeleted: 'isDeleted',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    expiredAt: 'expiredAt',
+    redeemerId: 'redeemerId'
+  };
+
+  export type RedemptionCodeScalarFieldEnum = (typeof RedemptionCodeScalarFieldEnum)[keyof typeof RedemptionCodeScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -5468,6 +6661,14 @@ export namespace Prisma {
   };
 
   export type ApiKeyOrderByRelevanceFieldEnum = (typeof ApiKeyOrderByRelevanceFieldEnum)[keyof typeof ApiKeyOrderByRelevanceFieldEnum]
+
+
+  export const RedemptionCodeOrderByRelevanceFieldEnum: {
+    code: 'code',
+    remark: 'remark'
+  };
+
+  export type RedemptionCodeOrderByRelevanceFieldEnum = (typeof RedemptionCodeOrderByRelevanceFieldEnum)[keyof typeof RedemptionCodeOrderByRelevanceFieldEnum]
 
 
   /**
@@ -5550,12 +6751,14 @@ export namespace Prisma {
     twoFactorSecret?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     passkeys?: PasskeyListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
+    redeemCodes?: RedemptionCodeListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5571,12 +6774,14 @@ export namespace Prisma {
     twoFactorSecret?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
     wallet?: WalletOrderByWithRelationInput
     passkeys?: PasskeyOrderByRelationAggregateInput
     apiKeys?: ApiKeyOrderByRelationAggregateInput
+    redeemCodes?: RedemptionCodeOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -5596,12 +6801,14 @@ export namespace Prisma {
     twoFactorSecret?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
     passkeys?: PasskeyListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
+    redeemCodes?: RedemptionCodeListRelationFilter
   }, "id" | "uid" | "email" | "phone" | "gitHubId" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
@@ -5617,6 +6824,7 @@ export namespace Prisma {
     twoFactorSecret?: SortOrderInput | SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
@@ -5643,6 +6851,7 @@ export namespace Prisma {
     twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"User"> | boolean
+    isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -5882,6 +7091,89 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
   }
 
+  export type RedemptionCodeWhereInput = {
+    AND?: RedemptionCodeWhereInput | RedemptionCodeWhereInput[]
+    OR?: RedemptionCodeWhereInput[]
+    NOT?: RedemptionCodeWhereInput | RedemptionCodeWhereInput[]
+    id?: IntFilter<"RedemptionCode"> | number
+    code?: StringFilter<"RedemptionCode"> | string
+    amount?: IntFilter<"RedemptionCode"> | number
+    remark?: StringNullableFilter<"RedemptionCode"> | string | null
+    isUsed?: BoolFilter<"RedemptionCode"> | boolean
+    isDeleted?: BoolFilter<"RedemptionCode"> | boolean
+    createdAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    updatedAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    expiredAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    redeemerId?: IntNullableFilter<"RedemptionCode"> | number | null
+    redeemer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type RedemptionCodeOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    amount?: SortOrder
+    remark?: SortOrderInput | SortOrder
+    isUsed?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiredAt?: SortOrder
+    redeemerId?: SortOrderInput | SortOrder
+    redeemer?: UserOrderByWithRelationInput
+    _relevance?: RedemptionCodeOrderByRelevanceInput
+  }
+
+  export type RedemptionCodeWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    code?: string
+    AND?: RedemptionCodeWhereInput | RedemptionCodeWhereInput[]
+    OR?: RedemptionCodeWhereInput[]
+    NOT?: RedemptionCodeWhereInput | RedemptionCodeWhereInput[]
+    amount?: IntFilter<"RedemptionCode"> | number
+    remark?: StringNullableFilter<"RedemptionCode"> | string | null
+    isUsed?: BoolFilter<"RedemptionCode"> | boolean
+    isDeleted?: BoolFilter<"RedemptionCode"> | boolean
+    createdAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    updatedAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    expiredAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    redeemerId?: IntNullableFilter<"RedemptionCode"> | number | null
+    redeemer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "code">
+
+  export type RedemptionCodeOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    amount?: SortOrder
+    remark?: SortOrderInput | SortOrder
+    isUsed?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiredAt?: SortOrder
+    redeemerId?: SortOrderInput | SortOrder
+    _count?: RedemptionCodeCountOrderByAggregateInput
+    _avg?: RedemptionCodeAvgOrderByAggregateInput
+    _max?: RedemptionCodeMaxOrderByAggregateInput
+    _min?: RedemptionCodeMinOrderByAggregateInput
+    _sum?: RedemptionCodeSumOrderByAggregateInput
+  }
+
+  export type RedemptionCodeScalarWhereWithAggregatesInput = {
+    AND?: RedemptionCodeScalarWhereWithAggregatesInput | RedemptionCodeScalarWhereWithAggregatesInput[]
+    OR?: RedemptionCodeScalarWhereWithAggregatesInput[]
+    NOT?: RedemptionCodeScalarWhereWithAggregatesInput | RedemptionCodeScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"RedemptionCode"> | number
+    code?: StringWithAggregatesFilter<"RedemptionCode"> | string
+    amount?: IntWithAggregatesFilter<"RedemptionCode"> | number
+    remark?: StringNullableWithAggregatesFilter<"RedemptionCode"> | string | null
+    isUsed?: BoolWithAggregatesFilter<"RedemptionCode"> | boolean
+    isDeleted?: BoolWithAggregatesFilter<"RedemptionCode"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"RedemptionCode"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RedemptionCode"> | Date | string
+    expiredAt?: DateTimeWithAggregatesFilter<"RedemptionCode"> | Date | string
+    redeemerId?: IntNullableWithAggregatesFilter<"RedemptionCode"> | number | null
+  }
+
   export type UserCreateInput = {
     uid?: string
     displayName?: string | null
@@ -5894,12 +7186,14 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     wallet?: WalletCreateNestedOneWithoutUserInput
     passkeys?: PasskeyCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -5915,12 +7209,14 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserUpdateInput = {
@@ -5935,12 +7231,14 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     wallet?: WalletUpdateOneWithoutUserNestedInput
     passkeys?: PasskeyUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -5956,12 +7254,14 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -5977,6 +7277,7 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
@@ -5994,6 +7295,7 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6012,6 +7314,7 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6260,6 +7563,93 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RedemptionCodeCreateInput = {
+    code: string
+    amount: number
+    remark?: string | null
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiredAt: Date | string
+    redeemer?: UserCreateNestedOneWithoutRedeemCodesInput
+  }
+
+  export type RedemptionCodeUncheckedCreateInput = {
+    id?: number
+    code: string
+    amount: number
+    remark?: string | null
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiredAt: Date | string
+    redeemerId?: number | null
+  }
+
+  export type RedemptionCodeUpdateInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    remark?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemer?: UserUpdateOneWithoutRedeemCodesNestedInput
+  }
+
+  export type RedemptionCodeUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    remark?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemerId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type RedemptionCodeCreateManyInput = {
+    id?: number
+    code: string
+    amount: number
+    remark?: string | null
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiredAt: Date | string
+    redeemerId?: number | null
+  }
+
+  export type RedemptionCodeUpdateManyMutationInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    remark?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RedemptionCodeUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    remark?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemerId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -6345,6 +7735,12 @@ export namespace Prisma {
     none?: ApiKeyWhereInput
   }
 
+  export type RedemptionCodeListRelationFilter = {
+    every?: RedemptionCodeWhereInput
+    some?: RedemptionCodeWhereInput
+    none?: RedemptionCodeWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -6355,6 +7751,10 @@ export namespace Prisma {
   }
 
   export type ApiKeyOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RedemptionCodeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6377,6 +7777,7 @@ export namespace Prisma {
     twoFactorSecret?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastLoginAt?: SortOrder
@@ -6399,6 +7800,7 @@ export namespace Prisma {
     twoFactorSecret?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastLoginAt?: SortOrder
@@ -6417,6 +7819,7 @@ export namespace Prisma {
     twoFactorSecret?: SortOrder
     isActive?: SortOrder
     isDeleted?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastLoginAt?: SortOrder
@@ -6749,6 +8152,95 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type RedemptionCodeOrderByRelevanceInput = {
+    fields: RedemptionCodeOrderByRelevanceFieldEnum | RedemptionCodeOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type RedemptionCodeCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    amount?: SortOrder
+    remark?: SortOrder
+    isUsed?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiredAt?: SortOrder
+    redeemerId?: SortOrder
+  }
+
+  export type RedemptionCodeAvgOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    redeemerId?: SortOrder
+  }
+
+  export type RedemptionCodeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    amount?: SortOrder
+    remark?: SortOrder
+    isUsed?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiredAt?: SortOrder
+    redeemerId?: SortOrder
+  }
+
+  export type RedemptionCodeMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    amount?: SortOrder
+    remark?: SortOrder
+    isUsed?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    expiredAt?: SortOrder
+    redeemerId?: SortOrder
+  }
+
+  export type RedemptionCodeSumOrderByAggregateInput = {
+    id?: SortOrder
+    amount?: SortOrder
+    redeemerId?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type WalletCreateNestedOneWithoutUserInput = {
     create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
     connectOrCreate?: WalletCreateOrConnectWithoutUserInput
@@ -6769,6 +8261,13 @@ export namespace Prisma {
     connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
   }
 
+  export type RedemptionCodeCreateNestedManyWithoutRedeemerInput = {
+    create?: XOR<RedemptionCodeCreateWithoutRedeemerInput, RedemptionCodeUncheckedCreateWithoutRedeemerInput> | RedemptionCodeCreateWithoutRedeemerInput[] | RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
+    connectOrCreate?: RedemptionCodeCreateOrConnectWithoutRedeemerInput | RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
+    createMany?: RedemptionCodeCreateManyRedeemerInputEnvelope
+    connect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+  }
+
   export type WalletUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
     connectOrCreate?: WalletCreateOrConnectWithoutUserInput
@@ -6787,6 +8286,13 @@ export namespace Prisma {
     connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
     createMany?: ApiKeyCreateManyUserInputEnvelope
     connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+  }
+
+  export type RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput = {
+    create?: XOR<RedemptionCodeCreateWithoutRedeemerInput, RedemptionCodeUncheckedCreateWithoutRedeemerInput> | RedemptionCodeCreateWithoutRedeemerInput[] | RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
+    connectOrCreate?: RedemptionCodeCreateOrConnectWithoutRedeemerInput | RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
+    createMany?: RedemptionCodeCreateManyRedeemerInputEnvelope
+    connect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -6847,6 +8353,20 @@ export namespace Prisma {
     deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
   }
 
+  export type RedemptionCodeUpdateManyWithoutRedeemerNestedInput = {
+    create?: XOR<RedemptionCodeCreateWithoutRedeemerInput, RedemptionCodeUncheckedCreateWithoutRedeemerInput> | RedemptionCodeCreateWithoutRedeemerInput[] | RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
+    connectOrCreate?: RedemptionCodeCreateOrConnectWithoutRedeemerInput | RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
+    upsert?: RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput | RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput[]
+    createMany?: RedemptionCodeCreateManyRedeemerInputEnvelope
+    set?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    disconnect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    delete?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    connect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    update?: RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput | RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput[]
+    updateMany?: RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput | RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput[]
+    deleteMany?: RedemptionCodeScalarWhereInput | RedemptionCodeScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -6891,6 +8411,20 @@ export namespace Prisma {
     update?: ApiKeyUpdateWithWhereUniqueWithoutUserInput | ApiKeyUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ApiKeyUpdateManyWithWhereWithoutUserInput | ApiKeyUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+  }
+
+  export type RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput = {
+    create?: XOR<RedemptionCodeCreateWithoutRedeemerInput, RedemptionCodeUncheckedCreateWithoutRedeemerInput> | RedemptionCodeCreateWithoutRedeemerInput[] | RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
+    connectOrCreate?: RedemptionCodeCreateOrConnectWithoutRedeemerInput | RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
+    upsert?: RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput | RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput[]
+    createMany?: RedemptionCodeCreateManyRedeemerInputEnvelope
+    set?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    disconnect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    delete?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    connect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
+    update?: RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput | RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput[]
+    updateMany?: RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput | RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput[]
+    deleteMany?: RedemptionCodeScalarWhereInput | RedemptionCodeScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPasskeysInput = {
@@ -6953,6 +8487,30 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutApiKeysInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutApiKeysInput, UserUpdateWithoutApiKeysInput>, UserUncheckedUpdateWithoutApiKeysInput>
+  }
+
+  export type UserCreateNestedOneWithoutRedeemCodesInput = {
+    create?: XOR<UserCreateWithoutRedeemCodesInput, UserUncheckedCreateWithoutRedeemCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRedeemCodesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneWithoutRedeemCodesNestedInput = {
+    create?: XOR<UserCreateWithoutRedeemCodesInput, UserUncheckedCreateWithoutRedeemCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRedeemCodesInput
+    upsert?: UserUpsertWithoutRedeemCodesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRedeemCodesInput, UserUpdateWithoutRedeemCodesInput>, UserUncheckedUpdateWithoutRedeemCodesInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -7204,6 +8762,33 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type WalletCreateWithoutUserInput = {
     balance?: Decimal | DecimalJsLike | number | string
     version?: number
@@ -7290,6 +8875,39 @@ export namespace Prisma {
 
   export type ApiKeyCreateManyUserInputEnvelope = {
     data: ApiKeyCreateManyUserInput | ApiKeyCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RedemptionCodeCreateWithoutRedeemerInput = {
+    code: string
+    amount: number
+    remark?: string | null
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiredAt: Date | string
+  }
+
+  export type RedemptionCodeUncheckedCreateWithoutRedeemerInput = {
+    id?: number
+    code: string
+    amount: number
+    remark?: string | null
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiredAt: Date | string
+  }
+
+  export type RedemptionCodeCreateOrConnectWithoutRedeemerInput = {
+    where: RedemptionCodeWhereUniqueInput
+    create: XOR<RedemptionCodeCreateWithoutRedeemerInput, RedemptionCodeUncheckedCreateWithoutRedeemerInput>
+  }
+
+  export type RedemptionCodeCreateManyRedeemerInputEnvelope = {
+    data: RedemptionCodeCreateManyRedeemerInput | RedemptionCodeCreateManyRedeemerInput[]
     skipDuplicates?: boolean
   }
 
@@ -7383,6 +9001,38 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
   }
 
+  export type RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput = {
+    where: RedemptionCodeWhereUniqueInput
+    update: XOR<RedemptionCodeUpdateWithoutRedeemerInput, RedemptionCodeUncheckedUpdateWithoutRedeemerInput>
+    create: XOR<RedemptionCodeCreateWithoutRedeemerInput, RedemptionCodeUncheckedCreateWithoutRedeemerInput>
+  }
+
+  export type RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput = {
+    where: RedemptionCodeWhereUniqueInput
+    data: XOR<RedemptionCodeUpdateWithoutRedeemerInput, RedemptionCodeUncheckedUpdateWithoutRedeemerInput>
+  }
+
+  export type RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput = {
+    where: RedemptionCodeScalarWhereInput
+    data: XOR<RedemptionCodeUpdateManyMutationInput, RedemptionCodeUncheckedUpdateManyWithoutRedeemerInput>
+  }
+
+  export type RedemptionCodeScalarWhereInput = {
+    AND?: RedemptionCodeScalarWhereInput | RedemptionCodeScalarWhereInput[]
+    OR?: RedemptionCodeScalarWhereInput[]
+    NOT?: RedemptionCodeScalarWhereInput | RedemptionCodeScalarWhereInput[]
+    id?: IntFilter<"RedemptionCode"> | number
+    code?: StringFilter<"RedemptionCode"> | string
+    amount?: IntFilter<"RedemptionCode"> | number
+    remark?: StringNullableFilter<"RedemptionCode"> | string | null
+    isUsed?: BoolFilter<"RedemptionCode"> | boolean
+    isDeleted?: BoolFilter<"RedemptionCode"> | boolean
+    createdAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    updatedAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    expiredAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    redeemerId?: IntNullableFilter<"RedemptionCode"> | number | null
+  }
+
   export type UserCreateWithoutPasskeysInput = {
     uid?: string
     displayName?: string | null
@@ -7395,11 +9045,13 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     wallet?: WalletCreateNestedOneWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserUncheckedCreateWithoutPasskeysInput = {
@@ -7415,11 +9067,13 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserCreateOrConnectWithoutPasskeysInput = {
@@ -7450,11 +9104,13 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     wallet?: WalletUpdateOneWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasskeysInput = {
@@ -7470,11 +9126,13 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserCreateWithoutWalletInput = {
@@ -7489,11 +9147,13 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     passkeys?: PasskeyCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserUncheckedCreateWithoutWalletInput = {
@@ -7509,11 +9169,13 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserCreateOrConnectWithoutWalletInput = {
@@ -7544,11 +9206,13 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passkeys?: PasskeyUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletInput = {
@@ -7564,11 +9228,13 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserCreateWithoutApiKeysInput = {
@@ -7583,11 +9249,13 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     wallet?: WalletCreateNestedOneWithoutUserInput
     passkeys?: PasskeyCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -7603,11 +9271,13 @@ export namespace Prisma {
     twoFactorSecret?: string | null
     isActive?: boolean
     isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
     passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   }
 
   export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -7638,11 +9308,13 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     wallet?: WalletUpdateOneWithoutUserNestedInput
     passkeys?: PasskeyUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -7658,11 +9330,115 @@ export namespace Prisma {
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
     passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
+  }
+
+  export type UserCreateWithoutRedeemCodesInput = {
+    uid?: string
+    displayName?: string | null
+    avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    wallet?: WalletCreateNestedOneWithoutUserInput
+    passkeys?: PasskeyCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRedeemCodesInput = {
+    id?: number
+    uid?: string
+    displayName?: string | null
+    avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+    passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRedeemCodesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRedeemCodesInput, UserUncheckedCreateWithoutRedeemCodesInput>
+  }
+
+  export type UserUpsertWithoutRedeemCodesInput = {
+    update: XOR<UserUpdateWithoutRedeemCodesInput, UserUncheckedUpdateWithoutRedeemCodesInput>
+    create: XOR<UserCreateWithoutRedeemCodesInput, UserUncheckedCreateWithoutRedeemCodesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRedeemCodesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRedeemCodesInput, UserUncheckedUpdateWithoutRedeemCodesInput>
+  }
+
+  export type UserUpdateWithoutRedeemCodesInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+    passkeys?: PasskeyUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRedeemCodesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+    passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PasskeyCreateManyUserInput = {
@@ -7689,6 +9465,18 @@ export namespace Prisma {
     lastUsedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type RedemptionCodeCreateManyRedeemerInput = {
+    id?: number
+    code: string
+    amount: number
+    remark?: string | null
+    isUsed?: boolean
+    isDeleted?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expiredAt: Date | string
   }
 
   export type PasskeyUpdateWithoutUserInput = {
@@ -7766,6 +9554,41 @@ export namespace Prisma {
     lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RedemptionCodeUpdateWithoutRedeemerInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    remark?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RedemptionCodeUncheckedUpdateWithoutRedeemerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    remark?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RedemptionCodeUncheckedUpdateManyWithoutRedeemerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    remark?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsed?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

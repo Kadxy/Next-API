@@ -10,6 +10,7 @@ import { CoreModule } from './core/core.module';
 import { ConfigModule } from './core/config/config.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { RedemptionModule } from './redemption/redemption.module';
 @Module({
   imports: [
     // https://docs.nestjs.com/techniques/caching#interacting-with-the-cache-store
@@ -32,6 +33,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     ApikeyModule,
     CoreModule,
     GatewayModule,
+    RedemptionModule,
   ],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
+import { AdminAuthGuard } from './admin-auth.guard';
 import { AuthService } from './auth.service';
 import { JwtTokenService } from './jwt.service';
 import { GitHubAuthModule } from './github/github-auth.module';
@@ -33,7 +34,7 @@ import { CoreModule } from 'src/core/core.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthGuard, JwtTokenService],
-  exports: [AuthGuard, JwtModule, JwtTokenService],
+  providers: [AuthService, AuthGuard, AdminAuthGuard, JwtTokenService],
+  exports: [AuthGuard, AdminAuthGuard, JwtModule, JwtTokenService],
 })
 export class AuthModule {}
