@@ -131,9 +131,33 @@ exports.Prisma.UserScalarFieldEnum = {
   googleId: 'googleId',
   twoFactorEnabled: 'twoFactorEnabled',
   twoFactorSecret: 'twoFactorSecret',
-  isActive: 'isActive',
   isDeleted: 'isDeleted',
   isAdmin: 'isAdmin',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  lastLoginAt: 'lastLoginAt'
+};
+
+exports.Prisma.OrganizationScalarFieldEnum = {
+  id: 'id',
+  uid: 'uid',
+  identifier: 'identifier',
+  displayName: 'displayName',
+  avatar: 'avatar',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrganizationMemberScalarFieldEnum = {
+  id: 'id',
+  uid: 'uid',
+  username: 'username',
+  passwordHash: 'passwordHash',
+  creditLimit: 'creditLimit',
+  creditAvailable: 'creditAvailable',
+  isDeleted: 'isDeleted',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
@@ -159,17 +183,18 @@ exports.Prisma.WalletScalarFieldEnum = {
   id: 'id',
   balance: 'balance',
   version: 'version',
-  updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ApiKeyScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   hashKey: 'hashKey',
   preview: 'preview',
   displayName: 'displayName',
   isDeleted: 'isDeleted',
+  organizationId: 'organizationId',
+  memberCreatorId: 'memberCreatorId',
   lastUsedAt: 'lastUsedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -209,6 +234,19 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   twoFactorSecret: 'twoFactorSecret'
 };
 
+exports.Prisma.OrganizationOrderByRelevanceFieldEnum = {
+  uid: 'uid',
+  identifier: 'identifier',
+  displayName: 'displayName',
+  avatar: 'avatar'
+};
+
+exports.Prisma.OrganizationMemberOrderByRelevanceFieldEnum = {
+  uid: 'uid',
+  username: 'username',
+  passwordHash: 'passwordHash'
+};
+
 exports.Prisma.PasskeyOrderByRelevanceFieldEnum = {
   id: 'id',
   webAuthnUserID: 'webAuthnUserID',
@@ -231,6 +269,8 @@ exports.Prisma.RedemptionCodeOrderByRelevanceFieldEnum = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Organization: 'Organization',
+  OrganizationMember: 'OrganizationMember',
   Passkey: 'Passkey',
   Wallet: 'Wallet',
   ApiKey: 'ApiKey',

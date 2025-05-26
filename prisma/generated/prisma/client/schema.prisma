@@ -8,11 +8,11 @@ datasource db {
   url      = env("MYSQL_URL")
 }
 
+// 主用户表（包括管理员）
 model User {
-  id  Int    @id @default(autoincrement())
-  uid String @unique @default(uuid())
-
-  displayName String? // Common name for user's display name (not username which implies uniqueness)
+  id          Int     @id @default(autoincrement())
+  uid         String  @unique @default(uuid())
+  displayName String? @db.VarChar(32) // Common name for user's display name (not username which implies uniqueness)
   avatar      String? @db.Text
 
   email    String? @unique
@@ -25,21 +25,69 @@ model User {
   twoFactorSecret  String?
 
   // User status
-  isActive  Boolean @default(true)
   isDeleted Boolean @default(false)
-  isAdmin   Boolean @default(false)
 
+  // 平台管理员标识
+  isAdmin Boolean @default(false)
+
+  // 时间戳
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   lastLoginAt DateTime?
 
   // Relations
-  wallet      Wallet?
-  passkeys    Passkey[]
-  apiKeys     ApiKey[]
-  redeemCodes RedemptionCode[]
+  passkeys     Passkey[]
+  redeemCodes  RedemptionCode[]
+  wallet       Wallet?
+  organization Organization?
 
   @@map("users")
+}
+
+// 组织表（每个用户自动拥有一个）
+model Organization {
+  id          Int     @id @default(autoincrement())
+  uid         String  @unique @default(uuid())
+  identifier  String  @unique @db.VarChar(16) // 组织标识，用于子用户登录 (xxx@identifier.platform)
+  displayName String? @db.VarChar(64) // 组织显示名称
+  avatar      String? @db.Text // 组织头像
+
+  // 关联主用户（1对1）
+  owner   User @relation(fields: [ownerId], references: [id])
+  ownerId Int  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  members OrganizationMember[] // 组织下的子用户
+  apiKeys ApiKey[] // 组织内的所有API Keys
+
+  @@map("organizations")
+}
+
+// 组织成员表（子用户）
+model OrganizationMember {
+  id              Int     @id @default(autoincrement())
+  uid             String  @unique @default(uuid())
+  username        String  @db.VarChar(32) // 成员用户名，如 'john', 'alice'
+  passwordHash    String  @db.VarChar(255) // 密码哈希
+  creditLimit     Decimal @db.Decimal(12, 6) // 信用额度（必须设置）
+  creditAvailable Decimal @db.Decimal(12, 6) // 当前剩余可用额度
+  isDeleted       Boolean @default(false) // 删除状态
+
+  // 关联组织
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+
+  // 时间戳
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  lastLoginAt DateTime? // 最后登录时间
+
+  @@unique([organizationId, username]) // 确保同一组织下username唯一
+  @@index([organizationId, isDeleted]) // 索引优化查询
+  @@map("organization_members")
 }
 
 model Passkey {
@@ -79,32 +127,33 @@ model Wallet {
   id        Int      @id @default(autoincrement())
   balance   Decimal  @default(0) @db.Decimal(12, 6) // 余额，精确到小数点后6位
   version   Int      @default(1) // 乐观锁版本号，用于并发控制
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @unique
   updatedAt DateTime @updatedAt
-
-  // 关联字段
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
 
   @@map("wallets")
 }
 
 model ApiKey {
   id          Int     @id @default(autoincrement())
-  userId      Int
   hashKey     String  @unique @db.VarChar(64)
   preview     String  @db.VarChar(8)
   displayName String  @db.VarChar(32)
   isDeleted   Boolean @default(false)
 
+  // 关联到组织和组织成员
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  organizationId  Int
+  memberCreatorId Int? // 成员创建者ID（null表示主用户创建）
+
+  // 时间戳
   lastUsedAt DateTime?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  // Relations
-  user User @relation(fields: [userId], references: [id])
-
   @@index([hashKey, isDeleted])
-  @@index([userId, isDeleted, createdAt])
+  @@index([organizationId, isDeleted, createdAt])
+  @@index([organizationId, memberCreatorId, isDeleted, createdAt])
   @@map("api_keys")
 }
 
