@@ -11,7 +11,7 @@ import { Cache } from 'cache-manager';
 import { getCacheKey, CACHE_KEYS } from 'src/core/cache/chche.constant';
 import { BusinessException } from 'src/common/exceptions';
 import { Prisma, User, Wallet, WalletMember } from '@prisma-client';
-import { Decimal } from '@prisma-client/runtime/library';
+import { Decimal } from '@prisma-client/internal/prismaNamespace';
 
 @Injectable()
 export class WalletService {

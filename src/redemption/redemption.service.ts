@@ -1,16 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RedemptionCode, User } from '@prisma-client';
-import { Decimal } from '@prisma-client/runtime/library';
+import { Decimal } from '@prisma-client/internal/prismaNamespace';
 import { BusinessException } from 'src/common/exceptions';
 import { CryptoService } from 'src/core/crypto/crypto.service';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 
 @Injectable()
 export class RedemptionService {
+  private readonly logger = new Logger(RedemptionService.name);
+
   static readonly REDEMPTION_CODE_LENGTH = 24;
 
   constructor(
-    private readonly logger: Logger,
     private readonly prisma: PrismaService,
     private readonly cryptoService: CryptoService,
   ) {}
