@@ -6,17 +6,12 @@ import {
   Logger,
 } from '@nestjs/common';
 import { PrismaService } from '../core/prisma/prisma.service';
-import {
-  Prisma,
-  User,
-  Wallet,
-  WalletMember,
-} from '../../prisma/generated/prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { getCacheKey, CACHE_KEYS } from 'src/core/cache/chche.constant';
 import { BusinessException } from 'src/common/exceptions';
+import { Prisma, User, Wallet, WalletMember } from 'prisma/generated';
+import { Decimal } from 'prisma/generated/runtime/library';
 
 @Injectable()
 export class WalletService {
@@ -29,7 +24,7 @@ export class WalletService {
 
   // Create wallet for user
   async createWallet(ownerId: User['id'], balance: Decimal = new Decimal(0)) {
-    return await this.prisma.wallet.create({
+    return this.prisma.wallet.create({
       data: { ownerId, balance },
     });
   }
@@ -117,10 +112,6 @@ export class WalletService {
       return true;
     }
 
-    if (wallet.members.some((member) => member.userId === userId)) {
-      return true;
-    }
-
-    return false;
+    return wallet.members.some((member) => member.userId === userId);
   }
 }

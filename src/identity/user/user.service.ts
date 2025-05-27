@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Prisma, User } from '../../../prisma/generated/prisma/client';
+import { Prisma, User } from '../../../prisma/generated';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CACHE_KEYS, getCacheKey } from '../../core/cache/chche.constant';
 import { Cache } from 'cache-manager';
@@ -62,7 +62,7 @@ export class UserService {
 
   // 从缓存获取用户 - 通过 UID 【这个方法会返回全部字段信息】
   async getCachedUser(uid: User['uid']): Promise<User | null> {
-    let user: User | null = null;
+    let user: User | null;
 
     // 从缓存获取
     const cacheKey = getCacheKey(CACHE_KEYS.USER_INFO_UID, uid);

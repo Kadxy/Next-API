@@ -1,4 +1,4 @@
-import { Prisma } from './generated/prisma/client';
+import { Prisma } from './generated';
 
 // -- USER --
 export const USER_QUERY_OMIT: Prisma.UserOmit = {

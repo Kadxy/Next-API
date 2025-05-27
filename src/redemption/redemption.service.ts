@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Decimal } from '@prisma/client/runtime/library';
-import { RedemptionCode, User } from 'prisma/generated/prisma/client';
+import { RedemptionCode, User } from 'prisma/generated';
+import { Decimal } from 'prisma/generated/runtime/library';
 import { BusinessException } from 'src/common/exceptions';
 import { CryptoService } from 'src/core/crypto/crypto.service';
 import { PrismaService } from 'src/core/prisma/prisma.service';
@@ -18,7 +18,8 @@ export class RedemptionService {
   /**
    * 生成兑换码
    * @param amount 金额 (整数)
-   * @param expiredDuration 过期时间（毫秒），默认30天
+   * @param expiredAt 过期时间
+   * @param remark 备注
    * @returns 兑换码
    */
   async createRedemptionCode(
@@ -28,7 +29,7 @@ export class RedemptionService {
   ): Promise<RedemptionCode> {
     const code = this.generateRedemptionCode();
 
-    return await this.prisma.redemptionCode.create({
+    return this.prisma.redemptionCode.create({
       data: {
         code,
         amount,
@@ -90,7 +91,7 @@ export class RedemptionService {
    * @returns 兑换码列表
    */
   async getAllRedemptionCodes() {
-    return await this.prisma.redemptionCode.findMany();
+    return this.prisma.redemptionCode.findMany();
   }
 
   /**

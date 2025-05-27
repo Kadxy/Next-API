@@ -8,7 +8,7 @@ import { FastifyReply } from 'fastify';
 import { DEFAULT_ERROR_MSG, GlobalErrorResponse } from './index';
 import { BusinessException } from './business.exception';
 import { Logger } from '@nestjs/common';
-import { Prisma } from '../../../prisma/generated/prisma/client';
+import { Prisma } from '../../../prisma/generated';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);

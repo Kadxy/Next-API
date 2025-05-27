@@ -4,7 +4,7 @@ import { PrismaService } from '../core/prisma/prisma.service';
 import { CryptoService } from '../core/crypto/crypto.service';
 import { BloomFilterService } from '../core/bloom-filter/bloom-filter.service';
 import { Cache } from '@nestjs/cache-manager';
-import { ApiKey, User, Wallet } from '../../prisma/generated/prisma/client';
+import { ApiKey, User, Wallet } from '../../prisma/generated';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import {
   BusinessException,
@@ -111,7 +111,7 @@ export class ApikeyService implements OnModuleInit {
       throw new BusinessException('Permission denied');
     }
 
-    return await this.prisma.apiKey.update({
+    return this.prisma.apiKey.update({
       where: { hashKey },
       data: { displayName: newDisplayName },
       omit: API_KEY_QUERY_OMIT,
@@ -175,12 +175,10 @@ export class ApikeyService implements OnModuleInit {
 
   // 列出用户创建的 API Key
   async listApiKeys(userId: User['id']) {
-    const apiKeys = await this.prisma.apiKey.findMany({
+    return this.prisma.apiKey.findMany({
       where: { creatorId: userId, isActive: true },
       include: { wallet: { select: { uid: true } } },
     });
-
-    return apiKeys;
   }
 
   // 验证 API Key 并返回记录
