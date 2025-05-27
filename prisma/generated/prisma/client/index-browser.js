@@ -129,8 +129,7 @@ exports.Prisma.UserScalarFieldEnum = {
   phone: 'phone',
   gitHubId: 'gitHubId',
   googleId: 'googleId',
-  twoFactorEnabled: 'twoFactorEnabled',
-  twoFactorSecret: 'twoFactorSecret',
+  isActive: 'isActive',
   isDeleted: 'isDeleted',
   isAdmin: 'isAdmin',
   createdAt: 'createdAt',
@@ -138,29 +137,40 @@ exports.Prisma.UserScalarFieldEnum = {
   lastLoginAt: 'lastLoginAt'
 };
 
-exports.Prisma.OrganizationScalarFieldEnum = {
+exports.Prisma.WalletScalarFieldEnum = {
   id: 'id',
   uid: 'uid',
-  identifier: 'identifier',
-  displayName: 'displayName',
-  avatar: 'avatar',
+  balance: 'balance',
+  version: 'version',
   ownerId: 'ownerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.OrganizationMemberScalarFieldEnum = {
+exports.Prisma.WalletMemberScalarFieldEnum = {
   id: 'id',
-  uid: 'uid',
-  username: 'username',
-  passwordHash: 'passwordHash',
+  walletId: 'walletId',
+  userId: 'userId',
   creditLimit: 'creditLimit',
   creditAvailable: 'creditAvailable',
-  isDeleted: 'isDeleted',
-  organizationId: 'organizationId',
+  creditUsed: 'creditUsed',
+  isActive: 'isActive',
+  joinedAt: 'joinedAt',
+  leftAt: 'leftAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ApiKeyScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  creatorId: 'creatorId',
+  hashKey: 'hashKey',
+  preview: 'preview',
+  displayName: 'displayName',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  lastLoginAt: 'lastLoginAt'
+  lastUsedAt: 'lastUsedAt'
 };
 
 exports.Prisma.PasskeyScalarFieldEnum = {
@@ -179,37 +189,14 @@ exports.Prisma.PasskeyScalarFieldEnum = {
   userId: 'userId'
 };
 
-exports.Prisma.WalletScalarFieldEnum = {
-  id: 'id',
-  balance: 'balance',
-  version: 'version',
-  userId: 'userId',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.ApiKeyScalarFieldEnum = {
-  id: 'id',
-  hashKey: 'hashKey',
-  preview: 'preview',
-  displayName: 'displayName',
-  isDeleted: 'isDeleted',
-  organizationId: 'organizationId',
-  memberCreatorId: 'memberCreatorId',
-  lastUsedAt: 'lastUsedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.RedemptionCodeScalarFieldEnum = {
   id: 'id',
   code: 'code',
   amount: 'amount',
   remark: 'remark',
-  isUsed: 'isUsed',
-  isDeleted: 'isDeleted',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   expiredAt: 'expiredAt',
+  redeemedAt: 'redeemedAt',
   redeemerId: 'redeemerId'
 };
 
@@ -230,21 +217,17 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   email: 'email',
   phone: 'phone',
   gitHubId: 'gitHubId',
-  googleId: 'googleId',
-  twoFactorSecret: 'twoFactorSecret'
+  googleId: 'googleId'
 };
 
-exports.Prisma.OrganizationOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  identifier: 'identifier',
-  displayName: 'displayName',
-  avatar: 'avatar'
+exports.Prisma.WalletOrderByRelevanceFieldEnum = {
+  uid: 'uid'
 };
 
-exports.Prisma.OrganizationMemberOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  username: 'username',
-  passwordHash: 'passwordHash'
+exports.Prisma.ApiKeyOrderByRelevanceFieldEnum = {
+  hashKey: 'hashKey',
+  preview: 'preview',
+  displayName: 'displayName'
 };
 
 exports.Prisma.PasskeyOrderByRelevanceFieldEnum = {
@@ -255,12 +238,6 @@ exports.Prisma.PasskeyOrderByRelevanceFieldEnum = {
   deviceType: 'deviceType'
 };
 
-exports.Prisma.ApiKeyOrderByRelevanceFieldEnum = {
-  hashKey: 'hashKey',
-  preview: 'preview',
-  displayName: 'displayName'
-};
-
 exports.Prisma.RedemptionCodeOrderByRelevanceFieldEnum = {
   code: 'code',
   remark: 'remark'
@@ -269,11 +246,10 @@ exports.Prisma.RedemptionCodeOrderByRelevanceFieldEnum = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Organization: 'Organization',
-  OrganizationMember: 'OrganizationMember',
-  Passkey: 'Passkey',
   Wallet: 'Wallet',
+  WalletMember: 'WalletMember',
   ApiKey: 'ApiKey',
+  Passkey: 'Passkey',
   RedemptionCode: 'RedemptionCode'
 };
 

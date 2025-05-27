@@ -10,19 +10,19 @@ export interface RequestWithUser extends FastifyRequest {
   user: User;
 }
 
-/** JWT 载荷 */
+/** JWT Payload */
 export interface JwtPayload {
-  /** 用户ID */
-  uid: string;
+  /** User UID */
+  uid: User['uid'];
 
-  /** 令牌过期时间，Unix timestamp */
+  /** Token version, used to determine if a refresh is needed */
+  version?: number;
+
+  /** Token expiration time, Unix timestamp */
   exp: number;
 
-  /** 令牌签发时间，Unix timestamp */
+  /** Token issuance time, Unix timestamp */
   iat: number;
-
-  /** 令牌版本，用于判断是否需要刷新 */
-  version?: number;
 }
 
 /** 用于签发新令牌的载荷 */

@@ -20,7 +20,6 @@ import { BusinessException } from '../../../common/exceptions';
 import { CACHE_KEYS, getCacheKey } from '../../../core/cache/chche.constant';
 import { UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
-import { removeUserExcludedFields } from 'src/identity/user/dto/user.dto';
 
 @Injectable()
 export class PasskeyService {
@@ -270,7 +269,7 @@ export class PasskeyService {
     const token = await this.jwtTokenService.sign(user);
 
     // 6. Return the user and token
-    return { user: removeUserExcludedFields(user), token };
+    return { user, token };
   }
 
   ////////////////////////

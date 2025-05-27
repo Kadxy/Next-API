@@ -19,30 +19,25 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model Organization
- * 
- */
-export type Organization = $Result.DefaultSelection<Prisma.$OrganizationPayload>
-/**
- * Model OrganizationMember
- * 
- */
-export type OrganizationMember = $Result.DefaultSelection<Prisma.$OrganizationMemberPayload>
-/**
- * Model Passkey
- * 
- */
-export type Passkey = $Result.DefaultSelection<Prisma.$PasskeyPayload>
-/**
  * Model Wallet
  * 
  */
 export type Wallet = $Result.DefaultSelection<Prisma.$WalletPayload>
 /**
+ * Model WalletMember
+ * 
+ */
+export type WalletMember = $Result.DefaultSelection<Prisma.$WalletMemberPayload>
+/**
  * Model ApiKey
  * 
  */
 export type ApiKey = $Result.DefaultSelection<Prisma.$ApiKeyPayload>
+/**
+ * Model Passkey
+ * 
+ */
+export type Passkey = $Result.DefaultSelection<Prisma.$PasskeyPayload>
 /**
  * Model RedemptionCode
  * 
@@ -185,36 +180,6 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.organization`: Exposes CRUD operations for the **Organization** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Organizations
-    * const organizations = await prisma.organization.findMany()
-    * ```
-    */
-  get organization(): Prisma.OrganizationDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.organizationMember`: Exposes CRUD operations for the **OrganizationMember** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more OrganizationMembers
-    * const organizationMembers = await prisma.organizationMember.findMany()
-    * ```
-    */
-  get organizationMember(): Prisma.OrganizationMemberDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.passkey`: Exposes CRUD operations for the **Passkey** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Passkeys
-    * const passkeys = await prisma.passkey.findMany()
-    * ```
-    */
-  get passkey(): Prisma.PasskeyDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.wallet`: Exposes CRUD operations for the **Wallet** model.
     * Example usage:
     * ```ts
@@ -225,6 +190,16 @@ export class PrismaClient<
   get wallet(): Prisma.WalletDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.walletMember`: Exposes CRUD operations for the **WalletMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WalletMembers
+    * const walletMembers = await prisma.walletMember.findMany()
+    * ```
+    */
+  get walletMember(): Prisma.WalletMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.apiKey`: Exposes CRUD operations for the **ApiKey** model.
     * Example usage:
     * ```ts
@@ -233,6 +208,16 @@ export class PrismaClient<
     * ```
     */
   get apiKey(): Prisma.ApiKeyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.passkey`: Exposes CRUD operations for the **Passkey** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Passkeys
+    * const passkeys = await prisma.passkey.findMany()
+    * ```
+    */
+  get passkey(): Prisma.PasskeyDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.redemptionCode`: Exposes CRUD operations for the **RedemptionCode** model.
@@ -684,11 +669,10 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Organization: 'Organization',
-    OrganizationMember: 'OrganizationMember',
-    Passkey: 'Passkey',
     Wallet: 'Wallet',
+    WalletMember: 'WalletMember',
     ApiKey: 'ApiKey',
+    Passkey: 'Passkey',
     RedemptionCode: 'RedemptionCode'
   };
 
@@ -708,7 +692,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "organization" | "organizationMember" | "passkey" | "wallet" | "apiKey" | "redemptionCode"
+      modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -778,204 +762,6 @@ export namespace Prisma {
           }
         }
       }
-      Organization: {
-        payload: Prisma.$OrganizationPayload<ExtArgs>
-        fields: Prisma.OrganizationFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.OrganizationFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.OrganizationFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          findFirst: {
-            args: Prisma.OrganizationFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.OrganizationFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          findMany: {
-            args: Prisma.OrganizationFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
-          }
-          create: {
-            args: Prisma.OrganizationCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          createMany: {
-            args: Prisma.OrganizationCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.OrganizationDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          update: {
-            args: Prisma.OrganizationUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          deleteMany: {
-            args: Prisma.OrganizationDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.OrganizationUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.OrganizationUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          aggregate: {
-            args: Prisma.OrganizationAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateOrganization>
-          }
-          groupBy: {
-            args: Prisma.OrganizationGroupByArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.OrganizationCountArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationCountAggregateOutputType> | number
-          }
-        }
-      }
-      OrganizationMember: {
-        payload: Prisma.$OrganizationMemberPayload<ExtArgs>
-        fields: Prisma.OrganizationMemberFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.OrganizationMemberFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.OrganizationMemberFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
-          }
-          findFirst: {
-            args: Prisma.OrganizationMemberFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.OrganizationMemberFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
-          }
-          findMany: {
-            args: Prisma.OrganizationMemberFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>[]
-          }
-          create: {
-            args: Prisma.OrganizationMemberCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
-          }
-          createMany: {
-            args: Prisma.OrganizationMemberCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.OrganizationMemberDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
-          }
-          update: {
-            args: Prisma.OrganizationMemberUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
-          }
-          deleteMany: {
-            args: Prisma.OrganizationMemberDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.OrganizationMemberUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.OrganizationMemberUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
-          }
-          aggregate: {
-            args: Prisma.OrganizationMemberAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateOrganizationMember>
-          }
-          groupBy: {
-            args: Prisma.OrganizationMemberGroupByArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationMemberGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.OrganizationMemberCountArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationMemberCountAggregateOutputType> | number
-          }
-        }
-      }
-      Passkey: {
-        payload: Prisma.$PasskeyPayload<ExtArgs>
-        fields: Prisma.PasskeyFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.PasskeyFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.PasskeyFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
-          }
-          findFirst: {
-            args: Prisma.PasskeyFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.PasskeyFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
-          }
-          findMany: {
-            args: Prisma.PasskeyFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>[]
-          }
-          create: {
-            args: Prisma.PasskeyCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
-          }
-          createMany: {
-            args: Prisma.PasskeyCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.PasskeyDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
-          }
-          update: {
-            args: Prisma.PasskeyUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
-          }
-          deleteMany: {
-            args: Prisma.PasskeyDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.PasskeyUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.PasskeyUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
-          }
-          aggregate: {
-            args: Prisma.PasskeyAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregatePasskey>
-          }
-          groupBy: {
-            args: Prisma.PasskeyGroupByArgs<ExtArgs>
-            result: $Utils.Optional<PasskeyGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.PasskeyCountArgs<ExtArgs>
-            result: $Utils.Optional<PasskeyCountAggregateOutputType> | number
-          }
-        }
-      }
       Wallet: {
         payload: Prisma.$WalletPayload<ExtArgs>
         fields: Prisma.WalletFieldRefs
@@ -1042,6 +828,72 @@ export namespace Prisma {
           }
         }
       }
+      WalletMember: {
+        payload: Prisma.$WalletMemberPayload<ExtArgs>
+        fields: Prisma.WalletMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WalletMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WalletMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.WalletMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WalletMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload>
+          }
+          findMany: {
+            args: Prisma.WalletMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload>[]
+          }
+          create: {
+            args: Prisma.WalletMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload>
+          }
+          createMany: {
+            args: Prisma.WalletMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.WalletMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload>
+          }
+          update: {
+            args: Prisma.WalletMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.WalletMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WalletMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WalletMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.WalletMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWalletMember>
+          }
+          groupBy: {
+            args: Prisma.WalletMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WalletMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WalletMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<WalletMemberCountAggregateOutputType> | number
+          }
+        }
+      }
       ApiKey: {
         payload: Prisma.$ApiKeyPayload<ExtArgs>
         fields: Prisma.ApiKeyFieldRefs
@@ -1105,6 +957,72 @@ export namespace Prisma {
           count: {
             args: Prisma.ApiKeyCountArgs<ExtArgs>
             result: $Utils.Optional<ApiKeyCountAggregateOutputType> | number
+          }
+        }
+      }
+      Passkey: {
+        payload: Prisma.$PasskeyPayload<ExtArgs>
+        fields: Prisma.PasskeyFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PasskeyFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PasskeyFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
+          }
+          findFirst: {
+            args: Prisma.PasskeyFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PasskeyFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
+          }
+          findMany: {
+            args: Prisma.PasskeyFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>[]
+          }
+          create: {
+            args: Prisma.PasskeyCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
+          }
+          createMany: {
+            args: Prisma.PasskeyCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PasskeyDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
+          }
+          update: {
+            args: Prisma.PasskeyUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
+          }
+          deleteMany: {
+            args: Prisma.PasskeyDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PasskeyUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PasskeyUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasskeyPayload>
+          }
+          aggregate: {
+            args: Prisma.PasskeyAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePasskey>
+          }
+          groupBy: {
+            args: Prisma.PasskeyGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PasskeyGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PasskeyCountArgs<ExtArgs>
+            result: $Utils.Optional<PasskeyCountAggregateOutputType> | number
           }
         }
       }
@@ -1259,11 +1177,10 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    organization?: OrganizationOmit
-    organizationMember?: OrganizationMemberOmit
-    passkey?: PasskeyOmit
     wallet?: WalletOmit
+    walletMember?: WalletMemberOmit
     apiKey?: ApiKeyOmit
+    passkey?: PasskeyOmit
     redemptionCode?: RedemptionCodeOmit
   }
 
@@ -1359,13 +1276,17 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    walletMembers: number
     passkeys: number
     redeemCodes: number
+    createdApiKeys: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    walletMembers?: boolean | UserCountOutputTypeCountWalletMembersArgs
     passkeys?: boolean | UserCountOutputTypeCountPasskeysArgs
     redeemCodes?: boolean | UserCountOutputTypeCountRedeemCodesArgs
+    createdApiKeys?: boolean | UserCountOutputTypeCountCreatedApiKeysArgs
   }
 
   // Custom InputTypes
@@ -1382,6 +1303,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountWalletMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountPasskeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PasskeyWhereInput
   }
@@ -1393,43 +1321,50 @@ export namespace Prisma {
     where?: RedemptionCodeWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ApiKeyWhereInput
+  }
+
 
   /**
-   * Count Type OrganizationCountOutputType
+   * Count Type WalletCountOutputType
    */
 
-  export type OrganizationCountOutputType = {
+  export type WalletCountOutputType = {
     members: number
     apiKeys: number
   }
 
-  export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    members?: boolean | OrganizationCountOutputTypeCountMembersArgs
-    apiKeys?: boolean | OrganizationCountOutputTypeCountApiKeysArgs
+  export type WalletCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    members?: boolean | WalletCountOutputTypeCountMembersArgs
+    apiKeys?: boolean | WalletCountOutputTypeCountApiKeysArgs
   }
 
   // Custom InputTypes
   /**
-   * OrganizationCountOutputType without action
+   * WalletCountOutputType without action
    */
-  export type OrganizationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationCountOutputType
+     * Select specific fields to fetch from the WalletCountOutputType
      */
-    select?: OrganizationCountOutputTypeSelect<ExtArgs> | null
+    select?: WalletCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * OrganizationCountOutputType without action
+   * WalletCountOutputType without action
    */
-  export type OrganizationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrganizationMemberWhereInput
+  export type WalletCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletMemberWhereInput
   }
 
   /**
-   * OrganizationCountOutputType without action
+   * WalletCountOutputType without action
    */
-  export type OrganizationCountOutputTypeCountApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletCountOutputTypeCountApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ApiKeyWhereInput
   }
 
@@ -1467,8 +1402,7 @@ export namespace Prisma {
     phone: string | null
     gitHubId: string | null
     googleId: string | null
-    twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
+    isActive: boolean | null
     isDeleted: boolean | null
     isAdmin: boolean | null
     createdAt: Date | null
@@ -1485,8 +1419,7 @@ export namespace Prisma {
     phone: string | null
     gitHubId: string | null
     googleId: string | null
-    twoFactorEnabled: boolean | null
-    twoFactorSecret: string | null
+    isActive: boolean | null
     isDeleted: boolean | null
     isAdmin: boolean | null
     createdAt: Date | null
@@ -1503,8 +1436,7 @@ export namespace Prisma {
     phone: number
     gitHubId: number
     googleId: number
-    twoFactorEnabled: number
-    twoFactorSecret: number
+    isActive: number
     isDeleted: number
     isAdmin: number
     createdAt: number
@@ -1531,8 +1463,7 @@ export namespace Prisma {
     phone?: true
     gitHubId?: true
     googleId?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
+    isActive?: true
     isDeleted?: true
     isAdmin?: true
     createdAt?: true
@@ -1549,8 +1480,7 @@ export namespace Prisma {
     phone?: true
     gitHubId?: true
     googleId?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
+    isActive?: true
     isDeleted?: true
     isAdmin?: true
     createdAt?: true
@@ -1567,8 +1497,7 @@ export namespace Prisma {
     phone?: true
     gitHubId?: true
     googleId?: true
-    twoFactorEnabled?: true
-    twoFactorSecret?: true
+    isActive?: true
     isDeleted?: true
     isAdmin?: true
     createdAt?: true
@@ -1672,8 +1601,7 @@ export namespace Prisma {
     phone: string | null
     gitHubId: string | null
     googleId: string | null
-    twoFactorEnabled: boolean
-    twoFactorSecret: string | null
+    isActive: boolean
     isDeleted: boolean
     isAdmin: boolean
     createdAt: Date
@@ -1709,17 +1637,17 @@ export namespace Prisma {
     phone?: boolean
     gitHubId?: boolean
     googleId?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lastLoginAt?: boolean
+    wallet?: boolean | User$walletArgs<ExtArgs>
+    walletMembers?: boolean | User$walletMembersArgs<ExtArgs>
     passkeys?: boolean | User$passkeysArgs<ExtArgs>
     redeemCodes?: boolean | User$redeemCodesArgs<ExtArgs>
-    wallet?: boolean | User$walletArgs<ExtArgs>
-    organization?: boolean | User$organizationArgs<ExtArgs>
+    createdApiKeys?: boolean | User$createdApiKeysArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1734,8 +1662,7 @@ export namespace Prisma {
     phone?: boolean
     gitHubId?: boolean
     googleId?: boolean
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: boolean
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: boolean
@@ -1743,22 +1670,24 @@ export namespace Prisma {
     lastLoginAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "twoFactorEnabled" | "twoFactorSecret" | "isDeleted" | "isAdmin" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "isActive" | "isDeleted" | "isAdmin" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    wallet?: boolean | User$walletArgs<ExtArgs>
+    walletMembers?: boolean | User$walletMembersArgs<ExtArgs>
     passkeys?: boolean | User$passkeysArgs<ExtArgs>
     redeemCodes?: boolean | User$redeemCodesArgs<ExtArgs>
-    wallet?: boolean | User$walletArgs<ExtArgs>
-    organization?: boolean | User$organizationArgs<ExtArgs>
+    createdApiKeys?: boolean | User$createdApiKeysArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      wallet: Prisma.$WalletPayload<ExtArgs> | null
+      walletMembers: Prisma.$WalletMemberPayload<ExtArgs>[]
       passkeys: Prisma.$PasskeyPayload<ExtArgs>[]
       redeemCodes: Prisma.$RedemptionCodePayload<ExtArgs>[]
-      wallet: Prisma.$WalletPayload<ExtArgs> | null
-      organization: Prisma.$OrganizationPayload<ExtArgs> | null
+      createdApiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1769,8 +1698,7 @@ export namespace Prisma {
       phone: string | null
       gitHubId: string | null
       googleId: string | null
-      twoFactorEnabled: boolean
-      twoFactorSecret: string | null
+      isActive: boolean
       isDeleted: boolean
       isAdmin: boolean
       createdAt: Date
@@ -2116,10 +2044,11 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    walletMembers<T extends User$walletMembersArgs<ExtArgs> = {}>(args?: Subset<T, User$walletMembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passkeys<T extends User$passkeysArgs<ExtArgs> = {}>(args?: Subset<T, User$passkeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasskeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     redeemCodes<T extends User$redeemCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$redeemCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    organization<T extends User$organizationArgs<ExtArgs> = {}>(args?: Subset<T, User$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdApiKeys<T extends User$createdApiKeysArgs<ExtArgs> = {}>(args?: Subset<T, User$createdApiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2157,8 +2086,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"User", 'String'>
     readonly gitHubId: FieldRef<"User", 'String'>
     readonly googleId: FieldRef<"User", 'String'>
-    readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
-    readonly twoFactorSecret: FieldRef<"User", 'String'>
+    readonly isActive: FieldRef<"User", 'Boolean'>
     readonly isDeleted: FieldRef<"User", 'Boolean'>
     readonly isAdmin: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -2507,6 +2435,49 @@ export namespace Prisma {
   }
 
   /**
+   * User.wallet
+   */
+  export type User$walletArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wallet
+     */
+    select?: WalletSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wallet
+     */
+    omit?: WalletOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletInclude<ExtArgs> | null
+    where?: WalletWhereInput
+  }
+
+  /**
+   * User.walletMembers
+   */
+  export type User$walletMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletMember
+     */
+    select?: WalletMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletMember
+     */
+    omit?: WalletMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletMemberInclude<ExtArgs> | null
+    where?: WalletMemberWhereInput
+    orderBy?: WalletMemberOrderByWithRelationInput | WalletMemberOrderByWithRelationInput[]
+    cursor?: WalletMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WalletMemberScalarFieldEnum | WalletMemberScalarFieldEnum[]
+  }
+
+  /**
    * User.passkeys
    */
   export type User$passkeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2555,41 +2526,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.wallet
+   * User.createdApiKeys
    */
-  export type User$walletArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$createdApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Wallet
+     * Select specific fields to fetch from the ApiKey
      */
-    select?: WalletSelect<ExtArgs> | null
+    select?: ApiKeySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Wallet
+     * Omit specific fields from the ApiKey
      */
-    omit?: WalletOmit<ExtArgs> | null
+    omit?: ApiKeyOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WalletInclude<ExtArgs> | null
-    where?: WalletWhereInput
-  }
-
-  /**
-   * User.organization
-   */
-  export type User$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    where?: OrganizationWhereInput
+    include?: ApiKeyInclude<ExtArgs> | null
+    where?: ApiKeyWhereInput
+    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
+    cursor?: ApiKeyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
   }
 
   /**
@@ -2612,55 +2569,56 @@ export namespace Prisma {
 
 
   /**
-   * Model Organization
+   * Model Wallet
    */
 
-  export type AggregateOrganization = {
-    _count: OrganizationCountAggregateOutputType | null
-    _avg: OrganizationAvgAggregateOutputType | null
-    _sum: OrganizationSumAggregateOutputType | null
-    _min: OrganizationMinAggregateOutputType | null
-    _max: OrganizationMaxAggregateOutputType | null
+  export type AggregateWallet = {
+    _count: WalletCountAggregateOutputType | null
+    _avg: WalletAvgAggregateOutputType | null
+    _sum: WalletSumAggregateOutputType | null
+    _min: WalletMinAggregateOutputType | null
+    _max: WalletMaxAggregateOutputType | null
   }
 
-  export type OrganizationAvgAggregateOutputType = {
+  export type WalletAvgAggregateOutputType = {
     id: number | null
+    balance: Decimal | null
+    version: number | null
     ownerId: number | null
   }
 
-  export type OrganizationSumAggregateOutputType = {
+  export type WalletSumAggregateOutputType = {
     id: number | null
+    balance: Decimal | null
+    version: number | null
     ownerId: number | null
   }
 
-  export type OrganizationMinAggregateOutputType = {
+  export type WalletMinAggregateOutputType = {
     id: number | null
     uid: string | null
-    identifier: string | null
-    displayName: string | null
-    avatar: string | null
+    balance: Decimal | null
+    version: number | null
     ownerId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type OrganizationMaxAggregateOutputType = {
+  export type WalletMaxAggregateOutputType = {
     id: number | null
     uid: string | null
-    identifier: string | null
-    displayName: string | null
-    avatar: string | null
+    balance: Decimal | null
+    version: number | null
     ownerId: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type OrganizationCountAggregateOutputType = {
+  export type WalletCountAggregateOutputType = {
     id: number
     uid: number
-    identifier: number
-    displayName: number
-    avatar: number
+    balance: number
+    version: number
     ownerId: number
     createdAt: number
     updatedAt: number
@@ -2668,355 +2626,352 @@ export namespace Prisma {
   }
 
 
-  export type OrganizationAvgAggregateInputType = {
+  export type WalletAvgAggregateInputType = {
     id?: true
+    balance?: true
+    version?: true
     ownerId?: true
   }
 
-  export type OrganizationSumAggregateInputType = {
+  export type WalletSumAggregateInputType = {
     id?: true
+    balance?: true
+    version?: true
     ownerId?: true
   }
 
-  export type OrganizationMinAggregateInputType = {
+  export type WalletMinAggregateInputType = {
     id?: true
     uid?: true
-    identifier?: true
-    displayName?: true
-    avatar?: true
+    balance?: true
+    version?: true
     ownerId?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type OrganizationMaxAggregateInputType = {
+  export type WalletMaxAggregateInputType = {
     id?: true
     uid?: true
-    identifier?: true
-    displayName?: true
-    avatar?: true
+    balance?: true
+    version?: true
     ownerId?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type OrganizationCountAggregateInputType = {
+  export type WalletCountAggregateInputType = {
     id?: true
     uid?: true
-    identifier?: true
-    displayName?: true
-    avatar?: true
+    balance?: true
+    version?: true
     ownerId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type OrganizationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Organization to aggregate.
+     * Filter which Wallet to aggregate.
      */
-    where?: OrganizationWhereInput
+    where?: WalletWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Organizations to fetch.
+     * Determine the order of Wallets to fetch.
      */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: OrganizationWhereUniqueInput
+    cursor?: WalletWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Organizations from the position of the cursor.
+     * Take `±n` Wallets from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Organizations.
+     * Skip the first `n` Wallets.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Organizations
+     * Count returned Wallets
     **/
-    _count?: true | OrganizationCountAggregateInputType
+    _count?: true | WalletCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: OrganizationAvgAggregateInputType
+    _avg?: WalletAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: OrganizationSumAggregateInputType
+    _sum?: WalletSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: OrganizationMinAggregateInputType
+    _min?: WalletMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: OrganizationMaxAggregateInputType
+    _max?: WalletMaxAggregateInputType
   }
 
-  export type GetOrganizationAggregateType<T extends OrganizationAggregateArgs> = {
-        [P in keyof T & keyof AggregateOrganization]: P extends '_count' | 'count'
+  export type GetWalletAggregateType<T extends WalletAggregateArgs> = {
+        [P in keyof T & keyof AggregateWallet]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateOrganization[P]>
-      : GetScalarType<T[P], AggregateOrganization[P]>
+        : GetScalarType<T[P], AggregateWallet[P]>
+      : GetScalarType<T[P], AggregateWallet[P]>
   }
 
 
 
 
-  export type OrganizationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrganizationWhereInput
-    orderBy?: OrganizationOrderByWithAggregationInput | OrganizationOrderByWithAggregationInput[]
-    by: OrganizationScalarFieldEnum[] | OrganizationScalarFieldEnum
-    having?: OrganizationScalarWhereWithAggregatesInput
+  export type WalletGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletWhereInput
+    orderBy?: WalletOrderByWithAggregationInput | WalletOrderByWithAggregationInput[]
+    by: WalletScalarFieldEnum[] | WalletScalarFieldEnum
+    having?: WalletScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: OrganizationCountAggregateInputType | true
-    _avg?: OrganizationAvgAggregateInputType
-    _sum?: OrganizationSumAggregateInputType
-    _min?: OrganizationMinAggregateInputType
-    _max?: OrganizationMaxAggregateInputType
+    _count?: WalletCountAggregateInputType | true
+    _avg?: WalletAvgAggregateInputType
+    _sum?: WalletSumAggregateInputType
+    _min?: WalletMinAggregateInputType
+    _max?: WalletMaxAggregateInputType
   }
 
-  export type OrganizationGroupByOutputType = {
+  export type WalletGroupByOutputType = {
     id: number
     uid: string
-    identifier: string
-    displayName: string | null
-    avatar: string | null
+    balance: Decimal
+    version: number
     ownerId: number
     createdAt: Date
     updatedAt: Date
-    _count: OrganizationCountAggregateOutputType | null
-    _avg: OrganizationAvgAggregateOutputType | null
-    _sum: OrganizationSumAggregateOutputType | null
-    _min: OrganizationMinAggregateOutputType | null
-    _max: OrganizationMaxAggregateOutputType | null
+    _count: WalletCountAggregateOutputType | null
+    _avg: WalletAvgAggregateOutputType | null
+    _sum: WalletSumAggregateOutputType | null
+    _min: WalletMinAggregateOutputType | null
+    _max: WalletMaxAggregateOutputType | null
   }
 
-  type GetOrganizationGroupByPayload<T extends OrganizationGroupByArgs> = Prisma.PrismaPromise<
+  type GetWalletGroupByPayload<T extends WalletGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<OrganizationGroupByOutputType, T['by']> &
+      PickEnumerable<WalletGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof OrganizationGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof WalletGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], OrganizationGroupByOutputType[P]>
-            : GetScalarType<T[P], OrganizationGroupByOutputType[P]>
+              : GetScalarType<T[P], WalletGroupByOutputType[P]>
+            : GetScalarType<T[P], WalletGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type OrganizationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type WalletSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     uid?: boolean
-    identifier?: boolean
-    displayName?: boolean
-    avatar?: boolean
+    balance?: boolean
+    version?: boolean
     ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
-    members?: boolean | Organization$membersArgs<ExtArgs>
-    apiKeys?: boolean | Organization$apiKeysArgs<ExtArgs>
-    _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["organization"]>
+    members?: boolean | Wallet$membersArgs<ExtArgs>
+    apiKeys?: boolean | Wallet$apiKeysArgs<ExtArgs>
+    _count?: boolean | WalletCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["wallet"]>
 
 
 
-  export type OrganizationSelectScalar = {
+  export type WalletSelectScalar = {
     id?: boolean
     uid?: boolean
-    identifier?: boolean
-    displayName?: boolean
-    avatar?: boolean
+    balance?: boolean
+    version?: boolean
     ownerId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid" | "identifier" | "displayName" | "avatar" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
-  export type OrganizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid" | "balance" | "version" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
+  export type WalletInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
-    members?: boolean | Organization$membersArgs<ExtArgs>
-    apiKeys?: boolean | Organization$apiKeysArgs<ExtArgs>
-    _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
+    members?: boolean | Wallet$membersArgs<ExtArgs>
+    apiKeys?: boolean | Wallet$apiKeysArgs<ExtArgs>
+    _count?: boolean | WalletCountOutputTypeDefaultArgs<ExtArgs>
   }
 
-  export type $OrganizationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Organization"
+  export type $WalletPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Wallet"
     objects: {
       owner: Prisma.$UserPayload<ExtArgs>
-      members: Prisma.$OrganizationMemberPayload<ExtArgs>[]
+      members: Prisma.$WalletMemberPayload<ExtArgs>[]
       apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       uid: string
-      identifier: string
-      displayName: string | null
-      avatar: string | null
+      balance: Prisma.Decimal
+      version: number
       ownerId: number
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["organization"]>
+    }, ExtArgs["result"]["wallet"]>
     composites: {}
   }
 
-  type OrganizationGetPayload<S extends boolean | null | undefined | OrganizationDefaultArgs> = $Result.GetResult<Prisma.$OrganizationPayload, S>
+  type WalletGetPayload<S extends boolean | null | undefined | WalletDefaultArgs> = $Result.GetResult<Prisma.$WalletPayload, S>
 
-  type OrganizationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrganizationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: OrganizationCountAggregateInputType | true
+  type WalletCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WalletFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WalletCountAggregateInputType | true
     }
 
-  export interface OrganizationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Organization'], meta: { name: 'Organization' } }
+  export interface WalletDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Wallet'], meta: { name: 'Wallet' } }
     /**
-     * Find zero or one Organization that matches the filter.
-     * @param {OrganizationFindUniqueArgs} args - Arguments to find a Organization
+     * Find zero or one Wallet that matches the filter.
+     * @param {WalletFindUniqueArgs} args - Arguments to find a Wallet
      * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findUnique({
+     * // Get one Wallet
+     * const wallet = await prisma.wallet.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends OrganizationFindUniqueArgs>(args: SelectSubset<T, OrganizationFindUniqueArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends WalletFindUniqueArgs>(args: SelectSubset<T, WalletFindUniqueArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Organization that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Wallet that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {OrganizationFindUniqueOrThrowArgs} args - Arguments to find a Organization
+     * @param {WalletFindUniqueOrThrowArgs} args - Arguments to find a Wallet
      * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findUniqueOrThrow({
+     * // Get one Wallet
+     * const wallet = await prisma.wallet.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends OrganizationFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganizationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends WalletFindUniqueOrThrowArgs>(args: SelectSubset<T, WalletFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Organization that matches the filter.
+     * Find the first Wallet that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationFindFirstArgs} args - Arguments to find a Organization
+     * @param {WalletFindFirstArgs} args - Arguments to find a Wallet
      * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findFirst({
+     * // Get one Wallet
+     * const wallet = await prisma.wallet.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends OrganizationFindFirstArgs>(args?: SelectSubset<T, OrganizationFindFirstArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends WalletFindFirstArgs>(args?: SelectSubset<T, WalletFindFirstArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Organization that matches the filter or
+     * Find the first Wallet that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationFindFirstOrThrowArgs} args - Arguments to find a Organization
+     * @param {WalletFindFirstOrThrowArgs} args - Arguments to find a Wallet
      * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findFirstOrThrow({
+     * // Get one Wallet
+     * const wallet = await prisma.wallet.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends OrganizationFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganizationFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends WalletFindFirstOrThrowArgs>(args?: SelectSubset<T, WalletFindFirstOrThrowArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Organizations that matches the filter.
+     * Find zero or more Wallets that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {WalletFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Organizations
-     * const organizations = await prisma.organization.findMany()
+     * // Get all Wallets
+     * const wallets = await prisma.wallet.findMany()
      * 
-     * // Get first 10 Organizations
-     * const organizations = await prisma.organization.findMany({ take: 10 })
+     * // Get first 10 Wallets
+     * const wallets = await prisma.wallet.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const organizationWithIdOnly = await prisma.organization.findMany({ select: { id: true } })
+     * const walletWithIdOnly = await prisma.wallet.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends OrganizationFindManyArgs>(args?: SelectSubset<T, OrganizationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends WalletFindManyArgs>(args?: SelectSubset<T, WalletFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Organization.
-     * @param {OrganizationCreateArgs} args - Arguments to create a Organization.
+     * Create a Wallet.
+     * @param {WalletCreateArgs} args - Arguments to create a Wallet.
      * @example
-     * // Create one Organization
-     * const Organization = await prisma.organization.create({
+     * // Create one Wallet
+     * const Wallet = await prisma.wallet.create({
      *   data: {
-     *     // ... data to create a Organization
+     *     // ... data to create a Wallet
      *   }
      * })
      * 
      */
-    create<T extends OrganizationCreateArgs>(args: SelectSubset<T, OrganizationCreateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends WalletCreateArgs>(args: SelectSubset<T, WalletCreateArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Organizations.
-     * @param {OrganizationCreateManyArgs} args - Arguments to create many Organizations.
+     * Create many Wallets.
+     * @param {WalletCreateManyArgs} args - Arguments to create many Wallets.
      * @example
-     * // Create many Organizations
-     * const organization = await prisma.organization.createMany({
+     * // Create many Wallets
+     * const wallet = await prisma.wallet.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends OrganizationCreateManyArgs>(args?: SelectSubset<T, OrganizationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends WalletCreateManyArgs>(args?: SelectSubset<T, WalletCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Organization.
-     * @param {OrganizationDeleteArgs} args - Arguments to delete one Organization.
+     * Delete a Wallet.
+     * @param {WalletDeleteArgs} args - Arguments to delete one Wallet.
      * @example
-     * // Delete one Organization
-     * const Organization = await prisma.organization.delete({
+     * // Delete one Wallet
+     * const Wallet = await prisma.wallet.delete({
      *   where: {
-     *     // ... filter to delete one Organization
+     *     // ... filter to delete one Wallet
      *   }
      * })
      * 
      */
-    delete<T extends OrganizationDeleteArgs>(args: SelectSubset<T, OrganizationDeleteArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends WalletDeleteArgs>(args: SelectSubset<T, WalletDeleteArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Organization.
-     * @param {OrganizationUpdateArgs} args - Arguments to update one Organization.
+     * Update one Wallet.
+     * @param {WalletUpdateArgs} args - Arguments to update one Wallet.
      * @example
-     * // Update one Organization
-     * const organization = await prisma.organization.update({
+     * // Update one Wallet
+     * const wallet = await prisma.wallet.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3026,30 +2981,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends OrganizationUpdateArgs>(args: SelectSubset<T, OrganizationUpdateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends WalletUpdateArgs>(args: SelectSubset<T, WalletUpdateArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Organizations.
-     * @param {OrganizationDeleteManyArgs} args - Arguments to filter Organizations to delete.
+     * Delete zero or more Wallets.
+     * @param {WalletDeleteManyArgs} args - Arguments to filter Wallets to delete.
      * @example
-     * // Delete a few Organizations
-     * const { count } = await prisma.organization.deleteMany({
+     * // Delete a few Wallets
+     * const { count } = await prisma.wallet.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends OrganizationDeleteManyArgs>(args?: SelectSubset<T, OrganizationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends WalletDeleteManyArgs>(args?: SelectSubset<T, WalletDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Organizations.
+     * Update zero or more Wallets.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {WalletUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Organizations
-     * const organization = await prisma.organization.updateMany({
+     * // Update many Wallets
+     * const wallet = await prisma.wallet.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3059,56 +3014,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends OrganizationUpdateManyArgs>(args: SelectSubset<T, OrganizationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends WalletUpdateManyArgs>(args: SelectSubset<T, WalletUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Organization.
-     * @param {OrganizationUpsertArgs} args - Arguments to update or create a Organization.
+     * Create or update one Wallet.
+     * @param {WalletUpsertArgs} args - Arguments to update or create a Wallet.
      * @example
-     * // Update or create a Organization
-     * const organization = await prisma.organization.upsert({
+     * // Update or create a Wallet
+     * const wallet = await prisma.wallet.upsert({
      *   create: {
-     *     // ... data to create a Organization
+     *     // ... data to create a Wallet
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Organization we want to update
+     *     // ... the filter for the Wallet we want to update
      *   }
      * })
      */
-    upsert<T extends OrganizationUpsertArgs>(args: SelectSubset<T, OrganizationUpsertArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends WalletUpsertArgs>(args: SelectSubset<T, WalletUpsertArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Organizations.
+     * Count the number of Wallets.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationCountArgs} args - Arguments to filter Organizations to count.
+     * @param {WalletCountArgs} args - Arguments to filter Wallets to count.
      * @example
-     * // Count the number of Organizations
-     * const count = await prisma.organization.count({
+     * // Count the number of Wallets
+     * const count = await prisma.wallet.count({
      *   where: {
-     *     // ... the filter for the Organizations we want to count
+     *     // ... the filter for the Wallets we want to count
      *   }
      * })
     **/
-    count<T extends OrganizationCountArgs>(
-      args?: Subset<T, OrganizationCountArgs>,
+    count<T extends WalletCountArgs>(
+      args?: Subset<T, WalletCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], OrganizationCountAggregateOutputType>
+          : GetScalarType<T['select'], WalletCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Organization.
+     * Allows you to perform aggregations operations on a Wallet.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {WalletAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -3128,13 +3083,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends OrganizationAggregateArgs>(args: Subset<T, OrganizationAggregateArgs>): Prisma.PrismaPromise<GetOrganizationAggregateType<T>>
+    aggregate<T extends WalletAggregateArgs>(args: Subset<T, WalletAggregateArgs>): Prisma.PrismaPromise<GetWalletAggregateType<T>>
 
     /**
-     * Group by Organization.
+     * Group by Wallet.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationGroupByArgs} args - Group by arguments.
+     * @param {WalletGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -3149,14 +3104,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends OrganizationGroupByArgs,
+      T extends WalletGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: OrganizationGroupByArgs['orderBy'] }
-        : { orderBy?: OrganizationGroupByArgs['orderBy'] },
+        ? { orderBy: WalletGroupByArgs['orderBy'] }
+        : { orderBy?: WalletGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -3205,24 +3160,24 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, OrganizationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganizationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, WalletGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWalletGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Organization model
+   * Fields of the Wallet model
    */
-  readonly fields: OrganizationFieldRefs;
+  readonly fields: WalletFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Organization.
+   * The delegate class that acts as a "Promise-like" for Wallet.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__WalletClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    members<T extends Organization$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    apiKeys<T extends Organization$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, Organization$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    members<T extends Wallet$membersArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    apiKeys<T extends Wallet$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3249,387 +3204,386 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Organization model
+   * Fields of the Wallet model
    */
-  interface OrganizationFieldRefs {
-    readonly id: FieldRef<"Organization", 'Int'>
-    readonly uid: FieldRef<"Organization", 'String'>
-    readonly identifier: FieldRef<"Organization", 'String'>
-    readonly displayName: FieldRef<"Organization", 'String'>
-    readonly avatar: FieldRef<"Organization", 'String'>
-    readonly ownerId: FieldRef<"Organization", 'Int'>
-    readonly createdAt: FieldRef<"Organization", 'DateTime'>
-    readonly updatedAt: FieldRef<"Organization", 'DateTime'>
+  interface WalletFieldRefs {
+    readonly id: FieldRef<"Wallet", 'Int'>
+    readonly uid: FieldRef<"Wallet", 'String'>
+    readonly balance: FieldRef<"Wallet", 'Decimal'>
+    readonly version: FieldRef<"Wallet", 'Int'>
+    readonly ownerId: FieldRef<"Wallet", 'Int'>
+    readonly createdAt: FieldRef<"Wallet", 'DateTime'>
+    readonly updatedAt: FieldRef<"Wallet", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Organization findUnique
+   * Wallet findUnique
    */
-  export type OrganizationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * Filter, which Organization to fetch.
+     * Filter, which Wallet to fetch.
      */
-    where: OrganizationWhereUniqueInput
+    where: WalletWhereUniqueInput
   }
 
   /**
-   * Organization findUniqueOrThrow
+   * Wallet findUniqueOrThrow
    */
-  export type OrganizationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * Filter, which Organization to fetch.
+     * Filter, which Wallet to fetch.
      */
-    where: OrganizationWhereUniqueInput
+    where: WalletWhereUniqueInput
   }
 
   /**
-   * Organization findFirst
+   * Wallet findFirst
    */
-  export type OrganizationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * Filter, which Organization to fetch.
+     * Filter, which Wallet to fetch.
      */
-    where?: OrganizationWhereInput
+    where?: WalletWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Organizations to fetch.
+     * Determine the order of Wallets to fetch.
      */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Organizations.
+     * Sets the position for searching for Wallets.
      */
-    cursor?: OrganizationWhereUniqueInput
+    cursor?: WalletWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Organizations from the position of the cursor.
+     * Take `±n` Wallets from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Organizations.
+     * Skip the first `n` Wallets.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Organizations.
+     * Filter by unique combinations of Wallets.
      */
-    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
+    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
   }
 
   /**
-   * Organization findFirstOrThrow
+   * Wallet findFirstOrThrow
    */
-  export type OrganizationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * Filter, which Organization to fetch.
+     * Filter, which Wallet to fetch.
      */
-    where?: OrganizationWhereInput
+    where?: WalletWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Organizations to fetch.
+     * Determine the order of Wallets to fetch.
      */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Organizations.
+     * Sets the position for searching for Wallets.
      */
-    cursor?: OrganizationWhereUniqueInput
+    cursor?: WalletWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Organizations from the position of the cursor.
+     * Take `±n` Wallets from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Organizations.
+     * Skip the first `n` Wallets.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Organizations.
+     * Filter by unique combinations of Wallets.
      */
-    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
+    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
   }
 
   /**
-   * Organization findMany
+   * Wallet findMany
    */
-  export type OrganizationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * Filter, which Organizations to fetch.
+     * Filter, which Wallets to fetch.
      */
-    where?: OrganizationWhereInput
+    where?: WalletWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Organizations to fetch.
+     * Determine the order of Wallets to fetch.
      */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Organizations.
+     * Sets the position for listing Wallets.
      */
-    cursor?: OrganizationWhereUniqueInput
+    cursor?: WalletWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Organizations from the position of the cursor.
+     * Take `±n` Wallets from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Organizations.
+     * Skip the first `n` Wallets.
      */
     skip?: number
-    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
+    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
   }
 
   /**
-   * Organization create
+   * Wallet create
    */
-  export type OrganizationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * The data needed to create a Organization.
+     * The data needed to create a Wallet.
      */
-    data: XOR<OrganizationCreateInput, OrganizationUncheckedCreateInput>
+    data: XOR<WalletCreateInput, WalletUncheckedCreateInput>
   }
 
   /**
-   * Organization createMany
+   * Wallet createMany
    */
-  export type OrganizationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Organizations.
+     * The data used to create many Wallets.
      */
-    data: OrganizationCreateManyInput | OrganizationCreateManyInput[]
+    data: WalletCreateManyInput | WalletCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Organization update
+   * Wallet update
    */
-  export type OrganizationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * The data needed to update a Organization.
+     * The data needed to update a Wallet.
      */
-    data: XOR<OrganizationUpdateInput, OrganizationUncheckedUpdateInput>
+    data: XOR<WalletUpdateInput, WalletUncheckedUpdateInput>
     /**
-     * Choose, which Organization to update.
+     * Choose, which Wallet to update.
      */
-    where: OrganizationWhereUniqueInput
+    where: WalletWhereUniqueInput
   }
 
   /**
-   * Organization updateMany
+   * Wallet updateMany
    */
-  export type OrganizationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Organizations.
+     * The data used to update Wallets.
      */
-    data: XOR<OrganizationUpdateManyMutationInput, OrganizationUncheckedUpdateManyInput>
+    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyInput>
     /**
-     * Filter which Organizations to update
+     * Filter which Wallets to update
      */
-    where?: OrganizationWhereInput
+    where?: WalletWhereInput
     /**
-     * Limit how many Organizations to update.
+     * Limit how many Wallets to update.
      */
     limit?: number
   }
 
   /**
-   * Organization upsert
+   * Wallet upsert
    */
-  export type OrganizationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * The filter to search for the Organization to update in case it exists.
+     * The filter to search for the Wallet to update in case it exists.
      */
-    where: OrganizationWhereUniqueInput
+    where: WalletWhereUniqueInput
     /**
-     * In case the Organization found by the `where` argument doesn't exist, create a new Organization with this data.
+     * In case the Wallet found by the `where` argument doesn't exist, create a new Wallet with this data.
      */
-    create: XOR<OrganizationCreateInput, OrganizationUncheckedCreateInput>
+    create: XOR<WalletCreateInput, WalletUncheckedCreateInput>
     /**
-     * In case the Organization was found with the provided `where` argument, update it with this data.
+     * In case the Wallet was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<OrganizationUpdateInput, OrganizationUncheckedUpdateInput>
+    update: XOR<WalletUpdateInput, WalletUncheckedUpdateInput>
   }
 
   /**
-   * Organization delete
+   * Wallet delete
    */
-  export type OrganizationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
     /**
-     * Filter which Organization to delete.
+     * Filter which Wallet to delete.
      */
-    where: OrganizationWhereUniqueInput
+    where: WalletWhereUniqueInput
   }
 
   /**
-   * Organization deleteMany
+   * Wallet deleteMany
    */
-  export type OrganizationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Organizations to delete
+     * Filter which Wallets to delete
      */
-    where?: OrganizationWhereInput
+    where?: WalletWhereInput
     /**
-     * Limit how many Organizations to delete.
+     * Limit how many Wallets to delete.
      */
     limit?: number
   }
 
   /**
-   * Organization.members
+   * Wallet.members
    */
-  export type Organization$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Wallet$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
-    where?: OrganizationMemberWhereInput
-    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
-    cursor?: OrganizationMemberWhereUniqueInput
+    include?: WalletMemberInclude<ExtArgs> | null
+    where?: WalletMemberWhereInput
+    orderBy?: WalletMemberOrderByWithRelationInput | WalletMemberOrderByWithRelationInput[]
+    cursor?: WalletMemberWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+    distinct?: WalletMemberScalarFieldEnum | WalletMemberScalarFieldEnum[]
   }
 
   /**
-   * Organization.apiKeys
+   * Wallet.apiKeys
    */
-  export type Organization$apiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Wallet$apiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ApiKey
      */
@@ -3651,460 +3605,461 @@ export namespace Prisma {
   }
 
   /**
-   * Organization without action
+   * Wallet without action
    */
-  export type OrganizationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the Wallet
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: WalletSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the Wallet
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: WalletOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
+    include?: WalletInclude<ExtArgs> | null
   }
 
 
   /**
-   * Model OrganizationMember
+   * Model WalletMember
    */
 
-  export type AggregateOrganizationMember = {
-    _count: OrganizationMemberCountAggregateOutputType | null
-    _avg: OrganizationMemberAvgAggregateOutputType | null
-    _sum: OrganizationMemberSumAggregateOutputType | null
-    _min: OrganizationMemberMinAggregateOutputType | null
-    _max: OrganizationMemberMaxAggregateOutputType | null
+  export type AggregateWalletMember = {
+    _count: WalletMemberCountAggregateOutputType | null
+    _avg: WalletMemberAvgAggregateOutputType | null
+    _sum: WalletMemberSumAggregateOutputType | null
+    _min: WalletMemberMinAggregateOutputType | null
+    _max: WalletMemberMaxAggregateOutputType | null
   }
 
-  export type OrganizationMemberAvgAggregateOutputType = {
+  export type WalletMemberAvgAggregateOutputType = {
     id: number | null
+    walletId: number | null
+    userId: number | null
     creditLimit: Decimal | null
     creditAvailable: Decimal | null
-    organizationId: number | null
+    creditUsed: Decimal | null
   }
 
-  export type OrganizationMemberSumAggregateOutputType = {
+  export type WalletMemberSumAggregateOutputType = {
     id: number | null
+    walletId: number | null
+    userId: number | null
     creditLimit: Decimal | null
     creditAvailable: Decimal | null
-    organizationId: number | null
+    creditUsed: Decimal | null
   }
 
-  export type OrganizationMemberMinAggregateOutputType = {
+  export type WalletMemberMinAggregateOutputType = {
     id: number | null
-    uid: string | null
-    username: string | null
-    passwordHash: string | null
+    walletId: number | null
+    userId: number | null
     creditLimit: Decimal | null
     creditAvailable: Decimal | null
-    isDeleted: boolean | null
-    organizationId: number | null
-    createdAt: Date | null
+    creditUsed: Decimal | null
+    isActive: boolean | null
+    joinedAt: Date | null
+    leftAt: Date | null
     updatedAt: Date | null
-    lastLoginAt: Date | null
   }
 
-  export type OrganizationMemberMaxAggregateOutputType = {
+  export type WalletMemberMaxAggregateOutputType = {
     id: number | null
-    uid: string | null
-    username: string | null
-    passwordHash: string | null
+    walletId: number | null
+    userId: number | null
     creditLimit: Decimal | null
     creditAvailable: Decimal | null
-    isDeleted: boolean | null
-    organizationId: number | null
-    createdAt: Date | null
+    creditUsed: Decimal | null
+    isActive: boolean | null
+    joinedAt: Date | null
+    leftAt: Date | null
     updatedAt: Date | null
-    lastLoginAt: Date | null
   }
 
-  export type OrganizationMemberCountAggregateOutputType = {
+  export type WalletMemberCountAggregateOutputType = {
     id: number
-    uid: number
-    username: number
-    passwordHash: number
+    walletId: number
+    userId: number
     creditLimit: number
     creditAvailable: number
-    isDeleted: number
-    organizationId: number
-    createdAt: number
+    creditUsed: number
+    isActive: number
+    joinedAt: number
+    leftAt: number
     updatedAt: number
-    lastLoginAt: number
     _all: number
   }
 
 
-  export type OrganizationMemberAvgAggregateInputType = {
+  export type WalletMemberAvgAggregateInputType = {
     id?: true
+    walletId?: true
+    userId?: true
     creditLimit?: true
     creditAvailable?: true
-    organizationId?: true
+    creditUsed?: true
   }
 
-  export type OrganizationMemberSumAggregateInputType = {
+  export type WalletMemberSumAggregateInputType = {
     id?: true
+    walletId?: true
+    userId?: true
     creditLimit?: true
     creditAvailable?: true
-    organizationId?: true
+    creditUsed?: true
   }
 
-  export type OrganizationMemberMinAggregateInputType = {
+  export type WalletMemberMinAggregateInputType = {
     id?: true
-    uid?: true
-    username?: true
-    passwordHash?: true
+    walletId?: true
+    userId?: true
     creditLimit?: true
     creditAvailable?: true
-    isDeleted?: true
-    organizationId?: true
-    createdAt?: true
+    creditUsed?: true
+    isActive?: true
+    joinedAt?: true
+    leftAt?: true
     updatedAt?: true
-    lastLoginAt?: true
   }
 
-  export type OrganizationMemberMaxAggregateInputType = {
+  export type WalletMemberMaxAggregateInputType = {
     id?: true
-    uid?: true
-    username?: true
-    passwordHash?: true
+    walletId?: true
+    userId?: true
     creditLimit?: true
     creditAvailable?: true
-    isDeleted?: true
-    organizationId?: true
-    createdAt?: true
+    creditUsed?: true
+    isActive?: true
+    joinedAt?: true
+    leftAt?: true
     updatedAt?: true
-    lastLoginAt?: true
   }
 
-  export type OrganizationMemberCountAggregateInputType = {
+  export type WalletMemberCountAggregateInputType = {
     id?: true
-    uid?: true
-    username?: true
-    passwordHash?: true
+    walletId?: true
+    userId?: true
     creditLimit?: true
     creditAvailable?: true
-    isDeleted?: true
-    organizationId?: true
-    createdAt?: true
+    creditUsed?: true
+    isActive?: true
+    joinedAt?: true
+    leftAt?: true
     updatedAt?: true
-    lastLoginAt?: true
     _all?: true
   }
 
-  export type OrganizationMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which OrganizationMember to aggregate.
+     * Filter which WalletMember to aggregate.
      */
-    where?: OrganizationMemberWhereInput
+    where?: WalletMemberWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrganizationMembers to fetch.
+     * Determine the order of WalletMembers to fetch.
      */
-    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    orderBy?: WalletMemberOrderByWithRelationInput | WalletMemberOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: OrganizationMemberWhereUniqueInput
+    cursor?: WalletMemberWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrganizationMembers from the position of the cursor.
+     * Take `±n` WalletMembers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrganizationMembers.
+     * Skip the first `n` WalletMembers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned OrganizationMembers
+     * Count returned WalletMembers
     **/
-    _count?: true | OrganizationMemberCountAggregateInputType
+    _count?: true | WalletMemberCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: OrganizationMemberAvgAggregateInputType
+    _avg?: WalletMemberAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: OrganizationMemberSumAggregateInputType
+    _sum?: WalletMemberSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: OrganizationMemberMinAggregateInputType
+    _min?: WalletMemberMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: OrganizationMemberMaxAggregateInputType
+    _max?: WalletMemberMaxAggregateInputType
   }
 
-  export type GetOrganizationMemberAggregateType<T extends OrganizationMemberAggregateArgs> = {
-        [P in keyof T & keyof AggregateOrganizationMember]: P extends '_count' | 'count'
+  export type GetWalletMemberAggregateType<T extends WalletMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateWalletMember]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateOrganizationMember[P]>
-      : GetScalarType<T[P], AggregateOrganizationMember[P]>
+        : GetScalarType<T[P], AggregateWalletMember[P]>
+      : GetScalarType<T[P], AggregateWalletMember[P]>
   }
 
 
 
 
-  export type OrganizationMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrganizationMemberWhereInput
-    orderBy?: OrganizationMemberOrderByWithAggregationInput | OrganizationMemberOrderByWithAggregationInput[]
-    by: OrganizationMemberScalarFieldEnum[] | OrganizationMemberScalarFieldEnum
-    having?: OrganizationMemberScalarWhereWithAggregatesInput
+  export type WalletMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletMemberWhereInput
+    orderBy?: WalletMemberOrderByWithAggregationInput | WalletMemberOrderByWithAggregationInput[]
+    by: WalletMemberScalarFieldEnum[] | WalletMemberScalarFieldEnum
+    having?: WalletMemberScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: OrganizationMemberCountAggregateInputType | true
-    _avg?: OrganizationMemberAvgAggregateInputType
-    _sum?: OrganizationMemberSumAggregateInputType
-    _min?: OrganizationMemberMinAggregateInputType
-    _max?: OrganizationMemberMaxAggregateInputType
+    _count?: WalletMemberCountAggregateInputType | true
+    _avg?: WalletMemberAvgAggregateInputType
+    _sum?: WalletMemberSumAggregateInputType
+    _min?: WalletMemberMinAggregateInputType
+    _max?: WalletMemberMaxAggregateInputType
   }
 
-  export type OrganizationMemberGroupByOutputType = {
+  export type WalletMemberGroupByOutputType = {
     id: number
-    uid: string
-    username: string
-    passwordHash: string
+    walletId: number
+    userId: number
     creditLimit: Decimal
     creditAvailable: Decimal
-    isDeleted: boolean
-    organizationId: number
-    createdAt: Date
+    creditUsed: Decimal
+    isActive: boolean
+    joinedAt: Date
+    leftAt: Date | null
     updatedAt: Date
-    lastLoginAt: Date | null
-    _count: OrganizationMemberCountAggregateOutputType | null
-    _avg: OrganizationMemberAvgAggregateOutputType | null
-    _sum: OrganizationMemberSumAggregateOutputType | null
-    _min: OrganizationMemberMinAggregateOutputType | null
-    _max: OrganizationMemberMaxAggregateOutputType | null
+    _count: WalletMemberCountAggregateOutputType | null
+    _avg: WalletMemberAvgAggregateOutputType | null
+    _sum: WalletMemberSumAggregateOutputType | null
+    _min: WalletMemberMinAggregateOutputType | null
+    _max: WalletMemberMaxAggregateOutputType | null
   }
 
-  type GetOrganizationMemberGroupByPayload<T extends OrganizationMemberGroupByArgs> = Prisma.PrismaPromise<
+  type GetWalletMemberGroupByPayload<T extends WalletMemberGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<OrganizationMemberGroupByOutputType, T['by']> &
+      PickEnumerable<WalletMemberGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof OrganizationMemberGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof WalletMemberGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], OrganizationMemberGroupByOutputType[P]>
-            : GetScalarType<T[P], OrganizationMemberGroupByOutputType[P]>
+              : GetScalarType<T[P], WalletMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], WalletMemberGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type OrganizationMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type WalletMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    uid?: boolean
-    username?: boolean
-    passwordHash?: boolean
+    walletId?: boolean
+    userId?: boolean
     creditLimit?: boolean
     creditAvailable?: boolean
-    isDeleted?: boolean
-    organizationId?: boolean
-    createdAt?: boolean
+    creditUsed?: boolean
+    isActive?: boolean
+    joinedAt?: boolean
+    leftAt?: boolean
     updatedAt?: boolean
-    lastLoginAt?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["organizationMember"]>
+    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["walletMember"]>
 
 
 
-  export type OrganizationMemberSelectScalar = {
+  export type WalletMemberSelectScalar = {
     id?: boolean
-    uid?: boolean
-    username?: boolean
-    passwordHash?: boolean
+    walletId?: boolean
+    userId?: boolean
     creditLimit?: boolean
     creditAvailable?: boolean
-    isDeleted?: boolean
-    organizationId?: boolean
-    createdAt?: boolean
+    creditUsed?: boolean
+    isActive?: boolean
+    joinedAt?: boolean
+    leftAt?: boolean
     updatedAt?: boolean
-    lastLoginAt?: boolean
   }
 
-  export type OrganizationMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "uid" | "username" | "passwordHash" | "creditLimit" | "creditAvailable" | "isDeleted" | "organizationId" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["organizationMember"]>
-  export type OrganizationMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  export type WalletMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "walletId" | "userId" | "creditLimit" | "creditAvailable" | "creditUsed" | "isActive" | "joinedAt" | "leftAt" | "updatedAt", ExtArgs["result"]["walletMember"]>
+  export type WalletMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
-  export type $OrganizationMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "OrganizationMember"
+  export type $WalletMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WalletMember"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
+      wallet: Prisma.$WalletPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      uid: string
-      username: string
-      passwordHash: string
+      walletId: number
+      userId: number
       creditLimit: Prisma.Decimal
       creditAvailable: Prisma.Decimal
-      isDeleted: boolean
-      organizationId: number
-      createdAt: Date
+      creditUsed: Prisma.Decimal
+      isActive: boolean
+      joinedAt: Date
+      leftAt: Date | null
       updatedAt: Date
-      lastLoginAt: Date | null
-    }, ExtArgs["result"]["organizationMember"]>
+    }, ExtArgs["result"]["walletMember"]>
     composites: {}
   }
 
-  type OrganizationMemberGetPayload<S extends boolean | null | undefined | OrganizationMemberDefaultArgs> = $Result.GetResult<Prisma.$OrganizationMemberPayload, S>
+  type WalletMemberGetPayload<S extends boolean | null | undefined | WalletMemberDefaultArgs> = $Result.GetResult<Prisma.$WalletMemberPayload, S>
 
-  type OrganizationMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrganizationMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: OrganizationMemberCountAggregateInputType | true
+  type WalletMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WalletMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WalletMemberCountAggregateInputType | true
     }
 
-  export interface OrganizationMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrganizationMember'], meta: { name: 'OrganizationMember' } }
+  export interface WalletMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WalletMember'], meta: { name: 'WalletMember' } }
     /**
-     * Find zero or one OrganizationMember that matches the filter.
-     * @param {OrganizationMemberFindUniqueArgs} args - Arguments to find a OrganizationMember
+     * Find zero or one WalletMember that matches the filter.
+     * @param {WalletMemberFindUniqueArgs} args - Arguments to find a WalletMember
      * @example
-     * // Get one OrganizationMember
-     * const organizationMember = await prisma.organizationMember.findUnique({
+     * // Get one WalletMember
+     * const walletMember = await prisma.walletMember.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends OrganizationMemberFindUniqueArgs>(args: SelectSubset<T, OrganizationMemberFindUniqueArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends WalletMemberFindUniqueArgs>(args: SelectSubset<T, WalletMemberFindUniqueArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one OrganizationMember that matches the filter or throw an error with `error.code='P2025'`
+     * Find one WalletMember that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {OrganizationMemberFindUniqueOrThrowArgs} args - Arguments to find a OrganizationMember
+     * @param {WalletMemberFindUniqueOrThrowArgs} args - Arguments to find a WalletMember
      * @example
-     * // Get one OrganizationMember
-     * const organizationMember = await prisma.organizationMember.findUniqueOrThrow({
+     * // Get one WalletMember
+     * const walletMember = await prisma.walletMember.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends OrganizationMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganizationMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends WalletMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, WalletMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first OrganizationMember that matches the filter.
+     * Find the first WalletMember that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationMemberFindFirstArgs} args - Arguments to find a OrganizationMember
+     * @param {WalletMemberFindFirstArgs} args - Arguments to find a WalletMember
      * @example
-     * // Get one OrganizationMember
-     * const organizationMember = await prisma.organizationMember.findFirst({
+     * // Get one WalletMember
+     * const walletMember = await prisma.walletMember.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends OrganizationMemberFindFirstArgs>(args?: SelectSubset<T, OrganizationMemberFindFirstArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends WalletMemberFindFirstArgs>(args?: SelectSubset<T, WalletMemberFindFirstArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first OrganizationMember that matches the filter or
+     * Find the first WalletMember that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationMemberFindFirstOrThrowArgs} args - Arguments to find a OrganizationMember
+     * @param {WalletMemberFindFirstOrThrowArgs} args - Arguments to find a WalletMember
      * @example
-     * // Get one OrganizationMember
-     * const organizationMember = await prisma.organizationMember.findFirstOrThrow({
+     * // Get one WalletMember
+     * const walletMember = await prisma.walletMember.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends OrganizationMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganizationMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends WalletMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, WalletMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more OrganizationMembers that matches the filter.
+     * Find zero or more WalletMembers that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {WalletMemberFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all OrganizationMembers
-     * const organizationMembers = await prisma.organizationMember.findMany()
+     * // Get all WalletMembers
+     * const walletMembers = await prisma.walletMember.findMany()
      * 
-     * // Get first 10 OrganizationMembers
-     * const organizationMembers = await prisma.organizationMember.findMany({ take: 10 })
+     * // Get first 10 WalletMembers
+     * const walletMembers = await prisma.walletMember.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const organizationMemberWithIdOnly = await prisma.organizationMember.findMany({ select: { id: true } })
+     * const walletMemberWithIdOnly = await prisma.walletMember.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends OrganizationMemberFindManyArgs>(args?: SelectSubset<T, OrganizationMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends WalletMemberFindManyArgs>(args?: SelectSubset<T, WalletMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a OrganizationMember.
-     * @param {OrganizationMemberCreateArgs} args - Arguments to create a OrganizationMember.
+     * Create a WalletMember.
+     * @param {WalletMemberCreateArgs} args - Arguments to create a WalletMember.
      * @example
-     * // Create one OrganizationMember
-     * const OrganizationMember = await prisma.organizationMember.create({
+     * // Create one WalletMember
+     * const WalletMember = await prisma.walletMember.create({
      *   data: {
-     *     // ... data to create a OrganizationMember
+     *     // ... data to create a WalletMember
      *   }
      * })
      * 
      */
-    create<T extends OrganizationMemberCreateArgs>(args: SelectSubset<T, OrganizationMemberCreateArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends WalletMemberCreateArgs>(args: SelectSubset<T, WalletMemberCreateArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many OrganizationMembers.
-     * @param {OrganizationMemberCreateManyArgs} args - Arguments to create many OrganizationMembers.
+     * Create many WalletMembers.
+     * @param {WalletMemberCreateManyArgs} args - Arguments to create many WalletMembers.
      * @example
-     * // Create many OrganizationMembers
-     * const organizationMember = await prisma.organizationMember.createMany({
+     * // Create many WalletMembers
+     * const walletMember = await prisma.walletMember.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends OrganizationMemberCreateManyArgs>(args?: SelectSubset<T, OrganizationMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends WalletMemberCreateManyArgs>(args?: SelectSubset<T, WalletMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a OrganizationMember.
-     * @param {OrganizationMemberDeleteArgs} args - Arguments to delete one OrganizationMember.
+     * Delete a WalletMember.
+     * @param {WalletMemberDeleteArgs} args - Arguments to delete one WalletMember.
      * @example
-     * // Delete one OrganizationMember
-     * const OrganizationMember = await prisma.organizationMember.delete({
+     * // Delete one WalletMember
+     * const WalletMember = await prisma.walletMember.delete({
      *   where: {
-     *     // ... filter to delete one OrganizationMember
+     *     // ... filter to delete one WalletMember
      *   }
      * })
      * 
      */
-    delete<T extends OrganizationMemberDeleteArgs>(args: SelectSubset<T, OrganizationMemberDeleteArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends WalletMemberDeleteArgs>(args: SelectSubset<T, WalletMemberDeleteArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one OrganizationMember.
-     * @param {OrganizationMemberUpdateArgs} args - Arguments to update one OrganizationMember.
+     * Update one WalletMember.
+     * @param {WalletMemberUpdateArgs} args - Arguments to update one WalletMember.
      * @example
-     * // Update one OrganizationMember
-     * const organizationMember = await prisma.organizationMember.update({
+     * // Update one WalletMember
+     * const walletMember = await prisma.walletMember.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4114,30 +4069,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends OrganizationMemberUpdateArgs>(args: SelectSubset<T, OrganizationMemberUpdateArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends WalletMemberUpdateArgs>(args: SelectSubset<T, WalletMemberUpdateArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more OrganizationMembers.
-     * @param {OrganizationMemberDeleteManyArgs} args - Arguments to filter OrganizationMembers to delete.
+     * Delete zero or more WalletMembers.
+     * @param {WalletMemberDeleteManyArgs} args - Arguments to filter WalletMembers to delete.
      * @example
-     * // Delete a few OrganizationMembers
-     * const { count } = await prisma.organizationMember.deleteMany({
+     * // Delete a few WalletMembers
+     * const { count } = await prisma.walletMember.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends OrganizationMemberDeleteManyArgs>(args?: SelectSubset<T, OrganizationMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends WalletMemberDeleteManyArgs>(args?: SelectSubset<T, WalletMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more OrganizationMembers.
+     * Update zero or more WalletMembers.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {WalletMemberUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many OrganizationMembers
-     * const organizationMember = await prisma.organizationMember.updateMany({
+     * // Update many WalletMembers
+     * const walletMember = await prisma.walletMember.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4147,56 +4102,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends OrganizationMemberUpdateManyArgs>(args: SelectSubset<T, OrganizationMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends WalletMemberUpdateManyArgs>(args: SelectSubset<T, WalletMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one OrganizationMember.
-     * @param {OrganizationMemberUpsertArgs} args - Arguments to update or create a OrganizationMember.
+     * Create or update one WalletMember.
+     * @param {WalletMemberUpsertArgs} args - Arguments to update or create a WalletMember.
      * @example
-     * // Update or create a OrganizationMember
-     * const organizationMember = await prisma.organizationMember.upsert({
+     * // Update or create a WalletMember
+     * const walletMember = await prisma.walletMember.upsert({
      *   create: {
-     *     // ... data to create a OrganizationMember
+     *     // ... data to create a WalletMember
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the OrganizationMember we want to update
+     *     // ... the filter for the WalletMember we want to update
      *   }
      * })
      */
-    upsert<T extends OrganizationMemberUpsertArgs>(args: SelectSubset<T, OrganizationMemberUpsertArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends WalletMemberUpsertArgs>(args: SelectSubset<T, WalletMemberUpsertArgs<ExtArgs>>): Prisma__WalletMemberClient<$Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of OrganizationMembers.
+     * Count the number of WalletMembers.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationMemberCountArgs} args - Arguments to filter OrganizationMembers to count.
+     * @param {WalletMemberCountArgs} args - Arguments to filter WalletMembers to count.
      * @example
-     * // Count the number of OrganizationMembers
-     * const count = await prisma.organizationMember.count({
+     * // Count the number of WalletMembers
+     * const count = await prisma.walletMember.count({
      *   where: {
-     *     // ... the filter for the OrganizationMembers we want to count
+     *     // ... the filter for the WalletMembers we want to count
      *   }
      * })
     **/
-    count<T extends OrganizationMemberCountArgs>(
-      args?: Subset<T, OrganizationMemberCountArgs>,
+    count<T extends WalletMemberCountArgs>(
+      args?: Subset<T, WalletMemberCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], OrganizationMemberCountAggregateOutputType>
+          : GetScalarType<T['select'], WalletMemberCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a OrganizationMember.
+     * Allows you to perform aggregations operations on a WalletMember.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {WalletMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -4216,13 +4171,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends OrganizationMemberAggregateArgs>(args: Subset<T, OrganizationMemberAggregateArgs>): Prisma.PrismaPromise<GetOrganizationMemberAggregateType<T>>
+    aggregate<T extends WalletMemberAggregateArgs>(args: Subset<T, WalletMemberAggregateArgs>): Prisma.PrismaPromise<GetWalletMemberAggregateType<T>>
 
     /**
-     * Group by OrganizationMember.
+     * Group by WalletMember.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationMemberGroupByArgs} args - Group by arguments.
+     * @param {WalletMemberGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -4237,14 +4192,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends OrganizationMemberGroupByArgs,
+      T extends WalletMemberGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: OrganizationMemberGroupByArgs['orderBy'] }
-        : { orderBy?: OrganizationMemberGroupByArgs['orderBy'] },
+        ? { orderBy: WalletMemberGroupByArgs['orderBy'] }
+        : { orderBy?: WalletMemberGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -4293,22 +4248,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, OrganizationMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganizationMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, WalletMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWalletMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the OrganizationMember model
+   * Fields of the WalletMember model
    */
-  readonly fields: OrganizationMemberFieldRefs;
+  readonly fields: WalletMemberFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for OrganizationMember.
+   * The delegate class that acts as a "Promise-like" for WalletMember.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__OrganizationMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__WalletMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    wallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4335,378 +4291,1407 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the OrganizationMember model
+   * Fields of the WalletMember model
    */
-  interface OrganizationMemberFieldRefs {
-    readonly id: FieldRef<"OrganizationMember", 'Int'>
-    readonly uid: FieldRef<"OrganizationMember", 'String'>
-    readonly username: FieldRef<"OrganizationMember", 'String'>
-    readonly passwordHash: FieldRef<"OrganizationMember", 'String'>
-    readonly creditLimit: FieldRef<"OrganizationMember", 'Decimal'>
-    readonly creditAvailable: FieldRef<"OrganizationMember", 'Decimal'>
-    readonly isDeleted: FieldRef<"OrganizationMember", 'Boolean'>
-    readonly organizationId: FieldRef<"OrganizationMember", 'Int'>
-    readonly createdAt: FieldRef<"OrganizationMember", 'DateTime'>
-    readonly updatedAt: FieldRef<"OrganizationMember", 'DateTime'>
-    readonly lastLoginAt: FieldRef<"OrganizationMember", 'DateTime'>
+  interface WalletMemberFieldRefs {
+    readonly id: FieldRef<"WalletMember", 'Int'>
+    readonly walletId: FieldRef<"WalletMember", 'Int'>
+    readonly userId: FieldRef<"WalletMember", 'Int'>
+    readonly creditLimit: FieldRef<"WalletMember", 'Decimal'>
+    readonly creditAvailable: FieldRef<"WalletMember", 'Decimal'>
+    readonly creditUsed: FieldRef<"WalletMember", 'Decimal'>
+    readonly isActive: FieldRef<"WalletMember", 'Boolean'>
+    readonly joinedAt: FieldRef<"WalletMember", 'DateTime'>
+    readonly leftAt: FieldRef<"WalletMember", 'DateTime'>
+    readonly updatedAt: FieldRef<"WalletMember", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * OrganizationMember findUnique
+   * WalletMember findUnique
    */
-  export type OrganizationMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * Filter, which OrganizationMember to fetch.
+     * Filter, which WalletMember to fetch.
      */
-    where: OrganizationMemberWhereUniqueInput
+    where: WalletMemberWhereUniqueInput
   }
 
   /**
-   * OrganizationMember findUniqueOrThrow
+   * WalletMember findUniqueOrThrow
    */
-  export type OrganizationMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * Filter, which OrganizationMember to fetch.
+     * Filter, which WalletMember to fetch.
      */
-    where: OrganizationMemberWhereUniqueInput
+    where: WalletMemberWhereUniqueInput
   }
 
   /**
-   * OrganizationMember findFirst
+   * WalletMember findFirst
    */
-  export type OrganizationMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * Filter, which OrganizationMember to fetch.
+     * Filter, which WalletMember to fetch.
      */
-    where?: OrganizationMemberWhereInput
+    where?: WalletMemberWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrganizationMembers to fetch.
+     * Determine the order of WalletMembers to fetch.
      */
-    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    orderBy?: WalletMemberOrderByWithRelationInput | WalletMemberOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for OrganizationMembers.
+     * Sets the position for searching for WalletMembers.
      */
-    cursor?: OrganizationMemberWhereUniqueInput
+    cursor?: WalletMemberWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrganizationMembers from the position of the cursor.
+     * Take `±n` WalletMembers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrganizationMembers.
+     * Skip the first `n` WalletMembers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of OrganizationMembers.
+     * Filter by unique combinations of WalletMembers.
      */
-    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+    distinct?: WalletMemberScalarFieldEnum | WalletMemberScalarFieldEnum[]
   }
 
   /**
-   * OrganizationMember findFirstOrThrow
+   * WalletMember findFirstOrThrow
    */
-  export type OrganizationMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * Filter, which OrganizationMember to fetch.
+     * Filter, which WalletMember to fetch.
      */
-    where?: OrganizationMemberWhereInput
+    where?: WalletMemberWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrganizationMembers to fetch.
+     * Determine the order of WalletMembers to fetch.
      */
-    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    orderBy?: WalletMemberOrderByWithRelationInput | WalletMemberOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for OrganizationMembers.
+     * Sets the position for searching for WalletMembers.
      */
-    cursor?: OrganizationMemberWhereUniqueInput
+    cursor?: WalletMemberWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrganizationMembers from the position of the cursor.
+     * Take `±n` WalletMembers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrganizationMembers.
+     * Skip the first `n` WalletMembers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of OrganizationMembers.
+     * Filter by unique combinations of WalletMembers.
      */
-    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+    distinct?: WalletMemberScalarFieldEnum | WalletMemberScalarFieldEnum[]
   }
 
   /**
-   * OrganizationMember findMany
+   * WalletMember findMany
    */
-  export type OrganizationMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * Filter, which OrganizationMembers to fetch.
+     * Filter, which WalletMembers to fetch.
      */
-    where?: OrganizationMemberWhereInput
+    where?: WalletMemberWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of OrganizationMembers to fetch.
+     * Determine the order of WalletMembers to fetch.
      */
-    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    orderBy?: WalletMemberOrderByWithRelationInput | WalletMemberOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing OrganizationMembers.
+     * Sets the position for listing WalletMembers.
      */
-    cursor?: OrganizationMemberWhereUniqueInput
+    cursor?: WalletMemberWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` OrganizationMembers from the position of the cursor.
+     * Take `±n` WalletMembers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` OrganizationMembers.
+     * Skip the first `n` WalletMembers.
      */
     skip?: number
-    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+    distinct?: WalletMemberScalarFieldEnum | WalletMemberScalarFieldEnum[]
   }
 
   /**
-   * OrganizationMember create
+   * WalletMember create
    */
-  export type OrganizationMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * The data needed to create a OrganizationMember.
+     * The data needed to create a WalletMember.
      */
-    data: XOR<OrganizationMemberCreateInput, OrganizationMemberUncheckedCreateInput>
+    data: XOR<WalletMemberCreateInput, WalletMemberUncheckedCreateInput>
   }
 
   /**
-   * OrganizationMember createMany
+   * WalletMember createMany
    */
-  export type OrganizationMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many OrganizationMembers.
+     * The data used to create many WalletMembers.
      */
-    data: OrganizationMemberCreateManyInput | OrganizationMemberCreateManyInput[]
+    data: WalletMemberCreateManyInput | WalletMemberCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * OrganizationMember update
+   * WalletMember update
    */
-  export type OrganizationMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * The data needed to update a OrganizationMember.
+     * The data needed to update a WalletMember.
      */
-    data: XOR<OrganizationMemberUpdateInput, OrganizationMemberUncheckedUpdateInput>
+    data: XOR<WalletMemberUpdateInput, WalletMemberUncheckedUpdateInput>
     /**
-     * Choose, which OrganizationMember to update.
+     * Choose, which WalletMember to update.
      */
-    where: OrganizationMemberWhereUniqueInput
+    where: WalletMemberWhereUniqueInput
   }
 
   /**
-   * OrganizationMember updateMany
+   * WalletMember updateMany
    */
-  export type OrganizationMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update OrganizationMembers.
+     * The data used to update WalletMembers.
      */
-    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyInput>
+    data: XOR<WalletMemberUpdateManyMutationInput, WalletMemberUncheckedUpdateManyInput>
     /**
-     * Filter which OrganizationMembers to update
+     * Filter which WalletMembers to update
      */
-    where?: OrganizationMemberWhereInput
+    where?: WalletMemberWhereInput
     /**
-     * Limit how many OrganizationMembers to update.
+     * Limit how many WalletMembers to update.
      */
     limit?: number
   }
 
   /**
-   * OrganizationMember upsert
+   * WalletMember upsert
    */
-  export type OrganizationMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * The filter to search for the OrganizationMember to update in case it exists.
+     * The filter to search for the WalletMember to update in case it exists.
      */
-    where: OrganizationMemberWhereUniqueInput
+    where: WalletMemberWhereUniqueInput
     /**
-     * In case the OrganizationMember found by the `where` argument doesn't exist, create a new OrganizationMember with this data.
+     * In case the WalletMember found by the `where` argument doesn't exist, create a new WalletMember with this data.
      */
-    create: XOR<OrganizationMemberCreateInput, OrganizationMemberUncheckedCreateInput>
+    create: XOR<WalletMemberCreateInput, WalletMemberUncheckedCreateInput>
     /**
-     * In case the OrganizationMember was found with the provided `where` argument, update it with this data.
+     * In case the WalletMember was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<OrganizationMemberUpdateInput, OrganizationMemberUncheckedUpdateInput>
+    update: XOR<WalletMemberUpdateInput, WalletMemberUncheckedUpdateInput>
   }
 
   /**
-   * OrganizationMember delete
+   * WalletMember delete
    */
-  export type OrganizationMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
     /**
-     * Filter which OrganizationMember to delete.
+     * Filter which WalletMember to delete.
      */
-    where: OrganizationMemberWhereUniqueInput
+    where: WalletMemberWhereUniqueInput
   }
 
   /**
-   * OrganizationMember deleteMany
+   * WalletMember deleteMany
    */
-  export type OrganizationMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which OrganizationMembers to delete
+     * Filter which WalletMembers to delete
      */
-    where?: OrganizationMemberWhereInput
+    where?: WalletMemberWhereInput
     /**
-     * Limit how many OrganizationMembers to delete.
+     * Limit how many WalletMembers to delete.
      */
     limit?: number
   }
 
   /**
-   * OrganizationMember without action
+   * WalletMember without action
    */
-  export type OrganizationMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the OrganizationMember
+     * Select specific fields to fetch from the WalletMember
      */
-    select?: OrganizationMemberSelect<ExtArgs> | null
+    select?: WalletMemberSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the OrganizationMember
+     * Omit specific fields from the WalletMember
      */
-    omit?: OrganizationMemberOmit<ExtArgs> | null
+    omit?: WalletMemberOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationMemberInclude<ExtArgs> | null
+    include?: WalletMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ApiKey
+   */
+
+  export type AggregateApiKey = {
+    _count: ApiKeyCountAggregateOutputType | null
+    _avg: ApiKeyAvgAggregateOutputType | null
+    _sum: ApiKeySumAggregateOutputType | null
+    _min: ApiKeyMinAggregateOutputType | null
+    _max: ApiKeyMaxAggregateOutputType | null
+  }
+
+  export type ApiKeyAvgAggregateOutputType = {
+    id: number | null
+    walletId: number | null
+    creatorId: number | null
+  }
+
+  export type ApiKeySumAggregateOutputType = {
+    id: number | null
+    walletId: number | null
+    creatorId: number | null
+  }
+
+  export type ApiKeyMinAggregateOutputType = {
+    id: number | null
+    walletId: number | null
+    creatorId: number | null
+    hashKey: string | null
+    preview: string | null
+    displayName: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    lastUsedAt: Date | null
+  }
+
+  export type ApiKeyMaxAggregateOutputType = {
+    id: number | null
+    walletId: number | null
+    creatorId: number | null
+    hashKey: string | null
+    preview: string | null
+    displayName: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    lastUsedAt: Date | null
+  }
+
+  export type ApiKeyCountAggregateOutputType = {
+    id: number
+    walletId: number
+    creatorId: number
+    hashKey: number
+    preview: number
+    displayName: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    lastUsedAt: number
+    _all: number
+  }
+
+
+  export type ApiKeyAvgAggregateInputType = {
+    id?: true
+    walletId?: true
+    creatorId?: true
+  }
+
+  export type ApiKeySumAggregateInputType = {
+    id?: true
+    walletId?: true
+    creatorId?: true
+  }
+
+  export type ApiKeyMinAggregateInputType = {
+    id?: true
+    walletId?: true
+    creatorId?: true
+    hashKey?: true
+    preview?: true
+    displayName?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    lastUsedAt?: true
+  }
+
+  export type ApiKeyMaxAggregateInputType = {
+    id?: true
+    walletId?: true
+    creatorId?: true
+    hashKey?: true
+    preview?: true
+    displayName?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    lastUsedAt?: true
+  }
+
+  export type ApiKeyCountAggregateInputType = {
+    id?: true
+    walletId?: true
+    creatorId?: true
+    hashKey?: true
+    preview?: true
+    displayName?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    lastUsedAt?: true
+    _all?: true
+  }
+
+  export type ApiKeyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ApiKey to aggregate.
+     */
+    where?: ApiKeyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApiKeys to fetch.
+     */
+    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ApiKeyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApiKeys from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApiKeys.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ApiKeys
+    **/
+    _count?: true | ApiKeyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ApiKeyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ApiKeySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ApiKeyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ApiKeyMaxAggregateInputType
+  }
+
+  export type GetApiKeyAggregateType<T extends ApiKeyAggregateArgs> = {
+        [P in keyof T & keyof AggregateApiKey]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateApiKey[P]>
+      : GetScalarType<T[P], AggregateApiKey[P]>
+  }
+
+
+
+
+  export type ApiKeyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ApiKeyWhereInput
+    orderBy?: ApiKeyOrderByWithAggregationInput | ApiKeyOrderByWithAggregationInput[]
+    by: ApiKeyScalarFieldEnum[] | ApiKeyScalarFieldEnum
+    having?: ApiKeyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ApiKeyCountAggregateInputType | true
+    _avg?: ApiKeyAvgAggregateInputType
+    _sum?: ApiKeySumAggregateInputType
+    _min?: ApiKeyMinAggregateInputType
+    _max?: ApiKeyMaxAggregateInputType
+  }
+
+  export type ApiKeyGroupByOutputType = {
+    id: number
+    walletId: number
+    creatorId: number
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    lastUsedAt: Date | null
+    _count: ApiKeyCountAggregateOutputType | null
+    _avg: ApiKeyAvgAggregateOutputType | null
+    _sum: ApiKeySumAggregateOutputType | null
+    _min: ApiKeyMinAggregateOutputType | null
+    _max: ApiKeyMaxAggregateOutputType | null
+  }
+
+  type GetApiKeyGroupByPayload<T extends ApiKeyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ApiKeyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ApiKeyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ApiKeyGroupByOutputType[P]>
+            : GetScalarType<T[P], ApiKeyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ApiKeySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    walletId?: boolean
+    creatorId?: boolean
+    hashKey?: boolean
+    preview?: boolean
+    displayName?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lastUsedAt?: boolean
+    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["apiKey"]>
+
+
+
+  export type ApiKeySelectScalar = {
+    id?: boolean
+    walletId?: boolean
+    creatorId?: boolean
+    hashKey?: boolean
+    preview?: boolean
+    displayName?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lastUsedAt?: boolean
+  }
+
+  export type ApiKeyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "walletId" | "creatorId" | "hashKey" | "preview" | "displayName" | "isActive" | "createdAt" | "updatedAt" | "lastUsedAt", ExtArgs["result"]["apiKey"]>
+  export type ApiKeyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ApiKeyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ApiKey"
+    objects: {
+      wallet: Prisma.$WalletPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      walletId: number
+      creatorId: number
+      hashKey: string
+      preview: string
+      displayName: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+      lastUsedAt: Date | null
+    }, ExtArgs["result"]["apiKey"]>
+    composites: {}
+  }
+
+  type ApiKeyGetPayload<S extends boolean | null | undefined | ApiKeyDefaultArgs> = $Result.GetResult<Prisma.$ApiKeyPayload, S>
+
+  type ApiKeyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ApiKeyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ApiKeyCountAggregateInputType | true
+    }
+
+  export interface ApiKeyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ApiKey'], meta: { name: 'ApiKey' } }
+    /**
+     * Find zero or one ApiKey that matches the filter.
+     * @param {ApiKeyFindUniqueArgs} args - Arguments to find a ApiKey
+     * @example
+     * // Get one ApiKey
+     * const apiKey = await prisma.apiKey.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ApiKeyFindUniqueArgs>(args: SelectSubset<T, ApiKeyFindUniqueArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ApiKey that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ApiKeyFindUniqueOrThrowArgs} args - Arguments to find a ApiKey
+     * @example
+     * // Get one ApiKey
+     * const apiKey = await prisma.apiKey.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ApiKeyFindUniqueOrThrowArgs>(args: SelectSubset<T, ApiKeyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ApiKey that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApiKeyFindFirstArgs} args - Arguments to find a ApiKey
+     * @example
+     * // Get one ApiKey
+     * const apiKey = await prisma.apiKey.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ApiKeyFindFirstArgs>(args?: SelectSubset<T, ApiKeyFindFirstArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ApiKey that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApiKeyFindFirstOrThrowArgs} args - Arguments to find a ApiKey
+     * @example
+     * // Get one ApiKey
+     * const apiKey = await prisma.apiKey.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ApiKeyFindFirstOrThrowArgs>(args?: SelectSubset<T, ApiKeyFindFirstOrThrowArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ApiKeys that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApiKeyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ApiKeys
+     * const apiKeys = await prisma.apiKey.findMany()
+     * 
+     * // Get first 10 ApiKeys
+     * const apiKeys = await prisma.apiKey.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const apiKeyWithIdOnly = await prisma.apiKey.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ApiKeyFindManyArgs>(args?: SelectSubset<T, ApiKeyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ApiKey.
+     * @param {ApiKeyCreateArgs} args - Arguments to create a ApiKey.
+     * @example
+     * // Create one ApiKey
+     * const ApiKey = await prisma.apiKey.create({
+     *   data: {
+     *     // ... data to create a ApiKey
+     *   }
+     * })
+     * 
+     */
+    create<T extends ApiKeyCreateArgs>(args: SelectSubset<T, ApiKeyCreateArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ApiKeys.
+     * @param {ApiKeyCreateManyArgs} args - Arguments to create many ApiKeys.
+     * @example
+     * // Create many ApiKeys
+     * const apiKey = await prisma.apiKey.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ApiKeyCreateManyArgs>(args?: SelectSubset<T, ApiKeyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ApiKey.
+     * @param {ApiKeyDeleteArgs} args - Arguments to delete one ApiKey.
+     * @example
+     * // Delete one ApiKey
+     * const ApiKey = await prisma.apiKey.delete({
+     *   where: {
+     *     // ... filter to delete one ApiKey
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ApiKeyDeleteArgs>(args: SelectSubset<T, ApiKeyDeleteArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ApiKey.
+     * @param {ApiKeyUpdateArgs} args - Arguments to update one ApiKey.
+     * @example
+     * // Update one ApiKey
+     * const apiKey = await prisma.apiKey.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ApiKeyUpdateArgs>(args: SelectSubset<T, ApiKeyUpdateArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ApiKeys.
+     * @param {ApiKeyDeleteManyArgs} args - Arguments to filter ApiKeys to delete.
+     * @example
+     * // Delete a few ApiKeys
+     * const { count } = await prisma.apiKey.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ApiKeyDeleteManyArgs>(args?: SelectSubset<T, ApiKeyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ApiKeys.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApiKeyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ApiKeys
+     * const apiKey = await prisma.apiKey.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ApiKeyUpdateManyArgs>(args: SelectSubset<T, ApiKeyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ApiKey.
+     * @param {ApiKeyUpsertArgs} args - Arguments to update or create a ApiKey.
+     * @example
+     * // Update or create a ApiKey
+     * const apiKey = await prisma.apiKey.upsert({
+     *   create: {
+     *     // ... data to create a ApiKey
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ApiKey we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ApiKeyUpsertArgs>(args: SelectSubset<T, ApiKeyUpsertArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ApiKeys.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApiKeyCountArgs} args - Arguments to filter ApiKeys to count.
+     * @example
+     * // Count the number of ApiKeys
+     * const count = await prisma.apiKey.count({
+     *   where: {
+     *     // ... the filter for the ApiKeys we want to count
+     *   }
+     * })
+    **/
+    count<T extends ApiKeyCountArgs>(
+      args?: Subset<T, ApiKeyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ApiKeyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ApiKey.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApiKeyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ApiKeyAggregateArgs>(args: Subset<T, ApiKeyAggregateArgs>): Prisma.PrismaPromise<GetApiKeyAggregateType<T>>
+
+    /**
+     * Group by ApiKey.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ApiKeyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ApiKeyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ApiKeyGroupByArgs['orderBy'] }
+        : { orderBy?: ApiKeyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ApiKeyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApiKeyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ApiKey model
+   */
+  readonly fields: ApiKeyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ApiKey.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ApiKeyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    wallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ApiKey model
+   */
+  interface ApiKeyFieldRefs {
+    readonly id: FieldRef<"ApiKey", 'Int'>
+    readonly walletId: FieldRef<"ApiKey", 'Int'>
+    readonly creatorId: FieldRef<"ApiKey", 'Int'>
+    readonly hashKey: FieldRef<"ApiKey", 'String'>
+    readonly preview: FieldRef<"ApiKey", 'String'>
+    readonly displayName: FieldRef<"ApiKey", 'String'>
+    readonly isActive: FieldRef<"ApiKey", 'Boolean'>
+    readonly createdAt: FieldRef<"ApiKey", 'DateTime'>
+    readonly updatedAt: FieldRef<"ApiKey", 'DateTime'>
+    readonly lastUsedAt: FieldRef<"ApiKey", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ApiKey findUnique
+   */
+  export type ApiKeyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * Filter, which ApiKey to fetch.
+     */
+    where: ApiKeyWhereUniqueInput
+  }
+
+  /**
+   * ApiKey findUniqueOrThrow
+   */
+  export type ApiKeyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * Filter, which ApiKey to fetch.
+     */
+    where: ApiKeyWhereUniqueInput
+  }
+
+  /**
+   * ApiKey findFirst
+   */
+  export type ApiKeyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * Filter, which ApiKey to fetch.
+     */
+    where?: ApiKeyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApiKeys to fetch.
+     */
+    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ApiKeys.
+     */
+    cursor?: ApiKeyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApiKeys from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApiKeys.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ApiKeys.
+     */
+    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
+  }
+
+  /**
+   * ApiKey findFirstOrThrow
+   */
+  export type ApiKeyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * Filter, which ApiKey to fetch.
+     */
+    where?: ApiKeyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApiKeys to fetch.
+     */
+    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ApiKeys.
+     */
+    cursor?: ApiKeyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApiKeys from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApiKeys.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ApiKeys.
+     */
+    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
+  }
+
+  /**
+   * ApiKey findMany
+   */
+  export type ApiKeyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * Filter, which ApiKeys to fetch.
+     */
+    where?: ApiKeyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ApiKeys to fetch.
+     */
+    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ApiKeys.
+     */
+    cursor?: ApiKeyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ApiKeys from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ApiKeys.
+     */
+    skip?: number
+    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
+  }
+
+  /**
+   * ApiKey create
+   */
+  export type ApiKeyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ApiKey.
+     */
+    data: XOR<ApiKeyCreateInput, ApiKeyUncheckedCreateInput>
+  }
+
+  /**
+   * ApiKey createMany
+   */
+  export type ApiKeyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ApiKeys.
+     */
+    data: ApiKeyCreateManyInput | ApiKeyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ApiKey update
+   */
+  export type ApiKeyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ApiKey.
+     */
+    data: XOR<ApiKeyUpdateInput, ApiKeyUncheckedUpdateInput>
+    /**
+     * Choose, which ApiKey to update.
+     */
+    where: ApiKeyWhereUniqueInput
+  }
+
+  /**
+   * ApiKey updateMany
+   */
+  export type ApiKeyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ApiKeys.
+     */
+    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyInput>
+    /**
+     * Filter which ApiKeys to update
+     */
+    where?: ApiKeyWhereInput
+    /**
+     * Limit how many ApiKeys to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ApiKey upsert
+   */
+  export type ApiKeyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ApiKey to update in case it exists.
+     */
+    where: ApiKeyWhereUniqueInput
+    /**
+     * In case the ApiKey found by the `where` argument doesn't exist, create a new ApiKey with this data.
+     */
+    create: XOR<ApiKeyCreateInput, ApiKeyUncheckedCreateInput>
+    /**
+     * In case the ApiKey was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ApiKeyUpdateInput, ApiKeyUncheckedUpdateInput>
+  }
+
+  /**
+   * ApiKey delete
+   */
+  export type ApiKeyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    /**
+     * Filter which ApiKey to delete.
+     */
+    where: ApiKeyWhereUniqueInput
+  }
+
+  /**
+   * ApiKey deleteMany
+   */
+  export type ApiKeyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ApiKeys to delete
+     */
+    where?: ApiKeyWhereInput
+    /**
+     * Limit how many ApiKeys to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ApiKey without action
+   */
+  export type ApiKeyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
   }
 
 
@@ -5766,2007 +6751,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Wallet
-   */
-
-  export type AggregateWallet = {
-    _count: WalletCountAggregateOutputType | null
-    _avg: WalletAvgAggregateOutputType | null
-    _sum: WalletSumAggregateOutputType | null
-    _min: WalletMinAggregateOutputType | null
-    _max: WalletMaxAggregateOutputType | null
-  }
-
-  export type WalletAvgAggregateOutputType = {
-    id: number | null
-    balance: Decimal | null
-    version: number | null
-    userId: number | null
-  }
-
-  export type WalletSumAggregateOutputType = {
-    id: number | null
-    balance: Decimal | null
-    version: number | null
-    userId: number | null
-  }
-
-  export type WalletMinAggregateOutputType = {
-    id: number | null
-    balance: Decimal | null
-    version: number | null
-    userId: number | null
-    updatedAt: Date | null
-  }
-
-  export type WalletMaxAggregateOutputType = {
-    id: number | null
-    balance: Decimal | null
-    version: number | null
-    userId: number | null
-    updatedAt: Date | null
-  }
-
-  export type WalletCountAggregateOutputType = {
-    id: number
-    balance: number
-    version: number
-    userId: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type WalletAvgAggregateInputType = {
-    id?: true
-    balance?: true
-    version?: true
-    userId?: true
-  }
-
-  export type WalletSumAggregateInputType = {
-    id?: true
-    balance?: true
-    version?: true
-    userId?: true
-  }
-
-  export type WalletMinAggregateInputType = {
-    id?: true
-    balance?: true
-    version?: true
-    userId?: true
-    updatedAt?: true
-  }
-
-  export type WalletMaxAggregateInputType = {
-    id?: true
-    balance?: true
-    version?: true
-    userId?: true
-    updatedAt?: true
-  }
-
-  export type WalletCountAggregateInputType = {
-    id?: true
-    balance?: true
-    version?: true
-    userId?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type WalletAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Wallet to aggregate.
-     */
-    where?: WalletWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Wallets to fetch.
-     */
-    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: WalletWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Wallets from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Wallets.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Wallets
-    **/
-    _count?: true | WalletCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: WalletAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: WalletSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: WalletMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: WalletMaxAggregateInputType
-  }
-
-  export type GetWalletAggregateType<T extends WalletAggregateArgs> = {
-        [P in keyof T & keyof AggregateWallet]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateWallet[P]>
-      : GetScalarType<T[P], AggregateWallet[P]>
-  }
-
-
-
-
-  export type WalletGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WalletWhereInput
-    orderBy?: WalletOrderByWithAggregationInput | WalletOrderByWithAggregationInput[]
-    by: WalletScalarFieldEnum[] | WalletScalarFieldEnum
-    having?: WalletScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: WalletCountAggregateInputType | true
-    _avg?: WalletAvgAggregateInputType
-    _sum?: WalletSumAggregateInputType
-    _min?: WalletMinAggregateInputType
-    _max?: WalletMaxAggregateInputType
-  }
-
-  export type WalletGroupByOutputType = {
-    id: number
-    balance: Decimal
-    version: number
-    userId: number
-    updatedAt: Date
-    _count: WalletCountAggregateOutputType | null
-    _avg: WalletAvgAggregateOutputType | null
-    _sum: WalletSumAggregateOutputType | null
-    _min: WalletMinAggregateOutputType | null
-    _max: WalletMaxAggregateOutputType | null
-  }
-
-  type GetWalletGroupByPayload<T extends WalletGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<WalletGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof WalletGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], WalletGroupByOutputType[P]>
-            : GetScalarType<T[P], WalletGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type WalletSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    balance?: boolean
-    version?: boolean
-    userId?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["wallet"]>
-
-
-
-  export type WalletSelectScalar = {
-    id?: boolean
-    balance?: boolean
-    version?: boolean
-    userId?: boolean
-    updatedAt?: boolean
-  }
-
-  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "balance" | "version" | "userId" | "updatedAt", ExtArgs["result"]["wallet"]>
-  export type WalletInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $WalletPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Wallet"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      balance: Prisma.Decimal
-      version: number
-      userId: number
-      updatedAt: Date
-    }, ExtArgs["result"]["wallet"]>
-    composites: {}
-  }
-
-  type WalletGetPayload<S extends boolean | null | undefined | WalletDefaultArgs> = $Result.GetResult<Prisma.$WalletPayload, S>
-
-  type WalletCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<WalletFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: WalletCountAggregateInputType | true
-    }
-
-  export interface WalletDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Wallet'], meta: { name: 'Wallet' } }
-    /**
-     * Find zero or one Wallet that matches the filter.
-     * @param {WalletFindUniqueArgs} args - Arguments to find a Wallet
-     * @example
-     * // Get one Wallet
-     * const wallet = await prisma.wallet.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends WalletFindUniqueArgs>(args: SelectSubset<T, WalletFindUniqueArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Wallet that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {WalletFindUniqueOrThrowArgs} args - Arguments to find a Wallet
-     * @example
-     * // Get one Wallet
-     * const wallet = await prisma.wallet.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends WalletFindUniqueOrThrowArgs>(args: SelectSubset<T, WalletFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Wallet that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WalletFindFirstArgs} args - Arguments to find a Wallet
-     * @example
-     * // Get one Wallet
-     * const wallet = await prisma.wallet.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends WalletFindFirstArgs>(args?: SelectSubset<T, WalletFindFirstArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Wallet that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WalletFindFirstOrThrowArgs} args - Arguments to find a Wallet
-     * @example
-     * // Get one Wallet
-     * const wallet = await prisma.wallet.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends WalletFindFirstOrThrowArgs>(args?: SelectSubset<T, WalletFindFirstOrThrowArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Wallets that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WalletFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Wallets
-     * const wallets = await prisma.wallet.findMany()
-     * 
-     * // Get first 10 Wallets
-     * const wallets = await prisma.wallet.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const walletWithIdOnly = await prisma.wallet.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends WalletFindManyArgs>(args?: SelectSubset<T, WalletFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Wallet.
-     * @param {WalletCreateArgs} args - Arguments to create a Wallet.
-     * @example
-     * // Create one Wallet
-     * const Wallet = await prisma.wallet.create({
-     *   data: {
-     *     // ... data to create a Wallet
-     *   }
-     * })
-     * 
-     */
-    create<T extends WalletCreateArgs>(args: SelectSubset<T, WalletCreateArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Wallets.
-     * @param {WalletCreateManyArgs} args - Arguments to create many Wallets.
-     * @example
-     * // Create many Wallets
-     * const wallet = await prisma.wallet.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends WalletCreateManyArgs>(args?: SelectSubset<T, WalletCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Wallet.
-     * @param {WalletDeleteArgs} args - Arguments to delete one Wallet.
-     * @example
-     * // Delete one Wallet
-     * const Wallet = await prisma.wallet.delete({
-     *   where: {
-     *     // ... filter to delete one Wallet
-     *   }
-     * })
-     * 
-     */
-    delete<T extends WalletDeleteArgs>(args: SelectSubset<T, WalletDeleteArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Wallet.
-     * @param {WalletUpdateArgs} args - Arguments to update one Wallet.
-     * @example
-     * // Update one Wallet
-     * const wallet = await prisma.wallet.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends WalletUpdateArgs>(args: SelectSubset<T, WalletUpdateArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Wallets.
-     * @param {WalletDeleteManyArgs} args - Arguments to filter Wallets to delete.
-     * @example
-     * // Delete a few Wallets
-     * const { count } = await prisma.wallet.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends WalletDeleteManyArgs>(args?: SelectSubset<T, WalletDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Wallets.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WalletUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Wallets
-     * const wallet = await prisma.wallet.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends WalletUpdateManyArgs>(args: SelectSubset<T, WalletUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Wallet.
-     * @param {WalletUpsertArgs} args - Arguments to update or create a Wallet.
-     * @example
-     * // Update or create a Wallet
-     * const wallet = await prisma.wallet.upsert({
-     *   create: {
-     *     // ... data to create a Wallet
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Wallet we want to update
-     *   }
-     * })
-     */
-    upsert<T extends WalletUpsertArgs>(args: SelectSubset<T, WalletUpsertArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Wallets.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WalletCountArgs} args - Arguments to filter Wallets to count.
-     * @example
-     * // Count the number of Wallets
-     * const count = await prisma.wallet.count({
-     *   where: {
-     *     // ... the filter for the Wallets we want to count
-     *   }
-     * })
-    **/
-    count<T extends WalletCountArgs>(
-      args?: Subset<T, WalletCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], WalletCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Wallet.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WalletAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends WalletAggregateArgs>(args: Subset<T, WalletAggregateArgs>): Prisma.PrismaPromise<GetWalletAggregateType<T>>
-
-    /**
-     * Group by Wallet.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WalletGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends WalletGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: WalletGroupByArgs['orderBy'] }
-        : { orderBy?: WalletGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, WalletGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWalletGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Wallet model
-   */
-  readonly fields: WalletFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Wallet.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__WalletClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Wallet model
-   */
-  interface WalletFieldRefs {
-    readonly id: FieldRef<"Wallet", 'Int'>
-    readonly balance: FieldRef<"Wallet", 'Decimal'>
-    readonly version: FieldRef<"Wallet", 'Int'>
-    readonly userId: FieldRef<"Wallet", 'Int'>
-    readonly updatedAt: FieldRef<"Wallet", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Wallet findUnique
-   */
-  export type WalletFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * Filter, which Wallet to fetch.
-     */
-    where: WalletWhereUniqueInput
-  }
-
-  /**
-   * Wallet findUniqueOrThrow
-   */
-  export type WalletFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * Filter, which Wallet to fetch.
-     */
-    where: WalletWhereUniqueInput
-  }
-
-  /**
-   * Wallet findFirst
-   */
-  export type WalletFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * Filter, which Wallet to fetch.
-     */
-    where?: WalletWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Wallets to fetch.
-     */
-    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Wallets.
-     */
-    cursor?: WalletWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Wallets from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Wallets.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Wallets.
-     */
-    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
-  }
-
-  /**
-   * Wallet findFirstOrThrow
-   */
-  export type WalletFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * Filter, which Wallet to fetch.
-     */
-    where?: WalletWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Wallets to fetch.
-     */
-    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Wallets.
-     */
-    cursor?: WalletWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Wallets from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Wallets.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Wallets.
-     */
-    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
-  }
-
-  /**
-   * Wallet findMany
-   */
-  export type WalletFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * Filter, which Wallets to fetch.
-     */
-    where?: WalletWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Wallets to fetch.
-     */
-    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Wallets.
-     */
-    cursor?: WalletWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Wallets from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Wallets.
-     */
-    skip?: number
-    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
-  }
-
-  /**
-   * Wallet create
-   */
-  export type WalletCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Wallet.
-     */
-    data: XOR<WalletCreateInput, WalletUncheckedCreateInput>
-  }
-
-  /**
-   * Wallet createMany
-   */
-  export type WalletCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Wallets.
-     */
-    data: WalletCreateManyInput | WalletCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Wallet update
-   */
-  export type WalletUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Wallet.
-     */
-    data: XOR<WalletUpdateInput, WalletUncheckedUpdateInput>
-    /**
-     * Choose, which Wallet to update.
-     */
-    where: WalletWhereUniqueInput
-  }
-
-  /**
-   * Wallet updateMany
-   */
-  export type WalletUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Wallets.
-     */
-    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyInput>
-    /**
-     * Filter which Wallets to update
-     */
-    where?: WalletWhereInput
-    /**
-     * Limit how many Wallets to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Wallet upsert
-   */
-  export type WalletUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Wallet to update in case it exists.
-     */
-    where: WalletWhereUniqueInput
-    /**
-     * In case the Wallet found by the `where` argument doesn't exist, create a new Wallet with this data.
-     */
-    create: XOR<WalletCreateInput, WalletUncheckedCreateInput>
-    /**
-     * In case the Wallet was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<WalletUpdateInput, WalletUncheckedUpdateInput>
-  }
-
-  /**
-   * Wallet delete
-   */
-  export type WalletDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    /**
-     * Filter which Wallet to delete.
-     */
-    where: WalletWhereUniqueInput
-  }
-
-  /**
-   * Wallet deleteMany
-   */
-  export type WalletDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Wallets to delete
-     */
-    where?: WalletWhereInput
-    /**
-     * Limit how many Wallets to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Wallet without action
-   */
-  export type WalletDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ApiKey
-   */
-
-  export type AggregateApiKey = {
-    _count: ApiKeyCountAggregateOutputType | null
-    _avg: ApiKeyAvgAggregateOutputType | null
-    _sum: ApiKeySumAggregateOutputType | null
-    _min: ApiKeyMinAggregateOutputType | null
-    _max: ApiKeyMaxAggregateOutputType | null
-  }
-
-  export type ApiKeyAvgAggregateOutputType = {
-    id: number | null
-    organizationId: number | null
-    memberCreatorId: number | null
-  }
-
-  export type ApiKeySumAggregateOutputType = {
-    id: number | null
-    organizationId: number | null
-    memberCreatorId: number | null
-  }
-
-  export type ApiKeyMinAggregateOutputType = {
-    id: number | null
-    hashKey: string | null
-    preview: string | null
-    displayName: string | null
-    isDeleted: boolean | null
-    organizationId: number | null
-    memberCreatorId: number | null
-    lastUsedAt: Date | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ApiKeyMaxAggregateOutputType = {
-    id: number | null
-    hashKey: string | null
-    preview: string | null
-    displayName: string | null
-    isDeleted: boolean | null
-    organizationId: number | null
-    memberCreatorId: number | null
-    lastUsedAt: Date | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ApiKeyCountAggregateOutputType = {
-    id: number
-    hashKey: number
-    preview: number
-    displayName: number
-    isDeleted: number
-    organizationId: number
-    memberCreatorId: number
-    lastUsedAt: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ApiKeyAvgAggregateInputType = {
-    id?: true
-    organizationId?: true
-    memberCreatorId?: true
-  }
-
-  export type ApiKeySumAggregateInputType = {
-    id?: true
-    organizationId?: true
-    memberCreatorId?: true
-  }
-
-  export type ApiKeyMinAggregateInputType = {
-    id?: true
-    hashKey?: true
-    preview?: true
-    displayName?: true
-    isDeleted?: true
-    organizationId?: true
-    memberCreatorId?: true
-    lastUsedAt?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ApiKeyMaxAggregateInputType = {
-    id?: true
-    hashKey?: true
-    preview?: true
-    displayName?: true
-    isDeleted?: true
-    organizationId?: true
-    memberCreatorId?: true
-    lastUsedAt?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ApiKeyCountAggregateInputType = {
-    id?: true
-    hashKey?: true
-    preview?: true
-    displayName?: true
-    isDeleted?: true
-    organizationId?: true
-    memberCreatorId?: true
-    lastUsedAt?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ApiKeyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ApiKey to aggregate.
-     */
-    where?: ApiKeyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ApiKeys to fetch.
-     */
-    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ApiKeyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ApiKeys from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ApiKeys.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ApiKeys
-    **/
-    _count?: true | ApiKeyCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ApiKeyAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ApiKeySumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ApiKeyMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ApiKeyMaxAggregateInputType
-  }
-
-  export type GetApiKeyAggregateType<T extends ApiKeyAggregateArgs> = {
-        [P in keyof T & keyof AggregateApiKey]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateApiKey[P]>
-      : GetScalarType<T[P], AggregateApiKey[P]>
-  }
-
-
-
-
-  export type ApiKeyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ApiKeyWhereInput
-    orderBy?: ApiKeyOrderByWithAggregationInput | ApiKeyOrderByWithAggregationInput[]
-    by: ApiKeyScalarFieldEnum[] | ApiKeyScalarFieldEnum
-    having?: ApiKeyScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ApiKeyCountAggregateInputType | true
-    _avg?: ApiKeyAvgAggregateInputType
-    _sum?: ApiKeySumAggregateInputType
-    _min?: ApiKeyMinAggregateInputType
-    _max?: ApiKeyMaxAggregateInputType
-  }
-
-  export type ApiKeyGroupByOutputType = {
-    id: number
-    hashKey: string
-    preview: string
-    displayName: string
-    isDeleted: boolean
-    organizationId: number
-    memberCreatorId: number | null
-    lastUsedAt: Date | null
-    createdAt: Date
-    updatedAt: Date
-    _count: ApiKeyCountAggregateOutputType | null
-    _avg: ApiKeyAvgAggregateOutputType | null
-    _sum: ApiKeySumAggregateOutputType | null
-    _min: ApiKeyMinAggregateOutputType | null
-    _max: ApiKeyMaxAggregateOutputType | null
-  }
-
-  type GetApiKeyGroupByPayload<T extends ApiKeyGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ApiKeyGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ApiKeyGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ApiKeyGroupByOutputType[P]>
-            : GetScalarType<T[P], ApiKeyGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ApiKeySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    hashKey?: boolean
-    preview?: boolean
-    displayName?: boolean
-    isDeleted?: boolean
-    organizationId?: boolean
-    memberCreatorId?: boolean
-    lastUsedAt?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["apiKey"]>
-
-
-
-  export type ApiKeySelectScalar = {
-    id?: boolean
-    hashKey?: boolean
-    preview?: boolean
-    displayName?: boolean
-    isDeleted?: boolean
-    organizationId?: boolean
-    memberCreatorId?: boolean
-    lastUsedAt?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ApiKeyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "hashKey" | "preview" | "displayName" | "isDeleted" | "organizationId" | "memberCreatorId" | "lastUsedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["apiKey"]>
-  export type ApiKeyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-  }
-
-  export type $ApiKeyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ApiKey"
-    objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      hashKey: string
-      preview: string
-      displayName: string
-      isDeleted: boolean
-      organizationId: number
-      memberCreatorId: number | null
-      lastUsedAt: Date | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["apiKey"]>
-    composites: {}
-  }
-
-  type ApiKeyGetPayload<S extends boolean | null | undefined | ApiKeyDefaultArgs> = $Result.GetResult<Prisma.$ApiKeyPayload, S>
-
-  type ApiKeyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ApiKeyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ApiKeyCountAggregateInputType | true
-    }
-
-  export interface ApiKeyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ApiKey'], meta: { name: 'ApiKey' } }
-    /**
-     * Find zero or one ApiKey that matches the filter.
-     * @param {ApiKeyFindUniqueArgs} args - Arguments to find a ApiKey
-     * @example
-     * // Get one ApiKey
-     * const apiKey = await prisma.apiKey.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ApiKeyFindUniqueArgs>(args: SelectSubset<T, ApiKeyFindUniqueArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ApiKey that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ApiKeyFindUniqueOrThrowArgs} args - Arguments to find a ApiKey
-     * @example
-     * // Get one ApiKey
-     * const apiKey = await prisma.apiKey.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ApiKeyFindUniqueOrThrowArgs>(args: SelectSubset<T, ApiKeyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ApiKey that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ApiKeyFindFirstArgs} args - Arguments to find a ApiKey
-     * @example
-     * // Get one ApiKey
-     * const apiKey = await prisma.apiKey.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ApiKeyFindFirstArgs>(args?: SelectSubset<T, ApiKeyFindFirstArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ApiKey that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ApiKeyFindFirstOrThrowArgs} args - Arguments to find a ApiKey
-     * @example
-     * // Get one ApiKey
-     * const apiKey = await prisma.apiKey.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ApiKeyFindFirstOrThrowArgs>(args?: SelectSubset<T, ApiKeyFindFirstOrThrowArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ApiKeys that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ApiKeyFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ApiKeys
-     * const apiKeys = await prisma.apiKey.findMany()
-     * 
-     * // Get first 10 ApiKeys
-     * const apiKeys = await prisma.apiKey.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const apiKeyWithIdOnly = await prisma.apiKey.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends ApiKeyFindManyArgs>(args?: SelectSubset<T, ApiKeyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ApiKey.
-     * @param {ApiKeyCreateArgs} args - Arguments to create a ApiKey.
-     * @example
-     * // Create one ApiKey
-     * const ApiKey = await prisma.apiKey.create({
-     *   data: {
-     *     // ... data to create a ApiKey
-     *   }
-     * })
-     * 
-     */
-    create<T extends ApiKeyCreateArgs>(args: SelectSubset<T, ApiKeyCreateArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ApiKeys.
-     * @param {ApiKeyCreateManyArgs} args - Arguments to create many ApiKeys.
-     * @example
-     * // Create many ApiKeys
-     * const apiKey = await prisma.apiKey.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ApiKeyCreateManyArgs>(args?: SelectSubset<T, ApiKeyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ApiKey.
-     * @param {ApiKeyDeleteArgs} args - Arguments to delete one ApiKey.
-     * @example
-     * // Delete one ApiKey
-     * const ApiKey = await prisma.apiKey.delete({
-     *   where: {
-     *     // ... filter to delete one ApiKey
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ApiKeyDeleteArgs>(args: SelectSubset<T, ApiKeyDeleteArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ApiKey.
-     * @param {ApiKeyUpdateArgs} args - Arguments to update one ApiKey.
-     * @example
-     * // Update one ApiKey
-     * const apiKey = await prisma.apiKey.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ApiKeyUpdateArgs>(args: SelectSubset<T, ApiKeyUpdateArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ApiKeys.
-     * @param {ApiKeyDeleteManyArgs} args - Arguments to filter ApiKeys to delete.
-     * @example
-     * // Delete a few ApiKeys
-     * const { count } = await prisma.apiKey.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ApiKeyDeleteManyArgs>(args?: SelectSubset<T, ApiKeyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ApiKeys.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ApiKeyUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ApiKeys
-     * const apiKey = await prisma.apiKey.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ApiKeyUpdateManyArgs>(args: SelectSubset<T, ApiKeyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ApiKey.
-     * @param {ApiKeyUpsertArgs} args - Arguments to update or create a ApiKey.
-     * @example
-     * // Update or create a ApiKey
-     * const apiKey = await prisma.apiKey.upsert({
-     *   create: {
-     *     // ... data to create a ApiKey
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ApiKey we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ApiKeyUpsertArgs>(args: SelectSubset<T, ApiKeyUpsertArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ApiKeys.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ApiKeyCountArgs} args - Arguments to filter ApiKeys to count.
-     * @example
-     * // Count the number of ApiKeys
-     * const count = await prisma.apiKey.count({
-     *   where: {
-     *     // ... the filter for the ApiKeys we want to count
-     *   }
-     * })
-    **/
-    count<T extends ApiKeyCountArgs>(
-      args?: Subset<T, ApiKeyCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ApiKeyCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ApiKey.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ApiKeyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ApiKeyAggregateArgs>(args: Subset<T, ApiKeyAggregateArgs>): Prisma.PrismaPromise<GetApiKeyAggregateType<T>>
-
-    /**
-     * Group by ApiKey.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ApiKeyGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ApiKeyGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ApiKeyGroupByArgs['orderBy'] }
-        : { orderBy?: ApiKeyGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ApiKeyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApiKeyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ApiKey model
-   */
-  readonly fields: ApiKeyFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ApiKey.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ApiKeyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ApiKey model
-   */
-  interface ApiKeyFieldRefs {
-    readonly id: FieldRef<"ApiKey", 'Int'>
-    readonly hashKey: FieldRef<"ApiKey", 'String'>
-    readonly preview: FieldRef<"ApiKey", 'String'>
-    readonly displayName: FieldRef<"ApiKey", 'String'>
-    readonly isDeleted: FieldRef<"ApiKey", 'Boolean'>
-    readonly organizationId: FieldRef<"ApiKey", 'Int'>
-    readonly memberCreatorId: FieldRef<"ApiKey", 'Int'>
-    readonly lastUsedAt: FieldRef<"ApiKey", 'DateTime'>
-    readonly createdAt: FieldRef<"ApiKey", 'DateTime'>
-    readonly updatedAt: FieldRef<"ApiKey", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ApiKey findUnique
-   */
-  export type ApiKeyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * Filter, which ApiKey to fetch.
-     */
-    where: ApiKeyWhereUniqueInput
-  }
-
-  /**
-   * ApiKey findUniqueOrThrow
-   */
-  export type ApiKeyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * Filter, which ApiKey to fetch.
-     */
-    where: ApiKeyWhereUniqueInput
-  }
-
-  /**
-   * ApiKey findFirst
-   */
-  export type ApiKeyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * Filter, which ApiKey to fetch.
-     */
-    where?: ApiKeyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ApiKeys to fetch.
-     */
-    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ApiKeys.
-     */
-    cursor?: ApiKeyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ApiKeys from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ApiKeys.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ApiKeys.
-     */
-    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
-  }
-
-  /**
-   * ApiKey findFirstOrThrow
-   */
-  export type ApiKeyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * Filter, which ApiKey to fetch.
-     */
-    where?: ApiKeyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ApiKeys to fetch.
-     */
-    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ApiKeys.
-     */
-    cursor?: ApiKeyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ApiKeys from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ApiKeys.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ApiKeys.
-     */
-    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
-  }
-
-  /**
-   * ApiKey findMany
-   */
-  export type ApiKeyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * Filter, which ApiKeys to fetch.
-     */
-    where?: ApiKeyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ApiKeys to fetch.
-     */
-    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ApiKeys.
-     */
-    cursor?: ApiKeyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ApiKeys from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ApiKeys.
-     */
-    skip?: number
-    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
-  }
-
-  /**
-   * ApiKey create
-   */
-  export type ApiKeyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ApiKey.
-     */
-    data: XOR<ApiKeyCreateInput, ApiKeyUncheckedCreateInput>
-  }
-
-  /**
-   * ApiKey createMany
-   */
-  export type ApiKeyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ApiKeys.
-     */
-    data: ApiKeyCreateManyInput | ApiKeyCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ApiKey update
-   */
-  export type ApiKeyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ApiKey.
-     */
-    data: XOR<ApiKeyUpdateInput, ApiKeyUncheckedUpdateInput>
-    /**
-     * Choose, which ApiKey to update.
-     */
-    where: ApiKeyWhereUniqueInput
-  }
-
-  /**
-   * ApiKey updateMany
-   */
-  export type ApiKeyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ApiKeys.
-     */
-    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyInput>
-    /**
-     * Filter which ApiKeys to update
-     */
-    where?: ApiKeyWhereInput
-    /**
-     * Limit how many ApiKeys to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ApiKey upsert
-   */
-  export type ApiKeyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ApiKey to update in case it exists.
-     */
-    where: ApiKeyWhereUniqueInput
-    /**
-     * In case the ApiKey found by the `where` argument doesn't exist, create a new ApiKey with this data.
-     */
-    create: XOR<ApiKeyCreateInput, ApiKeyUncheckedCreateInput>
-    /**
-     * In case the ApiKey was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ApiKeyUpdateInput, ApiKeyUncheckedUpdateInput>
-  }
-
-  /**
-   * ApiKey delete
-   */
-  export type ApiKeyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    /**
-     * Filter which ApiKey to delete.
-     */
-    where: ApiKeyWhereUniqueInput
-  }
-
-  /**
-   * ApiKey deleteMany
-   */
-  export type ApiKeyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ApiKeys to delete
-     */
-    where?: ApiKeyWhereInput
-    /**
-     * Limit how many ApiKeys to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ApiKey without action
-   */
-  export type ApiKeyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model RedemptionCode
    */
 
@@ -7795,11 +6779,9 @@ export namespace Prisma {
     code: string | null
     amount: number | null
     remark: string | null
-    isUsed: boolean | null
-    isDeleted: boolean | null
     createdAt: Date | null
-    updatedAt: Date | null
     expiredAt: Date | null
+    redeemedAt: Date | null
     redeemerId: number | null
   }
 
@@ -7808,11 +6790,9 @@ export namespace Prisma {
     code: string | null
     amount: number | null
     remark: string | null
-    isUsed: boolean | null
-    isDeleted: boolean | null
     createdAt: Date | null
-    updatedAt: Date | null
     expiredAt: Date | null
+    redeemedAt: Date | null
     redeemerId: number | null
   }
 
@@ -7821,11 +6801,9 @@ export namespace Prisma {
     code: number
     amount: number
     remark: number
-    isUsed: number
-    isDeleted: number
     createdAt: number
-    updatedAt: number
     expiredAt: number
+    redeemedAt: number
     redeemerId: number
     _all: number
   }
@@ -7848,11 +6826,9 @@ export namespace Prisma {
     code?: true
     amount?: true
     remark?: true
-    isUsed?: true
-    isDeleted?: true
     createdAt?: true
-    updatedAt?: true
     expiredAt?: true
+    redeemedAt?: true
     redeemerId?: true
   }
 
@@ -7861,11 +6837,9 @@ export namespace Prisma {
     code?: true
     amount?: true
     remark?: true
-    isUsed?: true
-    isDeleted?: true
     createdAt?: true
-    updatedAt?: true
     expiredAt?: true
+    redeemedAt?: true
     redeemerId?: true
   }
 
@@ -7874,11 +6848,9 @@ export namespace Prisma {
     code?: true
     amount?: true
     remark?: true
-    isUsed?: true
-    isDeleted?: true
     createdAt?: true
-    updatedAt?: true
     expiredAt?: true
+    redeemedAt?: true
     redeemerId?: true
     _all?: true
   }
@@ -7973,12 +6945,10 @@ export namespace Prisma {
     id: number
     code: string
     amount: number
-    remark: string | null
-    isUsed: boolean
-    isDeleted: boolean
+    remark: string
     createdAt: Date
-    updatedAt: Date
     expiredAt: Date
+    redeemedAt: Date | null
     redeemerId: number | null
     _count: RedemptionCodeCountAggregateOutputType | null
     _avg: RedemptionCodeAvgAggregateOutputType | null
@@ -8006,11 +6976,9 @@ export namespace Prisma {
     code?: boolean
     amount?: boolean
     remark?: boolean
-    isUsed?: boolean
-    isDeleted?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
     expiredAt?: boolean
+    redeemedAt?: boolean
     redeemerId?: boolean
     redeemer?: boolean | RedemptionCode$redeemerArgs<ExtArgs>
   }, ExtArgs["result"]["redemptionCode"]>
@@ -8022,15 +6990,13 @@ export namespace Prisma {
     code?: boolean
     amount?: boolean
     remark?: boolean
-    isUsed?: boolean
-    isDeleted?: boolean
     createdAt?: boolean
-    updatedAt?: boolean
     expiredAt?: boolean
+    redeemedAt?: boolean
     redeemerId?: boolean
   }
 
-  export type RedemptionCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "amount" | "remark" | "isUsed" | "isDeleted" | "createdAt" | "updatedAt" | "expiredAt" | "redeemerId", ExtArgs["result"]["redemptionCode"]>
+  export type RedemptionCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "amount" | "remark" | "createdAt" | "expiredAt" | "redeemedAt" | "redeemerId", ExtArgs["result"]["redemptionCode"]>
   export type RedemptionCodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     redeemer?: boolean | RedemptionCode$redeemerArgs<ExtArgs>
   }
@@ -8044,12 +7010,10 @@ export namespace Prisma {
       id: number
       code: string
       amount: number
-      remark: string | null
-      isUsed: boolean
-      isDeleted: boolean
+      remark: string
       createdAt: Date
-      updatedAt: Date
       expiredAt: Date
+      redeemedAt: Date | null
       redeemerId: number | null
     }, ExtArgs["result"]["redemptionCode"]>
     composites: {}
@@ -8425,11 +7389,9 @@ export namespace Prisma {
     readonly code: FieldRef<"RedemptionCode", 'String'>
     readonly amount: FieldRef<"RedemptionCode", 'Int'>
     readonly remark: FieldRef<"RedemptionCode", 'String'>
-    readonly isUsed: FieldRef<"RedemptionCode", 'Boolean'>
-    readonly isDeleted: FieldRef<"RedemptionCode", 'Boolean'>
     readonly createdAt: FieldRef<"RedemptionCode", 'DateTime'>
-    readonly updatedAt: FieldRef<"RedemptionCode", 'DateTime'>
     readonly expiredAt: FieldRef<"RedemptionCode", 'DateTime'>
+    readonly redeemedAt: FieldRef<"RedemptionCode", 'DateTime'>
     readonly redeemerId: FieldRef<"RedemptionCode", 'Int'>
   }
     
@@ -8834,8 +7796,7 @@ export namespace Prisma {
     phone: 'phone',
     gitHubId: 'gitHubId',
     googleId: 'googleId',
-    twoFactorEnabled: 'twoFactorEnabled',
-    twoFactorSecret: 'twoFactorSecret',
+    isActive: 'isActive',
     isDeleted: 'isDeleted',
     isAdmin: 'isAdmin',
     createdAt: 'createdAt',
@@ -8846,35 +7807,49 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const OrganizationScalarFieldEnum: {
+  export const WalletScalarFieldEnum: {
     id: 'id',
     uid: 'uid',
-    identifier: 'identifier',
-    displayName: 'displayName',
-    avatar: 'avatar',
+    balance: 'balance',
+    version: 'version',
     ownerId: 'ownerId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+  export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
 
 
-  export const OrganizationMemberScalarFieldEnum: {
+  export const WalletMemberScalarFieldEnum: {
     id: 'id',
-    uid: 'uid',
-    username: 'username',
-    passwordHash: 'passwordHash',
+    walletId: 'walletId',
+    userId: 'userId',
     creditLimit: 'creditLimit',
     creditAvailable: 'creditAvailable',
-    isDeleted: 'isDeleted',
-    organizationId: 'organizationId',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    lastLoginAt: 'lastLoginAt'
+    creditUsed: 'creditUsed',
+    isActive: 'isActive',
+    joinedAt: 'joinedAt',
+    leftAt: 'leftAt',
+    updatedAt: 'updatedAt'
   };
 
-  export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
+  export type WalletMemberScalarFieldEnum = (typeof WalletMemberScalarFieldEnum)[keyof typeof WalletMemberScalarFieldEnum]
+
+
+  export const ApiKeyScalarFieldEnum: {
+    id: 'id',
+    walletId: 'walletId',
+    creatorId: 'creatorId',
+    hashKey: 'hashKey',
+    preview: 'preview',
+    displayName: 'displayName',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    lastUsedAt: 'lastUsedAt'
+  };
+
+  export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
 
 
   export const PasskeyScalarFieldEnum: {
@@ -8896,43 +7871,14 @@ export namespace Prisma {
   export type PasskeyScalarFieldEnum = (typeof PasskeyScalarFieldEnum)[keyof typeof PasskeyScalarFieldEnum]
 
 
-  export const WalletScalarFieldEnum: {
-    id: 'id',
-    balance: 'balance',
-    version: 'version',
-    userId: 'userId',
-    updatedAt: 'updatedAt'
-  };
-
-  export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
-
-
-  export const ApiKeyScalarFieldEnum: {
-    id: 'id',
-    hashKey: 'hashKey',
-    preview: 'preview',
-    displayName: 'displayName',
-    isDeleted: 'isDeleted',
-    organizationId: 'organizationId',
-    memberCreatorId: 'memberCreatorId',
-    lastUsedAt: 'lastUsedAt',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
-
-
   export const RedemptionCodeScalarFieldEnum: {
     id: 'id',
     code: 'code',
     amount: 'amount',
     remark: 'remark',
-    isUsed: 'isUsed',
-    isDeleted: 'isDeleted',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
     expiredAt: 'expiredAt',
+    redeemedAt: 'redeemedAt',
     redeemerId: 'redeemerId'
   };
 
@@ -8962,30 +7908,26 @@ export namespace Prisma {
     email: 'email',
     phone: 'phone',
     gitHubId: 'gitHubId',
-    googleId: 'googleId',
-    twoFactorSecret: 'twoFactorSecret'
+    googleId: 'googleId'
   };
 
   export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
 
 
-  export const OrganizationOrderByRelevanceFieldEnum: {
-    uid: 'uid',
-    identifier: 'identifier',
-    displayName: 'displayName',
-    avatar: 'avatar'
+  export const WalletOrderByRelevanceFieldEnum: {
+    uid: 'uid'
   };
 
-  export type OrganizationOrderByRelevanceFieldEnum = (typeof OrganizationOrderByRelevanceFieldEnum)[keyof typeof OrganizationOrderByRelevanceFieldEnum]
+  export type WalletOrderByRelevanceFieldEnum = (typeof WalletOrderByRelevanceFieldEnum)[keyof typeof WalletOrderByRelevanceFieldEnum]
 
 
-  export const OrganizationMemberOrderByRelevanceFieldEnum: {
-    uid: 'uid',
-    username: 'username',
-    passwordHash: 'passwordHash'
+  export const ApiKeyOrderByRelevanceFieldEnum: {
+    hashKey: 'hashKey',
+    preview: 'preview',
+    displayName: 'displayName'
   };
 
-  export type OrganizationMemberOrderByRelevanceFieldEnum = (typeof OrganizationMemberOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberOrderByRelevanceFieldEnum]
+  export type ApiKeyOrderByRelevanceFieldEnum = (typeof ApiKeyOrderByRelevanceFieldEnum)[keyof typeof ApiKeyOrderByRelevanceFieldEnum]
 
 
   export const PasskeyOrderByRelevanceFieldEnum: {
@@ -8997,15 +7939,6 @@ export namespace Prisma {
   };
 
   export type PasskeyOrderByRelevanceFieldEnum = (typeof PasskeyOrderByRelevanceFieldEnum)[keyof typeof PasskeyOrderByRelevanceFieldEnum]
-
-
-  export const ApiKeyOrderByRelevanceFieldEnum: {
-    hashKey: 'hashKey',
-    preview: 'preview',
-    displayName: 'displayName'
-  };
-
-  export type ApiKeyOrderByRelevanceFieldEnum = (typeof ApiKeyOrderByRelevanceFieldEnum)[keyof typeof ApiKeyOrderByRelevanceFieldEnum]
 
 
   export const RedemptionCodeOrderByRelevanceFieldEnum: {
@@ -9092,17 +8025,17 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     gitHubId?: StringNullableFilter<"User"> | string | null
     googleId?: StringNullableFilter<"User"> | string | null
-    twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
     isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
+    walletMembers?: WalletMemberListRelationFilter
     passkeys?: PasskeyListRelationFilter
     redeemCodes?: RedemptionCodeListRelationFilter
-    wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    createdApiKeys?: ApiKeyListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -9114,17 +8047,17 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     gitHubId?: SortOrderInput | SortOrder
     googleId?: SortOrderInput | SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     isDeleted?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
+    wallet?: WalletOrderByWithRelationInput
+    walletMembers?: WalletMemberOrderByRelationAggregateInput
     passkeys?: PasskeyOrderByRelationAggregateInput
     redeemCodes?: RedemptionCodeOrderByRelationAggregateInput
-    wallet?: WalletOrderByWithRelationInput
-    organization?: OrganizationOrderByWithRelationInput
+    createdApiKeys?: ApiKeyOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -9140,17 +8073,17 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     displayName?: StringNullableFilter<"User"> | string | null
     avatar?: StringNullableFilter<"User"> | string | null
-    twoFactorEnabled?: BoolFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
     isDeleted?: BoolFilter<"User"> | boolean
     isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
+    walletMembers?: WalletMemberListRelationFilter
     passkeys?: PasskeyListRelationFilter
     redeemCodes?: RedemptionCodeListRelationFilter
-    wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    createdApiKeys?: ApiKeyListRelationFilter
   }, "id" | "uid" | "email" | "phone" | "gitHubId" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
@@ -9162,8 +8095,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     gitHubId?: SortOrderInput | SortOrder
     googleId?: SortOrderInput | SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     isDeleted?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -9188,8 +8120,7 @@ export namespace Prisma {
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
     gitHubId?: StringNullableWithAggregatesFilter<"User"> | string | null
     googleId?: StringNullableWithAggregatesFilter<"User"> | string | null
-    twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
-    twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
+    isActive?: BoolWithAggregatesFilter<"User"> | boolean
     isDeleted?: BoolWithAggregatesFilter<"User"> | boolean
     isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -9197,172 +8128,250 @@ export namespace Prisma {
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
-  export type OrganizationWhereInput = {
-    AND?: OrganizationWhereInput | OrganizationWhereInput[]
-    OR?: OrganizationWhereInput[]
-    NOT?: OrganizationWhereInput | OrganizationWhereInput[]
-    id?: IntFilter<"Organization"> | number
-    uid?: StringFilter<"Organization"> | string
-    identifier?: StringFilter<"Organization"> | string
-    displayName?: StringNullableFilter<"Organization"> | string | null
-    avatar?: StringNullableFilter<"Organization"> | string | null
-    ownerId?: IntFilter<"Organization"> | number
-    createdAt?: DateTimeFilter<"Organization"> | Date | string
-    updatedAt?: DateTimeFilter<"Organization"> | Date | string
+  export type WalletWhereInput = {
+    AND?: WalletWhereInput | WalletWhereInput[]
+    OR?: WalletWhereInput[]
+    NOT?: WalletWhereInput | WalletWhereInput[]
+    id?: IntFilter<"Wallet"> | number
+    uid?: StringFilter<"Wallet"> | string
+    balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    version?: IntFilter<"Wallet"> | number
+    ownerId?: IntFilter<"Wallet"> | number
+    createdAt?: DateTimeFilter<"Wallet"> | Date | string
+    updatedAt?: DateTimeFilter<"Wallet"> | Date | string
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
-    members?: OrganizationMemberListRelationFilter
+    members?: WalletMemberListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
   }
 
-  export type OrganizationOrderByWithRelationInput = {
+  export type WalletOrderByWithRelationInput = {
     id?: SortOrder
     uid?: SortOrder
-    identifier?: SortOrder
-    displayName?: SortOrderInput | SortOrder
-    avatar?: SortOrderInput | SortOrder
+    balance?: SortOrder
+    version?: SortOrder
     ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     owner?: UserOrderByWithRelationInput
-    members?: OrganizationMemberOrderByRelationAggregateInput
+    members?: WalletMemberOrderByRelationAggregateInput
     apiKeys?: ApiKeyOrderByRelationAggregateInput
-    _relevance?: OrganizationOrderByRelevanceInput
+    _relevance?: WalletOrderByRelevanceInput
   }
 
-  export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
+  export type WalletWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     uid?: string
-    identifier?: string
     ownerId?: number
-    AND?: OrganizationWhereInput | OrganizationWhereInput[]
-    OR?: OrganizationWhereInput[]
-    NOT?: OrganizationWhereInput | OrganizationWhereInput[]
-    displayName?: StringNullableFilter<"Organization"> | string | null
-    avatar?: StringNullableFilter<"Organization"> | string | null
-    createdAt?: DateTimeFilter<"Organization"> | Date | string
-    updatedAt?: DateTimeFilter<"Organization"> | Date | string
+    AND?: WalletWhereInput | WalletWhereInput[]
+    OR?: WalletWhereInput[]
+    NOT?: WalletWhereInput | WalletWhereInput[]
+    balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    version?: IntFilter<"Wallet"> | number
+    createdAt?: DateTimeFilter<"Wallet"> | Date | string
+    updatedAt?: DateTimeFilter<"Wallet"> | Date | string
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
-    members?: OrganizationMemberListRelationFilter
+    members?: WalletMemberListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
-  }, "id" | "uid" | "identifier" | "ownerId">
+  }, "id" | "uid" | "ownerId">
 
-  export type OrganizationOrderByWithAggregationInput = {
+  export type WalletOrderByWithAggregationInput = {
     id?: SortOrder
     uid?: SortOrder
-    identifier?: SortOrder
-    displayName?: SortOrderInput | SortOrder
-    avatar?: SortOrderInput | SortOrder
+    balance?: SortOrder
+    version?: SortOrder
     ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: OrganizationCountOrderByAggregateInput
-    _avg?: OrganizationAvgOrderByAggregateInput
-    _max?: OrganizationMaxOrderByAggregateInput
-    _min?: OrganizationMinOrderByAggregateInput
-    _sum?: OrganizationSumOrderByAggregateInput
+    _count?: WalletCountOrderByAggregateInput
+    _avg?: WalletAvgOrderByAggregateInput
+    _max?: WalletMaxOrderByAggregateInput
+    _min?: WalletMinOrderByAggregateInput
+    _sum?: WalletSumOrderByAggregateInput
   }
 
-  export type OrganizationScalarWhereWithAggregatesInput = {
-    AND?: OrganizationScalarWhereWithAggregatesInput | OrganizationScalarWhereWithAggregatesInput[]
-    OR?: OrganizationScalarWhereWithAggregatesInput[]
-    NOT?: OrganizationScalarWhereWithAggregatesInput | OrganizationScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Organization"> | number
-    uid?: StringWithAggregatesFilter<"Organization"> | string
-    identifier?: StringWithAggregatesFilter<"Organization"> | string
-    displayName?: StringNullableWithAggregatesFilter<"Organization"> | string | null
-    avatar?: StringNullableWithAggregatesFilter<"Organization"> | string | null
-    ownerId?: IntWithAggregatesFilter<"Organization"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
+  export type WalletScalarWhereWithAggregatesInput = {
+    AND?: WalletScalarWhereWithAggregatesInput | WalletScalarWhereWithAggregatesInput[]
+    OR?: WalletScalarWhereWithAggregatesInput[]
+    NOT?: WalletScalarWhereWithAggregatesInput | WalletScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Wallet"> | number
+    uid?: StringWithAggregatesFilter<"Wallet"> | string
+    balance?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    version?: IntWithAggregatesFilter<"Wallet"> | number
+    ownerId?: IntWithAggregatesFilter<"Wallet"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
   }
 
-  export type OrganizationMemberWhereInput = {
-    AND?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
-    OR?: OrganizationMemberWhereInput[]
-    NOT?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
-    id?: IntFilter<"OrganizationMember"> | number
-    uid?: StringFilter<"OrganizationMember"> | string
-    username?: StringFilter<"OrganizationMember"> | string
-    passwordHash?: StringFilter<"OrganizationMember"> | string
-    creditLimit?: DecimalFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    creditAvailable?: DecimalFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFilter<"OrganizationMember"> | boolean
-    organizationId?: IntFilter<"OrganizationMember"> | number
-    createdAt?: DateTimeFilter<"OrganizationMember"> | Date | string
-    updatedAt?: DateTimeFilter<"OrganizationMember"> | Date | string
-    lastLoginAt?: DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+  export type WalletMemberWhereInput = {
+    AND?: WalletMemberWhereInput | WalletMemberWhereInput[]
+    OR?: WalletMemberWhereInput[]
+    NOT?: WalletMemberWhereInput | WalletMemberWhereInput[]
+    id?: IntFilter<"WalletMember"> | number
+    walletId?: IntFilter<"WalletMember"> | number
+    userId?: IntFilter<"WalletMember"> | number
+    creditLimit?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"WalletMember"> | boolean
+    joinedAt?: DateTimeFilter<"WalletMember"> | Date | string
+    leftAt?: DateTimeNullableFilter<"WalletMember"> | Date | string | null
+    updatedAt?: DateTimeFilter<"WalletMember"> | Date | string
+    wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type OrganizationMemberOrderByWithRelationInput = {
+  export type WalletMemberOrderByWithRelationInput = {
     id?: SortOrder
-    uid?: SortOrder
-    username?: SortOrder
-    passwordHash?: SortOrder
+    walletId?: SortOrder
+    userId?: SortOrder
     creditLimit?: SortOrder
     creditAvailable?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
-    createdAt?: SortOrder
+    creditUsed?: SortOrder
+    isActive?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
-    lastLoginAt?: SortOrderInput | SortOrder
-    organization?: OrganizationOrderByWithRelationInput
-    _relevance?: OrganizationMemberOrderByRelevanceInput
+    wallet?: WalletOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
-  export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
+  export type WalletMemberWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    uid?: string
-    organizationId_username?: OrganizationMemberOrganizationIdUsernameCompoundUniqueInput
-    AND?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
-    OR?: OrganizationMemberWhereInput[]
-    NOT?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
-    username?: StringFilter<"OrganizationMember"> | string
-    passwordHash?: StringFilter<"OrganizationMember"> | string
-    creditLimit?: DecimalFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    creditAvailable?: DecimalFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFilter<"OrganizationMember"> | boolean
-    organizationId?: IntFilter<"OrganizationMember"> | number
-    createdAt?: DateTimeFilter<"OrganizationMember"> | Date | string
-    updatedAt?: DateTimeFilter<"OrganizationMember"> | Date | string
-    lastLoginAt?: DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-  }, "id" | "uid" | "organizationId_username">
+    walletId_userId?: WalletMemberWalletIdUserIdCompoundUniqueInput
+    AND?: WalletMemberWhereInput | WalletMemberWhereInput[]
+    OR?: WalletMemberWhereInput[]
+    NOT?: WalletMemberWhereInput | WalletMemberWhereInput[]
+    walletId?: IntFilter<"WalletMember"> | number
+    userId?: IntFilter<"WalletMember"> | number
+    creditLimit?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"WalletMember"> | boolean
+    joinedAt?: DateTimeFilter<"WalletMember"> | Date | string
+    leftAt?: DateTimeNullableFilter<"WalletMember"> | Date | string | null
+    updatedAt?: DateTimeFilter<"WalletMember"> | Date | string
+    wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "walletId_userId">
 
-  export type OrganizationMemberOrderByWithAggregationInput = {
+  export type WalletMemberOrderByWithAggregationInput = {
     id?: SortOrder
-    uid?: SortOrder
-    username?: SortOrder
-    passwordHash?: SortOrder
+    walletId?: SortOrder
+    userId?: SortOrder
     creditLimit?: SortOrder
     creditAvailable?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
-    createdAt?: SortOrder
+    creditUsed?: SortOrder
+    isActive?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
-    lastLoginAt?: SortOrderInput | SortOrder
-    _count?: OrganizationMemberCountOrderByAggregateInput
-    _avg?: OrganizationMemberAvgOrderByAggregateInput
-    _max?: OrganizationMemberMaxOrderByAggregateInput
-    _min?: OrganizationMemberMinOrderByAggregateInput
-    _sum?: OrganizationMemberSumOrderByAggregateInput
+    _count?: WalletMemberCountOrderByAggregateInput
+    _avg?: WalletMemberAvgOrderByAggregateInput
+    _max?: WalletMemberMaxOrderByAggregateInput
+    _min?: WalletMemberMinOrderByAggregateInput
+    _sum?: WalletMemberSumOrderByAggregateInput
   }
 
-  export type OrganizationMemberScalarWhereWithAggregatesInput = {
-    AND?: OrganizationMemberScalarWhereWithAggregatesInput | OrganizationMemberScalarWhereWithAggregatesInput[]
-    OR?: OrganizationMemberScalarWhereWithAggregatesInput[]
-    NOT?: OrganizationMemberScalarWhereWithAggregatesInput | OrganizationMemberScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"OrganizationMember"> | number
-    uid?: StringWithAggregatesFilter<"OrganizationMember"> | string
-    username?: StringWithAggregatesFilter<"OrganizationMember"> | string
-    passwordHash?: StringWithAggregatesFilter<"OrganizationMember"> | string
-    creditLimit?: DecimalWithAggregatesFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    creditAvailable?: DecimalWithAggregatesFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolWithAggregatesFilter<"OrganizationMember"> | boolean
-    organizationId?: IntWithAggregatesFilter<"OrganizationMember"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
-    lastLoginAt?: DateTimeNullableWithAggregatesFilter<"OrganizationMember"> | Date | string | null
+  export type WalletMemberScalarWhereWithAggregatesInput = {
+    AND?: WalletMemberScalarWhereWithAggregatesInput | WalletMemberScalarWhereWithAggregatesInput[]
+    OR?: WalletMemberScalarWhereWithAggregatesInput[]
+    NOT?: WalletMemberScalarWhereWithAggregatesInput | WalletMemberScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"WalletMember"> | number
+    walletId?: IntWithAggregatesFilter<"WalletMember"> | number
+    userId?: IntWithAggregatesFilter<"WalletMember"> | number
+    creditLimit?: DecimalWithAggregatesFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalWithAggregatesFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalWithAggregatesFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolWithAggregatesFilter<"WalletMember"> | boolean
+    joinedAt?: DateTimeWithAggregatesFilter<"WalletMember"> | Date | string
+    leftAt?: DateTimeNullableWithAggregatesFilter<"WalletMember"> | Date | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"WalletMember"> | Date | string
+  }
+
+  export type ApiKeyWhereInput = {
+    AND?: ApiKeyWhereInput | ApiKeyWhereInput[]
+    OR?: ApiKeyWhereInput[]
+    NOT?: ApiKeyWhereInput | ApiKeyWhereInput[]
+    id?: IntFilter<"ApiKey"> | number
+    walletId?: IntFilter<"ApiKey"> | number
+    creatorId?: IntFilter<"ApiKey"> | number
+    hashKey?: StringFilter<"ApiKey"> | string
+    preview?: StringFilter<"ApiKey"> | string
+    displayName?: StringFilter<"ApiKey"> | string
+    isActive?: BoolFilter<"ApiKey"> | boolean
+    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
+    updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
+    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
+    wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ApiKeyOrderByWithRelationInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    creatorId?: SortOrder
+    hashKey?: SortOrder
+    preview?: SortOrder
+    displayName?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lastUsedAt?: SortOrderInput | SortOrder
+    wallet?: WalletOrderByWithRelationInput
+    creator?: UserOrderByWithRelationInput
+    _relevance?: ApiKeyOrderByRelevanceInput
+  }
+
+  export type ApiKeyWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    hashKey?: string
+    AND?: ApiKeyWhereInput | ApiKeyWhereInput[]
+    OR?: ApiKeyWhereInput[]
+    NOT?: ApiKeyWhereInput | ApiKeyWhereInput[]
+    walletId?: IntFilter<"ApiKey"> | number
+    creatorId?: IntFilter<"ApiKey"> | number
+    preview?: StringFilter<"ApiKey"> | string
+    displayName?: StringFilter<"ApiKey"> | string
+    isActive?: BoolFilter<"ApiKey"> | boolean
+    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
+    updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
+    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
+    wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
+    creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "hashKey">
+
+  export type ApiKeyOrderByWithAggregationInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    creatorId?: SortOrder
+    hashKey?: SortOrder
+    preview?: SortOrder
+    displayName?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lastUsedAt?: SortOrderInput | SortOrder
+    _count?: ApiKeyCountOrderByAggregateInput
+    _avg?: ApiKeyAvgOrderByAggregateInput
+    _max?: ApiKeyMaxOrderByAggregateInput
+    _min?: ApiKeyMinOrderByAggregateInput
+    _sum?: ApiKeySumOrderByAggregateInput
+  }
+
+  export type ApiKeyScalarWhereWithAggregatesInput = {
+    AND?: ApiKeyScalarWhereWithAggregatesInput | ApiKeyScalarWhereWithAggregatesInput[]
+    OR?: ApiKeyScalarWhereWithAggregatesInput[]
+    NOT?: ApiKeyScalarWhereWithAggregatesInput | ApiKeyScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ApiKey"> | number
+    walletId?: IntWithAggregatesFilter<"ApiKey"> | number
+    creatorId?: IntWithAggregatesFilter<"ApiKey"> | number
+    hashKey?: StringWithAggregatesFilter<"ApiKey"> | string
+    preview?: StringWithAggregatesFilter<"ApiKey"> | string
+    displayName?: StringWithAggregatesFilter<"ApiKey"> | string
+    isActive?: BoolWithAggregatesFilter<"ApiKey"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
+    lastUsedAt?: DateTimeNullableWithAggregatesFilter<"ApiKey"> | Date | string | null
   }
 
   export type PasskeyWhereInput = {
@@ -9464,146 +8473,6 @@ export namespace Prisma {
     userId?: IntWithAggregatesFilter<"Passkey"> | number
   }
 
-  export type WalletWhereInput = {
-    AND?: WalletWhereInput | WalletWhereInput[]
-    OR?: WalletWhereInput[]
-    NOT?: WalletWhereInput | WalletWhereInput[]
-    id?: IntFilter<"Wallet"> | number
-    balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
-    version?: IntFilter<"Wallet"> | number
-    userId?: IntFilter<"Wallet"> | number
-    updatedAt?: DateTimeFilter<"Wallet"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type WalletOrderByWithRelationInput = {
-    id?: SortOrder
-    balance?: SortOrder
-    version?: SortOrder
-    userId?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type WalletWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    userId?: number
-    AND?: WalletWhereInput | WalletWhereInput[]
-    OR?: WalletWhereInput[]
-    NOT?: WalletWhereInput | WalletWhereInput[]
-    balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
-    version?: IntFilter<"Wallet"> | number
-    updatedAt?: DateTimeFilter<"Wallet"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "userId">
-
-  export type WalletOrderByWithAggregationInput = {
-    id?: SortOrder
-    balance?: SortOrder
-    version?: SortOrder
-    userId?: SortOrder
-    updatedAt?: SortOrder
-    _count?: WalletCountOrderByAggregateInput
-    _avg?: WalletAvgOrderByAggregateInput
-    _max?: WalletMaxOrderByAggregateInput
-    _min?: WalletMinOrderByAggregateInput
-    _sum?: WalletSumOrderByAggregateInput
-  }
-
-  export type WalletScalarWhereWithAggregatesInput = {
-    AND?: WalletScalarWhereWithAggregatesInput | WalletScalarWhereWithAggregatesInput[]
-    OR?: WalletScalarWhereWithAggregatesInput[]
-    NOT?: WalletScalarWhereWithAggregatesInput | WalletScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Wallet"> | number
-    balance?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
-    version?: IntWithAggregatesFilter<"Wallet"> | number
-    userId?: IntWithAggregatesFilter<"Wallet"> | number
-    updatedAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
-  }
-
-  export type ApiKeyWhereInput = {
-    AND?: ApiKeyWhereInput | ApiKeyWhereInput[]
-    OR?: ApiKeyWhereInput[]
-    NOT?: ApiKeyWhereInput | ApiKeyWhereInput[]
-    id?: IntFilter<"ApiKey"> | number
-    hashKey?: StringFilter<"ApiKey"> | string
-    preview?: StringFilter<"ApiKey"> | string
-    displayName?: StringFilter<"ApiKey"> | string
-    isDeleted?: BoolFilter<"ApiKey"> | boolean
-    organizationId?: IntFilter<"ApiKey"> | number
-    memberCreatorId?: IntNullableFilter<"ApiKey"> | number | null
-    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
-    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
-    updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-  }
-
-  export type ApiKeyOrderByWithRelationInput = {
-    id?: SortOrder
-    hashKey?: SortOrder
-    preview?: SortOrder
-    displayName?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
-    memberCreatorId?: SortOrderInput | SortOrder
-    lastUsedAt?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
-    _relevance?: ApiKeyOrderByRelevanceInput
-  }
-
-  export type ApiKeyWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    hashKey?: string
-    AND?: ApiKeyWhereInput | ApiKeyWhereInput[]
-    OR?: ApiKeyWhereInput[]
-    NOT?: ApiKeyWhereInput | ApiKeyWhereInput[]
-    preview?: StringFilter<"ApiKey"> | string
-    displayName?: StringFilter<"ApiKey"> | string
-    isDeleted?: BoolFilter<"ApiKey"> | boolean
-    organizationId?: IntFilter<"ApiKey"> | number
-    memberCreatorId?: IntNullableFilter<"ApiKey"> | number | null
-    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
-    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
-    updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-  }, "id" | "hashKey">
-
-  export type ApiKeyOrderByWithAggregationInput = {
-    id?: SortOrder
-    hashKey?: SortOrder
-    preview?: SortOrder
-    displayName?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
-    memberCreatorId?: SortOrderInput | SortOrder
-    lastUsedAt?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ApiKeyCountOrderByAggregateInput
-    _avg?: ApiKeyAvgOrderByAggregateInput
-    _max?: ApiKeyMaxOrderByAggregateInput
-    _min?: ApiKeyMinOrderByAggregateInput
-    _sum?: ApiKeySumOrderByAggregateInput
-  }
-
-  export type ApiKeyScalarWhereWithAggregatesInput = {
-    AND?: ApiKeyScalarWhereWithAggregatesInput | ApiKeyScalarWhereWithAggregatesInput[]
-    OR?: ApiKeyScalarWhereWithAggregatesInput[]
-    NOT?: ApiKeyScalarWhereWithAggregatesInput | ApiKeyScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"ApiKey"> | number
-    hashKey?: StringWithAggregatesFilter<"ApiKey"> | string
-    preview?: StringWithAggregatesFilter<"ApiKey"> | string
-    displayName?: StringWithAggregatesFilter<"ApiKey"> | string
-    isDeleted?: BoolWithAggregatesFilter<"ApiKey"> | boolean
-    organizationId?: IntWithAggregatesFilter<"ApiKey"> | number
-    memberCreatorId?: IntNullableWithAggregatesFilter<"ApiKey"> | number | null
-    lastUsedAt?: DateTimeNullableWithAggregatesFilter<"ApiKey"> | Date | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
-  }
-
   export type RedemptionCodeWhereInput = {
     AND?: RedemptionCodeWhereInput | RedemptionCodeWhereInput[]
     OR?: RedemptionCodeWhereInput[]
@@ -9611,12 +8480,10 @@ export namespace Prisma {
     id?: IntFilter<"RedemptionCode"> | number
     code?: StringFilter<"RedemptionCode"> | string
     amount?: IntFilter<"RedemptionCode"> | number
-    remark?: StringNullableFilter<"RedemptionCode"> | string | null
-    isUsed?: BoolFilter<"RedemptionCode"> | boolean
-    isDeleted?: BoolFilter<"RedemptionCode"> | boolean
+    remark?: StringFilter<"RedemptionCode"> | string
     createdAt?: DateTimeFilter<"RedemptionCode"> | Date | string
-    updatedAt?: DateTimeFilter<"RedemptionCode"> | Date | string
     expiredAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    redeemedAt?: DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
     redeemerId?: IntNullableFilter<"RedemptionCode"> | number | null
     redeemer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
@@ -9625,12 +8492,10 @@ export namespace Prisma {
     id?: SortOrder
     code?: SortOrder
     amount?: SortOrder
-    remark?: SortOrderInput | SortOrder
-    isUsed?: SortOrder
-    isDeleted?: SortOrder
+    remark?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
     expiredAt?: SortOrder
+    redeemedAt?: SortOrderInput | SortOrder
     redeemerId?: SortOrderInput | SortOrder
     redeemer?: UserOrderByWithRelationInput
     _relevance?: RedemptionCodeOrderByRelevanceInput
@@ -9643,12 +8508,10 @@ export namespace Prisma {
     OR?: RedemptionCodeWhereInput[]
     NOT?: RedemptionCodeWhereInput | RedemptionCodeWhereInput[]
     amount?: IntFilter<"RedemptionCode"> | number
-    remark?: StringNullableFilter<"RedemptionCode"> | string | null
-    isUsed?: BoolFilter<"RedemptionCode"> | boolean
-    isDeleted?: BoolFilter<"RedemptionCode"> | boolean
+    remark?: StringFilter<"RedemptionCode"> | string
     createdAt?: DateTimeFilter<"RedemptionCode"> | Date | string
-    updatedAt?: DateTimeFilter<"RedemptionCode"> | Date | string
     expiredAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    redeemedAt?: DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
     redeemerId?: IntNullableFilter<"RedemptionCode"> | number | null
     redeemer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "code">
@@ -9657,12 +8520,10 @@ export namespace Prisma {
     id?: SortOrder
     code?: SortOrder
     amount?: SortOrder
-    remark?: SortOrderInput | SortOrder
-    isUsed?: SortOrder
-    isDeleted?: SortOrder
+    remark?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
     expiredAt?: SortOrder
+    redeemedAt?: SortOrderInput | SortOrder
     redeemerId?: SortOrderInput | SortOrder
     _count?: RedemptionCodeCountOrderByAggregateInput
     _avg?: RedemptionCodeAvgOrderByAggregateInput
@@ -9678,12 +8539,10 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"RedemptionCode"> | number
     code?: StringWithAggregatesFilter<"RedemptionCode"> | string
     amount?: IntWithAggregatesFilter<"RedemptionCode"> | number
-    remark?: StringNullableWithAggregatesFilter<"RedemptionCode"> | string | null
-    isUsed?: BoolWithAggregatesFilter<"RedemptionCode"> | boolean
-    isDeleted?: BoolWithAggregatesFilter<"RedemptionCode"> | boolean
+    remark?: StringWithAggregatesFilter<"RedemptionCode"> | string
     createdAt?: DateTimeWithAggregatesFilter<"RedemptionCode"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"RedemptionCode"> | Date | string
     expiredAt?: DateTimeWithAggregatesFilter<"RedemptionCode"> | Date | string
+    redeemedAt?: DateTimeNullableWithAggregatesFilter<"RedemptionCode"> | Date | string | null
     redeemerId?: IntNullableWithAggregatesFilter<"RedemptionCode"> | number | null
   }
 
@@ -9695,17 +8554,17 @@ export namespace Prisma {
     phone?: string | null
     gitHubId?: string | null
     googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    wallet?: WalletCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberCreateNestedManyWithoutUserInput
     passkeys?: PasskeyCreateNestedManyWithoutUserInput
     redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    organization?: OrganizationCreateNestedOneWithoutOwnerInput
+    createdApiKeys?: ApiKeyCreateNestedManyWithoutCreatorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -9717,17 +8576,17 @@ export namespace Prisma {
     phone?: string | null
     gitHubId?: string | null
     googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    wallet?: WalletUncheckedCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberUncheckedCreateNestedManyWithoutUserInput
     passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
     redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    organization?: OrganizationUncheckedCreateNestedOneWithoutOwnerInput
+    createdApiKeys?: ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
   }
 
   export type UserUpdateInput = {
@@ -9738,17 +8597,17 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUpdateManyWithoutUserNestedInput
     passkeys?: PasskeyUpdateManyWithoutUserNestedInput
     redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    organization?: OrganizationUpdateOneWithoutOwnerNestedInput
+    createdApiKeys?: ApiKeyUpdateManyWithoutCreatorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9760,17 +8619,17 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUncheckedUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUncheckedUpdateManyWithoutUserNestedInput
     passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
     redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    organization?: OrganizationUncheckedUpdateOneWithoutOwnerNestedInput
+    createdApiKeys?: ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9782,8 +8641,7 @@ export namespace Prisma {
     phone?: string | null
     gitHubId?: string | null
     googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: Date | string
@@ -9799,8 +8657,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9817,8 +8674,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9826,179 +8682,250 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type OrganizationCreateInput = {
+  export type WalletCreateInput = {
     uid?: string
-    identifier: string
-    displayName?: string | null
-    avatar?: string | null
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutOrganizationInput
-    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutOrganizationInput
+    owner: UserCreateNestedOneWithoutWalletInput
+    members?: WalletMemberCreateNestedManyWithoutWalletInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWalletInput
   }
 
-  export type OrganizationUncheckedCreateInput = {
+  export type WalletUncheckedCreateInput = {
     id?: number
     uid?: string
-    identifier: string
-    displayName?: string | null
-    avatar?: string | null
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
     ownerId: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: WalletMemberUncheckedCreateNestedManyWithoutWalletInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWalletInput
   }
 
-  export type OrganizationUpdateInput = {
+  export type WalletUpdateInput = {
     uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutOrganizationNestedInput
-    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutOrganizationNestedInput
+    owner?: UserUpdateOneRequiredWithoutWalletNestedInput
+    members?: WalletMemberUpdateManyWithoutWalletNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWalletNestedInput
   }
 
-  export type OrganizationUncheckedUpdateInput = {
+  export type WalletUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
     ownerId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: WalletMemberUncheckedUpdateManyWithoutWalletNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWalletNestedInput
   }
 
-  export type OrganizationCreateManyInput = {
+  export type WalletCreateManyInput = {
     id?: number
     uid?: string
-    identifier: string
-    displayName?: string | null
-    avatar?: string | null
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
     ownerId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type OrganizationUpdateManyMutationInput = {
+  export type WalletUpdateManyMutationInput = {
     uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OrganizationUncheckedUpdateManyInput = {
+  export type WalletUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
     ownerId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OrganizationMemberCreateInput = {
-    uid?: string
-    username: string
-    passwordHash: string
+  export type WalletMemberCreateInput = {
     creditLimit: Decimal | DecimalJsLike | number | string
     creditAvailable: Decimal | DecimalJsLike | number | string
-    isDeleted?: boolean
-    createdAt?: Date | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
     updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
-    organization: OrganizationCreateNestedOneWithoutMembersInput
+    wallet: WalletCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutWalletMembersInput
   }
 
-  export type OrganizationMemberUncheckedCreateInput = {
+  export type WalletMemberUncheckedCreateInput = {
     id?: number
-    uid?: string
-    username: string
-    passwordHash: string
+    walletId: number
+    userId: number
     creditLimit: Decimal | DecimalJsLike | number | string
     creditAvailable: Decimal | DecimalJsLike | number | string
-    isDeleted?: boolean
-    organizationId: number
-    createdAt?: Date | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
     updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
   }
 
-  export type OrganizationMemberUpdateInput = {
-    uid?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
+  export type WalletMemberUpdateInput = {
     creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+    wallet?: WalletUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletMembersNestedInput
   }
 
-  export type OrganizationMemberUncheckedUpdateInput = {
+  export type WalletMemberUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
+    walletId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    organizationId?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type OrganizationMemberCreateManyInput = {
+  export type WalletMemberCreateManyInput = {
     id?: number
-    uid?: string
-    username: string
-    passwordHash: string
+    walletId: number
+    userId: number
     creditLimit: Decimal | DecimalJsLike | number | string
     creditAvailable: Decimal | DecimalJsLike | number | string
-    isDeleted?: boolean
-    organizationId: number
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type WalletMemberUpdateManyMutationInput = {
+    creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WalletMemberUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    walletId?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApiKeyCreateInput = {
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
+    lastUsedAt?: Date | string | null
+    wallet: WalletCreateNestedOneWithoutApiKeysInput
+    creator: UserCreateNestedOneWithoutCreatedApiKeysInput
   }
 
-  export type OrganizationMemberUpdateManyMutationInput = {
-    uid?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+  export type ApiKeyUncheckedCreateInput = {
+    id?: number
+    walletId: number
+    creatorId: number
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastUsedAt?: Date | string | null
+  }
+
+  export type ApiKeyUpdateInput = {
+    hashKey?: StringFieldUpdateOperationsInput | string
+    preview?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneRequiredWithoutApiKeysNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedApiKeysNestedInput
   }
 
-  export type OrganizationMemberUncheckedUpdateManyInput = {
+  export type ApiKeyUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    organizationId?: IntFieldUpdateOperationsInput | number
+    walletId?: IntFieldUpdateOperationsInput | number
+    creatorId?: IntFieldUpdateOperationsInput | number
+    hashKey?: StringFieldUpdateOperationsInput | string
+    preview?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ApiKeyCreateManyInput = {
+    id?: number
+    walletId: number
+    creatorId: number
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastUsedAt?: Date | string | null
+  }
+
+  export type ApiKeyUpdateManyMutationInput = {
+    hashKey?: StringFieldUpdateOperationsInput | string
+    preview?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ApiKeyUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    walletId?: IntFieldUpdateOperationsInput | number
+    creatorId?: IntFieldUpdateOperationsInput | number
+    hashKey?: StringFieldUpdateOperationsInput | string
+    preview?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PasskeyCreateInput = {
@@ -10112,154 +9039,13 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type WalletCreateInput = {
-    balance?: Decimal | DecimalJsLike | number | string
-    version?: number
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-  }
-
-  export type WalletUncheckedCreateInput = {
-    id?: number
-    balance?: Decimal | DecimalJsLike | number | string
-    version?: number
-    userId: number
-    updatedAt?: Date | string
-  }
-
-  export type WalletUpdateInput = {
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    version?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-  }
-
-  export type WalletUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    version?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type WalletCreateManyInput = {
-    id?: number
-    balance?: Decimal | DecimalJsLike | number | string
-    version?: number
-    userId: number
-    updatedAt?: Date | string
-  }
-
-  export type WalletUpdateManyMutationInput = {
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    version?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type WalletUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    version?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ApiKeyCreateInput = {
-    hashKey: string
-    preview: string
-    displayName: string
-    isDeleted?: boolean
-    memberCreatorId?: number | null
-    lastUsedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    organization: OrganizationCreateNestedOneWithoutApiKeysInput
-  }
-
-  export type ApiKeyUncheckedCreateInput = {
-    id?: number
-    hashKey: string
-    preview: string
-    displayName: string
-    isDeleted?: boolean
-    organizationId: number
-    memberCreatorId?: number | null
-    lastUsedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ApiKeyUpdateInput = {
-    hashKey?: StringFieldUpdateOperationsInput | string
-    preview?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    memberCreatorId?: NullableIntFieldUpdateOperationsInput | number | null
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutApiKeysNestedInput
-  }
-
-  export type ApiKeyUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    hashKey?: StringFieldUpdateOperationsInput | string
-    preview?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    organizationId?: IntFieldUpdateOperationsInput | number
-    memberCreatorId?: NullableIntFieldUpdateOperationsInput | number | null
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ApiKeyCreateManyInput = {
-    id?: number
-    hashKey: string
-    preview: string
-    displayName: string
-    isDeleted?: boolean
-    organizationId: number
-    memberCreatorId?: number | null
-    lastUsedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ApiKeyUpdateManyMutationInput = {
-    hashKey?: StringFieldUpdateOperationsInput | string
-    preview?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    memberCreatorId?: NullableIntFieldUpdateOperationsInput | number | null
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ApiKeyUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    hashKey?: StringFieldUpdateOperationsInput | string
-    preview?: StringFieldUpdateOperationsInput | string
-    displayName?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    organizationId?: IntFieldUpdateOperationsInput | number
-    memberCreatorId?: NullableIntFieldUpdateOperationsInput | number | null
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type RedemptionCodeCreateInput = {
     code: string
     amount: number
-    remark?: string | null
-    isUsed?: boolean
-    isDeleted?: boolean
+    remark?: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    expiredAt: Date | string
+    expiredAt?: Date | string
+    redeemedAt?: Date | string | null
     redeemer?: UserCreateNestedOneWithoutRedeemCodesInput
   }
 
@@ -10267,24 +9053,20 @@ export namespace Prisma {
     id?: number
     code: string
     amount: number
-    remark?: string | null
-    isUsed?: boolean
-    isDeleted?: boolean
+    remark?: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    expiredAt: Date | string
+    expiredAt?: Date | string
+    redeemedAt?: Date | string | null
     redeemerId?: number | null
   }
 
   export type RedemptionCodeUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    remark?: NullableStringFieldUpdateOperationsInput | string | null
-    isUsed?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    remark?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     redeemer?: UserUpdateOneWithoutRedeemCodesNestedInput
   }
 
@@ -10292,12 +9074,10 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     code?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    remark?: NullableStringFieldUpdateOperationsInput | string | null
-    isUsed?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    remark?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     redeemerId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -10305,36 +9085,30 @@ export namespace Prisma {
     id?: number
     code: string
     amount: number
-    remark?: string | null
-    isUsed?: boolean
-    isDeleted?: boolean
+    remark?: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    expiredAt: Date | string
+    expiredAt?: Date | string
+    redeemedAt?: Date | string | null
     redeemerId?: number | null
   }
 
   export type RedemptionCodeUpdateManyMutationInput = {
     code?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    remark?: NullableStringFieldUpdateOperationsInput | string | null
-    isUsed?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    remark?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type RedemptionCodeUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     code?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    remark?: NullableStringFieldUpdateOperationsInput | string | null
-    isUsed?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    remark?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     redeemerId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -10406,6 +9180,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type WalletNullableScalarRelationFilter = {
+    is?: WalletWhereInput | null
+    isNot?: WalletWhereInput | null
+  }
+
+  export type WalletMemberListRelationFilter = {
+    every?: WalletMemberWhereInput
+    some?: WalletMemberWhereInput
+    none?: WalletMemberWhereInput
+  }
+
   export type PasskeyListRelationFilter = {
     every?: PasskeyWhereInput
     some?: PasskeyWhereInput
@@ -10418,14 +9203,10 @@ export namespace Prisma {
     none?: RedemptionCodeWhereInput
   }
 
-  export type WalletNullableScalarRelationFilter = {
-    is?: WalletWhereInput | null
-    isNot?: WalletWhereInput | null
-  }
-
-  export type OrganizationNullableScalarRelationFilter = {
-    is?: OrganizationWhereInput | null
-    isNot?: OrganizationWhereInput | null
+  export type ApiKeyListRelationFilter = {
+    every?: ApiKeyWhereInput
+    some?: ApiKeyWhereInput
+    none?: ApiKeyWhereInput
   }
 
   export type SortOrderInput = {
@@ -10433,11 +9214,19 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
+  export type WalletMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PasskeyOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type RedemptionCodeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ApiKeyOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10456,8 +9245,7 @@ export namespace Prisma {
     phone?: SortOrder
     gitHubId?: SortOrder
     googleId?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
+    isActive?: SortOrder
     isDeleted?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -10478,8 +9266,7 @@ export namespace Prisma {
     phone?: SortOrder
     gitHubId?: SortOrder
     googleId?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
+    isActive?: SortOrder
     isDeleted?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -10496,8 +9283,7 @@ export namespace Prisma {
     phone?: SortOrder
     gitHubId?: SortOrder
     googleId?: SortOrder
-    twoFactorEnabled?: SortOrder
-    twoFactorSecret?: SortOrder
+    isActive?: SortOrder
     isDeleted?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -10597,80 +9383,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type OrganizationMemberListRelationFilter = {
-    every?: OrganizationMemberWhereInput
-    some?: OrganizationMemberWhereInput
-    none?: OrganizationMemberWhereInput
-  }
-
-  export type ApiKeyListRelationFilter = {
-    every?: ApiKeyWhereInput
-    some?: ApiKeyWhereInput
-    none?: ApiKeyWhereInput
-  }
-
-  export type OrganizationMemberOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ApiKeyOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OrganizationOrderByRelevanceInput = {
-    fields: OrganizationOrderByRelevanceFieldEnum | OrganizationOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type OrganizationCountOrderByAggregateInput = {
-    id?: SortOrder
-    uid?: SortOrder
-    identifier?: SortOrder
-    displayName?: SortOrder
-    avatar?: SortOrder
-    ownerId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type OrganizationAvgOrderByAggregateInput = {
-    id?: SortOrder
-    ownerId?: SortOrder
-  }
-
-  export type OrganizationMaxOrderByAggregateInput = {
-    id?: SortOrder
-    uid?: SortOrder
-    identifier?: SortOrder
-    displayName?: SortOrder
-    avatar?: SortOrder
-    ownerId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type OrganizationMinOrderByAggregateInput = {
-    id?: SortOrder
-    uid?: SortOrder
-    identifier?: SortOrder
-    displayName?: SortOrder
-    avatar?: SortOrder
-    ownerId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type OrganizationSumOrderByAggregateInput = {
-    id?: SortOrder
-    ownerId?: SortOrder
-  }
-
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[]
@@ -10682,76 +9394,59 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type OrganizationScalarRelationFilter = {
-    is?: OrganizationWhereInput
-    isNot?: OrganizationWhereInput
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
-  export type OrganizationMemberOrderByRelevanceInput = {
-    fields: OrganizationMemberOrderByRelevanceFieldEnum | OrganizationMemberOrderByRelevanceFieldEnum[]
+  export type WalletOrderByRelevanceInput = {
+    fields: WalletOrderByRelevanceFieldEnum | WalletOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type OrganizationMemberOrganizationIdUsernameCompoundUniqueInput = {
-    organizationId: number
-    username: string
-  }
-
-  export type OrganizationMemberCountOrderByAggregateInput = {
+  export type WalletCountOrderByAggregateInput = {
     id?: SortOrder
     uid?: SortOrder
-    username?: SortOrder
-    passwordHash?: SortOrder
-    creditLimit?: SortOrder
-    creditAvailable?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
+    balance?: SortOrder
+    version?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    lastLoginAt?: SortOrder
   }
 
-  export type OrganizationMemberAvgOrderByAggregateInput = {
+  export type WalletAvgOrderByAggregateInput = {
     id?: SortOrder
-    creditLimit?: SortOrder
-    creditAvailable?: SortOrder
-    organizationId?: SortOrder
+    balance?: SortOrder
+    version?: SortOrder
+    ownerId?: SortOrder
   }
 
-  export type OrganizationMemberMaxOrderByAggregateInput = {
+  export type WalletMaxOrderByAggregateInput = {
     id?: SortOrder
     uid?: SortOrder
-    username?: SortOrder
-    passwordHash?: SortOrder
-    creditLimit?: SortOrder
-    creditAvailable?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
+    balance?: SortOrder
+    version?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    lastLoginAt?: SortOrder
   }
 
-  export type OrganizationMemberMinOrderByAggregateInput = {
+  export type WalletMinOrderByAggregateInput = {
     id?: SortOrder
     uid?: SortOrder
-    username?: SortOrder
-    passwordHash?: SortOrder
-    creditLimit?: SortOrder
-    creditAvailable?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
+    balance?: SortOrder
+    version?: SortOrder
+    ownerId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    lastLoginAt?: SortOrder
   }
 
-  export type OrganizationMemberSumOrderByAggregateInput = {
+  export type WalletSumOrderByAggregateInput = {
     id?: SortOrder
-    creditLimit?: SortOrder
-    creditAvailable?: SortOrder
-    organizationId?: SortOrder
+    balance?: SortOrder
+    version?: SortOrder
+    ownerId?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -10768,6 +9463,130 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type WalletScalarRelationFilter = {
+    is?: WalletWhereInput
+    isNot?: WalletWhereInput
+  }
+
+  export type WalletMemberWalletIdUserIdCompoundUniqueInput = {
+    walletId: number
+    userId: number
+  }
+
+  export type WalletMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    userId?: SortOrder
+    creditLimit?: SortOrder
+    creditAvailable?: SortOrder
+    creditUsed?: SortOrder
+    isActive?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WalletMemberAvgOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    userId?: SortOrder
+    creditLimit?: SortOrder
+    creditAvailable?: SortOrder
+    creditUsed?: SortOrder
+  }
+
+  export type WalletMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    userId?: SortOrder
+    creditLimit?: SortOrder
+    creditAvailable?: SortOrder
+    creditUsed?: SortOrder
+    isActive?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WalletMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    userId?: SortOrder
+    creditLimit?: SortOrder
+    creditAvailable?: SortOrder
+    creditUsed?: SortOrder
+    isActive?: SortOrder
+    joinedAt?: SortOrder
+    leftAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WalletMemberSumOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    userId?: SortOrder
+    creditLimit?: SortOrder
+    creditAvailable?: SortOrder
+    creditUsed?: SortOrder
+  }
+
+  export type ApiKeyOrderByRelevanceInput = {
+    fields: ApiKeyOrderByRelevanceFieldEnum | ApiKeyOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type ApiKeyCountOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    creatorId?: SortOrder
+    hashKey?: SortOrder
+    preview?: SortOrder
+    displayName?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lastUsedAt?: SortOrder
+  }
+
+  export type ApiKeyAvgOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    creatorId?: SortOrder
+  }
+
+  export type ApiKeyMaxOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    creatorId?: SortOrder
+    hashKey?: SortOrder
+    preview?: SortOrder
+    displayName?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lastUsedAt?: SortOrder
+  }
+
+  export type ApiKeyMinOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    creatorId?: SortOrder
+    hashKey?: SortOrder
+    preview?: SortOrder
+    displayName?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lastUsedAt?: SortOrder
+  }
+
+  export type ApiKeySumOrderByAggregateInput = {
+    id?: SortOrder
+    walletId?: SortOrder
+    creatorId?: SortOrder
   }
 
   export type BytesFilter<$PrismaModel = never> = {
@@ -10883,44 +9702,6 @@ export namespace Prisma {
     _max?: NestedBigIntFilter<$PrismaModel>
   }
 
-  export type WalletCountOrderByAggregateInput = {
-    id?: SortOrder
-    balance?: SortOrder
-    version?: SortOrder
-    userId?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type WalletAvgOrderByAggregateInput = {
-    id?: SortOrder
-    balance?: SortOrder
-    version?: SortOrder
-    userId?: SortOrder
-  }
-
-  export type WalletMaxOrderByAggregateInput = {
-    id?: SortOrder
-    balance?: SortOrder
-    version?: SortOrder
-    userId?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type WalletMinOrderByAggregateInput = {
-    id?: SortOrder
-    balance?: SortOrder
-    version?: SortOrder
-    userId?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type WalletSumOrderByAggregateInput = {
-    id?: SortOrder
-    balance?: SortOrder
-    version?: SortOrder
-    userId?: SortOrder
-  }
-
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -10930,79 +9711,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type ApiKeyOrderByRelevanceInput = {
-    fields: ApiKeyOrderByRelevanceFieldEnum | ApiKeyOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ApiKeyCountOrderByAggregateInput = {
-    id?: SortOrder
-    hashKey?: SortOrder
-    preview?: SortOrder
-    displayName?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
-    memberCreatorId?: SortOrder
-    lastUsedAt?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ApiKeyAvgOrderByAggregateInput = {
-    id?: SortOrder
-    organizationId?: SortOrder
-    memberCreatorId?: SortOrder
-  }
-
-  export type ApiKeyMaxOrderByAggregateInput = {
-    id?: SortOrder
-    hashKey?: SortOrder
-    preview?: SortOrder
-    displayName?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
-    memberCreatorId?: SortOrder
-    lastUsedAt?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ApiKeyMinOrderByAggregateInput = {
-    id?: SortOrder
-    hashKey?: SortOrder
-    preview?: SortOrder
-    displayName?: SortOrder
-    isDeleted?: SortOrder
-    organizationId?: SortOrder
-    memberCreatorId?: SortOrder
-    lastUsedAt?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ApiKeySumOrderByAggregateInput = {
-    id?: SortOrder
-    organizationId?: SortOrder
-    memberCreatorId?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type UserNullableScalarRelationFilter = {
@@ -11021,11 +9729,9 @@ export namespace Prisma {
     code?: SortOrder
     amount?: SortOrder
     remark?: SortOrder
-    isUsed?: SortOrder
-    isDeleted?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
     expiredAt?: SortOrder
+    redeemedAt?: SortOrder
     redeemerId?: SortOrder
   }
 
@@ -11040,11 +9746,9 @@ export namespace Prisma {
     code?: SortOrder
     amount?: SortOrder
     remark?: SortOrder
-    isUsed?: SortOrder
-    isDeleted?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
     expiredAt?: SortOrder
+    redeemedAt?: SortOrder
     redeemerId?: SortOrder
   }
 
@@ -11053,11 +9757,9 @@ export namespace Prisma {
     code?: SortOrder
     amount?: SortOrder
     remark?: SortOrder
-    isUsed?: SortOrder
-    isDeleted?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
     expiredAt?: SortOrder
+    redeemedAt?: SortOrder
     redeemerId?: SortOrder
   }
 
@@ -11065,6 +9767,35 @@ export namespace Prisma {
     id?: SortOrder
     amount?: SortOrder
     redeemerId?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type WalletCreateNestedOneWithoutOwnerInput = {
+    create?: XOR<WalletCreateWithoutOwnerInput, WalletUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutOwnerInput
+    connect?: WalletWhereUniqueInput
+  }
+
+  export type WalletMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<WalletMemberCreateWithoutUserInput, WalletMemberUncheckedCreateWithoutUserInput> | WalletMemberCreateWithoutUserInput[] | WalletMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutUserInput | WalletMemberCreateOrConnectWithoutUserInput[]
+    createMany?: WalletMemberCreateManyUserInputEnvelope
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
   }
 
   export type PasskeyCreateNestedManyWithoutUserInput = {
@@ -11081,16 +9812,24 @@ export namespace Prisma {
     connect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
   }
 
-  export type WalletCreateNestedOneWithoutUserInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput
+  export type ApiKeyCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<ApiKeyCreateWithoutCreatorInput, ApiKeyUncheckedCreateWithoutCreatorInput> | ApiKeyCreateWithoutCreatorInput[] | ApiKeyUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutCreatorInput | ApiKeyCreateOrConnectWithoutCreatorInput[]
+    createMany?: ApiKeyCreateManyCreatorInputEnvelope
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+  }
+
+  export type WalletUncheckedCreateNestedOneWithoutOwnerInput = {
+    create?: XOR<WalletCreateWithoutOwnerInput, WalletUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutOwnerInput
     connect?: WalletWhereUniqueInput
   }
 
-  export type OrganizationCreateNestedOneWithoutOwnerInput = {
-    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput
-    connect?: OrganizationWhereUniqueInput
+  export type WalletMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WalletMemberCreateWithoutUserInput, WalletMemberUncheckedCreateWithoutUserInput> | WalletMemberCreateWithoutUserInput[] | WalletMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutUserInput | WalletMemberCreateOrConnectWithoutUserInput[]
+    createMany?: WalletMemberCreateManyUserInputEnvelope
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
   }
 
   export type PasskeyUncheckedCreateNestedManyWithoutUserInput = {
@@ -11107,16 +9846,11 @@ export namespace Prisma {
     connect?: RedemptionCodeWhereUniqueInput | RedemptionCodeWhereUniqueInput[]
   }
 
-  export type WalletUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput
-    connect?: WalletWhereUniqueInput
-  }
-
-  export type OrganizationUncheckedCreateNestedOneWithoutOwnerInput = {
-    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput
-    connect?: OrganizationWhereUniqueInput
+  export type ApiKeyUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<ApiKeyCreateWithoutCreatorInput, ApiKeyUncheckedCreateWithoutCreatorInput> | ApiKeyCreateWithoutCreatorInput[] | ApiKeyUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutCreatorInput | ApiKeyCreateOrConnectWithoutCreatorInput[]
+    createMany?: ApiKeyCreateManyCreatorInputEnvelope
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -11137,6 +9871,30 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type WalletUpdateOneWithoutOwnerNestedInput = {
+    create?: XOR<WalletCreateWithoutOwnerInput, WalletUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutOwnerInput
+    upsert?: WalletUpsertWithoutOwnerInput
+    disconnect?: WalletWhereInput | boolean
+    delete?: WalletWhereInput | boolean
+    connect?: WalletWhereUniqueInput
+    update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutOwnerInput, WalletUpdateWithoutOwnerInput>, WalletUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type WalletMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WalletMemberCreateWithoutUserInput, WalletMemberUncheckedCreateWithoutUserInput> | WalletMemberCreateWithoutUserInput[] | WalletMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutUserInput | WalletMemberCreateOrConnectWithoutUserInput[]
+    upsert?: WalletMemberUpsertWithWhereUniqueWithoutUserInput | WalletMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WalletMemberCreateManyUserInputEnvelope
+    set?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    disconnect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    delete?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    update?: WalletMemberUpdateWithWhereUniqueWithoutUserInput | WalletMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WalletMemberUpdateManyWithWhereWithoutUserInput | WalletMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WalletMemberScalarWhereInput | WalletMemberScalarWhereInput[]
   }
 
   export type PasskeyUpdateManyWithoutUserNestedInput = {
@@ -11167,24 +9925,18 @@ export namespace Prisma {
     deleteMany?: RedemptionCodeScalarWhereInput | RedemptionCodeScalarWhereInput[]
   }
 
-  export type WalletUpdateOneWithoutUserNestedInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput
-    upsert?: WalletUpsertWithoutUserInput
-    disconnect?: WalletWhereInput | boolean
-    delete?: WalletWhereInput | boolean
-    connect?: WalletWhereUniqueInput
-    update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutUserInput, WalletUpdateWithoutUserInput>, WalletUncheckedUpdateWithoutUserInput>
-  }
-
-  export type OrganizationUpdateOneWithoutOwnerNestedInput = {
-    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput
-    upsert?: OrganizationUpsertWithoutOwnerInput
-    disconnect?: OrganizationWhereInput | boolean
-    delete?: OrganizationWhereInput | boolean
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutOwnerInput, OrganizationUpdateWithoutOwnerInput>, OrganizationUncheckedUpdateWithoutOwnerInput>
+  export type ApiKeyUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<ApiKeyCreateWithoutCreatorInput, ApiKeyUncheckedCreateWithoutCreatorInput> | ApiKeyCreateWithoutCreatorInput[] | ApiKeyUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutCreatorInput | ApiKeyCreateOrConnectWithoutCreatorInput[]
+    upsert?: ApiKeyUpsertWithWhereUniqueWithoutCreatorInput | ApiKeyUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: ApiKeyCreateManyCreatorInputEnvelope
+    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    update?: ApiKeyUpdateWithWhereUniqueWithoutCreatorInput | ApiKeyUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: ApiKeyUpdateManyWithWhereWithoutCreatorInput | ApiKeyUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -11193,6 +9945,30 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type WalletUncheckedUpdateOneWithoutOwnerNestedInput = {
+    create?: XOR<WalletCreateWithoutOwnerInput, WalletUncheckedCreateWithoutOwnerInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutOwnerInput
+    upsert?: WalletUpsertWithoutOwnerInput
+    disconnect?: WalletWhereInput | boolean
+    delete?: WalletWhereInput | boolean
+    connect?: WalletWhereUniqueInput
+    update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutOwnerInput, WalletUpdateWithoutOwnerInput>, WalletUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type WalletMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WalletMemberCreateWithoutUserInput, WalletMemberUncheckedCreateWithoutUserInput> | WalletMemberCreateWithoutUserInput[] | WalletMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutUserInput | WalletMemberCreateOrConnectWithoutUserInput[]
+    upsert?: WalletMemberUpsertWithWhereUniqueWithoutUserInput | WalletMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WalletMemberCreateManyUserInputEnvelope
+    set?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    disconnect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    delete?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    update?: WalletMemberUpdateWithWhereUniqueWithoutUserInput | WalletMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WalletMemberUpdateManyWithWhereWithoutUserInput | WalletMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WalletMemberScalarWhereInput | WalletMemberScalarWhereInput[]
   }
 
   export type PasskeyUncheckedUpdateManyWithoutUserNestedInput = {
@@ -11223,128 +9999,52 @@ export namespace Prisma {
     deleteMany?: RedemptionCodeScalarWhereInput | RedemptionCodeScalarWhereInput[]
   }
 
-  export type WalletUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput
-    upsert?: WalletUpsertWithoutUserInput
-    disconnect?: WalletWhereInput | boolean
-    delete?: WalletWhereInput | boolean
-    connect?: WalletWhereUniqueInput
-    update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutUserInput, WalletUpdateWithoutUserInput>, WalletUncheckedUpdateWithoutUserInput>
-  }
-
-  export type OrganizationUncheckedUpdateOneWithoutOwnerNestedInput = {
-    create?: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutOwnerInput
-    upsert?: OrganizationUpsertWithoutOwnerInput
-    disconnect?: OrganizationWhereInput | boolean
-    delete?: OrganizationWhereInput | boolean
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutOwnerInput, OrganizationUpdateWithoutOwnerInput>, OrganizationUncheckedUpdateWithoutOwnerInput>
-  }
-
-  export type UserCreateNestedOneWithoutOrganizationInput = {
-    create?: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrganizationInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type OrganizationMemberCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
-    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
-    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-  }
-
-  export type ApiKeyCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<ApiKeyCreateWithoutOrganizationInput, ApiKeyUncheckedCreateWithoutOrganizationInput> | ApiKeyCreateWithoutOrganizationInput[] | ApiKeyUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutOrganizationInput | ApiKeyCreateOrConnectWithoutOrganizationInput[]
-    createMany?: ApiKeyCreateManyOrganizationInputEnvelope
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-  }
-
-  export type OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
-    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
-    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-  }
-
-  export type ApiKeyUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<ApiKeyCreateWithoutOrganizationInput, ApiKeyUncheckedCreateWithoutOrganizationInput> | ApiKeyCreateWithoutOrganizationInput[] | ApiKeyUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutOrganizationInput | ApiKeyCreateOrConnectWithoutOrganizationInput[]
-    createMany?: ApiKeyCreateManyOrganizationInputEnvelope
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutOrganizationNestedInput = {
-    create?: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrganizationInput
-    upsert?: UserUpsertWithoutOrganizationInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganizationInput, UserUpdateWithoutOrganizationInput>, UserUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type OrganizationMemberUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
-    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
-    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    update?: OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput | OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
-  }
-
-  export type ApiKeyUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<ApiKeyCreateWithoutOrganizationInput, ApiKeyUncheckedCreateWithoutOrganizationInput> | ApiKeyCreateWithoutOrganizationInput[] | ApiKeyUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutOrganizationInput | ApiKeyCreateOrConnectWithoutOrganizationInput[]
-    upsert?: ApiKeyUpsertWithWhereUniqueWithoutOrganizationInput | ApiKeyUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: ApiKeyCreateManyOrganizationInputEnvelope
+  export type ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<ApiKeyCreateWithoutCreatorInput, ApiKeyUncheckedCreateWithoutCreatorInput> | ApiKeyCreateWithoutCreatorInput[] | ApiKeyUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutCreatorInput | ApiKeyCreateOrConnectWithoutCreatorInput[]
+    upsert?: ApiKeyUpsertWithWhereUniqueWithoutCreatorInput | ApiKeyUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: ApiKeyCreateManyCreatorInputEnvelope
     set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
     disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
     delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
     connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    update?: ApiKeyUpdateWithWhereUniqueWithoutOrganizationInput | ApiKeyUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: ApiKeyUpdateManyWithWhereWithoutOrganizationInput | ApiKeyUpdateManyWithWhereWithoutOrganizationInput[]
+    update?: ApiKeyUpdateWithWhereUniqueWithoutCreatorInput | ApiKeyUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: ApiKeyUpdateManyWithWhereWithoutCreatorInput | ApiKeyUpdateManyWithWhereWithoutCreatorInput[]
     deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
   }
 
-  export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
-    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
-    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
-    update?: OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput | OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  export type UserCreateNestedOneWithoutWalletInput = {
+    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
+    connect?: UserWhereUniqueInput
   }
 
-  export type ApiKeyUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<ApiKeyCreateWithoutOrganizationInput, ApiKeyUncheckedCreateWithoutOrganizationInput> | ApiKeyCreateWithoutOrganizationInput[] | ApiKeyUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutOrganizationInput | ApiKeyCreateOrConnectWithoutOrganizationInput[]
-    upsert?: ApiKeyUpsertWithWhereUniqueWithoutOrganizationInput | ApiKeyUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: ApiKeyCreateManyOrganizationInputEnvelope
-    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+  export type WalletMemberCreateNestedManyWithoutWalletInput = {
+    create?: XOR<WalletMemberCreateWithoutWalletInput, WalletMemberUncheckedCreateWithoutWalletInput> | WalletMemberCreateWithoutWalletInput[] | WalletMemberUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutWalletInput | WalletMemberCreateOrConnectWithoutWalletInput[]
+    createMany?: WalletMemberCreateManyWalletInputEnvelope
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+  }
+
+  export type ApiKeyCreateNestedManyWithoutWalletInput = {
+    create?: XOR<ApiKeyCreateWithoutWalletInput, ApiKeyUncheckedCreateWithoutWalletInput> | ApiKeyCreateWithoutWalletInput[] | ApiKeyUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutWalletInput | ApiKeyCreateOrConnectWithoutWalletInput[]
+    createMany?: ApiKeyCreateManyWalletInputEnvelope
     connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    update?: ApiKeyUpdateWithWhereUniqueWithoutOrganizationInput | ApiKeyUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: ApiKeyUpdateManyWithWhereWithoutOrganizationInput | ApiKeyUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
   }
 
-  export type OrganizationCreateNestedOneWithoutMembersInput = {
-    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
-    connect?: OrganizationWhereUniqueInput
+  export type WalletMemberUncheckedCreateNestedManyWithoutWalletInput = {
+    create?: XOR<WalletMemberCreateWithoutWalletInput, WalletMemberUncheckedCreateWithoutWalletInput> | WalletMemberCreateWithoutWalletInput[] | WalletMemberUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutWalletInput | WalletMemberCreateOrConnectWithoutWalletInput[]
+    createMany?: WalletMemberCreateManyWalletInputEnvelope
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+  }
+
+  export type ApiKeyUncheckedCreateNestedManyWithoutWalletInput = {
+    create?: XOR<ApiKeyCreateWithoutWalletInput, ApiKeyUncheckedCreateWithoutWalletInput> | ApiKeyCreateWithoutWalletInput[] | ApiKeyUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutWalletInput | ApiKeyCreateOrConnectWithoutWalletInput[]
+    createMany?: ApiKeyCreateManyWalletInputEnvelope
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -11355,12 +10055,124 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
-  export type OrganizationUpdateOneRequiredWithoutMembersNestedInput = {
-    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
-    upsert?: OrganizationUpsertWithoutMembersInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMembersInput, OrganizationUpdateWithoutMembersInput>, OrganizationUncheckedUpdateWithoutMembersInput>
+  export type UserUpdateOneRequiredWithoutWalletNestedInput = {
+    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
+    upsert?: UserUpsertWithoutWalletInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWalletInput, UserUpdateWithoutWalletInput>, UserUncheckedUpdateWithoutWalletInput>
+  }
+
+  export type WalletMemberUpdateManyWithoutWalletNestedInput = {
+    create?: XOR<WalletMemberCreateWithoutWalletInput, WalletMemberUncheckedCreateWithoutWalletInput> | WalletMemberCreateWithoutWalletInput[] | WalletMemberUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutWalletInput | WalletMemberCreateOrConnectWithoutWalletInput[]
+    upsert?: WalletMemberUpsertWithWhereUniqueWithoutWalletInput | WalletMemberUpsertWithWhereUniqueWithoutWalletInput[]
+    createMany?: WalletMemberCreateManyWalletInputEnvelope
+    set?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    disconnect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    delete?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    update?: WalletMemberUpdateWithWhereUniqueWithoutWalletInput | WalletMemberUpdateWithWhereUniqueWithoutWalletInput[]
+    updateMany?: WalletMemberUpdateManyWithWhereWithoutWalletInput | WalletMemberUpdateManyWithWhereWithoutWalletInput[]
+    deleteMany?: WalletMemberScalarWhereInput | WalletMemberScalarWhereInput[]
+  }
+
+  export type ApiKeyUpdateManyWithoutWalletNestedInput = {
+    create?: XOR<ApiKeyCreateWithoutWalletInput, ApiKeyUncheckedCreateWithoutWalletInput> | ApiKeyCreateWithoutWalletInput[] | ApiKeyUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutWalletInput | ApiKeyCreateOrConnectWithoutWalletInput[]
+    upsert?: ApiKeyUpsertWithWhereUniqueWithoutWalletInput | ApiKeyUpsertWithWhereUniqueWithoutWalletInput[]
+    createMany?: ApiKeyCreateManyWalletInputEnvelope
+    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    update?: ApiKeyUpdateWithWhereUniqueWithoutWalletInput | ApiKeyUpdateWithWhereUniqueWithoutWalletInput[]
+    updateMany?: ApiKeyUpdateManyWithWhereWithoutWalletInput | ApiKeyUpdateManyWithWhereWithoutWalletInput[]
+    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+  }
+
+  export type WalletMemberUncheckedUpdateManyWithoutWalletNestedInput = {
+    create?: XOR<WalletMemberCreateWithoutWalletInput, WalletMemberUncheckedCreateWithoutWalletInput> | WalletMemberCreateWithoutWalletInput[] | WalletMemberUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WalletMemberCreateOrConnectWithoutWalletInput | WalletMemberCreateOrConnectWithoutWalletInput[]
+    upsert?: WalletMemberUpsertWithWhereUniqueWithoutWalletInput | WalletMemberUpsertWithWhereUniqueWithoutWalletInput[]
+    createMany?: WalletMemberCreateManyWalletInputEnvelope
+    set?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    disconnect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    delete?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    connect?: WalletMemberWhereUniqueInput | WalletMemberWhereUniqueInput[]
+    update?: WalletMemberUpdateWithWhereUniqueWithoutWalletInput | WalletMemberUpdateWithWhereUniqueWithoutWalletInput[]
+    updateMany?: WalletMemberUpdateManyWithWhereWithoutWalletInput | WalletMemberUpdateManyWithWhereWithoutWalletInput[]
+    deleteMany?: WalletMemberScalarWhereInput | WalletMemberScalarWhereInput[]
+  }
+
+  export type ApiKeyUncheckedUpdateManyWithoutWalletNestedInput = {
+    create?: XOR<ApiKeyCreateWithoutWalletInput, ApiKeyUncheckedCreateWithoutWalletInput> | ApiKeyCreateWithoutWalletInput[] | ApiKeyUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutWalletInput | ApiKeyCreateOrConnectWithoutWalletInput[]
+    upsert?: ApiKeyUpsertWithWhereUniqueWithoutWalletInput | ApiKeyUpsertWithWhereUniqueWithoutWalletInput[]
+    createMany?: ApiKeyCreateManyWalletInputEnvelope
+    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    update?: ApiKeyUpdateWithWhereUniqueWithoutWalletInput | ApiKeyUpdateWithWhereUniqueWithoutWalletInput[]
+    updateMany?: ApiKeyUpdateManyWithWhereWithoutWalletInput | ApiKeyUpdateManyWithWhereWithoutWalletInput[]
+    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+  }
+
+  export type WalletCreateNestedOneWithoutMembersInput = {
+    create?: XOR<WalletCreateWithoutMembersInput, WalletUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutMembersInput
+    connect?: WalletWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutWalletMembersInput = {
+    create?: XOR<UserCreateWithoutWalletMembersInput, UserUncheckedCreateWithoutWalletMembersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWalletMembersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type WalletUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<WalletCreateWithoutMembersInput, WalletUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutMembersInput
+    upsert?: WalletUpsertWithoutMembersInput
+    connect?: WalletWhereUniqueInput
+    update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutMembersInput, WalletUpdateWithoutMembersInput>, WalletUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutWalletMembersNestedInput = {
+    create?: XOR<UserCreateWithoutWalletMembersInput, UserUncheckedCreateWithoutWalletMembersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWalletMembersInput
+    upsert?: UserUpsertWithoutWalletMembersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWalletMembersInput, UserUpdateWithoutWalletMembersInput>, UserUncheckedUpdateWithoutWalletMembersInput>
+  }
+
+  export type WalletCreateNestedOneWithoutApiKeysInput = {
+    create?: XOR<WalletCreateWithoutApiKeysInput, WalletUncheckedCreateWithoutApiKeysInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutApiKeysInput
+    connect?: WalletWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedApiKeysInput = {
+    create?: XOR<UserCreateWithoutCreatedApiKeysInput, UserUncheckedCreateWithoutCreatedApiKeysInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedApiKeysInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type WalletUpdateOneRequiredWithoutApiKeysNestedInput = {
+    create?: XOR<WalletCreateWithoutApiKeysInput, WalletUncheckedCreateWithoutApiKeysInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutApiKeysInput
+    upsert?: WalletUpsertWithoutApiKeysInput
+    connect?: WalletWhereUniqueInput
+    update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutApiKeysInput, WalletUpdateWithoutApiKeysInput>, WalletUncheckedUpdateWithoutApiKeysInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedApiKeysNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedApiKeysInput, UserUncheckedCreateWithoutCreatedApiKeysInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedApiKeysInput
+    upsert?: UserUpsertWithoutCreatedApiKeysInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedApiKeysInput, UserUpdateWithoutCreatedApiKeysInput>, UserUncheckedUpdateWithoutCreatedApiKeysInput>
   }
 
   export type UserCreateNestedOneWithoutPasskeysInput = {
@@ -11389,42 +10201,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasskeysInput, UserUpdateWithoutPasskeysInput>, UserUncheckedUpdateWithoutPasskeysInput>
   }
 
-  export type UserCreateNestedOneWithoutWalletInput = {
-    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutWalletNestedInput = {
-    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
-    upsert?: UserUpsertWithoutWalletInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWalletInput, UserUpdateWithoutWalletInput>, UserUncheckedUpdateWithoutWalletInput>
-  }
-
-  export type OrganizationCreateNestedOneWithoutApiKeysInput = {
-    create?: XOR<OrganizationCreateWithoutApiKeysInput, OrganizationUncheckedCreateWithoutApiKeysInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutApiKeysInput
-    connect?: OrganizationWhereUniqueInput
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type OrganizationUpdateOneRequiredWithoutApiKeysNestedInput = {
-    create?: XOR<OrganizationCreateWithoutApiKeysInput, OrganizationUncheckedCreateWithoutApiKeysInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutApiKeysInput
-    upsert?: OrganizationUpsertWithoutApiKeysInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutApiKeysInput, OrganizationUpdateWithoutApiKeysInput>, OrganizationUncheckedUpdateWithoutApiKeysInput>
-  }
-
   export type UserCreateNestedOneWithoutRedeemCodesInput = {
     create?: XOR<UserCreateWithoutRedeemCodesInput, UserUncheckedCreateWithoutRedeemCodesInput>
     connectOrCreate?: UserCreateOrConnectWithoutRedeemCodesInput
@@ -11439,6 +10215,14 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRedeemCodesInput, UserUpdateWithoutRedeemCodesInput>, UserUncheckedUpdateWithoutRedeemCodesInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -11717,6 +10501,65 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type WalletCreateWithoutOwnerInput = {
+    uid?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: WalletMemberCreateNestedManyWithoutWalletInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutOwnerInput = {
+    id?: number
+    uid?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: WalletMemberUncheckedCreateNestedManyWithoutWalletInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutOwnerInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutOwnerInput, WalletUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type WalletMemberCreateWithoutUserInput = {
+    creditLimit: Decimal | DecimalJsLike | number | string
+    creditAvailable: Decimal | DecimalJsLike | number | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    updatedAt?: Date | string
+    wallet: WalletCreateNestedOneWithoutMembersInput
+  }
+
+  export type WalletMemberUncheckedCreateWithoutUserInput = {
+    id?: number
+    walletId: number
+    creditLimit: Decimal | DecimalJsLike | number | string
+    creditAvailable: Decimal | DecimalJsLike | number | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type WalletMemberCreateOrConnectWithoutUserInput = {
+    where: WalletMemberWhereUniqueInput
+    create: XOR<WalletMemberCreateWithoutUserInput, WalletMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type WalletMemberCreateManyUserInputEnvelope = {
+    data: WalletMemberCreateManyUserInput | WalletMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PasskeyCreateWithoutUserInput = {
     id: string
     publicKey: Uint8Array
@@ -11760,24 +10603,20 @@ export namespace Prisma {
   export type RedemptionCodeCreateWithoutRedeemerInput = {
     code: string
     amount: number
-    remark?: string | null
-    isUsed?: boolean
-    isDeleted?: boolean
+    remark?: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    expiredAt: Date | string
+    expiredAt?: Date | string
+    redeemedAt?: Date | string | null
   }
 
   export type RedemptionCodeUncheckedCreateWithoutRedeemerInput = {
     id?: number
     code: string
     amount: number
-    remark?: string | null
-    isUsed?: boolean
-    isDeleted?: boolean
+    remark?: string
     createdAt?: Date | string
-    updatedAt?: Date | string
-    expiredAt: Date | string
+    expiredAt?: Date | string
+    redeemedAt?: Date | string | null
   }
 
   export type RedemptionCodeCreateOrConnectWithoutRedeemerInput = {
@@ -11790,50 +10629,101 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type WalletCreateWithoutUserInput = {
-    balance?: Decimal | DecimalJsLike | number | string
-    version?: number
-    updatedAt?: Date | string
-  }
-
-  export type WalletUncheckedCreateWithoutUserInput = {
-    id?: number
-    balance?: Decimal | DecimalJsLike | number | string
-    version?: number
-    updatedAt?: Date | string
-  }
-
-  export type WalletCreateOrConnectWithoutUserInput = {
-    where: WalletWhereUniqueInput
-    create: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
-  }
-
-  export type OrganizationCreateWithoutOwnerInput = {
-    uid?: string
-    identifier: string
-    displayName?: string | null
-    avatar?: string | null
+  export type ApiKeyCreateWithoutCreatorInput = {
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutOrganizationInput
+    lastUsedAt?: Date | string | null
+    wallet: WalletCreateNestedOneWithoutApiKeysInput
   }
 
-  export type OrganizationUncheckedCreateWithoutOwnerInput = {
+  export type ApiKeyUncheckedCreateWithoutCreatorInput = {
     id?: number
-    uid?: string
-    identifier: string
-    displayName?: string | null
-    avatar?: string | null
+    walletId: number
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutOrganizationInput
+    lastUsedAt?: Date | string | null
   }
 
-  export type OrganizationCreateOrConnectWithoutOwnerInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
+  export type ApiKeyCreateOrConnectWithoutCreatorInput = {
+    where: ApiKeyWhereUniqueInput
+    create: XOR<ApiKeyCreateWithoutCreatorInput, ApiKeyUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type ApiKeyCreateManyCreatorInputEnvelope = {
+    data: ApiKeyCreateManyCreatorInput | ApiKeyCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WalletUpsertWithoutOwnerInput = {
+    update: XOR<WalletUpdateWithoutOwnerInput, WalletUncheckedUpdateWithoutOwnerInput>
+    create: XOR<WalletCreateWithoutOwnerInput, WalletUncheckedCreateWithoutOwnerInput>
+    where?: WalletWhereInput
+  }
+
+  export type WalletUpdateToOneWithWhereWithoutOwnerInput = {
+    where?: WalletWhereInput
+    data: XOR<WalletUpdateWithoutOwnerInput, WalletUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type WalletUpdateWithoutOwnerInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: WalletMemberUpdateManyWithoutWalletNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateWithoutOwnerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uid?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: WalletMemberUncheckedUpdateManyWithoutWalletNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: WalletMemberWhereUniqueInput
+    update: XOR<WalletMemberUpdateWithoutUserInput, WalletMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<WalletMemberCreateWithoutUserInput, WalletMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type WalletMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: WalletMemberWhereUniqueInput
+    data: XOR<WalletMemberUpdateWithoutUserInput, WalletMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WalletMemberUpdateManyWithWhereWithoutUserInput = {
+    where: WalletMemberScalarWhereInput
+    data: XOR<WalletMemberUpdateManyMutationInput, WalletMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WalletMemberScalarWhereInput = {
+    AND?: WalletMemberScalarWhereInput | WalletMemberScalarWhereInput[]
+    OR?: WalletMemberScalarWhereInput[]
+    NOT?: WalletMemberScalarWhereInput | WalletMemberScalarWhereInput[]
+    id?: IntFilter<"WalletMember"> | number
+    walletId?: IntFilter<"WalletMember"> | number
+    userId?: IntFilter<"WalletMember"> | number
+    creditLimit?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFilter<"WalletMember"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"WalletMember"> | boolean
+    joinedAt?: DateTimeFilter<"WalletMember"> | Date | string
+    leftAt?: DateTimeNullableFilter<"WalletMember"> | Date | string | null
+    updatedAt?: DateTimeFilter<"WalletMember"> | Date | string
   }
 
   export type PasskeyUpsertWithWhereUniqueWithoutUserInput = {
@@ -11894,286 +10784,27 @@ export namespace Prisma {
     id?: IntFilter<"RedemptionCode"> | number
     code?: StringFilter<"RedemptionCode"> | string
     amount?: IntFilter<"RedemptionCode"> | number
-    remark?: StringNullableFilter<"RedemptionCode"> | string | null
-    isUsed?: BoolFilter<"RedemptionCode"> | boolean
-    isDeleted?: BoolFilter<"RedemptionCode"> | boolean
+    remark?: StringFilter<"RedemptionCode"> | string
     createdAt?: DateTimeFilter<"RedemptionCode"> | Date | string
-    updatedAt?: DateTimeFilter<"RedemptionCode"> | Date | string
     expiredAt?: DateTimeFilter<"RedemptionCode"> | Date | string
+    redeemedAt?: DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
     redeemerId?: IntNullableFilter<"RedemptionCode"> | number | null
   }
 
-  export type WalletUpsertWithoutUserInput = {
-    update: XOR<WalletUpdateWithoutUserInput, WalletUncheckedUpdateWithoutUserInput>
-    create: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
-    where?: WalletWhereInput
-  }
-
-  export type WalletUpdateToOneWithWhereWithoutUserInput = {
-    where?: WalletWhereInput
-    data: XOR<WalletUpdateWithoutUserInput, WalletUncheckedUpdateWithoutUserInput>
-  }
-
-  export type WalletUpdateWithoutUserInput = {
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    version?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type WalletUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    version?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrganizationUpsertWithoutOwnerInput = {
-    update: XOR<OrganizationUpdateWithoutOwnerInput, OrganizationUncheckedUpdateWithoutOwnerInput>
-    create: XOR<OrganizationCreateWithoutOwnerInput, OrganizationUncheckedCreateWithoutOwnerInput>
-    where?: OrganizationWhereInput
-  }
-
-  export type OrganizationUpdateToOneWithWhereWithoutOwnerInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutOwnerInput, OrganizationUncheckedUpdateWithoutOwnerInput>
-  }
-
-  export type OrganizationUpdateWithoutOwnerInput = {
-    uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateWithoutOwnerInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type UserCreateWithoutOrganizationInput = {
-    uid?: string
-    displayName?: string | null
-    avatar?: string | null
-    email?: string | null
-    phone?: string | null
-    gitHubId?: string | null
-    googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    isDeleted?: boolean
-    isAdmin?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
-    passkeys?: PasskeyCreateNestedManyWithoutUserInput
-    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
-    wallet?: WalletCreateNestedOneWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutOrganizationInput = {
-    id?: number
-    uid?: string
-    displayName?: string | null
-    avatar?: string | null
-    email?: string | null
-    phone?: string | null
-    gitHubId?: string | null
-    googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    isDeleted?: boolean
-    isAdmin?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
-    passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
-    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutOrganizationInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type OrganizationMemberCreateWithoutOrganizationInput = {
-    uid?: string
-    username: string
-    passwordHash: string
-    creditLimit: Decimal | DecimalJsLike | number | string
-    creditAvailable: Decimal | DecimalJsLike | number | string
-    isDeleted?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
-  }
-
-  export type OrganizationMemberUncheckedCreateWithoutOrganizationInput = {
-    id?: number
-    uid?: string
-    username: string
-    passwordHash: string
-    creditLimit: Decimal | DecimalJsLike | number | string
-    creditAvailable: Decimal | DecimalJsLike | number | string
-    isDeleted?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
-  }
-
-  export type OrganizationMemberCreateOrConnectWithoutOrganizationInput = {
-    where: OrganizationMemberWhereUniqueInput
-    create: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type OrganizationMemberCreateManyOrganizationInputEnvelope = {
-    data: OrganizationMemberCreateManyOrganizationInput | OrganizationMemberCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ApiKeyCreateWithoutOrganizationInput = {
-    hashKey: string
-    preview: string
-    displayName: string
-    isDeleted?: boolean
-    memberCreatorId?: number | null
-    lastUsedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ApiKeyUncheckedCreateWithoutOrganizationInput = {
-    id?: number
-    hashKey: string
-    preview: string
-    displayName: string
-    isDeleted?: boolean
-    memberCreatorId?: number | null
-    lastUsedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ApiKeyCreateOrConnectWithoutOrganizationInput = {
+  export type ApiKeyUpsertWithWhereUniqueWithoutCreatorInput = {
     where: ApiKeyWhereUniqueInput
-    create: XOR<ApiKeyCreateWithoutOrganizationInput, ApiKeyUncheckedCreateWithoutOrganizationInput>
+    update: XOR<ApiKeyUpdateWithoutCreatorInput, ApiKeyUncheckedUpdateWithoutCreatorInput>
+    create: XOR<ApiKeyCreateWithoutCreatorInput, ApiKeyUncheckedCreateWithoutCreatorInput>
   }
 
-  export type ApiKeyCreateManyOrganizationInputEnvelope = {
-    data: ApiKeyCreateManyOrganizationInput | ApiKeyCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutOrganizationInput = {
-    update: XOR<UserUpdateWithoutOrganizationInput, UserUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutOrganizationInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutOrganizationInput, UserUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type UserUpdateWithoutOrganizationInput = {
-    uid?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
-    googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    passkeys?: PasskeyUpdateManyWithoutUserNestedInput
-    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutOrganizationInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
-    googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
-    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-  }
-
-  export type OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: OrganizationMemberWhereUniqueInput
-    update: XOR<OrganizationMemberUpdateWithoutOrganizationInput, OrganizationMemberUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: OrganizationMemberWhereUniqueInput
-    data: XOR<OrganizationMemberUpdateWithoutOrganizationInput, OrganizationMemberUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput = {
-    where: OrganizationMemberScalarWhereInput
-    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type OrganizationMemberScalarWhereInput = {
-    AND?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
-    OR?: OrganizationMemberScalarWhereInput[]
-    NOT?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
-    id?: IntFilter<"OrganizationMember"> | number
-    uid?: StringFilter<"OrganizationMember"> | string
-    username?: StringFilter<"OrganizationMember"> | string
-    passwordHash?: StringFilter<"OrganizationMember"> | string
-    creditLimit?: DecimalFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    creditAvailable?: DecimalFilter<"OrganizationMember"> | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFilter<"OrganizationMember"> | boolean
-    organizationId?: IntFilter<"OrganizationMember"> | number
-    createdAt?: DateTimeFilter<"OrganizationMember"> | Date | string
-    updatedAt?: DateTimeFilter<"OrganizationMember"> | Date | string
-    lastLoginAt?: DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
-  }
-
-  export type ApiKeyUpsertWithWhereUniqueWithoutOrganizationInput = {
+  export type ApiKeyUpdateWithWhereUniqueWithoutCreatorInput = {
     where: ApiKeyWhereUniqueInput
-    update: XOR<ApiKeyUpdateWithoutOrganizationInput, ApiKeyUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<ApiKeyCreateWithoutOrganizationInput, ApiKeyUncheckedCreateWithoutOrganizationInput>
+    data: XOR<ApiKeyUpdateWithoutCreatorInput, ApiKeyUncheckedUpdateWithoutCreatorInput>
   }
 
-  export type ApiKeyUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: ApiKeyWhereUniqueInput
-    data: XOR<ApiKeyUpdateWithoutOrganizationInput, ApiKeyUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type ApiKeyUpdateManyWithWhereWithoutOrganizationInput = {
+  export type ApiKeyUpdateManyWithWhereWithoutCreatorInput = {
     where: ApiKeyScalarWhereInput
-    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyWithoutOrganizationInput>
+    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyWithoutCreatorInput>
   }
 
   export type ApiKeyScalarWhereInput = {
@@ -12181,77 +10812,523 @@ export namespace Prisma {
     OR?: ApiKeyScalarWhereInput[]
     NOT?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
     id?: IntFilter<"ApiKey"> | number
+    walletId?: IntFilter<"ApiKey"> | number
+    creatorId?: IntFilter<"ApiKey"> | number
     hashKey?: StringFilter<"ApiKey"> | string
     preview?: StringFilter<"ApiKey"> | string
     displayName?: StringFilter<"ApiKey"> | string
-    isDeleted?: BoolFilter<"ApiKey"> | boolean
-    organizationId?: IntFilter<"ApiKey"> | number
-    memberCreatorId?: IntNullableFilter<"ApiKey"> | number | null
-    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
+    isActive?: BoolFilter<"ApiKey"> | boolean
     createdAt?: DateTimeFilter<"ApiKey"> | Date | string
     updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
+    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
   }
 
-  export type OrganizationCreateWithoutMembersInput = {
+  export type UserCreateWithoutWalletInput = {
     uid?: string
-    identifier: string
     displayName?: string | null
     avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutOrganizationInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutOrganizationInput
+    lastLoginAt?: Date | string | null
+    walletMembers?: WalletMemberCreateNestedManyWithoutUserInput
+    passkeys?: PasskeyCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
+    createdApiKeys?: ApiKeyCreateNestedManyWithoutCreatorInput
   }
 
-  export type OrganizationUncheckedCreateWithoutMembersInput = {
+  export type UserUncheckedCreateWithoutWalletInput = {
     id?: number
     uid?: string
-    identifier: string
     displayName?: string | null
     avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    walletMembers?: WalletMemberUncheckedCreateNestedManyWithoutUserInput
+    passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
+    createdApiKeys?: ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutWalletInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+  }
+
+  export type WalletMemberCreateWithoutWalletInput = {
+    creditLimit: Decimal | DecimalJsLike | number | string
+    creditAvailable: Decimal | DecimalJsLike | number | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutWalletMembersInput
+  }
+
+  export type WalletMemberUncheckedCreateWithoutWalletInput = {
+    id?: number
+    userId: number
+    creditLimit: Decimal | DecimalJsLike | number | string
+    creditAvailable: Decimal | DecimalJsLike | number | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type WalletMemberCreateOrConnectWithoutWalletInput = {
+    where: WalletMemberWhereUniqueInput
+    create: XOR<WalletMemberCreateWithoutWalletInput, WalletMemberUncheckedCreateWithoutWalletInput>
+  }
+
+  export type WalletMemberCreateManyWalletInputEnvelope = {
+    data: WalletMemberCreateManyWalletInput | WalletMemberCreateManyWalletInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ApiKeyCreateWithoutWalletInput = {
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastUsedAt?: Date | string | null
+    creator: UserCreateNestedOneWithoutCreatedApiKeysInput
+  }
+
+  export type ApiKeyUncheckedCreateWithoutWalletInput = {
+    id?: number
+    creatorId: number
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastUsedAt?: Date | string | null
+  }
+
+  export type ApiKeyCreateOrConnectWithoutWalletInput = {
+    where: ApiKeyWhereUniqueInput
+    create: XOR<ApiKeyCreateWithoutWalletInput, ApiKeyUncheckedCreateWithoutWalletInput>
+  }
+
+  export type ApiKeyCreateManyWalletInputEnvelope = {
+    data: ApiKeyCreateManyWalletInput | ApiKeyCreateManyWalletInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutWalletInput = {
+    update: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
+    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutWalletInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
+  }
+
+  export type UserUpdateWithoutWalletInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walletMembers?: WalletMemberUpdateManyWithoutUserNestedInput
+    passkeys?: PasskeyUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
+    createdApiKeys?: ApiKeyUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWalletInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    walletMembers?: WalletMemberUncheckedUpdateManyWithoutUserNestedInput
+    passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
+    createdApiKeys?: ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type WalletMemberUpsertWithWhereUniqueWithoutWalletInput = {
+    where: WalletMemberWhereUniqueInput
+    update: XOR<WalletMemberUpdateWithoutWalletInput, WalletMemberUncheckedUpdateWithoutWalletInput>
+    create: XOR<WalletMemberCreateWithoutWalletInput, WalletMemberUncheckedCreateWithoutWalletInput>
+  }
+
+  export type WalletMemberUpdateWithWhereUniqueWithoutWalletInput = {
+    where: WalletMemberWhereUniqueInput
+    data: XOR<WalletMemberUpdateWithoutWalletInput, WalletMemberUncheckedUpdateWithoutWalletInput>
+  }
+
+  export type WalletMemberUpdateManyWithWhereWithoutWalletInput = {
+    where: WalletMemberScalarWhereInput
+    data: XOR<WalletMemberUpdateManyMutationInput, WalletMemberUncheckedUpdateManyWithoutWalletInput>
+  }
+
+  export type ApiKeyUpsertWithWhereUniqueWithoutWalletInput = {
+    where: ApiKeyWhereUniqueInput
+    update: XOR<ApiKeyUpdateWithoutWalletInput, ApiKeyUncheckedUpdateWithoutWalletInput>
+    create: XOR<ApiKeyCreateWithoutWalletInput, ApiKeyUncheckedCreateWithoutWalletInput>
+  }
+
+  export type ApiKeyUpdateWithWhereUniqueWithoutWalletInput = {
+    where: ApiKeyWhereUniqueInput
+    data: XOR<ApiKeyUpdateWithoutWalletInput, ApiKeyUncheckedUpdateWithoutWalletInput>
+  }
+
+  export type ApiKeyUpdateManyWithWhereWithoutWalletInput = {
+    where: ApiKeyScalarWhereInput
+    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyWithoutWalletInput>
+  }
+
+  export type WalletCreateWithoutMembersInput = {
+    uid?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutWalletInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutMembersInput = {
+    id?: number
+    uid?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
     ownerId: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutOrganizationInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWalletInput
   }
 
-  export type OrganizationCreateOrConnectWithoutMembersInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+  export type WalletCreateOrConnectWithoutMembersInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutMembersInput, WalletUncheckedCreateWithoutMembersInput>
   }
 
-  export type OrganizationUpsertWithoutMembersInput = {
-    update: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
-    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
-    where?: OrganizationWhereInput
+  export type UserCreateWithoutWalletMembersInput = {
+    uid?: string
+    displayName?: string | null
+    avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    wallet?: WalletCreateNestedOneWithoutOwnerInput
+    passkeys?: PasskeyCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
+    createdApiKeys?: ApiKeyCreateNestedManyWithoutCreatorInput
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+  export type UserUncheckedCreateWithoutWalletMembersInput = {
+    id?: number
+    uid?: string
+    displayName?: string | null
+    avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    wallet?: WalletUncheckedCreateNestedOneWithoutOwnerInput
+    passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
+    createdApiKeys?: ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
   }
 
-  export type OrganizationUpdateWithoutMembersInput = {
+  export type UserCreateOrConnectWithoutWalletMembersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWalletMembersInput, UserUncheckedCreateWithoutWalletMembersInput>
+  }
+
+  export type WalletUpsertWithoutMembersInput = {
+    update: XOR<WalletUpdateWithoutMembersInput, WalletUncheckedUpdateWithoutMembersInput>
+    create: XOR<WalletCreateWithoutMembersInput, WalletUncheckedCreateWithoutMembersInput>
+    where?: WalletWhereInput
+  }
+
+  export type WalletUpdateToOneWithWhereWithoutMembersInput = {
+    where?: WalletWhereInput
+    data: XOR<WalletUpdateWithoutMembersInput, WalletUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type WalletUpdateWithoutMembersInput = {
     uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutOrganizationNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutOrganizationNestedInput
+    owner?: UserUpdateOneRequiredWithoutWalletNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWalletNestedInput
   }
 
-  export type OrganizationUncheckedUpdateWithoutMembersInput = {
+  export type WalletUncheckedUpdateWithoutMembersInput = {
     id?: IntFieldUpdateOperationsInput | number
     uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
     ownerId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutOrganizationNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWalletNestedInput
+  }
+
+  export type UserUpsertWithoutWalletMembersInput = {
+    update: XOR<UserUpdateWithoutWalletMembersInput, UserUncheckedUpdateWithoutWalletMembersInput>
+    create: XOR<UserCreateWithoutWalletMembersInput, UserUncheckedCreateWithoutWalletMembersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutWalletMembersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWalletMembersInput, UserUncheckedUpdateWithoutWalletMembersInput>
+  }
+
+  export type UserUpdateWithoutWalletMembersInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneWithoutOwnerNestedInput
+    passkeys?: PasskeyUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
+    createdApiKeys?: ApiKeyUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWalletMembersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUncheckedUpdateOneWithoutOwnerNestedInput
+    passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
+    createdApiKeys?: ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type WalletCreateWithoutApiKeysInput = {
+    uid?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutWalletInput
+    members?: WalletMemberCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutApiKeysInput = {
+    id?: number
+    uid?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    version?: number
+    ownerId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: WalletMemberUncheckedCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutApiKeysInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutApiKeysInput, WalletUncheckedCreateWithoutApiKeysInput>
+  }
+
+  export type UserCreateWithoutCreatedApiKeysInput = {
+    uid?: string
+    displayName?: string | null
+    avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    wallet?: WalletCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberCreateNestedManyWithoutUserInput
+    passkeys?: PasskeyCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedApiKeysInput = {
+    id?: number
+    uid?: string
+    displayName?: string | null
+    avatar?: string | null
+    email?: string | null
+    phone?: string | null
+    gitHubId?: string | null
+    googleId?: string | null
+    isActive?: boolean
+    isDeleted?: boolean
+    isAdmin?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lastLoginAt?: Date | string | null
+    wallet?: WalletUncheckedCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberUncheckedCreateNestedManyWithoutUserInput
+    passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
+    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedApiKeysInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedApiKeysInput, UserUncheckedCreateWithoutCreatedApiKeysInput>
+  }
+
+  export type WalletUpsertWithoutApiKeysInput = {
+    update: XOR<WalletUpdateWithoutApiKeysInput, WalletUncheckedUpdateWithoutApiKeysInput>
+    create: XOR<WalletCreateWithoutApiKeysInput, WalletUncheckedCreateWithoutApiKeysInput>
+    where?: WalletWhereInput
+  }
+
+  export type WalletUpdateToOneWithWhereWithoutApiKeysInput = {
+    where?: WalletWhereInput
+    data: XOR<WalletUpdateWithoutApiKeysInput, WalletUncheckedUpdateWithoutApiKeysInput>
+  }
+
+  export type WalletUpdateWithoutApiKeysInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutWalletNestedInput
+    members?: WalletMemberUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateWithoutApiKeysInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uid?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    version?: IntFieldUpdateOperationsInput | number
+    ownerId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: WalletMemberUncheckedUpdateManyWithoutWalletNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedApiKeysInput = {
+    update: XOR<UserUpdateWithoutCreatedApiKeysInput, UserUncheckedUpdateWithoutCreatedApiKeysInput>
+    create: XOR<UserCreateWithoutCreatedApiKeysInput, UserUncheckedCreateWithoutCreatedApiKeysInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedApiKeysInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedApiKeysInput, UserUncheckedUpdateWithoutCreatedApiKeysInput>
+  }
+
+  export type UserUpdateWithoutCreatedApiKeysInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUpdateManyWithoutUserNestedInput
+    passkeys?: PasskeyUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedApiKeysInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    uid?: StringFieldUpdateOperationsInput | string
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUncheckedUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUncheckedUpdateManyWithoutUserNestedInput
+    passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
+    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   }
 
   export type UserCreateWithoutPasskeysInput = {
@@ -12262,16 +11339,16 @@ export namespace Prisma {
     phone?: string | null
     gitHubId?: string | null
     googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    wallet?: WalletCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberCreateNestedManyWithoutUserInput
     redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    organization?: OrganizationCreateNestedOneWithoutOwnerInput
+    createdApiKeys?: ApiKeyCreateNestedManyWithoutCreatorInput
   }
 
   export type UserUncheckedCreateWithoutPasskeysInput = {
@@ -12283,16 +11360,16 @@ export namespace Prisma {
     phone?: string | null
     gitHubId?: string | null
     googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    wallet?: WalletUncheckedCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberUncheckedCreateNestedManyWithoutUserInput
     redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    organization?: OrganizationUncheckedCreateNestedOneWithoutOwnerInput
+    createdApiKeys?: ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
   }
 
   export type UserCreateOrConnectWithoutPasskeysInput = {
@@ -12319,16 +11396,16 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUpdateManyWithoutUserNestedInput
     redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    organization?: OrganizationUpdateOneWithoutOwnerNestedInput
+    createdApiKeys?: ApiKeyUpdateManyWithoutCreatorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasskeysInput = {
@@ -12340,176 +11417,16 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUncheckedUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUncheckedUpdateManyWithoutUserNestedInput
     redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    organization?: OrganizationUncheckedUpdateOneWithoutOwnerNestedInput
-  }
-
-  export type UserCreateWithoutWalletInput = {
-    uid?: string
-    displayName?: string | null
-    avatar?: string | null
-    email?: string | null
-    phone?: string | null
-    gitHubId?: string | null
-    googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    isDeleted?: boolean
-    isAdmin?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
-    passkeys?: PasskeyCreateNestedManyWithoutUserInput
-    redeemCodes?: RedemptionCodeCreateNestedManyWithoutRedeemerInput
-    organization?: OrganizationCreateNestedOneWithoutOwnerInput
-  }
-
-  export type UserUncheckedCreateWithoutWalletInput = {
-    id?: number
-    uid?: string
-    displayName?: string | null
-    avatar?: string | null
-    email?: string | null
-    phone?: string | null
-    gitHubId?: string | null
-    googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    isDeleted?: boolean
-    isAdmin?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
-    passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
-    redeemCodes?: RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
-    organization?: OrganizationUncheckedCreateNestedOneWithoutOwnerInput
-  }
-
-  export type UserCreateOrConnectWithoutWalletInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
-  }
-
-  export type UserUpsertWithoutWalletInput = {
-    update: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
-    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutWalletInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
-  }
-
-  export type UserUpdateWithoutWalletInput = {
-    uid?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
-    googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    passkeys?: PasskeyUpdateManyWithoutUserNestedInput
-    redeemCodes?: RedemptionCodeUpdateManyWithoutRedeemerNestedInput
-    organization?: OrganizationUpdateOneWithoutOwnerNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutWalletInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
-    googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
-    redeemCodes?: RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
-    organization?: OrganizationUncheckedUpdateOneWithoutOwnerNestedInput
-  }
-
-  export type OrganizationCreateWithoutApiKeysInput = {
-    uid?: string
-    identifier: string
-    displayName?: string | null
-    avatar?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutOrganizationInput
-    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUncheckedCreateWithoutApiKeysInput = {
-    id?: number
-    uid?: string
-    identifier: string
-    displayName?: string | null
-    avatar?: string | null
-    ownerId: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationCreateOrConnectWithoutApiKeysInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutApiKeysInput, OrganizationUncheckedCreateWithoutApiKeysInput>
-  }
-
-  export type OrganizationUpsertWithoutApiKeysInput = {
-    update: XOR<OrganizationUpdateWithoutApiKeysInput, OrganizationUncheckedUpdateWithoutApiKeysInput>
-    create: XOR<OrganizationCreateWithoutApiKeysInput, OrganizationUncheckedCreateWithoutApiKeysInput>
-    where?: OrganizationWhereInput
-  }
-
-  export type OrganizationUpdateToOneWithWhereWithoutApiKeysInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutApiKeysInput, OrganizationUncheckedUpdateWithoutApiKeysInput>
-  }
-
-  export type OrganizationUpdateWithoutApiKeysInput = {
-    uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutOrganizationNestedInput
-    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateWithoutApiKeysInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    identifier?: StringFieldUpdateOperationsInput | string
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    ownerId?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    createdApiKeys?: ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
   }
 
   export type UserCreateWithoutRedeemCodesInput = {
@@ -12520,16 +11437,16 @@ export namespace Prisma {
     phone?: string | null
     gitHubId?: string | null
     googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    wallet?: WalletCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberCreateNestedManyWithoutUserInput
     passkeys?: PasskeyCreateNestedManyWithoutUserInput
-    wallet?: WalletCreateNestedOneWithoutUserInput
-    organization?: OrganizationCreateNestedOneWithoutOwnerInput
+    createdApiKeys?: ApiKeyCreateNestedManyWithoutCreatorInput
   }
 
   export type UserUncheckedCreateWithoutRedeemCodesInput = {
@@ -12541,16 +11458,16 @@ export namespace Prisma {
     phone?: string | null
     gitHubId?: string | null
     googleId?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
+    isActive?: boolean
     isDeleted?: boolean
     isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     lastLoginAt?: Date | string | null
+    wallet?: WalletUncheckedCreateNestedOneWithoutOwnerInput
+    walletMembers?: WalletMemberUncheckedCreateNestedManyWithoutUserInput
     passkeys?: PasskeyUncheckedCreateNestedManyWithoutUserInput
-    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
-    organization?: OrganizationUncheckedCreateNestedOneWithoutOwnerInput
+    createdApiKeys?: ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
   }
 
   export type UserCreateOrConnectWithoutRedeemCodesInput = {
@@ -12577,16 +11494,16 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUpdateManyWithoutUserNestedInput
     passkeys?: PasskeyUpdateManyWithoutUserNestedInput
-    wallet?: WalletUpdateOneWithoutUserNestedInput
-    organization?: OrganizationUpdateOneWithoutOwnerNestedInput
+    createdApiKeys?: ApiKeyUpdateManyWithoutCreatorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRedeemCodesInput = {
@@ -12598,16 +11515,28 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     gitHubId?: NullableStringFieldUpdateOperationsInput | string | null
     googleId?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUncheckedUpdateOneWithoutOwnerNestedInput
+    walletMembers?: WalletMemberUncheckedUpdateManyWithoutUserNestedInput
     passkeys?: PasskeyUncheckedUpdateManyWithoutUserNestedInput
-    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
-    organization?: OrganizationUncheckedUpdateOneWithoutOwnerNestedInput
+    createdApiKeys?: ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type WalletMemberCreateManyUserInput = {
+    id?: number
+    walletId: number
+    creditLimit: Decimal | DecimalJsLike | number | string
+    creditAvailable: Decimal | DecimalJsLike | number | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
+    updatedAt?: Date | string
   }
 
   export type PasskeyCreateManyUserInput = {
@@ -12629,12 +11558,57 @@ export namespace Prisma {
     id?: number
     code: string
     amount: number
-    remark?: string | null
-    isUsed?: boolean
-    isDeleted?: boolean
+    remark?: string
+    createdAt?: Date | string
+    expiredAt?: Date | string
+    redeemedAt?: Date | string | null
+  }
+
+  export type ApiKeyCreateManyCreatorInput = {
+    id?: number
+    walletId: number
+    hashKey: string
+    preview: string
+    displayName: string
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    expiredAt: Date | string
+    lastUsedAt?: Date | string | null
+  }
+
+  export type WalletMemberUpdateWithoutUserInput = {
+    creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wallet?: WalletUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type WalletMemberUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    walletId?: IntFieldUpdateOperationsInput | number
+    creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WalletMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    walletId?: IntFieldUpdateOperationsInput | number
+    creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PasskeyUpdateWithoutUserInput = {
@@ -12685,134 +11659,159 @@ export namespace Prisma {
   export type RedemptionCodeUpdateWithoutRedeemerInput = {
     code?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    remark?: NullableStringFieldUpdateOperationsInput | string | null
-    isUsed?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    remark?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type RedemptionCodeUncheckedUpdateWithoutRedeemerInput = {
     id?: IntFieldUpdateOperationsInput | number
     code?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    remark?: NullableStringFieldUpdateOperationsInput | string | null
-    isUsed?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    remark?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type RedemptionCodeUncheckedUpdateManyWithoutRedeemerInput = {
     id?: IntFieldUpdateOperationsInput | number
     code?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-    remark?: NullableStringFieldUpdateOperationsInput | string | null
-    isUsed?: BoolFieldUpdateOperationsInput | boolean
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    remark?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    redeemedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ApiKeyUpdateWithoutCreatorInput = {
+    hashKey?: StringFieldUpdateOperationsInput | string
+    preview?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneRequiredWithoutApiKeysNestedInput
   }
 
-  export type OrganizationMemberCreateManyOrganizationInput = {
+  export type ApiKeyUncheckedUpdateWithoutCreatorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    walletId?: IntFieldUpdateOperationsInput | number
+    hashKey?: StringFieldUpdateOperationsInput | string
+    preview?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ApiKeyUncheckedUpdateManyWithoutCreatorInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    walletId?: IntFieldUpdateOperationsInput | number
+    hashKey?: StringFieldUpdateOperationsInput | string
+    preview?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type WalletMemberCreateManyWalletInput = {
     id?: number
-    uid?: string
-    username: string
-    passwordHash: string
+    userId: number
     creditLimit: Decimal | DecimalJsLike | number | string
     creditAvailable: Decimal | DecimalJsLike | number | string
-    isDeleted?: boolean
-    createdAt?: Date | string
+    creditUsed?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    joinedAt?: Date | string
+    leftAt?: Date | string | null
     updatedAt?: Date | string
-    lastLoginAt?: Date | string | null
   }
 
-  export type ApiKeyCreateManyOrganizationInput = {
+  export type ApiKeyCreateManyWalletInput = {
     id?: number
+    creatorId: number
     hashKey: string
     preview: string
     displayName: string
-    isDeleted?: boolean
-    memberCreatorId?: number | null
-    lastUsedAt?: Date | string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    lastUsedAt?: Date | string | null
   }
 
-  export type OrganizationMemberUpdateWithoutOrganizationInput = {
-    uid?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
+  export type WalletMemberUpdateWithoutWalletInput = {
     creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutWalletMembersNestedInput
   }
 
-  export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
+  export type WalletMemberUncheckedUpdateWithoutWalletInput = {
     id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput = {
+  export type WalletMemberUncheckedUpdateManyWithoutWalletInput = {
     id?: IntFieldUpdateOperationsInput | number
-    uid?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    passwordHash?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
     creditLimit?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     creditAvailable?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creditUsed?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    leftAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type ApiKeyUpdateWithoutOrganizationInput = {
+  export type ApiKeyUpdateWithoutWalletInput = {
     hashKey?: StringFieldUpdateOperationsInput | string
     preview?: StringFieldUpdateOperationsInput | string
     displayName?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    memberCreatorId?: NullableIntFieldUpdateOperationsInput | number | null
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    creator?: UserUpdateOneRequiredWithoutCreatedApiKeysNestedInput
   }
 
-  export type ApiKeyUncheckedUpdateWithoutOrganizationInput = {
+  export type ApiKeyUncheckedUpdateWithoutWalletInput = {
     id?: IntFieldUpdateOperationsInput | number
+    creatorId?: IntFieldUpdateOperationsInput | number
     hashKey?: StringFieldUpdateOperationsInput | string
     preview?: StringFieldUpdateOperationsInput | string
     displayName?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    memberCreatorId?: NullableIntFieldUpdateOperationsInput | number | null
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type ApiKeyUncheckedUpdateManyWithoutOrganizationInput = {
+  export type ApiKeyUncheckedUpdateManyWithoutWalletInput = {
     id?: IntFieldUpdateOperationsInput | number
+    creatorId?: IntFieldUpdateOperationsInput | number
     hashKey?: StringFieldUpdateOperationsInput | string
     preview?: StringFieldUpdateOperationsInput | string
     displayName?: StringFieldUpdateOperationsInput | string
-    isDeleted?: BoolFieldUpdateOperationsInput | boolean
-    memberCreatorId?: NullableIntFieldUpdateOperationsInput | number | null
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

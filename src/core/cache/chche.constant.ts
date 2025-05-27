@@ -46,6 +46,14 @@ export const CACHE_KEYS = {
     KEY: 'api-key:{hashKey}',
     EXPIRE: minutes(10),
   },
+  WALLET_INFO_ID: {
+    KEY: 'wallet-info:{id}',
+    EXPIRE: minutes(1),
+  },
+  WALLET_INFO_UID: {
+    KEY: 'wallet-info:{uid}',
+    EXPIRE: minutes(1),
+  },
 } as const;
 
 export const CACHE_FLAG = {

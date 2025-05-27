@@ -11,6 +11,7 @@ import { ConfigModule } from './core/config/config.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { RedemptionModule } from './redemption/redemption.module';
+import { WalletService } from './wallet/wallet.service';
 @Module({
   imports: [
     // https://docs.nestjs.com/techniques/caching#interacting-with-the-cache-store
@@ -35,5 +36,6 @@ import { RedemptionModule } from './redemption/redemption.module';
     GatewayModule,
     RedemptionModule,
   ],
+  providers: [WalletService],
 })
 export class AppModule {}

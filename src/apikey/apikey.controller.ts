@@ -16,6 +16,7 @@ import {
   CreateApiKeyRequestDto,
   CreateApiKeyResponseDto,
   ListApiKeyResponseDto,
+  UpdateApiKeyDisplayNameRequestDto,
   UpdateApiKeyDisplayNameResponseDto,
 } from './dto/apikey.dto';
 
@@ -29,7 +30,7 @@ export class ApikeyController {
   @ApiResponse({ type: ListApiKeyResponseDto })
   async getApiKeys(@Req() req: RequestWithUser) {
     const { user } = req;
-    return this.apikeyService.getUserApiKeys(user.id);
+    return this.apikeyService.listApiKeys(user.id);
   }
 
   @Post()
@@ -41,25 +42,25 @@ export class ApikeyController {
     @Body() body: CreateApiKeyRequestDto,
   ) {
     const { user } = req;
-    const { displayName } = body;
-    return this.apikeyService.createApiKey(user.id, displayName);
+    const { displayName, walletUid } = body;
+    return this.apikeyService.createApiKey(displayName, walletUid, user.id);
   }
 
   @Patch(':hashKey')
   @ApiOperation({ summary: '更新API密钥名称' })
-  @ApiBody({ type: CreateApiKeyRequestDto })
+  @ApiBody({ type: UpdateApiKeyDisplayNameRequestDto })
   @ApiResponse({ type: UpdateApiKeyDisplayNameResponseDto })
   async updateApiKeyDisplayName(
     @Req() req: RequestWithUser,
     @Param('hashKey') hashKey: string,
-    @Body() body: CreateApiKeyRequestDto,
+    @Body() body: UpdateApiKeyDisplayNameRequestDto,
   ) {
     const { user } = req;
     const { displayName } = body;
     return this.apikeyService.updateApiKeyDisplayName(
-      user.id,
       hashKey,
       displayName,
+      user.id,
     );
   }
 
@@ -70,6 +71,6 @@ export class ApikeyController {
     @Param('hashKey') hashKey: string,
   ) {
     const { user } = req;
-    return this.apikeyService.deleteApiKey(user.id, hashKey);
+    return this.apikeyService.inactivateApiKey(hashKey, user.id);
   }
 }

@@ -8,114 +8,106 @@ datasource db {
   url      = env("MYSQL_URL")
 }
 
-// 主用户表（包括管理员）
+// 用户表
 model User {
-  id          Int     @id @default(autoincrement())
-  uid         String  @unique @default(uuid())
-  displayName String? @db.VarChar(32) // Common name for user's display name (not username which implies uniqueness)
-  avatar      String? @db.Text
-
-  email    String? @unique
-  phone    String? @unique
-  gitHubId String? @unique
-  googleId String? @unique
-
-  // 2FA support
-  twoFactorEnabled Boolean @default(false)
-  twoFactorSecret  String?
-
-  // User status
-  isDeleted Boolean @default(false)
-
-  // 平台管理员标识
-  isAdmin Boolean @default(false)
-
-  // 时间戳
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  lastLoginAt DateTime?
-
-  // Relations
-  passkeys     Passkey[]
-  redeemCodes  RedemptionCode[]
-  wallet       Wallet?
-  organization Organization?
+  id             Int              @id @default(autoincrement())
+  uid            String           @unique @default(uuid())
+  displayName    String?          @db.VarChar(32)
+  avatar         String?          @db.Text
+  email          String?          @unique
+  phone          String?          @unique
+  gitHubId       String?          @unique
+  googleId       String?          @unique
+  isActive       Boolean          @default(true)
+  isDeleted      Boolean          @default(false)
+  isAdmin        Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  lastLoginAt    DateTime?
+  wallet         Wallet? // 拥有的钱包（一对一）
+  walletMembers  WalletMember[] // 作为成员加入的钱包
+  passkeys       Passkey[]
+  redeemCodes    RedemptionCode[]
+  createdApiKeys ApiKey[] // 创建的API Keys
 
   @@map("users")
 }
 
-// 组织表（每个用户自动拥有一个）
-model Organization {
-  id          Int     @id @default(autoincrement())
-  uid         String  @unique @default(uuid())
-  identifier  String  @unique @db.VarChar(16) // 组织标识，用于子用户登录 (xxx@identifier.platform)
-  displayName String? @db.VarChar(64) // 组织显示名称
-  avatar      String? @db.Text // 组织头像
+// 钱包表 - 核心资产容器
+model Wallet {
+  id        Int            @id @default(autoincrement())
+  uid       String         @unique @default(uuid())
+  balance   Decimal        @default(0) @db.Decimal(12, 6)
+  version   Int            @default(1) // 乐观锁
+  owner     User           @relation(fields: [ownerId], references: [id])
+  ownerId   Int            @unique
+  members   WalletMember[] // 钱包成员
+  apiKeys   ApiKey[] // 使用此钱包的API Keys
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 
-  // 关联主用户（1对1）
-  owner   User @relation(fields: [ownerId], references: [id])
-  ownerId Int  @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  members OrganizationMember[] // 组织下的子用户
-  apiKeys ApiKey[] // 组织内的所有API Keys
-
-  @@map("organizations")
+  @@map("wallets")
 }
 
-// 组织成员表（子用户）
-model OrganizationMember {
-  id              Int     @id @default(autoincrement())
-  uid             String  @unique @default(uuid())
-  username        String  @db.VarChar(32) // 成员用户名，如 'john', 'alice'
-  passwordHash    String  @db.VarChar(255) // 密码哈希
-  creditLimit     Decimal @db.Decimal(12, 6) // 信用额度（必须设置）
-  creditAvailable Decimal @db.Decimal(12, 6) // 当前剩余可用额度
-  isDeleted       Boolean @default(false) // 删除状态
+// 钱包成员表
+model WalletMember {
+  id              Int       @id @default(autoincrement())
+  wallet          Wallet    @relation(fields: [walletId], references: [id])
+  walletId        Int
+  user            User      @relation(fields: [userId], references: [id])
+  userId          Int
+  creditLimit     Decimal   @db.Decimal(12, 6) // 信用额度
+  creditAvailable Decimal   @db.Decimal(12, 6) // 可用额度
+  creditUsed      Decimal   @default(0) @db.Decimal(12, 6) // 历史总消费（不重置）
+  isActive        Boolean   @default(true)
+  joinedAt        DateTime  @default(now())
+  leftAt          DateTime?
+  updatedAt       DateTime  @updatedAt
 
-  // 关联组织
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId Int
+  @@unique([walletId, userId])
+  @@index([userId, isActive])
+  @@index([walletId, isActive])
+  @@map("wallet_members")
+}
 
-  // 时间戳
+// API密钥表
+model ApiKey {
+  id          Int       @id @default(autoincrement())
+  wallet      Wallet    @relation(fields: [walletId], references: [id])
+  walletId    Int
+  creator     User      @relation(fields: [creatorId], references: [id])
+  creatorId   Int
+  hashKey     String    @unique @db.VarChar(64)
+  preview     String    @db.VarChar(8)
+  displayName String    @db.VarChar(32)
+  isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  lastLoginAt DateTime? // 最后登录时间
+  lastUsedAt  DateTime?
 
-  @@unique([organizationId, username]) // 确保同一组织下username唯一
-  @@index([organizationId, isDeleted]) // 索引优化查询
-  @@map("organization_members")
+  @@index([hashKey, isActive])
+  @@index([walletId, isActive])
+  @@index([creatorId, isActive])
+  @@map("api_keys")
 }
 
 model Passkey {
-  id             String @id @unique @db.VarChar(255) // Base64URLString
-  publicKey      Bytes // 存储为二进制数据，对应 Uint8Array
-  webAuthnUserID String @db.VarChar(255) // Base64URLString
-  counter        BigInt @default(0) // 使用 BigInt 来应对 timestamp 作为计数器的情况
+  id             String    @id @unique @db.VarChar(255)
+  publicKey      Bytes
+  webAuthnUserID String    @db.VarChar(255)
+  counter        BigInt    @default(0)
+  displayName    String    @default("")
+  transports     String?   @db.VarChar(255)
+  deviceType     String    @default("singleDevice") @db.VarChar(32)
+  backedUp       Boolean   @default(false)
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastUsedAt     DateTime?
+  user           User      @relation(fields: [userId], references: [id])
+  userId         Int
 
-  displayName String @default("") // 名称，用户自定义
-
-  // WebAuthn additional fields
-  transports String? @db.VarChar(255) // JSON字符串格式存储传输方式数组,'ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb'
-  deviceType String  @default("singleDevice") @db.VarChar(32) // singleDevice 或 multiDevice
-  backedUp   Boolean @default(false)
-
-  // 是否已删除
-  isDeleted Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  lastUsedAt DateTime?
-
-  // Relations
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
-
-  @@unique([webAuthnUserID, userId]) // 联合唯一约束提高用户隐私保护
+  @@unique([webAuthnUserID, userId])
   @@index([id])
   @@index([userId, isDeleted])
   @@index([id, userId, isDeleted])
@@ -123,53 +115,15 @@ model Passkey {
   @@map("passkeys")
 }
 
-model Wallet {
-  id        Int      @id @default(autoincrement())
-  balance   Decimal  @default(0) @db.Decimal(12, 6) // 余额，精确到小数点后6位
-  version   Int      @default(1) // 乐观锁版本号，用于并发控制
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @unique
-  updatedAt DateTime @updatedAt
-
-  @@map("wallets")
-}
-
-model ApiKey {
-  id          Int     @id @default(autoincrement())
-  hashKey     String  @unique @db.VarChar(64)
-  preview     String  @db.VarChar(8)
-  displayName String  @db.VarChar(32)
-  isDeleted   Boolean @default(false)
-
-  // 关联到组织和组织成员
-  organization    Organization @relation(fields: [organizationId], references: [id])
-  organizationId  Int
-  memberCreatorId Int? // 成员创建者ID（null表示主用户创建）
-
-  // 时间戳
-  lastUsedAt DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-
-  @@index([hashKey, isDeleted])
-  @@index([organizationId, isDeleted, createdAt])
-  @@index([organizationId, memberCreatorId, isDeleted, createdAt])
-  @@map("api_keys")
-}
-
 model RedemptionCode {
-  id        Int     @id @default(autoincrement())
-  code      String  @unique @db.VarChar(16) // display: ABCD-ABCD-ABCD-ABCD, db: abcdabcdabcdabcd
-  amount    Int     @db.Int
-  remark    String? @db.VarChar(255) // 备注，用于记录兑换码用途
-  isUsed    Boolean @default(false)
-  isDeleted Boolean @default(false)
+  id         Int       @id @default(autoincrement())
+  code       String    @unique @db.VarChar(16)
+  amount     Int       @db.Int
+  remark     String    @default("")
+  createdAt  DateTime  @default(now())
+  expiredAt  DateTime  @default(dbgenerated("(NOW() + INTERVAL 90 DAY)"))
+  redeemedAt DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  expiredAt DateTime
-
-  // Relations
   redeemer   User? @relation(fields: [redeemerId], references: [id])
   redeemerId Int?
 

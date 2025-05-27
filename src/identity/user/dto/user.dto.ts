@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../../../prisma/generated/prisma/client';
 import { createResponseDto } from 'src/common/interceptors/transform.interceptor';
 
 export class UserResponseData {
@@ -72,11 +71,3 @@ export class UserResponseDto extends createResponseDto<UserResponseData>(
 export class LoginResponseDto extends createResponseDto<LoginResponseData>(
   LoginResponseData,
 ) {}
-
-export const removeUserExcludedFields = (data: User) => {
-  const excludedFields = ['id', 'isDeleted', 'twoFactorSecret'];
-
-  return Object.fromEntries(
-    Object.entries(data).filter(([key]) => !excludedFields.includes(key)),
-  );
-};

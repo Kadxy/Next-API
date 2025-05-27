@@ -8,6 +8,19 @@ export class CreateApiKeyRequestDto {
   @IsNotEmpty({ message: '显示名称不能为空' })
   @Length(1, 32, { message: '显示名称长度必须在1到32之间' })
   displayName: string;
+
+  @ApiProperty({ description: '钱包UID' })
+  @IsString({ message: '钱包UID必须为字符串' })
+  @IsNotEmpty({ message: '钱包UID不能为空' })
+  walletUid: string;
+}
+
+export class UpdateApiKeyDisplayNameRequestDto {
+  @ApiProperty({ description: '显示名称' })
+  @IsString({ message: '显示名称必须为字符串' })
+  @IsNotEmpty({ message: '显示名称不能为空' })
+  @Length(1, 32, { message: '显示名称长度必须在1到32之间' })
+  displayName: string;
 }
 
 export class CreateApiKeyResponseData {
