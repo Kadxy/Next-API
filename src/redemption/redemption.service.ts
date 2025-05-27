@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RedemptionCode, User } from 'prisma/generated';
-import { Decimal } from 'prisma/generated/runtime/library';
+import { RedemptionCode, User } from '@prisma-client';
+import { Decimal } from '@prisma-client/runtime/library';
 import { BusinessException } from 'src/common/exceptions';
 import { CryptoService } from 'src/core/crypto/crypto.service';
 import { PrismaService } from 'src/core/prisma/prisma.service';

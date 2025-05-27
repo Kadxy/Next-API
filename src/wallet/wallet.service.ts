@@ -10,8 +10,8 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { getCacheKey, CACHE_KEYS } from 'src/core/cache/chche.constant';
 import { BusinessException } from 'src/common/exceptions';
-import { Prisma, User, Wallet, WalletMember } from 'prisma/generated';
-import { Decimal } from 'prisma/generated/runtime/library';
+import { Prisma, User, Wallet, WalletMember } from '@prisma-client';
+import { Decimal } from '@prisma-client/runtime/library';
 
 @Injectable()
 export class WalletService {
