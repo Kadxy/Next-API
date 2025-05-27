@@ -121,11 +121,10 @@ model RedemptionCode {
   amount     Int       @db.Int
   remark     String    @default("")
   createdAt  DateTime  @default(now())
-  expiredAt  DateTime  @default(dbgenerated("(NOW() + INTERVAL 90 DAY)"))
+  expiredAt  DateTime?
   redeemedAt DateTime?
-
-  redeemer   User? @relation(fields: [redeemerId], references: [id])
   redeemerId Int?
+  redeemer   User?     @relation(fields: [redeemerId], references: [id])
 
   @@map("redeem_codes")
 }

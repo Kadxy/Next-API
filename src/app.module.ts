@@ -8,7 +8,6 @@ import { DEFAULT_CACHE_TTL } from './core/cache/chche.constant';
 import { ApikeyModule } from './apikey/apikey.module';
 import { CoreModule } from './core/core.module';
 import { ConfigModule } from './core/config/config.module';
-import { GatewayModule } from './gateway/gateway.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { RedemptionModule } from './redemption/redemption.module';
 import { WalletService } from './wallet/wallet.service';
@@ -33,7 +32,6 @@ import { WalletService } from './wallet/wallet.service';
     UserModule,
     ApikeyModule,
     CoreModule,
-    GatewayModule,
     RedemptionModule,
   ],
   providers: [WalletService],
