@@ -877,6 +877,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const WalletScalarFieldEnum = {
   id: 'id',
   uid: 'uid',
+  displayName: 'displayName',
   balance: 'balance',
   version: 'version',
   ownerId: 'ownerId',
@@ -891,6 +892,7 @@ export const WalletMemberScalarFieldEnum = {
   id: 'id',
   walletId: 'walletId',
   userId: 'userId',
+  alias: 'alias',
   creditLimit: 'creditLimit',
   creditAvailable: 'creditAvailable',
   creditUsed: 'creditUsed',
@@ -982,10 +984,18 @@ export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnu
 
 
 export const WalletOrderByRelevanceFieldEnum = {
-  uid: 'uid'
+  uid: 'uid',
+  displayName: 'displayName'
 } as const
 
 export type WalletOrderByRelevanceFieldEnum = (typeof WalletOrderByRelevanceFieldEnum)[keyof typeof WalletOrderByRelevanceFieldEnum]
+
+
+export const WalletMemberOrderByRelevanceFieldEnum = {
+  alias: 'alias'
+} as const
+
+export type WalletMemberOrderByRelevanceFieldEnum = (typeof WalletMemberOrderByRelevanceFieldEnum)[keyof typeof WalletMemberOrderByRelevanceFieldEnum]
 
 
 export const ApiKeyOrderByRelevanceFieldEnum = {

@@ -42,6 +42,7 @@ export type WalletSumAggregateOutputType = {
 export type WalletMinAggregateOutputType = {
   id: number | null
   uid: string | null
+  displayName: string | null
   balance: runtime.Decimal | null
   version: number | null
   ownerId: number | null
@@ -52,6 +53,7 @@ export type WalletMinAggregateOutputType = {
 export type WalletMaxAggregateOutputType = {
   id: number | null
   uid: string | null
+  displayName: string | null
   balance: runtime.Decimal | null
   version: number | null
   ownerId: number | null
@@ -62,6 +64,7 @@ export type WalletMaxAggregateOutputType = {
 export type WalletCountAggregateOutputType = {
   id: number
   uid: number
+  displayName: number
   balance: number
   version: number
   ownerId: number
@@ -88,6 +91,7 @@ export type WalletSumAggregateInputType = {
 export type WalletMinAggregateInputType = {
   id?: true
   uid?: true
+  displayName?: true
   balance?: true
   version?: true
   ownerId?: true
@@ -98,6 +102,7 @@ export type WalletMinAggregateInputType = {
 export type WalletMaxAggregateInputType = {
   id?: true
   uid?: true
+  displayName?: true
   balance?: true
   version?: true
   ownerId?: true
@@ -108,6 +113,7 @@ export type WalletMaxAggregateInputType = {
 export type WalletCountAggregateInputType = {
   id?: true
   uid?: true
+  displayName?: true
   balance?: true
   version?: true
   ownerId?: true
@@ -205,6 +211,7 @@ export type WalletGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type WalletGroupByOutputType = {
   id: number
   uid: string
+  displayName: string
   balance: runtime.Decimal
   version: number
   ownerId: number
@@ -238,6 +245,7 @@ export type WalletWhereInput = {
   NOT?: Prisma.WalletWhereInput | Prisma.WalletWhereInput[]
   id?: Prisma.IntFilter<"Wallet"> | number
   uid?: Prisma.StringFilter<"Wallet"> | string
+  displayName?: Prisma.StringFilter<"Wallet"> | string
   balance?: Prisma.DecimalFilter<"Wallet"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFilter<"Wallet"> | number
   ownerId?: Prisma.IntFilter<"Wallet"> | number
@@ -251,6 +259,7 @@ export type WalletWhereInput = {
 export type WalletOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   uid?: Prisma.SortOrder
+  displayName?: Prisma.SortOrder
   balance?: Prisma.SortOrder
   version?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -269,6 +278,7 @@ export type WalletWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.WalletWhereInput | Prisma.WalletWhereInput[]
   OR?: Prisma.WalletWhereInput[]
   NOT?: Prisma.WalletWhereInput | Prisma.WalletWhereInput[]
+  displayName?: Prisma.StringFilter<"Wallet"> | string
   balance?: Prisma.DecimalFilter<"Wallet"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFilter<"Wallet"> | number
   createdAt?: Prisma.DateTimeFilter<"Wallet"> | Date | string
@@ -281,6 +291,7 @@ export type WalletWhereUniqueInput = Prisma.AtLeast<{
 export type WalletOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   uid?: Prisma.SortOrder
+  displayName?: Prisma.SortOrder
   balance?: Prisma.SortOrder
   version?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -299,6 +310,7 @@ export type WalletScalarWhereWithAggregatesInput = {
   NOT?: Prisma.WalletScalarWhereWithAggregatesInput | Prisma.WalletScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Wallet"> | number
   uid?: Prisma.StringWithAggregatesFilter<"Wallet"> | string
+  displayName?: Prisma.StringWithAggregatesFilter<"Wallet"> | string
   balance?: Prisma.DecimalWithAggregatesFilter<"Wallet"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntWithAggregatesFilter<"Wallet"> | number
   ownerId?: Prisma.IntWithAggregatesFilter<"Wallet"> | number
@@ -308,6 +320,7 @@ export type WalletScalarWhereWithAggregatesInput = {
 
 export type WalletCreateInput = {
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -320,6 +333,7 @@ export type WalletCreateInput = {
 export type WalletUncheckedCreateInput = {
   id?: number
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -331,6 +345,7 @@ export type WalletUncheckedCreateInput = {
 
 export type WalletUpdateInput = {
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -343,6 +358,7 @@ export type WalletUpdateInput = {
 export type WalletUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ownerId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -355,6 +371,7 @@ export type WalletUncheckedUpdateInput = {
 export type WalletCreateManyInput = {
   id?: number
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -364,6 +381,7 @@ export type WalletCreateManyInput = {
 
 export type WalletUpdateManyMutationInput = {
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -373,6 +391,7 @@ export type WalletUpdateManyMutationInput = {
 export type WalletUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ownerId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -394,6 +413,7 @@ export type WalletOrderByRelevanceInput = {
 export type WalletCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   uid?: Prisma.SortOrder
+  displayName?: Prisma.SortOrder
   balance?: Prisma.SortOrder
   version?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -411,6 +431,7 @@ export type WalletAvgOrderByAggregateInput = {
 export type WalletMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   uid?: Prisma.SortOrder
+  displayName?: Prisma.SortOrder
   balance?: Prisma.SortOrder
   version?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -421,6 +442,7 @@ export type WalletMaxOrderByAggregateInput = {
 export type WalletMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   uid?: Prisma.SortOrder
+  displayName?: Prisma.SortOrder
   balance?: Prisma.SortOrder
   version?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
@@ -510,6 +532,7 @@ export type WalletUpdateOneRequiredWithoutApiKeysNestedInput = {
 
 export type WalletCreateWithoutOwnerInput = {
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -521,6 +544,7 @@ export type WalletCreateWithoutOwnerInput = {
 export type WalletUncheckedCreateWithoutOwnerInput = {
   id?: number
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -547,6 +571,7 @@ export type WalletUpdateToOneWithWhereWithoutOwnerInput = {
 
 export type WalletUpdateWithoutOwnerInput = {
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -558,6 +583,7 @@ export type WalletUpdateWithoutOwnerInput = {
 export type WalletUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -568,6 +594,7 @@ export type WalletUncheckedUpdateWithoutOwnerInput = {
 
 export type WalletCreateWithoutMembersInput = {
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -579,6 +606,7 @@ export type WalletCreateWithoutMembersInput = {
 export type WalletUncheckedCreateWithoutMembersInput = {
   id?: number
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -605,6 +633,7 @@ export type WalletUpdateToOneWithWhereWithoutMembersInput = {
 
 export type WalletUpdateWithoutMembersInput = {
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -616,6 +645,7 @@ export type WalletUpdateWithoutMembersInput = {
 export type WalletUncheckedUpdateWithoutMembersInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ownerId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -626,6 +656,7 @@ export type WalletUncheckedUpdateWithoutMembersInput = {
 
 export type WalletCreateWithoutApiKeysInput = {
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -637,6 +668,7 @@ export type WalletCreateWithoutApiKeysInput = {
 export type WalletUncheckedCreateWithoutApiKeysInput = {
   id?: number
   uid?: string
+  displayName?: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -663,6 +695,7 @@ export type WalletUpdateToOneWithWhereWithoutApiKeysInput = {
 
 export type WalletUpdateWithoutApiKeysInput = {
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -674,6 +707,7 @@ export type WalletUpdateWithoutApiKeysInput = {
 export type WalletUncheckedUpdateWithoutApiKeysInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: Prisma.IntFieldUpdateOperationsInput | number
   ownerId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -725,6 +759,7 @@ export type WalletCountOutputTypeCountApiKeysArgs<ExtArgs extends runtime.Types.
 export type WalletSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   uid?: boolean
+  displayName?: boolean
   balance?: boolean
   version?: boolean
   ownerId?: boolean
@@ -741,6 +776,7 @@ export type WalletSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type WalletSelectScalar = {
   id?: boolean
   uid?: boolean
+  displayName?: boolean
   balance?: boolean
   version?: boolean
   ownerId?: boolean
@@ -748,7 +784,7 @@ export type WalletSelectScalar = {
   updatedAt?: boolean
 }
 
-export type WalletOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uid" | "balance" | "version" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
+export type WalletOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uid" | "displayName" | "balance" | "version" | "ownerId" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
 export type WalletInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Wallet$membersArgs<ExtArgs>
@@ -766,6 +802,7 @@ export type $WalletPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     uid: string
+    displayName: string
     balance: runtime.Decimal
     version: number
     ownerId: number
@@ -1145,6 +1182,7 @@ export interface Prisma__WalletClient<T, Null = never, ExtArgs extends runtime.T
 export interface WalletFieldRefs {
   readonly id: Prisma.FieldRef<"Wallet", 'Int'>
   readonly uid: Prisma.FieldRef<"Wallet", 'String'>
+  readonly displayName: Prisma.FieldRef<"Wallet", 'String'>
   readonly balance: Prisma.FieldRef<"Wallet", 'Decimal'>
   readonly version: Prisma.FieldRef<"Wallet", 'Int'>
   readonly ownerId: Prisma.FieldRef<"Wallet", 'Int'>

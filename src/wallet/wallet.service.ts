@@ -11,7 +11,7 @@ import { Cache } from 'cache-manager';
 import { getCacheKey, CACHE_KEYS } from 'src/core/cache/chche.constant';
 import { BusinessException } from 'src/common/exceptions';
 import { Prisma, User, Wallet, WalletMember } from '@prisma-client';
-import { Decimal } from '@prisma-client/internal/prismaNamespace';
+import { SIMPLE_WALLET_QUERY_SELECT } from 'prisma/query.constant';
 
 @Injectable()
 export class WalletService {
@@ -22,11 +22,39 @@ export class WalletService {
     @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
   ) {}
 
-  // Create wallet for user
-  async createWallet(ownerId: User['id'], balance: Decimal = new Decimal(0)) {
-    return this.prisma.wallet.create({
-      data: { ownerId, balance },
+  // List User Available Wallets
+  async listUserAvailableWallets(userId: User['id']) {
+    // 先查用户作为 owner 的 wallet
+    const ownerWallets = await this.prisma.wallet.findMany({
+      where: { ownerId: userId },
+      select: SIMPLE_WALLET_QUERY_SELECT,
     });
+
+    // 如果用户没有 owner 的 wallet，则创建一个
+    if (ownerWallets.length === 0) {
+      this.logger.log(`User ${userId} has no owner wallet, creating one`);
+
+      const newWallet = await this.prisma.wallet.create({
+        data: { ownerId: userId },
+        select: SIMPLE_WALLET_QUERY_SELECT,
+      });
+      ownerWallets.push(newWallet);
+    }
+
+    // 再查用户作为 member 的 wallet
+    const memberWallets = await this.prisma.walletMember.findMany({
+      where: { userId },
+      select: {
+        wallet: {
+          select: SIMPLE_WALLET_QUERY_SELECT,
+        },
+        creditLimit: true,
+        creditAvailable: true,
+        creditUsed: true,
+      },
+    });
+
+    return [...ownerWallets, ...memberWallets];
   }
 
   // Get database wallet
@@ -85,21 +113,6 @@ export class WalletService {
     return wallet;
   }
 
-  // TODO: Add wallet member
-  // TODO: Remove wallet member
-  // TODO: Modify wallet member alias & credit limit
-
-  // TODO: [IMPORTANT] Update wallet balance, later do in consumer system
-
-  // Update wallet cache
-  private async updateWalletCache(wallet: Wallet) {
-    const cacheKeyId = getCacheKey(CACHE_KEYS.WALLET_INFO_ID, wallet.id);
-    const cacheKeyUid = getCacheKey(CACHE_KEYS.WALLET_INFO_UID, wallet.uid);
-
-    await this.cacheService.set(cacheKeyId, wallet);
-    await this.cacheService.set(cacheKeyUid, wallet);
-  }
-
   // Check if user has access to wallet (owner or active member)
   async canAccess(walletId: Wallet['id'], userId: User['id']) {
     const wallet = await this.getCachedWallet({ id: walletId });
@@ -113,5 +126,20 @@ export class WalletService {
     }
 
     return wallet.members.some((member) => member.userId === userId);
+  }
+
+  // TODO: Add wallet member
+  // TODO: Remove wallet member
+  // TODO: Modify wallet member alias & credit limit
+
+  // TODO: [IMPORTANT] Update wallet balance, later do in consumer system
+
+  // Update wallet cache
+  private async updateWalletCache(wallet: Wallet) {
+    const cacheKeyId = getCacheKey(CACHE_KEYS.WALLET_INFO_ID, wallet.id);
+    const cacheKeyUid = getCacheKey(CACHE_KEYS.WALLET_INFO_UID, wallet.uid);
+
+    await this.cacheService.set(cacheKeyId, wallet);
+    await this.cacheService.set(cacheKeyUid, wallet);
   }
 }

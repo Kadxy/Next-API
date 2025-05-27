@@ -6,7 +6,6 @@ import { Cache } from 'cache-manager';
 import { FeishuWebhookService } from '../../core/feishu-webhook/feishu-webhook.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { USER_QUERY_INCLUDE, USER_QUERY_OMIT } from 'prisma/query.constant';
-import { WalletService } from 'src/wallet/wallet.service';
 import { BusinessException } from 'src/common/exceptions';
 
 // 使用 Prisma 生成的类型定义受限用户查询结果
@@ -23,13 +22,12 @@ export class UserService {
     private readonly prisma: PrismaService,
     @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
     private readonly feishuWebhookService: FeishuWebhookService,
-    private readonly walletService: WalletService,
   ) {}
 
   // 更新用户最后登录时间
-  async updateLastLoginAt(id: User['id']) {
+  async updateLastLoginAt(uid: User['uid']) {
     await this.prisma.user.update({
-      where: { id },
+      where: { uid },
       data: { lastLoginAt: new Date() },
     });
   }
@@ -49,9 +47,6 @@ export class UserService {
     });
 
     if (user?.id) {
-      // 创建钱包
-      await this.walletService.createWallet(user.id);
-
       // 更新缓存
       await this.updateUserCache(user);
       return this.constructLimitedUser(user);

@@ -10,7 +10,10 @@ import {
   BusinessException,
   UnauthorizedException,
 } from 'src/common/exceptions';
-import { API_KEY_QUERY_OMIT } from 'prisma/query.constant';
+import {
+  API_KEY_QUERY_OMIT,
+  APIKEY_INCLUDE_WALLET_SELECT,
+} from 'prisma/query.constant';
 import { WalletService } from '../wallet/wallet.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
@@ -177,7 +180,8 @@ export class ApikeyService implements OnModuleInit {
   async listApiKeys(userId: User['id']) {
     return this.prisma.apiKey.findMany({
       where: { creatorId: userId, isActive: true },
-      include: { wallet: { select: { uid: true } } },
+      include: { wallet: { select: APIKEY_INCLUDE_WALLET_SELECT } },
+      omit: API_KEY_QUERY_OMIT,
     });
   }
 

@@ -13,4 +13,25 @@ export const USER_QUERY_INCLUDE: Prisma.UserInclude = {
 // -- API KEY --
 export const API_KEY_QUERY_OMIT: Prisma.ApiKeyOmit = {
   id: true,
+  creatorId: true,
+  walletId: true,
+};
+
+// -- WALLET --
+export const OWNER_WALLET_QUERY_OMIT: Prisma.WalletOmit = {
+  id: true,
+  ownerId: true,
+  version: true,
+};
+
+// 简单钱包查询，一般用于前端生成 options
+export const SIMPLE_WALLET_QUERY_SELECT: Prisma.WalletSelect = {
+  uid: true,
+  balance: true,
+  displayName: true,
+};
+
+export const APIKEY_INCLUDE_WALLET_SELECT: Prisma.WalletSelect = {
+  uid: true,
+  displayName: true,
 };

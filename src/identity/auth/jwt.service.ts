@@ -9,7 +9,7 @@ import {
   CACHE_KEYS,
   getCacheKey,
 } from '../../core/cache/chche.constant';
-import { UserService } from '../user/user.service';
+import { LimitedUser, UserService } from '../user/user.service';
 
 export enum JWT_ERR_MESSAGE {
   /** No token/Not logged in */
@@ -49,7 +49,7 @@ export class JwtTokenService {
     return token;
   }
 
-  async sign(user: User): Promise<string> {
+  async sign(user: LimitedUser): Promise<string> {
     // Get user info
     const { uid } = user;
 
@@ -60,7 +60,7 @@ export class JwtTokenService {
     const payload: JwtSignPayload = { uid, version };
 
     // Update last login
-    this.userService.updateLastLoginAt(user.id).catch();
+    this.userService.updateLastLoginAt(user.uid).catch();
 
     this.logger.debug(`Token signed, payload: ${JSON.stringify(payload)}`);
 

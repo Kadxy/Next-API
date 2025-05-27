@@ -1,6 +1,6 @@
 // https://docs.nestjs.com/techniques/caching#interacting-with-the-cache-store
 
-import { hours, minutes, days } from '@nestjs/throttler';
+import { minutes, days } from '@nestjs/throttler';
 
 // Default cache TTL: 5 minutes
 export const DEFAULT_CACHE_TTL = minutes(5);
@@ -8,7 +8,7 @@ export const DEFAULT_CACHE_TTL = minutes(5);
 export const CACHE_KEYS = {
   USER_INFO_UID: {
     KEY: 'user-info:{uid}',
-    EXPIRE: hours(3),
+    EXPIRE: minutes(5),
   },
   EMAIL_LIMIT: {
     KEY: 'email-limit:{email}',

@@ -24,10 +24,10 @@ model User {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   lastLoginAt    DateTime?
-  wallet         Wallet? // 拥有的钱包（一对一）
+  wallet         Wallet? // 拥有的钱包(一对一，一个用户只能作为一个钱包的owner)
   walletMembers  WalletMember[] // 作为成员加入的钱包
-  passkeys       Passkey[]
-  redeemCodes    RedemptionCode[]
+  passkeys       Passkey[] // 绑定的passkey，用于登录
+  redeemCodes    RedemptionCode[] // 使用过的兑换码
   createdApiKeys ApiKey[] // 创建的API Keys
 
   @@map("users")
@@ -35,16 +35,18 @@ model User {
 
 // 钱包表 - 核心资产容器
 model Wallet {
-  id        Int            @id @default(autoincrement())
-  uid       String         @unique @default(uuid())
-  balance   Decimal        @default(0) @db.Decimal(12, 6)
-  version   Int            @default(1) // 乐观锁
-  owner     User           @relation(fields: [ownerId], references: [id])
-  ownerId   Int            @unique
-  members   WalletMember[] // 钱包成员
-  apiKeys   ApiKey[] // 使用此钱包的API Keys
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  id          Int      @id @default(autoincrement())
+  uid         String   @unique @default(uuid())
+  displayName String   @default("Default Wallet") @db.VarChar(32)
+  balance     Decimal  @default(0) @db.Decimal(12, 6)
+  version     Int      @default(1) // 乐观锁
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     Int      @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members WalletMember[] // 钱包成员
+  apiKeys ApiKey[] // 使用此钱包的API Keys
 
   @@map("wallets")
 }
@@ -56,6 +58,7 @@ model WalletMember {
   walletId        Int
   user            User      @relation(fields: [userId], references: [id])
   userId          Int
+  alias           String    @default("") @db.VarChar(32) // 成员别名
   creditLimit     Decimal   @db.Decimal(12, 6) // 信用额度
   creditAvailable Decimal   @db.Decimal(12, 6) // 可用额度
   creditUsed      Decimal   @default(0) @db.Decimal(12, 6) // 历史总消费（不重置）

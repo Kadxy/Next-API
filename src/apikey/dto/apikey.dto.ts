@@ -32,6 +32,14 @@ export class CreateApiKeyResponseDto extends createResponseDto<CreateApiKeyRespo
   CreateApiKeyResponseData,
 ) {}
 
+export class ListApiKeyResponseItemWalletItemData {
+  @ApiProperty({ description: '钱包UID' })
+  uid: string;
+
+  @ApiProperty({ description: '钱包名称' })
+  displayName: string;
+}
+
 export class ListApiKeyResponseItemData {
   @ApiProperty({ description: '哈希密钥' })
   hashKey: string;
@@ -54,6 +62,9 @@ export class ListApiKeyResponseItemData {
 
   @ApiProperty({ description: '更新时间' })
   updatedAt: Date;
+
+  @ApiProperty({ description: '钱包' })
+  wallet: ListApiKeyResponseItemWalletItemData;
 }
 
 export class ListApiKeyResponseDto extends createResponseDto<ListApiKeyResponseItemData>(
