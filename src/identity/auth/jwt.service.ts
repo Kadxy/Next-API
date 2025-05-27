@@ -9,7 +9,7 @@ import {
   CACHE_KEYS,
   getCacheKey,
 } from '../../core/cache/chche.constant';
-import { FullUser, UserService } from '../user/user.service';
+import { UserService } from '../user/user.service';
 
 export enum JWT_ERR_MESSAGE {
   /** No token/Not logged in */
@@ -68,7 +68,7 @@ export class JwtTokenService {
     return this.jwtService.signAsync(payload);
   }
 
-  async verify(jwtToken: string): Promise<FullUser> {
+  async verify(jwtToken: string): Promise<User> {
     try {
       // Verify signature
       const payload = await this.jwtService.verifyAsync<JwtPayload>(jwtToken);

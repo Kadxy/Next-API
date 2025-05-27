@@ -6,24 +6,13 @@ import {
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
 import { ApikeyService } from '../apikey.service';
-import { ApiKey } from '@prisma/client';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { ApiKeyEvents } from '../../event-names';
-import { ApiKeyUsedEvent } from '../events/api-key-event/apikey-event.service';
 import { UnauthorizedException } from 'src/common/exceptions';
-
-export interface RequestWithApiKey extends FastifyRequest {
-  apiKey: ApiKey;
-}
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
   private readonly logger = new Logger(ApiKeyGuard.name);
 
-  constructor(
-    private readonly apikeyService: ApikeyService,
-    private eventEmitter: EventEmitter2,
-  ) {}
+  constructor(private readonly apikeyService: ApikeyService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<FastifyRequest>();
@@ -37,12 +26,6 @@ export class ApiKeyGuard implements CanActivate {
 
       // 附加 APIKEY 记录到请求对象
       request['apiKey'] = apiKeyRecord;
-
-      // 发布API密钥使用事件
-      this.eventEmitter.emit(
-        ApiKeyEvents.USED,
-        new ApiKeyUsedEvent(apiKeyRecord.hashKey, new Date(), {}),
-      );
 
       return true;
     } catch (error) {

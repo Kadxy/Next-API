@@ -29,15 +29,11 @@ export class RedemptionController {
   @ApiResponse({ type: CreateRedemptionCodeResponseDto })
   @UseGuards(AdminAuthGuard) // require admin
   async createCode(@Body() body: CreateRedemptionCodeDto) {
-    const { amount, remark, expiredDays } = body;
-
-    const expiredDuration = expiredDays
-      ? expiredDays * 24 * 60 * 60 * 1000
-      : undefined;
+    const { amount, remark, expiredAt } = body;
 
     return await this.redemptionService.createRedemptionCode(
       amount,
-      expiredDuration,
+      expiredAt,
       remark,
     );
   }

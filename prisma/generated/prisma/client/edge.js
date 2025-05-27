@@ -263,11 +263,12 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "MYSQL_URL",
-        "value": "mysql://next_api_dev1:bWDJfJChGsDzsYjE@14.103.131.95:3306/next_api_dev1"
+        "value": null
       }
     }
   },

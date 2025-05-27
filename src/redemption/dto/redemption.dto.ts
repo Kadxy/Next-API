@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, Min, IsString, Length, IsOptional } from 'class-validator';
+import {
+  IsInt,
+  Min,
+  IsString,
+  Length,
+  IsOptional,
+  IsDateString,
+} from 'class-validator';
+import { RedemptionService } from '../redemption.service';
 
 export class CreateRedemptionCodeDto {
   @ApiProperty({ description: '充值金额，整数', example: 1 })
@@ -7,20 +15,19 @@ export class CreateRedemptionCodeDto {
   @Min(1, { message: 'amount must be greater than 0' })
   amount: number;
 
+  @ApiProperty({
+    description: '过期时间，默认 90 天后',
+    required: false,
+    example: '2025-06-22T10:00:00.000Z',
+  })
+  @IsOptional()
+  @IsDateString()
+  expiredAt?: Date;
+
   @ApiProperty({ description: '备注', required: false, example: '测试' })
   @IsOptional()
   @IsString()
   remark?: string;
-
-  @ApiProperty({
-    description: '有效期（天），可选，默认30',
-    required: false,
-    example: 30,
-  })
-  @IsOptional()
-  @IsInt({ message: 'expiredDays must be integer' })
-  @Min(1)
-  expiredDays?: number;
 }
 
 export class CreateRedemptionCodeResponseDto {
@@ -47,9 +54,15 @@ export class CreateRedemptionCodeResponseDto {
 }
 
 export class RedeemCodeDto {
-  @ApiProperty({ description: '兑换码', example: 'ABCD-ABCD-ABCD-ABCD' })
+  @ApiProperty({ description: '兑换码', example: 'abcdabcdabcdabcd' })
   @IsString()
-  @Length(16, 19) // 16 without dashes, 19 with dashes
+  @Length(
+    RedemptionService.REDEMPTION_CODE_LENGTH,
+    RedemptionService.REDEMPTION_CODE_LENGTH,
+    {
+      message: `code must be ${RedemptionService.REDEMPTION_CODE_LENGTH} characters`,
+    },
+  )
   code: string;
 }
 
