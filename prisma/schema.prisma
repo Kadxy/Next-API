@@ -8,7 +8,9 @@ datasource db {
   url      = env("MYSQL_URL")
 }
 
-// 用户表
+// -----------------------------------------------------------------------------
+// Core User & Wallet Management Models (保持不变，已是你原有设计)
+// -----------------------------------------------------------------------------
 model User {
   id             Int              @id @default(autoincrement())
   uid            String           @unique @default(uuid())
@@ -33,7 +35,6 @@ model User {
   @@map("users")
 }
 
-// 钱包表 - 核心资产容器
 model Wallet {
   id          Int      @id @default(autoincrement())
   uid         String   @unique @default(uuid())
@@ -45,13 +46,14 @@ model Wallet {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  members WalletMember[] // 钱包成员
-  apiKeys ApiKey[] // 使用此钱包的API Keys
+  members           WalletMember[] // 钱包成员
+  apiKeys           ApiKey[] // 使用此钱包的API Keys
+  WalletTransaction WalletTransaction[]
+  ApiCallBilling    ApiCallBilling[] // 钱包关联的ApiCallBilling记录
 
   @@map("wallets")
 }
 
-// 钱包成员表
 model WalletMember {
   id          Int      @id @default(autoincrement())
   wallet      Wallet   @relation(fields: [walletId], references: [id])
@@ -71,7 +73,6 @@ model WalletMember {
   @@map("wallet_members")
 }
 
-// API密钥表
 model ApiKey {
   id          Int       @id @default(autoincrement())
   wallet      Wallet    @relation(fields: [walletId], references: [id])
@@ -128,4 +129,114 @@ model RedemptionCode {
   redeemer   User?     @relation(fields: [redeemerId], references: [id])
 
   @@map("redeem_codes")
+}
+
+// -----------------------------------------------------------------------------
+// Enums for Transactions
+// -----------------------------------------------------------------------------
+enum TransactionType {
+  DEPOSIT // 充值
+  REFUND // 退款
+  REDEMPTION // 兑换码兑换
+  API_CALL // API 调用消费
+  // Future types: PURCHASE_PLAN, SMS_FEE, etc.
+}
+
+enum TransactionStatus {
+  PENDING // 待处理
+  COMPLETED // 完成
+  FAILED // 失败
+  REVERTED // 已撤销 (例如，退款导致的冲销)
+}
+
+// -----------------------------------------------------------------------------
+// Billing & Logging Models (最终优化版本)
+// -----------------------------------------------------------------------------
+
+// WalletTransaction - 钱包交易记录
+// 记录钱包余额的每一次变动，作为所有资金流动的统一视图。
+model WalletTransaction {
+  id          Int               @id @default(autoincrement())
+  uid         String            @unique @default(uuid()) // 交易的全局唯一标识符 (例如 UUIDv4 或 ULID)
+  wallet      Wallet            @relation(fields: [walletId], references: [id])
+  walletId    Int
+  amount      Decimal           @db.Decimal(12, 6) // 交易金额，正数表示入账，负数表示出账
+  type        TransactionType // 交易类型：DEPOSIT, API_CALL, PURCHASE_PLAN 等
+  status      TransactionStatus @default(PENDING) // 交易状态：PENDING, COMPLETED, FAILED, REVERTED
+  description String?           @db.VarChar(255) // 交易描述 (如 "API Call: /v1/chat/completions")
+
+  // sourceId: 指向具体业务详情的唯一ID。
+  // 它的具体含义由 'type' 字段决定。
+  // 例如：如果 type 是 API_CALL，sourceId 存的就是 ApiCallBilling.eventId
+  // 如果 type 是 DEPOSIT，sourceId 存的就是充值订单ID (如果是外部支付)
+  sourceId  String?  @unique @db.VarChar(36) // 使用 ULID 或 UUIDv4，长度 26 (ULID) 或 36 (UUIDv4)
+  // 建议使用 ULID 的 26 位
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([walletId, createdAt]) // 钱包交易按时间查询
+  @@index([uid]) // 快速查找交易UID
+  @@index([type, sourceId]) // 方便通过类型和源ID查找交易详情
+  @@map("wallet_transactions")
+}
+
+// ApiCallBilling - 每次 API 调用的计费核心数据
+// 记录每次 API 调用的费用详情，由消息队列消费者服务写入和更新。
+model ApiCallBilling {
+  id           Int       @id @default(autoincrement())
+  eventId      String    @unique @db.VarChar(26) // 使用 ULID 作为全局唯一事件ID，长度 26
+  wallet       Wallet    @relation(fields: [walletId], references: [id])
+  walletId     Int
+  userId       Int // 冗余 userId，方便查询
+  endpoint     String    @db.VarChar(255)
+  method       String    @db.VarChar(10)
+  durationMs   Int // API 调用持续时间（毫秒）
+  cost         Decimal   @db.Decimal(12, 6) // 本次 API 调用的实际费用
+  status       String    @db.VarChar(32) // API 调用状态 (success, failed, cancelled)
+  timestamp    DateTime // API 调用发生时间
+  processedAt  DateTime? // 标记此计费记录何时被消费者处理并最终写入数据库
+  isBilled     Boolean   @default(false) // 标记费用是否已成功扣除（针对 WalletTransaction）
+  errorMessage String?   @db.Text // 如果调用失败的错误信息
+
+  // 不再与 WalletTransaction 直接建立 Prisma 关系，而是通过 sourceId 逻辑关联
+  // 这种解耦增强了 WalletTransaction 的通用性
+  // walletTransaction WalletTransaction?
+  // apiCallBillingId Int? @unique
+
+  @@index([eventId]) // 快速查询，幂等性检查
+  @@index([walletId, timestamp]) // 按钱包和时间查询计费记录
+  @@index([userId, timestamp]) // 按用户和时间查询计费记录
+  @@map("api_call_billings")
+}
+
+// ApiLog - 每次 API 调用的详细日志
+// 记录每次 API 调用的详细信息，由消息队列消费者服务写入。
+model ApiLog {
+  id             Int       @id @default(autoincrement())
+  eventId        String    @unique @db.VarChar(26) // 使用 ULID 作为全局唯一事件ID，长度 26
+  userId         Int // 冗余 userId
+  endpoint       String    @db.VarChar(255)
+  method         String    @db.VarChar(10)
+  timestamp      DateTime // API 调用发生时间
+  status         String    @db.VarChar(32) // API 调用状态 (success, failed)
+  durationMs     Int // API 调用持续时间（毫秒）
+  cost           Decimal   @db.Decimal(12, 6) // 本次 API 调用的费用 (与 ApiCallBilling 冗余，方便快速查询)
+  errorMessage   String?   @db.Text
+  requestSizeKb  Decimal?  @db.Decimal(10, 2) // 请求体大小，单位 KB
+  responseSizeKb Decimal?  @db.Decimal(10, 2) // 响应体大小，单位 KB
+  largeLogRefId  String?   @db.VarChar(255) // 指向 MongoDB/PostgreSQL/S3 中大日志的引用ID
+  processedAt    DateTime? // 标记此日志何时被消费者处理并最终写入数据库
+
+  // 更多小尺寸的日志字段，根据实际需求添加：
+  clientIp        String? @db.VarChar(45) // IPv4或IPv6
+  userAgent       String? @db.VarChar(512) // 用户代理字符串可能很长
+  responseCode    Int? // HTTP 响应码
+  country         String? @db.VarChar(2) // 基于IP的地理位置 (ISO 3166-1 alpha-2 code)
+  requestIdHeader String? @db.VarChar(255) // 用户请求头中传递的 Request ID，方便关联外部系统
+
+  @@index([eventId]) // 快速查询
+  @@index([userId, timestamp]) // 按用户和时间查询日志
+  @@index([endpoint, timestamp]) // 按API端点和时间查询日志
+  @@index([largeLogRefId]) // 如果经常通过此ID查询大日志
+  @@map("api_logs")
 }
