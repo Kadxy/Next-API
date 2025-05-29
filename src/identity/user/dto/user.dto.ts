@@ -28,14 +28,6 @@ export class UserResponseData {
   @ApiProperty({ description: 'User Google ID' })
   googleId: string;
 
-  @ApiProperty({ description: 'User Two Factor Enabled' })
-  twoFactorEnabled: boolean;
-
-  // twoFactorSecret 不返回
-
-  @ApiProperty({ description: 'User Is Active' })
-  isActive: boolean;
-
   @ApiProperty({ description: 'User Is Admin' })
   isAdmin: boolean;
 
@@ -49,11 +41,6 @@ export class UserResponseData {
 
   @ApiProperty({ description: 'User Last Login At' })
   lastLoginAt: string;
-
-  @ApiProperty({ description: 'User Wallet' })
-  wallet: { balance: number };
-
-  // Passkeys 不返回
 }
 
 export class LoginResponseData {

@@ -863,7 +863,6 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   gitHubId: 'gitHubId',
   googleId: 'googleId',
-  isActive: 'isActive',
   isDeleted: 'isDeleted',
   isAdmin: 'isAdmin',
   createdAt: 'createdAt',
@@ -894,11 +893,9 @@ export const WalletMemberScalarFieldEnum = {
   userId: 'userId',
   alias: 'alias',
   creditLimit: 'creditLimit',
-  creditAvailable: 'creditAvailable',
   creditUsed: 'creditUsed',
   isActive: 'isActive',
-  joinedAt: 'joinedAt',
-  leftAt: 'leftAt',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 

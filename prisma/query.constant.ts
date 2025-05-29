@@ -24,6 +24,14 @@ export const OWNER_WALLET_QUERY_OMIT: Prisma.WalletOmit = {
   version: true,
 };
 
+export const OWNER_WALLET_QUERY_WALLETMEMBER_SELECT: Prisma.WalletMemberSelect =
+  {
+    alias: true,
+    creditLimit: true,
+    creditUsed: true,
+    user: { select: { uid: true, displayName: true } },
+  };
+
 // 简单钱包查询，一般用于前端生成 options
 export const SIMPLE_WALLET_QUERY_SELECT: Prisma.WalletSelect = {
   uid: true,

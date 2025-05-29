@@ -125,7 +125,7 @@ export class UserService {
   // 构造受限用户对象（模拟 include 和 omit 的效果）
   private constructLimitedUser(user: User): LimitedUser {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, isDeleted, isAdmin, isActive, ...userWithoutOmitted } = user;
+    const { id, isDeleted, isAdmin, ...userWithoutOmitted } = user;
 
     return {
       ...userWithoutOmitted,

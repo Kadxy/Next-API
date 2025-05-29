@@ -49,8 +49,8 @@ export class ApikeyService implements OnModuleInit {
     creatorUserId: User['id'],
   ) {
     // 1. 验证钱包访问权限
-    const wallet = await this.walletService.validateWalletAccess(
-      walletUid,
+    const wallet = await this.walletService.getAuthorizedWallet(
+      { uid: walletUid },
       creatorUserId,
     );
 
@@ -106,13 +106,10 @@ export class ApikeyService implements OnModuleInit {
     }
 
     // 验证权限：必须是创建者或钱包 owner
-    const canUpdate =
-      apiKey.creatorId === userId ||
-      (await this.walletService.canAccess(apiKey.walletId, userId));
-
-    if (!canUpdate) {
-      throw new BusinessException('Permission denied');
-    }
+    await this.walletService.getAuthorizedWallet(
+      { id: apiKey.walletId },
+      userId,
+    );
 
     return this.prisma.apiKey.update({
       where: { hashKey },
@@ -133,14 +130,11 @@ export class ApikeyService implements OnModuleInit {
       throw new BusinessException('API Key not found');
     }
 
-    // 验证权限：必须是创建者或钱包 owner
-    const canAccess =
-      apiKey.creatorId === userId ||
-      (await this.walletService.canAccess(apiKey.walletId, userId));
-
-    if (!canAccess) {
-      throw new BusinessException('Permission denied');
-    }
+    // 验证钱包权限
+    await this.walletService.getAuthorizedWallet(
+      { id: apiKey.walletId },
+      userId,
+    );
 
     // 更新状态
     await this.prisma.apiKey.update({
