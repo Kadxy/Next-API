@@ -55,7 +55,7 @@ All requests using the API key will be billed to the wallet you selected.
 Your API key is only visible when you create it, you can't retrieve it later,
 API Grip only stores the hash of your API key for authentication.
 
-_WARNING: If you lose your API key, please visit [Dashboard](https://apigrip.com/dashboard) and rotate(or delete) your API key, otherwise your property will be at risk._
+_WARNING: If you lose your API key, please roll(or delete) your API key immediately._
 
 ### Wallet
 
@@ -69,7 +69,9 @@ As wallet owner, you can invite your team members to your wallet and set credit 
 
 Wallet members are able to create API keys bound to the wallet, all requests using the API key will be billed to the wallet.
 
-Wallet owner can access every usage log of the wallet, including the API key name.
+Wallet owner can access every usage log of the wallet, including the IP address, API key name and usage.
+
+_NOTE: Once the member leaves the wallet, API key bound to the wallet will be invisible and invalidated permanently._
 
 ### Wallet Limit & Upgrade
 
