@@ -69,5 +69,24 @@ export type Passkey = Prisma.PasskeyModel
  * 
  */
 export type RedemptionCode = Prisma.RedemptionCodeModel
+/**
+ * Model WalletTransaction
+ * 
+ */
+export type WalletTransaction = Prisma.WalletTransactionModel
+/**
+ * Model ApiCallBilling
+ * 
+ */
+export type ApiCallBilling = Prisma.ApiCallBillingModel
+/**
+ * Model AIModel
+ * 
+ */
+export type AIModel = Prisma.AIModelModel
 
+export type TransactionType = $Enums.TransactionType
+export const TransactionType = $Enums.TransactionType
 
+export type TransactionStatus = $Enums.TransactionStatus
+export const TransactionStatus = $Enums.TransactionStatus

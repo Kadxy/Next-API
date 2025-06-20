@@ -7,7 +7,21 @@
 *
 * 🟢 You can import this file directly.
 */
+export const TransactionType = {
+  DEPOSIT: 'DEPOSIT',
+  REFUND: 'REFUND',
+  REDEMPTION: 'REDEMPTION',
+  API_CALL: 'API_CALL'
+} as const
+
+export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const TransactionStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  REVERTED: 'REVERTED'
+} as const
+
+export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]

@@ -399,7 +399,10 @@ export const ModelName = {
   WalletMember: 'WalletMember',
   ApiKey: 'ApiKey',
   Passkey: 'Passkey',
-  RedemptionCode: 'RedemptionCode'
+  RedemptionCode: 'RedemptionCode',
+  WalletTransaction: 'WalletTransaction',
+  ApiCallBilling: 'ApiCallBilling',
+  AIModel: 'AIModel'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode"
+    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "walletTransaction" | "apiCallBilling" | "aIModel"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -815,6 +818,204 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WalletTransaction: {
+      payload: Prisma.$WalletTransactionPayload<ExtArgs>
+      fields: Prisma.WalletTransactionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WalletTransactionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WalletTransactionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        findFirst: {
+          args: Prisma.WalletTransactionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WalletTransactionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        findMany: {
+          args: Prisma.WalletTransactionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>[]
+        }
+        create: {
+          args: Prisma.WalletTransactionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        createMany: {
+          args: Prisma.WalletTransactionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.WalletTransactionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        update: {
+          args: Prisma.WalletTransactionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        deleteMany: {
+          args: Prisma.WalletTransactionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WalletTransactionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.WalletTransactionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+        }
+        aggregate: {
+          args: Prisma.WalletTransactionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWalletTransaction>
+        }
+        groupBy: {
+          args: Prisma.WalletTransactionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletTransactionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WalletTransactionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WalletTransactionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApiCallBilling: {
+      payload: Prisma.$ApiCallBillingPayload<ExtArgs>
+      fields: Prisma.ApiCallBillingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApiCallBillingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApiCallBillingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload>
+        }
+        findFirst: {
+          args: Prisma.ApiCallBillingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApiCallBillingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload>
+        }
+        findMany: {
+          args: Prisma.ApiCallBillingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload>[]
+        }
+        create: {
+          args: Prisma.ApiCallBillingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload>
+        }
+        createMany: {
+          args: Prisma.ApiCallBillingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ApiCallBillingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload>
+        }
+        update: {
+          args: Prisma.ApiCallBillingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApiCallBillingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApiCallBillingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ApiCallBillingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallBillingPayload>
+        }
+        aggregate: {
+          args: Prisma.ApiCallBillingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApiCallBilling>
+        }
+        groupBy: {
+          args: Prisma.ApiCallBillingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiCallBillingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApiCallBillingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiCallBillingCountAggregateOutputType> | number
+        }
+      }
+    }
+    AIModel: {
+      payload: Prisma.$AIModelPayload<ExtArgs>
+      fields: Prisma.AIModelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AIModelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AIModelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+        }
+        findFirst: {
+          args: Prisma.AIModelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AIModelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+        }
+        findMany: {
+          args: Prisma.AIModelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>[]
+        }
+        create: {
+          args: Prisma.AIModelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+        }
+        createMany: {
+          args: Prisma.AIModelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AIModelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+        }
+        update: {
+          args: Prisma.AIModelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+        }
+        deleteMany: {
+          args: Prisma.AIModelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AIModelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AIModelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+        }
+        aggregate: {
+          args: Prisma.AIModelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAIModel>
+        }
+        groupBy: {
+          args: Prisma.AIModelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AIModelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AIModelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AIModelCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -951,6 +1152,60 @@ export const RedemptionCodeScalarFieldEnum = {
 export type RedemptionCodeScalarFieldEnum = (typeof RedemptionCodeScalarFieldEnum)[keyof typeof RedemptionCodeScalarFieldEnum]
 
 
+export const WalletTransactionScalarFieldEnum = {
+  id: 'id',
+  uid: 'uid',
+  walletId: 'walletId',
+  amount: 'amount',
+  type: 'type',
+  status: 'status',
+  description: 'description',
+  sourceId: 'sourceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
+
+
+export const ApiCallBillingScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  model: 'model',
+  inputToken: 'inputToken',
+  outputToken: 'outputToken',
+  cost: 'cost',
+  walletId: 'walletId',
+  status: 'status',
+  durationMs: 'durationMs',
+  timestamp: 'timestamp',
+  processedAt: 'processedAt',
+  isBilled: 'isBilled',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  clientIp: 'clientIp',
+  externalTraceId: 'externalTraceId'
+} as const
+
+export type ApiCallBillingScalarFieldEnum = (typeof ApiCallBillingScalarFieldEnum)[keyof typeof ApiCallBillingScalarFieldEnum]
+
+
+export const AIModelScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  providerId: 'providerId',
+  isActive: 'isActive',
+  inputPrice: 'inputPrice',
+  outputPrice: 'outputPrice',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AIModelScalarFieldEnum = (typeof AIModelScalarFieldEnum)[keyof typeof AIModelScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1023,6 +1278,33 @@ export const RedemptionCodeOrderByRelevanceFieldEnum = {
 export type RedemptionCodeOrderByRelevanceFieldEnum = (typeof RedemptionCodeOrderByRelevanceFieldEnum)[keyof typeof RedemptionCodeOrderByRelevanceFieldEnum]
 
 
+export const WalletTransactionOrderByRelevanceFieldEnum = {
+  uid: 'uid',
+  description: 'description',
+  sourceId: 'sourceId'
+} as const
+
+export type WalletTransactionOrderByRelevanceFieldEnum = (typeof WalletTransactionOrderByRelevanceFieldEnum)[keyof typeof WalletTransactionOrderByRelevanceFieldEnum]
+
+
+export const ApiCallBillingOrderByRelevanceFieldEnum = {
+  eventId: 'eventId',
+  model: 'model',
+  errorMessage: 'errorMessage',
+  clientIp: 'clientIp',
+  externalTraceId: 'externalTraceId'
+} as const
+
+export type ApiCallBillingOrderByRelevanceFieldEnum = (typeof ApiCallBillingOrderByRelevanceFieldEnum)[keyof typeof ApiCallBillingOrderByRelevanceFieldEnum]
+
+
+export const AIModelOrderByRelevanceFieldEnum = {
+  name: 'name'
+} as const
+
+export type AIModelOrderByRelevanceFieldEnum = (typeof AIModelOrderByRelevanceFieldEnum)[keyof typeof AIModelOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references 
@@ -1075,6 +1357,20 @@ export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'BigInt'
  */
 export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionType'
+ */
+export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionStatus'
+ */
+export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus'>
     
 
 
@@ -1165,6 +1461,9 @@ export type GlobalOmitConfig = {
   apiKey?: Prisma.ApiKeyOmit
   passkey?: Prisma.PasskeyOmit
   redemptionCode?: Prisma.RedemptionCodeOmit
+  walletTransaction?: Prisma.WalletTransactionOmit
+  apiCallBilling?: Prisma.ApiCallBillingOmit
+  aIModel?: Prisma.AIModelOmit
 }
 
 /* Types for Logging */
