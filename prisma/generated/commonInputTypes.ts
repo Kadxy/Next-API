@@ -306,6 +306,23 @@ export type EnumTransactionStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumTransactionStatusFilter<$PrismaModel>
 }
 
+export type EnumAIModelChannelStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AIModelChannelStatus | Prisma.EnumAIModelChannelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AIModelChannelStatus[]
+  notIn?: $Enums.AIModelChannelStatus[]
+  not?: Prisma.NestedEnumAIModelChannelStatusFilter<$PrismaModel> | $Enums.AIModelChannelStatus
+}
+
+export type EnumAIModelChannelStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AIModelChannelStatus | Prisma.EnumAIModelChannelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AIModelChannelStatus[]
+  notIn?: $Enums.AIModelChannelStatus[]
+  not?: Prisma.NestedEnumAIModelChannelStatusWithAggregatesFilter<$PrismaModel> | $Enums.AIModelChannelStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAIModelChannelStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAIModelChannelStatusFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[]
@@ -614,6 +631,23 @@ export type NestedEnumTransactionStatusWithAggregatesFilter<$PrismaModel = never
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTransactionStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTransactionStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumAIModelChannelStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.AIModelChannelStatus | Prisma.EnumAIModelChannelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AIModelChannelStatus[]
+  notIn?: $Enums.AIModelChannelStatus[]
+  not?: Prisma.NestedEnumAIModelChannelStatusFilter<$PrismaModel> | $Enums.AIModelChannelStatus
+}
+
+export type NestedEnumAIModelChannelStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AIModelChannelStatus | Prisma.EnumAIModelChannelStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.AIModelChannelStatus[]
+  notIn?: $Enums.AIModelChannelStatus[]
+  not?: Prisma.NestedEnumAIModelChannelStatusWithAggregatesFilter<$PrismaModel> | $Enums.AIModelChannelStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAIModelChannelStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAIModelChannelStatusFilter<$PrismaModel>
 }
 
 

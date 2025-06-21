@@ -11,6 +11,10 @@ import { ConfigModule } from './core/config/config.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { RedemptionModule } from './redemption/redemption.module';
 import { WalletService } from './wallet/wallet.service';
+import { BillingModule } from './billing/billing.module';
+import { ProxyModule } from './proxy/proxy.module';
+import { ScheduleModule } from '@nestjs/schedule';
+
 @Module({
   imports: [
     // https://docs.nestjs.com/techniques/caching#interacting-with-the-cache-store
@@ -27,12 +31,15 @@ import { WalletService } from './wallet/wallet.service';
       inject: [ConfigService],
     }),
     EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
     ConfigModule,
     AuthModule,
     UserModule,
     ApikeyModule,
     CoreModule,
     RedemptionModule,
+    BillingModule,
+    ProxyModule,
   ],
   providers: [WalletService],
 })

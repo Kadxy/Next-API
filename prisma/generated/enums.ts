@@ -25,3 +25,12 @@ export const TransactionStatus = {
 } as const
 
 export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
+
+
+export const AIModelChannelStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  MAINTENANCE: 'MAINTENANCE'
+} as const
+
+export type AIModelChannelStatus = (typeof AIModelChannelStatus)[keyof typeof AIModelChannelStatus]

@@ -84,9 +84,17 @@ export type ApiCallBilling = Prisma.ApiCallBillingModel
  * 
  */
 export type AIModel = Prisma.AIModelModel
+/**
+ * Model AIModelChannel
+ * 
+ */
+export type AIModelChannel = Prisma.AIModelChannelModel
 
 export type TransactionType = $Enums.TransactionType
 export const TransactionType = $Enums.TransactionType
 
 export type TransactionStatus = $Enums.TransactionStatus
 export const TransactionStatus = $Enums.TransactionStatus
+
+export type AIModelChannelStatus = $Enums.AIModelChannelStatus
+export const AIModelChannelStatus = $Enums.AIModelChannelStatus

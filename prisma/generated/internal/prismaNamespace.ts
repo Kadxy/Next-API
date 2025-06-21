@@ -402,7 +402,8 @@ export const ModelName = {
   RedemptionCode: 'RedemptionCode',
   WalletTransaction: 'WalletTransaction',
   ApiCallBilling: 'ApiCallBilling',
-  AIModel: 'AIModel'
+  AIModel: 'AIModel',
+  AIModelChannel: 'AIModelChannel'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "walletTransaction" | "apiCallBilling" | "aIModel"
+    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "walletTransaction" | "apiCallBilling" | "aIModel" | "aIModelChannel"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1016,6 +1017,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AIModelChannel: {
+      payload: Prisma.$AIModelChannelPayload<ExtArgs>
+      fields: Prisma.AIModelChannelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AIModelChannelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AIModelChannelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+        }
+        findFirst: {
+          args: Prisma.AIModelChannelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AIModelChannelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+        }
+        findMany: {
+          args: Prisma.AIModelChannelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>[]
+        }
+        create: {
+          args: Prisma.AIModelChannelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+        }
+        createMany: {
+          args: Prisma.AIModelChannelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AIModelChannelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+        }
+        update: {
+          args: Prisma.AIModelChannelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+        }
+        deleteMany: {
+          args: Prisma.AIModelChannelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AIModelChannelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AIModelChannelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+        }
+        aggregate: {
+          args: Prisma.AIModelChannelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAIModelChannel>
+        }
+        groupBy: {
+          args: Prisma.AIModelChannelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AIModelChannelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AIModelChannelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AIModelChannelCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1206,6 +1273,20 @@ export const AIModelScalarFieldEnum = {
 export type AIModelScalarFieldEnum = (typeof AIModelScalarFieldEnum)[keyof typeof AIModelScalarFieldEnum]
 
 
+export const AIModelChannelScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  weight: 'weight',
+  status: 'status',
+  baseUrl: 'baseUrl',
+  apiKey: 'apiKey',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AIModelChannelScalarFieldEnum = (typeof AIModelChannelScalarFieldEnum)[keyof typeof AIModelChannelScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1305,6 +1386,15 @@ export const AIModelOrderByRelevanceFieldEnum = {
 export type AIModelOrderByRelevanceFieldEnum = (typeof AIModelOrderByRelevanceFieldEnum)[keyof typeof AIModelOrderByRelevanceFieldEnum]
 
 
+export const AIModelChannelOrderByRelevanceFieldEnum = {
+  name: 'name',
+  baseUrl: 'baseUrl',
+  apiKey: 'apiKey'
+} as const
+
+export type AIModelChannelOrderByRelevanceFieldEnum = (typeof AIModelChannelOrderByRelevanceFieldEnum)[keyof typeof AIModelChannelOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references 
@@ -1371,6 +1461,13 @@ export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'TransactionStatus'
  */
 export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AIModelChannelStatus'
+ */
+export type EnumAIModelChannelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AIModelChannelStatus'>
     
 
 
@@ -1464,6 +1561,7 @@ export type GlobalOmitConfig = {
   walletTransaction?: Prisma.WalletTransactionOmit
   apiCallBilling?: Prisma.ApiCallBillingOmit
   aIModel?: Prisma.AIModelOmit
+  aIModelChannel?: Prisma.AIModelChannelOmit
 }
 
 /* Types for Logging */
