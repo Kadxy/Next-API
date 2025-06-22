@@ -27,6 +27,8 @@ export interface ProxyConfig {
 
 // 上游服务配置
 export interface UpstreamConfig {
+  id: number;
   baseUrl: string;
   apiKey: string;
+  weight: number;
 }

@@ -2,97 +2,80 @@ import {
   Controller,
   Post,
   Get,
-  Req,
   Res,
   UseGuards,
   HttpCode,
   HttpStatus,
-  All,
+  Logger,
+  Headers,
+  Body,
+  Ip,
 } from '@nestjs/common';
-import { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyReply } from 'fastify';
 import { ProxyService } from './proxy.service';
 import { ApiKeyGuard } from '../apikey/guards/api-key.guard';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
+import { UlidService } from 'src/core/ulid/ulid.service';
+import { AIModelRequest } from './interfaces/proxy.interface';
 
 @ApiTags('Proxy')
 @Controller()
 @UseGuards(ApiKeyGuard)
-@ApiBearerAuth()
 export class ProxyController {
-  constructor(private readonly proxyService: ProxyService) {}
+  private readonly logger = new Logger(ProxyController.name);
+  constructor(
+    private readonly proxyService: ProxyService,
+    private readonly ulidService: UlidService,
+  ) {}
 
-  // TODO: 处理 get models 请求
-  // @Get('v1/models')
+  @Get('v1/models')
+  @HttpCode(HttpStatus.OK)
+  async getModels(@Res() reply: FastifyReply) {
+    return reply.send([]);
+  }
 
-  @All('v1/*')
+  @Post('v1/chat/completions')
   @HttpCode(HttpStatus.OK)
   async handleV1Request(
-    @Req() request: FastifyRequest & { apiKey: any },
+    @Body() body: AIModelRequest,
     @Res() reply: FastifyReply,
+    @Ip() clientIp: string,
+    @Headers('X-APIGrip-ExternalTraceId') externalTraceId: string,
   ) {
-    const path = request.url.replace(/^\/v1/, '');
-    // const method = request.method;
-    const body = request.body as any;
-    // const headers = request.headers as Record<string, string>;
+    const sourceId = this.ulidService.generate();
+
+    this.logger.debug(`[${clientIp}] [${sourceId}] [${externalTraceId}]`);
 
     try {
-      // 转发请求
-      const response = await this.proxyService.forwardPostRequest(
-        path,
-        body,
-        request.apiKey,
-      );
+      const response = await this.proxyService.forwardRequest(body, sourceId);
 
-      // 设置响应头
-      reply.header('X-Request-ID', response.id || '');
-      reply.header('Content-Type', 'application/json');
+      // 设置流式响应头
+      if (body?.stream) {
+        reply.header('Content-Type', 'text/event-stream');
+        reply.header('Cache-Control', 'no-cache');
+        reply.header('Connection', 'keep-alive');
+      } else {
+        reply.header('Content-Type', 'application/json');
+      }
+
+      // 设置APIGrip SourceId
+      reply.header('X-APIGrip-SourceId', sourceId);
+
+      // 设置外部traceId
+      if (externalTraceId) {
+        reply.header('X-APIGrip-ExternalTraceId', externalTraceId);
+      }
 
       // 发送响应
       return reply.send(response);
     } catch (error) {
-      // 错误处理
-      const statusCode = error.status || 500;
-      const message = error.message || 'Internal server error';
-
-      return reply.status(statusCode).send({
+      return reply.status(error.status || 500).send({
         error: {
-          message,
+          message: error.message || 'Internal server error',
           type: error.name || 'api_error',
-          code: statusCode,
+          code: error.status || 500,
         },
       });
     }
-  }
-
-  /**
-   * 处理流式请求 (SSE)
-   */
-  @Post('v1/chat/completions')
-  @HttpCode(HttpStatus.OK)
-  async handleStreamRequest(
-    @Req() request: FastifyRequest & { apiKey: any },
-    @Res() reply: FastifyReply,
-  ) {
-    const body = request.body as any;
-
-    // 如果不是流式请求，交给通用处理器
-    if (!body.stream) {
-      return this.handleV1Request(request, reply);
-    }
-
-    // TODO: 实现流式响应处理
-    // 这里需要特殊处理 SSE 流
-    reply.header('Content-Type', 'text/event-stream');
-    reply.header('Cache-Control', 'no-cache');
-    reply.header('Connection', 'keep-alive');
-
-    // 临时实现：返回错误
-    return reply.status(501).send({
-      error: {
-        message: 'Streaming not implemented yet',
-        type: 'not_implemented',
-        code: 501,
-      },
-    });
   }
 }

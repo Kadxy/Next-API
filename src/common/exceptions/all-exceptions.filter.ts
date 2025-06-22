@@ -3,6 +3,7 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
+  NotFoundException,
 } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { DEFAULT_ERROR_MSG, GlobalErrorResponse } from './index';
@@ -53,6 +54,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
           message: ${exception.message},
           stack: ${exception.stack}`,
         );
+        break;
+
+      // 如果是 404 Not Found 异常，保持原来的状态和消息
+      case exception instanceof NotFoundException:
+        status = HttpStatus.NOT_FOUND;
+        message = exception.message;
         break;
 
       default:

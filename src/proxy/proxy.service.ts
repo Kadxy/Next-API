@@ -1,4 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../core/prisma/prisma.service';
@@ -9,18 +14,23 @@ import {
   UpstreamConfig,
 } from './interfaces/proxy.interface';
 import { BillingService } from '../billing/billing.service';
-import { AIModel, ApiKey, Wallet } from '@prisma-client';
+import { AIModel } from '@prisma-client';
 import { BusinessException } from '../common/exceptions';
-import { Decimal } from '@prisma-client/internal/prismaNamespace';
-import {
-  TikTokenResult,
-  TiktokenService,
-} from 'src/billing/tiktoken/tiktoken.service';
+import { TiktokenService } from 'src/billing/tiktoken/tiktoken.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { ULID } from 'ulid';
+import { AxiosRequestConfig } from 'axios';
 
 @Injectable()
-export class ProxyService {
-  public readonly proxyTimeoutMs = 60 * 1000; // 60秒超时
+export class ProxyService implements OnModuleInit, OnModuleDestroy {
+  public readonly proxyTimeoutMs = 180 * 1000; // 180秒超时
   private readonly logger = new Logger(ProxyService.name);
+
+  private upstreams: Map<number, UpstreamConfig> = new Map<
+    number,
+    UpstreamConfig
+  >();
+  private models: Map<string, AIModel> = new Map<string, AIModel>();
 
   constructor(
     private readonly httpService: HttpService,
@@ -30,165 +40,130 @@ export class ProxyService {
     private readonly tiktokenService: TiktokenService,
   ) {}
 
-  /** 转发请求到上游服务 */
-  async forwardPostRequest(
-    path: string,
+  async onModuleInit() {
+    await this.initialize();
+  }
+
+  async onModuleDestroy() {
+    this.models.clear();
+    this.upstreams.clear();
+  }
+
+  // 转发请求到上游服务
+  async forwardRequest(
     body: AIModelRequest,
-    apiKeyInfo: ApiKey & { wallet: Wallet },
+    sourceId: ULID,
   ): Promise<AIModelResponse> {
-    const requestId = this.ulidService.generate();
-    const startTime = Date.now();
-
-    try {
-      // 1. 检查钱包余额（只检查是否大于0）
-      if (Number(apiKeyInfo.wallet.balance) <= 0) {
-        throw new BusinessException('Insufficient balance');
-      }
-
-      // 2. 获取模型信息
-      const model = await this.getModelInfo(body.model);
-      if (!model) {
-        throw new BusinessException(`Model ${body.model} not found`);
-      }
-
-      // 3. 选择上游服务（按权重）
-      const upstream = await this.selectUpstream();
-
-      // 4. 转发请求
-      const response = await this.sendToUpstream(upstream, path, body);
-
-      // 5. 记录计费信息（异步，不阻塞响应）
-      const tiktokenResult = await this.tiktokenService.countTokens(
-        body,
-        response.choices[0].message.content,
+    // 1. 检查模型是否支持
+    const isModelSupported = this.models.has(body.model);
+    if (!isModelSupported) {
+      throw new BusinessException(
+        `model ${body.model} not support. RequestId:${sourceId}`,
       );
-
-      if (tiktokenResult) {
-        setImmediate(() => {
-          this.billingService
-            .recordApiCall({
-              eventId: requestId,
-              userId: apiKeyInfo.creatorId,
-              walletId: apiKeyInfo.walletId,
-              model: body.model,
-              inputToken: tiktokenResult.inputTokens || 0,
-              outputToken: tiktokenResult.outputTokens || 0,
-              cost: this.calculateCost(model, tiktokenResult),
-              status: 20000, // 成功
-              durationMs: Date.now() - startTime,
-              timestamp: new Date(),
-            })
-            .catch((err) => {
-              this.logger.error(`Failed to record billing: ${err.message}`);
-            });
-        });
-      }
-
-      // 6. 添加响应头
-      if (!response.id) {
-        response.id = requestId;
-      }
-
-      return response;
-    } catch (error) {
-      // 记录失败的请求
-      setImmediate(() => {
-        this.billingService
-          .recordApiCall({
-            eventId: requestId,
-            userId: apiKeyInfo.creatorId,
-            walletId: apiKeyInfo.walletId,
-            model: body.model,
-            inputToken: 0,
-            outputToken: 0,
-            cost: 0,
-            status: error.response?.status || 50000,
-            durationMs: Date.now() - startTime,
-            timestamp: new Date(),
-            errorMessage: error.message,
-          })
-          .catch((err) => {
-            this.logger.error(
-              `Failed to record failed billing: ${err.message}`,
-            );
-          });
-      });
-
-      throw error;
     }
+    // 2. 转发请求
+    return await this.sendToUpstream(body);
   }
 
-  /** 获取模型信息 */
-  private async getModelInfo(modelName: string) {
-    return await this.prisma.aIModel.findFirst({
-      where: { name: modelName, isActive: true },
-    });
-  }
-
-  /** 选择上游服务（基于权重的负载均衡）*/
-  private async selectUpstream(): Promise<UpstreamConfig> {
-    const channels = await this.prisma.aIModelChannel.findMany({
-      where: { status: 'ACTIVE' },
-    });
-
-    if (!channels.length) {
-      throw new BusinessException('No available upstream service');
-    }
-
-    // 单个上游直接返回
-    if (channels.length === 1) {
-      return channels[0];
-    }
-
-    // 权重随机选择
-    const totalWeight = channels.reduce((sum, c) => sum + c.weight, 0);
-    let random = Math.random() * totalWeight;
-
-    for (const channel of channels) {
-      random -= channel.weight;
-      if (random < 0) {
-        return channel;
-      }
-    }
-
-    return channels[0]; // 兜底（理论上不会到这里）
-  }
-
-  /** 发送请求到上游 */
+  // 发送请求到上游
   private async sendToUpstream(
-    upstream: UpstreamConfig,
-    path: string,
-    body: any,
+    body: AIModelRequest,
+    retry: { count: number; exceptIds: number[] } = { count: 0, exceptIds: [] },
   ): Promise<AIModelResponse> {
-    const url = `${upstream.baseUrl}${path}`;
+    this.logger.debug(`retry: ${JSON.stringify(retry)}`);
 
-    const upstreamHeaders = {
-      Authorization: `Bearer ${upstream.apiKey}`,
-      'Content-Type': 'application/json',
-    };
+    const { id, config } = await this.getUpstream(retry.exceptIds);
 
     try {
       const response = await firstValueFrom(
-        this.httpService.post(url, body, {
-          headers: upstreamHeaders,
-          timeout: this.proxyTimeoutMs,
-        }),
+        this.httpService.post(config.url, body, config),
       );
 
       return response.data;
     } catch (error) {
       this.logger.error(`Upstream request failed: ${error.message}`);
-      throw new BusinessException(
-        'Upstream service error',
-        error.response?.status || 500,
-      );
+
+      if (retry.count < 3) {
+        return this.sendToUpstream(body, {
+          count: retry.count + 1,
+          exceptIds: [...retry.exceptIds, id],
+        });
+      } else {
+        throw new BusinessException('service error');
+      }
     }
   }
 
-  /** 计算费用 */
-  private calculateCost(model: AIModel, tiktoken: TikTokenResult): Decimal {
-    return new Decimal(model.inputPrice)
-      .mul(tiktoken.inputTokens)
-      .add(new Decimal(model.outputPrice).mul(tiktoken.outputTokens));
+  // 初始化: 加载上游渠道和模型
+  @Cron(CronExpression.EVERY_5_MINUTES)
+  private async initialize() {
+    // load upstreams
+    const channels = await this.prisma.aIModelChannel.findMany({
+      where: { status: 'ACTIVE' },
+    });
+
+    channels.map((c) => this.upstreams.set(c.id, c));
+
+    this.logger.log(`Loaded ${this.upstreams.size} upstreams`);
+
+    // load models
+    const models = await this.prisma.aIModel.findMany({
+      where: { isActive: true },
+    });
+
+    models.map((m) => this.models.set(m.name, m));
+
+    this.logger.log(`Loaded ${this.models.size} models`);
+  }
+
+  // 基于权重选择上游服务, 返回上游id 和 axios请求配置
+  private async getUpstream(
+    exceptIds: number[],
+  ): Promise<{ id: number; config: AxiosRequestConfig }> {
+    // 计算可用上游的总权重
+    let availableTotalWeight = 0;
+    const availableUpstreams: UpstreamConfig[] = [];
+
+    for (const upstream of this.upstreams.values()) {
+      if (!exceptIds.includes(upstream.id)) {
+        availableUpstreams.push(upstream);
+        availableTotalWeight += upstream.weight;
+      }
+    }
+
+    if (availableUpstreams.length === 0) {
+      throw new BusinessException('no available upstream');
+    }
+
+    // 权重随机选择
+    let random = Math.random() * availableTotalWeight;
+    let selectedUpstream: UpstreamConfig;
+
+    for (const upstream of availableUpstreams) {
+      random -= upstream.weight;
+      if (random < 0) {
+        this.logger.debug(`selected channel: ${JSON.stringify(upstream)}`);
+        selectedUpstream = upstream;
+        break;
+      }
+    }
+
+    if (!selectedUpstream) {
+      // 如果没有选中任何上游，选择最后一个作为兜底
+      selectedUpstream = availableUpstreams[availableUpstreams.length - 1];
+    }
+
+    // 返回请求配置
+    return {
+      id: selectedUpstream.id,
+      config: {
+        url: selectedUpstream.baseUrl + '/v1/chat/completions',
+        headers: {
+          Authorization: `Bearer ${selectedUpstream.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        timeout: this.proxyTimeoutMs,
+      },
+    };
   }
 }

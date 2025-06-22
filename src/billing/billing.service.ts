@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { UlidService } from '../core/ulid/ulid.service';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { Prisma } from '@prisma-client';
 import type { ApiCallBillingUncheckedCreateInput } from '../../prisma/generated/models/ApiCallBilling';
 
