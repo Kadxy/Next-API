@@ -3,6 +3,7 @@ import {
   Post,
   Get,
   Res,
+  Req,
   UseGuards,
   HttpCode,
   HttpStatus,
@@ -11,12 +12,13 @@ import {
   Body,
   Ip,
 } from '@nestjs/common';
-import { FastifyReply } from 'fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { ProxyService } from './proxy.service';
 import { ApiKeyGuard } from '../apikey/guards/api-key.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { UlidService } from 'src/core/ulid/ulid.service';
 import { AIModelRequest } from './interfaces/proxy.interface';
+import { ApiKey, Wallet } from '@prisma-client';
 
 @ApiTags('Proxy')
 @Controller()
@@ -39,15 +41,29 @@ export class ProxyController {
   async handleV1Request(
     @Body() body: AIModelRequest,
     @Res() reply: FastifyReply,
+    @Req() request: FastifyRequest,
     @Ip() clientIp: string,
     @Headers('X-APIGrip-ExternalTraceId') externalTraceId: string,
   ) {
     const sourceId = this.ulidService.generate();
+    const startTime = new Date();
 
-    this.logger.debug(`[${clientIp}] [${sourceId}] [${externalTraceId}]`);
+    // 从ApiKeyGuard获取API密钥信息
+    const apiKeyRecord = (request as any).apiKey as ApiKey & { wallet: Wallet };
+
+    this.logger.debug(
+      `[${clientIp}] [${sourceId}] [${externalTraceId}] User: ${apiKeyRecord.creatorId}, Wallet: ${apiKeyRecord.walletId}`,
+    );
 
     try {
-      const response = await this.proxyService.forwardRequest(body, sourceId);
+      const response = await this.proxyService.forwardRequest(body, sourceId, {
+        eventId: sourceId,
+        userId: apiKeyRecord.creatorId,
+        walletId: apiKeyRecord.walletId,
+        clientIp,
+        externalTraceId,
+        startTime,
+      });
 
       // 设置流式响应头
       if (body?.stream) {
@@ -69,6 +85,17 @@ export class ProxyController {
       // 发送响应
       return reply.send(response);
     } catch (error) {
+      // 记录失败的计费信息
+      this.recordFailedBilling(
+        apiKeyRecord,
+        sourceId,
+        body,
+        clientIp,
+        externalTraceId,
+        startTime,
+        error,
+      );
+
       return reply.status(error.status || 500).send({
         error: {
           message: error.message || 'Internal server error',
@@ -77,5 +104,42 @@ export class ProxyController {
         },
       });
     }
+  }
+
+  /**
+   * 异步记录失败的计费信息
+   */
+  private recordFailedBilling(
+    apiKeyRecord: ApiKey & { wallet: Wallet },
+    sourceId: string,
+    requestBody: AIModelRequest,
+    clientIp: string,
+    externalTraceId: string,
+    startTime: Date,
+    error: any,
+  ) {
+    // 使用 setTimeout 来异步处理，不阻塞响应
+    setTimeout(async () => {
+      try {
+        await this.proxyService.recordFailedBilling({
+          eventId: sourceId,
+          userId: apiKeyRecord.creatorId,
+          walletId: apiKeyRecord.walletId,
+          model: requestBody.model,
+          clientIp,
+          externalTraceId,
+          startTime,
+          endTime: new Date(),
+          requestBody,
+          responseBody: null,
+          status: error.status || 500,
+          errorMessage: error.message || 'Internal server error',
+        });
+      } catch (billingError) {
+        this.logger.error(
+          `Failed to record billing for failed request: ${billingError.message}`,
+        );
+      }
+    }, 0);
   }
 }

@@ -15,6 +15,7 @@ export interface AIModelResponse {
     completion_tokens: number;
     total_tokens: number;
   };
+  choices?: any[];
   [key: string]: any;
 }
 
@@ -31,4 +32,20 @@ export interface UpstreamConfig {
   baseUrl: string;
   apiKey: string;
   weight: number;
+}
+
+// 简化的计费数据接口 - 传递给BillingService的原始数据
+export interface BillingRawData {
+  eventId: string;
+  userId: number;
+  walletId: number;
+  model: string;
+  clientIp: string;
+  externalTraceId?: string;
+  startTime: Date;
+  endTime: Date;
+  requestBody: AIModelRequest;
+  responseBody: AIModelResponse;
+  status: number;
+  errorMessage?: string;
 }

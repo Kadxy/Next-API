@@ -7,19 +7,28 @@ import {
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../core/prisma/prisma.service';
-import { UlidService } from '../core/ulid/ulid.service';
 import {
   AIModelRequest,
   AIModelResponse,
   UpstreamConfig,
+  BillingRawData,
 } from './interfaces/proxy.interface';
 import { BillingService } from '../billing/billing.service';
 import { AIModel } from '@prisma-client';
 import { BusinessException } from '../common/exceptions';
-import { TiktokenService } from 'src/billing/tiktoken/tiktoken.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ULID } from 'ulid';
 import { AxiosRequestConfig } from 'axios';
+
+// 简化的计费上下文
+interface BillingContext {
+  eventId: string;
+  userId: number;
+  walletId: number;
+  clientIp: string;
+  externalTraceId?: string;
+  startTime: Date;
+}
 
 @Injectable()
 export class ProxyService implements OnModuleInit, OnModuleDestroy {
@@ -35,9 +44,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly httpService: HttpService,
     private readonly prisma: PrismaService,
-    private readonly ulidService: UlidService,
     private readonly billingService: BillingService,
-    private readonly tiktokenService: TiktokenService,
   ) {}
 
   async onModuleInit() {
@@ -53,6 +60,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   async forwardRequest(
     body: AIModelRequest,
     sourceId: ULID,
+    billingContext: BillingContext,
   ): Promise<AIModelResponse> {
     // 1. 检查模型是否支持
     const isModelSupported = this.models.has(body.model);
@@ -61,8 +69,48 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
         `model ${body.model} not support. RequestId:${sourceId}`,
       );
     }
+
+    // TODO: 添加钱包余额快速检查（可选，用 Redis 缓存）
+    // TODO: 处理流式响应 (stream: true) 的情况 - 需要特殊处理 SSE
+
     // 2. 转发请求
-    return await this.sendToUpstream(body);
+    const response = await this.sendToUpstream(body);
+
+    // 3. 异步处理计费（不阻塞响应）
+    setTimeout(async () => {
+      try {
+        await this.billingService.recordApiCall({
+          eventId: billingContext.eventId,
+          userId: billingContext.userId,
+          walletId: billingContext.walletId,
+          model: body.model,
+          clientIp: billingContext.clientIp,
+          externalTraceId: billingContext.externalTraceId,
+          startTime: billingContext.startTime,
+          endTime: new Date(),
+          requestBody: body,
+          responseBody: response,
+          status: 20000, // 成功状态
+        });
+
+        this.logger.debug(`Billing recorded for ${billingContext.eventId}`);
+      } catch (error) {
+        this.logger.error(
+          `Failed to process billing for ${billingContext.eventId}: ${error.message}`,
+        );
+      }
+    }, 0);
+
+    return response;
+  }
+
+  // 记录失败的计费信息
+  async recordFailedBilling(billingData: BillingRawData) {
+    try {
+      await this.billingService.recordApiCall(billingData);
+    } catch (error) {
+      this.logger.error(`Failed to record failed billing: ${error.message}`);
+    }
   }
 
   // 发送请求到上游
@@ -98,9 +146,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   @Cron(CronExpression.EVERY_5_MINUTES)
   private async initialize() {
     // load upstreams
-    const channels = await this.prisma.aIModelChannel.findMany({
-      where: { status: 'ACTIVE' },
-    });
+    const channels = await this.prisma.aIModelChannel.findMany();
 
     channels.map((c) => this.upstreams.set(c.id, c));
 

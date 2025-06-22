@@ -39,33 +39,27 @@ export type AIModelChannelMinAggregateOutputType = {
   id: number | null
   name: string | null
   weight: number | null
-  status: $Enums.AIModelChannelStatus | null
   baseUrl: string | null
   apiKey: string | null
   createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type AIModelChannelMaxAggregateOutputType = {
   id: number | null
   name: string | null
   weight: number | null
-  status: $Enums.AIModelChannelStatus | null
   baseUrl: string | null
   apiKey: string | null
   createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type AIModelChannelCountAggregateOutputType = {
   id: number
   name: number
   weight: number
-  status: number
   baseUrl: number
   apiKey: number
   createdAt: number
-  updatedAt: number
   _all: number
 }
 
@@ -84,33 +78,27 @@ export type AIModelChannelMinAggregateInputType = {
   id?: true
   name?: true
   weight?: true
-  status?: true
   baseUrl?: true
   apiKey?: true
   createdAt?: true
-  updatedAt?: true
 }
 
 export type AIModelChannelMaxAggregateInputType = {
   id?: true
   name?: true
   weight?: true
-  status?: true
   baseUrl?: true
   apiKey?: true
   createdAt?: true
-  updatedAt?: true
 }
 
 export type AIModelChannelCountAggregateInputType = {
   id?: true
   name?: true
   weight?: true
-  status?: true
   baseUrl?: true
   apiKey?: true
   createdAt?: true
-  updatedAt?: true
   _all?: true
 }
 
@@ -204,11 +192,9 @@ export type AIModelChannelGroupByOutputType = {
   id: number
   name: string
   weight: number
-  status: $Enums.AIModelChannelStatus
   baseUrl: string
   apiKey: string
   createdAt: Date
-  updatedAt: Date
   _count: AIModelChannelCountAggregateOutputType | null
   _avg: AIModelChannelAvgAggregateOutputType | null
   _sum: AIModelChannelSumAggregateOutputType | null
@@ -238,22 +224,18 @@ export type AIModelChannelWhereInput = {
   id?: Prisma.IntFilter<"AIModelChannel"> | number
   name?: Prisma.StringFilter<"AIModelChannel"> | string
   weight?: Prisma.IntFilter<"AIModelChannel"> | number
-  status?: Prisma.EnumAIModelChannelStatusFilter<"AIModelChannel"> | $Enums.AIModelChannelStatus
   baseUrl?: Prisma.StringFilter<"AIModelChannel"> | string
   apiKey?: Prisma.StringFilter<"AIModelChannel"> | string
   createdAt?: Prisma.DateTimeFilter<"AIModelChannel"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"AIModelChannel"> | Date | string
 }
 
 export type AIModelChannelOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   _relevance?: Prisma.AIModelChannelOrderByRelevanceInput
 }
 
@@ -264,22 +246,18 @@ export type AIModelChannelWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AIModelChannelWhereInput[]
   NOT?: Prisma.AIModelChannelWhereInput | Prisma.AIModelChannelWhereInput[]
   weight?: Prisma.IntFilter<"AIModelChannel"> | number
-  status?: Prisma.EnumAIModelChannelStatusFilter<"AIModelChannel"> | $Enums.AIModelChannelStatus
   baseUrl?: Prisma.StringFilter<"AIModelChannel"> | string
   apiKey?: Prisma.StringFilter<"AIModelChannel"> | string
   createdAt?: Prisma.DateTimeFilter<"AIModelChannel"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"AIModelChannel"> | Date | string
 }, "id" | "name">
 
 export type AIModelChannelOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   _count?: Prisma.AIModelChannelCountOrderByAggregateInput
   _avg?: Prisma.AIModelChannelAvgOrderByAggregateInput
   _max?: Prisma.AIModelChannelMaxOrderByAggregateInput
@@ -294,85 +272,69 @@ export type AIModelChannelScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"AIModelChannel"> | number
   name?: Prisma.StringWithAggregatesFilter<"AIModelChannel"> | string
   weight?: Prisma.IntWithAggregatesFilter<"AIModelChannel"> | number
-  status?: Prisma.EnumAIModelChannelStatusWithAggregatesFilter<"AIModelChannel"> | $Enums.AIModelChannelStatus
   baseUrl?: Prisma.StringWithAggregatesFilter<"AIModelChannel"> | string
   apiKey?: Prisma.StringWithAggregatesFilter<"AIModelChannel"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AIModelChannel"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AIModelChannel"> | Date | string
 }
 
 export type AIModelChannelCreateInput = {
   name: string
   weight?: number
-  status?: $Enums.AIModelChannelStatus
   baseUrl: string
   apiKey: string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type AIModelChannelUncheckedCreateInput = {
   id?: number
   name: string
   weight?: number
-  status?: $Enums.AIModelChannelStatus
   baseUrl: string
   apiKey: string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type AIModelChannelUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumAIModelChannelStatusFieldUpdateOperationsInput | $Enums.AIModelChannelStatus
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AIModelChannelUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumAIModelChannelStatusFieldUpdateOperationsInput | $Enums.AIModelChannelStatus
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AIModelChannelCreateManyInput = {
   id?: number
   name: string
   weight?: number
-  status?: $Enums.AIModelChannelStatus
   baseUrl: string
   apiKey: string
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type AIModelChannelUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumAIModelChannelStatusFieldUpdateOperationsInput | $Enums.AIModelChannelStatus
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AIModelChannelUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   weight?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumAIModelChannelStatusFieldUpdateOperationsInput | $Enums.AIModelChannelStatus
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AIModelChannelOrderByRelevanceInput = {
@@ -385,11 +347,9 @@ export type AIModelChannelCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type AIModelChannelAvgOrderByAggregateInput = {
@@ -401,31 +361,23 @@ export type AIModelChannelMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type AIModelChannelMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-  status?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type AIModelChannelSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   weight?: Prisma.SortOrder
-}
-
-export type EnumAIModelChannelStatusFieldUpdateOperationsInput = {
-  set?: $Enums.AIModelChannelStatus
 }
 
 
@@ -434,11 +386,9 @@ export type AIModelChannelSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   name?: boolean
   weight?: boolean
-  status?: boolean
   baseUrl?: boolean
   apiKey?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
 }, ExtArgs["result"]["aIModelChannel"]>
 
 
@@ -447,14 +397,12 @@ export type AIModelChannelSelectScalar = {
   id?: boolean
   name?: boolean
   weight?: boolean
-  status?: boolean
   baseUrl?: boolean
   apiKey?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
 }
 
-export type AIModelChannelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "weight" | "status" | "baseUrl" | "apiKey" | "createdAt" | "updatedAt", ExtArgs["result"]["aIModelChannel"]>
+export type AIModelChannelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "weight" | "baseUrl" | "apiKey" | "createdAt", ExtArgs["result"]["aIModelChannel"]>
 
 export type $AIModelChannelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AIModelChannel"
@@ -463,11 +411,9 @@ export type $AIModelChannelPayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: number
     name: string
     weight: number
-    status: $Enums.AIModelChannelStatus
     baseUrl: string
     apiKey: string
     createdAt: Date
-    updatedAt: Date
   }, ExtArgs["result"]["aIModelChannel"]>
   composites: {}
 }
@@ -840,11 +786,9 @@ export interface AIModelChannelFieldRefs {
   readonly id: Prisma.FieldRef<"AIModelChannel", 'Int'>
   readonly name: Prisma.FieldRef<"AIModelChannel", 'String'>
   readonly weight: Prisma.FieldRef<"AIModelChannel", 'Int'>
-  readonly status: Prisma.FieldRef<"AIModelChannel", 'AIModelChannelStatus'>
   readonly baseUrl: Prisma.FieldRef<"AIModelChannel", 'String'>
   readonly apiKey: Prisma.FieldRef<"AIModelChannel", 'String'>
   readonly createdAt: Prisma.FieldRef<"AIModelChannel", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"AIModelChannel", 'DateTime'>
 }
     
 

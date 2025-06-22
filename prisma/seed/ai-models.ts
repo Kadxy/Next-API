@@ -1,9 +1,4 @@
-import {
-  AIModel,
-  AIModelChannel,
-  AIModelChannelStatus,
-  PrismaClient,
-} from '../generated';
+import { AIModel, AIModelChannel, PrismaClient } from '../generated';
 import { Decimal } from '@prisma/client/runtime/library';
 import * as dotenv from 'dotenv';
 
@@ -53,7 +48,6 @@ const aiModels: SeedAIModel[] = [
 const aiModelChannels: SeedAIModelChannel[] = [
   {
     name: 'openai-next-1',
-    status: AIModelChannelStatus.ACTIVE,
     weight: 100,
     baseUrl: 'https://api.openai-next.com',
     apiKey: 'sk-1234567890',

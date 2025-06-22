@@ -46,10 +46,9 @@ model Wallet {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  members           WalletMember[] // 钱包成员
-  apiKeys           ApiKey[] // 使用此钱包的API Keys
-  WalletTransaction WalletTransaction[]
-  ApiCallBilling    ApiCallBilling[] // 钱包关联的ApiCallBilling记录
+  members        WalletMember[] // 钱包成员
+  apiKeys        ApiKey[] // 使用此钱包的API Keys
+  apiCallRecords ApiCallRecord[] // API 调用记录
 
   @@map("wallets")
 }
@@ -131,100 +130,51 @@ model RedemptionCode {
   @@map("redeem_codes")
 }
 
-// -----------------------------------------------------------------------------
-// Enums for Transactions
-// -----------------------------------------------------------------------------
-enum TransactionType {
-  DEPOSIT // 充值
-  REFUND // 退款
-  REDEMPTION // 兑换码兑换
-  API_CALL // API 调用消费
-  // Future types: PURCHASE_PLAN, SMS_FEE, etc.
+// ----- Billing Records -----
+
+// API 调用记录（包含计费信息）
+model ApiCallRecord {
+  requestId String @id @db.VarChar(26) // 使用 ULID 作为全局唯一请求ID
+  wallet    Wallet @relation(fields: [walletId], references: [id])
+  walletId  Int    @db.Int // 关联钱包
+  userId    Int    @db.Int // 冗余 userId，方便查询
+
+  // API 调用信息
+  model           String    @db.VarChar(63) // 模型名称
+  startTime       DateTime // 请求开始时间
+  endTime         DateTime? // 请求结束时间
+  durationMs      Int       @default(0) // 耗时(单位: ms)
+  isSuccess       Boolean   @default(true) // 调用是否成功
+  errorMessage    String?   @db.Text // 如果调用失败的错误信息
+  inputToken      Int       @default(0) // 输入 token 数量
+  outputToken     Int       @default(0) // 输出 token 数量
+  clientIp        String    @default("0.0.0.0") @db.VarChar(45) // IPv4或IPv6
+  externalTraceId String    @default("") @db.VarChar(63) // 外部追踪ID
+
+  // 计费信息
+  amount       Decimal   @default(0) @db.Decimal(16, 8) // 费用金额
+  isBilled     Boolean   @default(false) // 是否已计费
+  billedAt     DateTime? // 计费时间
+  billingError String?   @db.Text // 计费错误信息（如果有）
+
+  createdAt DateTime @default(now())
+
+  @@index([walletId, createdAt(sort: Desc)]) // 按钱包查询优化
+  @@index([userId, createdAt(sort: Desc)]) // 按用户查询优化
+  @@index([isBilled, createdAt]) // 计费队列查询优化
+  @@map("api_call_records")
 }
 
-enum TransactionStatus {
-  PENDING // 待处理
-  COMPLETED // 完成
-  FAILED // 失败
-  REVERTED // 已撤销 (例如，退款导致的冲销)
-}
-
-// -----------------------------------------------------------------------------
-// Billing & Logging Models (最终优化版本)
-// -----------------------------------------------------------------------------
-
-// WalletTransaction - 钱包交易记录
-// 记录钱包余额的每一次变动，作为所有资金流动的统一视图。
-model WalletTransaction {
-  id          Int               @id @default(autoincrement())
-  uid         String            @unique // ULID
-  wallet      Wallet            @relation(fields: [walletId], references: [id])
-  walletId    Int
-  amount      Decimal           @db.Decimal(16, 8) // 交易金额，正数表示入账，负数表示出账
-  type        TransactionType // 交易类型：DEPOSIT, API_CALL, PURCHASE_PLAN 等
-  status      TransactionStatus @default(PENDING) // 交易状态：PENDING, COMPLETED, FAILED, REVERTED
-  description String            @db.VarChar(255) // 交易描述 (如 "API Call: /v1/chat/completions")
-  sourceId    String            @unique @db.VarChar(36) // 具体业务详情的唯一ID(ULID 26位): 由 'type' 字段决定(如果 type 是 API_CALL，sourceId 存的就是 ApiCallBilling.eventId)
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-
-  @@index([walletId, createdAt]) // 钱包交易按时间查询
-  @@index([uid]) // 快速查找交易UID
-  @@index([type, sourceId]) // 方便通过类型和源ID查找交易详情
-  @@map("wallet_transactions")
-}
-
-// ApiCallBilling - 每次 API 调用的计费核心数据
-// 记录每次 API 调用的费用详情，由消息队列消费者服务写入和更新。
-model ApiCallBilling {
-  // ID
-  id      Int    @id @default(autoincrement())
-  eventId String @unique @db.VarChar(26) // 使用 ULID 作为全局唯一事件ID，长度 26
-  userId  Int // 冗余 userId，方便查询
-
-  // 费用
-  model       String // 模型名称
-  inputToken  Int     @default(0) // 输入 token 数量
-  outputToken Int     @default(0) // 输出 token 数量
-  cost        Decimal @default(0) @db.Decimal(16, 8) // 以模型当前价格计算的费用
-
-  // 钱包
-  wallet   Wallet @relation(fields: [walletId], references: [id])
-  walletId Int
-
-  // 请求、响应
-  status     Int @default(20000) // 200xx: success, 400xx: failed, 500xx: error, 具体含义系统定义并统一使用
-  durationMs Int @default(0) // 耗时(单位: ms)
-
-  timestamp    DateTime // API 调用发生时间
-  processedAt  DateTime? // 标记此计费记录何时被消费者处理并最终写入数据库
-  isBilled     Boolean   @default(false) // 标记费用是否已成功扣除（针对 WalletTransaction）
-  errorMessage String?   @db.Text // 如果调用失败的错误信息
-
-  // 审计字段
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  clientIp        String   @default("0.0.0.0") @db.VarChar(45) // IPv4或IPv6
-  externalTraceId String   @default("") @db.VarChar(47) // 用户请求头中传递的 X-APIGrip-ExternalTraceId(如有, 最大支持47位)
-
-  @@index([eventId]) // 快速查询，幂等性检查
-  @@index([walletId, timestamp]) // 按钱包和时间查询计费记录
-  @@index([userId, timestamp]) // 按用户和时间查询计费记录
-  @@map("api_call_billings")
-}
-
-// -----------------------------------------------------------------------------
-// AI Models & Channels
-// -----------------------------------------------------------------------------
+// ----- AI Models & Channels -----
 
 // 模型
 model AIModel {
   id          Int      @id @default(autoincrement()) // 内部id
   name        String   @unique @db.VarChar(63) // 模型名称, 请求名称, 全局唯一
-  providerId  Int      @default(0) // 0: 其他, 1: OpenAI, 2: Anthropic... [这里暂时不关联表, 避免增加表复杂度]
+  providerId  Int      @default(0) // 0: 其他, 1: OpenAI, 2: Anthropic... [内部约定, 不关联表]
   isActive    Boolean  @default(true) // 是否可用
-  inputPrice  Decimal  @db.Decimal(16, 8) // 输入价格(单位: token) [这里不以1K/1M为单位]
-  outputPrice Decimal  @db.Decimal(16, 8) // 输出价格(单位: token) [这里不以1K/1M为单位]
+  inputPrice  Decimal  @db.Decimal(16, 8) // 输入价格(单位: 个 token)
+  outputPrice Decimal  @db.Decimal(16, 8) // 输出价格(单位: 个 token)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -232,23 +182,14 @@ model AIModel {
   @@map("ai_models")
 }
 
-enum AIModelChannelStatus {
-  ACTIVE // 启用
-  INACTIVE // 禁用
-  MAINTENANCE // 维护
-}
-
 // 模型渠道(上游, 不一定是一级供应商) - 默认渠道支持全部模型, 所以不关联模型表
 model AIModelChannel {
-  id        Int                  @id @default(autoincrement())
-  name      String               @unique @db.VarChar(31) // 模型渠道名称, 全局唯一
-  weight    Int                  @default(100) // 权重, 用于负载均衡, 默认100, 越大权重越高
-  status    AIModelChannelStatus @default(ACTIVE) // 模型渠道状态
-  baseUrl   String               @db.VarChar(63) // 模型渠道基础URL
-  apiKey    String               @db.VarChar(63) // 模型渠道API Key
-  createdAt DateTime             @default(now())
-  updatedAt DateTime             @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(31) // 模型渠道名称, 全局唯一
+  weight    Int      @default(100) // 权重, 用于负载均衡, 默认100, 越大权重越高
+  baseUrl   String   @db.VarChar(63) // 模型渠道基础URL
+  apiKey    String   @db.VarChar(63) // 模型渠道API Key
+  createdAt DateTime @default(now())
 
-  @@index([name, status])
   @@map("ai_model_channels")
 }
