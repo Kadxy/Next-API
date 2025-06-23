@@ -5,8 +5,12 @@ import {
   Logger,
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { ApikeyService } from '../apikey.service';
+import { ApiKeyRecord, ApikeyService } from '../apikey.service';
 import { UnauthorizedException } from 'src/common/exceptions';
+
+export interface RequestWithApiKey extends FastifyRequest {
+  apiKey: ApiKeyRecord;
+}
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {

@@ -7,39 +7,22 @@ import {
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../core/prisma/prisma.service';
-import {
-  AIModelRequest,
-  AIModelResponse,
-  UpstreamConfig,
-  BillingRawData,
-} from './interfaces/proxy.interface';
+import { AIModelRequest, AIModelResponse } from './interfaces/proxy.interface';
 import { BillingService } from '../billing/billing.service';
-import { AIModel } from '@prisma-client';
-import { BusinessException } from '../common/exceptions';
+import { AIModel, UpstreamConfig } from '@prisma-client';
+import { APICallException, BusinessException } from '../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ULID } from 'ulid';
 import { AxiosRequestConfig } from 'axios';
-
-// 简化的计费上下文
-interface BillingContext {
-  eventId: string;
-  userId: number;
-  walletId: number;
-  clientIp: string;
-  externalTraceId?: string;
-  startTime: Date;
-}
+import { BillingContext } from 'src/billing/dto/billing-context';
 
 @Injectable()
 export class ProxyService implements OnModuleInit, OnModuleDestroy {
   public readonly proxyTimeoutMs = 180 * 1000; // 180秒超时
   private readonly logger = new Logger(ProxyService.name);
 
-  private upstreams: Map<number, UpstreamConfig> = new Map<
-    number,
-    UpstreamConfig
-  >();
-  private models: Map<string, AIModel> = new Map<string, AIModel>();
+  private models: Map<string, AIModel> = new Map();
+  private upstreams: Map<number, UpstreamConfig> = new Map();
 
   constructor(
     private readonly httpService: HttpService,
@@ -59,19 +42,24 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   // 转发请求到上游服务
   async forwardRequest(
     body: AIModelRequest,
-    sourceId: ULID,
     billingContext: BillingContext,
   ): Promise<AIModelResponse> {
+    const {
+      requestId,
+      userId,
+      walletId,
+      clientIp,
+      externalTraceId,
+      startTime,
+    } = billingContext;
+
     // 1. 检查模型是否支持
     const isModelSupported = this.models.has(body.model);
     if (!isModelSupported) {
-      throw new BusinessException(
-        `model ${body.model} not support. RequestId:${sourceId}`,
-      );
+      throw new APICallException(requestId, `model ${body.model} not support`);
     }
 
     // TODO: 添加钱包余额快速检查（可选，用 Redis 缓存）
-    // TODO: 处理流式响应 (stream: true) 的情况 - 需要特殊处理 SSE
 
     // 2. 转发请求
     const response = await this.sendToUpstream(body);
@@ -80,13 +68,13 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
     setTimeout(async () => {
       try {
         await this.billingService.recordApiCall({
-          eventId: billingContext.eventId,
+          requestId: billingContext.requestId,
           userId: billingContext.userId,
           walletId: billingContext.walletId,
           model: body.model,
           clientIp: billingContext.clientIp,
           externalTraceId: billingContext.externalTraceId,
-          startTime: billingContext.startTime,
+          startTime: new Date(billingContext.startTime),
           endTime: new Date(),
           requestBody: body,
           responseBody: response,
@@ -145,31 +133,28 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   // 初始化: 加载上游渠道和模型
   @Cron(CronExpression.EVERY_5_MINUTES)
   private async initialize() {
-    // load upstreams
-    const channels = await this.prisma.aIModelChannel.findMany();
+    // load ai models
+    await this.prisma.aIModel
+      .findMany({ where: { isActive: true } })
+      .then((m) => m.forEach((m) => this.models.set(m.name, m)));
 
-    channels.map((c) => this.upstreams.set(c.id, c));
+    // load upstream configs
+    await this.prisma.upstreamConfig
+      .findMany()
+      .then((c) => c.forEach((c) => this.upstreams.set(c.id, c)));
 
-    this.logger.log(`Loaded ${this.upstreams.size} upstreams`);
-
-    // load models
-    const models = await this.prisma.aIModel.findMany({
-      where: { isActive: true },
-    });
-
-    models.map((m) => this.models.set(m.name, m));
-
-    this.logger.log(`Loaded ${this.models.size} models`);
+    this.logger.log(`✅ Loaded ${this.models.size} models`);
+    this.logger.log(`✅ Loaded ${this.upstreams.size} upstreams`);
   }
 
   // 基于权重选择上游服务, 返回上游id 和 axios请求配置
   private async getUpstream(
     exceptIds: number[],
   ): Promise<{ id: number; config: AxiosRequestConfig }> {
-    // 计算可用上游的总权重
     let availableTotalWeight = 0;
     const availableUpstreams: UpstreamConfig[] = [];
 
+    // 遍历全部上游, 过滤掉已排除的上游
     for (const upstream of this.upstreams.values()) {
       if (!exceptIds.includes(upstream.id)) {
         availableUpstreams.push(upstream);
@@ -177,25 +162,26 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       }
     }
 
+    // 如果没有可用上游, 抛出异常
     if (availableUpstreams.length === 0) {
       throw new BusinessException('no available upstream');
     }
 
-    // 权重随机选择
+    // 权重随机选择上游
     let random = Math.random() * availableTotalWeight;
     let selectedUpstream: UpstreamConfig;
 
     for (const upstream of availableUpstreams) {
       random -= upstream.weight;
       if (random < 0) {
-        this.logger.debug(`selected channel: ${JSON.stringify(upstream)}`);
+        this.logger.debug(`selected upstream: ${JSON.stringify(upstream)}`);
         selectedUpstream = upstream;
         break;
       }
     }
 
     if (!selectedUpstream) {
-      // 如果没有选中任何上游，选择最后一个作为兜底
+      // 如果没有选中任何上游, 选择最后一个作为兜底
       selectedUpstream = availableUpstreams[availableUpstreams.length - 1];
     }
 

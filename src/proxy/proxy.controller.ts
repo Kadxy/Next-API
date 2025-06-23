@@ -12,134 +12,130 @@ import {
   Body,
   Ip,
 } from '@nestjs/common';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyReply } from 'fastify';
 import { ProxyService } from './proxy.service';
-import { ApiKeyGuard } from '../apikey/guards/api-key.guard';
+import { ApiKeyGuard, RequestWithApiKey } from '../apikey/guards/api-key.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { UlidService } from 'src/core/ulid/ulid.service';
 import { AIModelRequest } from './interfaces/proxy.interface';
 import { ApiKey, Wallet } from '@prisma-client';
+import { BillingContext } from 'src/billing/dto/billing-context';
+
+export const REQUEST_ID_HEADER = 'X-APIGrip-RequestId';
+export const EXTERNAL_TRACE_ID_HEADER = 'X-APIGrip-ExternalTraceId';
 
 @ApiTags('Proxy')
-@Controller()
+@Controller('v1')
 @UseGuards(ApiKeyGuard)
 export class ProxyController {
   private readonly logger = new Logger(ProxyController.name);
   constructor(
-    private readonly proxyService: ProxyService,
     private readonly ulidService: UlidService,
+    private readonly proxyService: ProxyService,
   ) {}
 
-  @Get('v1/models')
-  @HttpCode(HttpStatus.OK)
+  @Get('models')
   async getModels(@Res() reply: FastifyReply) {
-    return reply.send([]);
+    return reply.status(HttpStatus.OK).send([]);
   }
 
-  @Post('v1/chat/completions')
+  @Post('chat/completions')
   @HttpCode(HttpStatus.OK)
   async handleV1Request(
     @Body() body: AIModelRequest,
     @Res() reply: FastifyReply,
-    @Req() request: FastifyRequest,
+    @Req() request: RequestWithApiKey,
     @Ip() clientIp: string,
-    @Headers('X-APIGrip-ExternalTraceId') externalTraceId: string,
+    @Headers(EXTERNAL_TRACE_ID_HEADER) externalTraceId: string,
   ) {
-    const sourceId = this.ulidService.generate();
-    const startTime = new Date();
+    // 0. 生成本次请求的 requestId
+    const requestId = this.ulidService.generate();
 
-    // 从ApiKeyGuard获取API密钥信息
-    const apiKeyRecord = (request as any).apiKey as ApiKey & { wallet: Wallet };
+    // 1. 立即记录开始时间
+    const startTime = new Date().toISOString();
 
-    this.logger.debug(
-      `[${clientIp}] [${sourceId}] [${externalTraceId}] User: ${apiKeyRecord.creatorId}, Wallet: ${apiKeyRecord.walletId}`,
-    );
+    // 2. 从 ApiKeyGuard 获取 附加到request 的 API密钥信息
+    const apiKeyRecord = request.apiKey;
 
+    // 3. 组装 billingContext
+    const billingContext: BillingContext = {
+      requestId,
+      userId: apiKeyRecord.creatorId,
+      walletId: apiKeyRecord.wallet.id,
+      clientIp,
+      externalTraceId,
+      startTime,
+      model: body.model,
+      prompt: body.messages[0].content,
+      response: '',
+      status: 'pending',
+      duration: 0,
+      cost: 0,
+      error: undefined,
+    };
+
+    // 4. 转发请求到上游服务
     try {
-      const response = await this.proxyService.forwardRequest(body, sourceId, {
-        eventId: sourceId,
-        userId: apiKeyRecord.creatorId,
-        walletId: apiKeyRecord.walletId,
-        clientIp,
+      const response = await this.proxyService.forwardRequest(
+        body,
+        billingContext,
+      );
+
+      // 设置响应头
+      this.setupResponseHeaders(
+        reply,
+        requestId,
         externalTraceId,
-        startTime,
-      });
-
-      // 设置流式响应头
-      if (body?.stream) {
-        reply.header('Content-Type', 'text/event-stream');
-        reply.header('Cache-Control', 'no-cache');
-        reply.header('Connection', 'keep-alive');
-      } else {
-        reply.header('Content-Type', 'application/json');
-      }
-
-      // 设置APIGrip SourceId
-      reply.header('X-APIGrip-SourceId', sourceId);
-
-      // 设置外部traceId
-      if (externalTraceId) {
-        reply.header('X-APIGrip-ExternalTraceId', externalTraceId);
-      }
+        body?.stream,
+      );
 
       // 发送响应
       return reply.send(response);
     } catch (error) {
-      // 记录失败的计费信息
-      this.recordFailedBilling(
-        apiKeyRecord,
-        sourceId,
-        body,
-        clientIp,
-        externalTraceId,
-        startTime,
-        error,
-      );
+      // TODO: 记录失败的计费信息
 
-      return reply.status(error.status || 500).send({
-        error: {
-          message: error.message || 'Internal server error',
-          type: error.name || 'api_error',
-          code: error.status || 500,
-        },
-      });
+      return this.errorReply(reply);
     }
   }
 
-  /**
-   * 异步记录失败的计费信息
-   */
-  private recordFailedBilling(
-    apiKeyRecord: ApiKey & { wallet: Wallet },
-    sourceId: string,
-    requestBody: AIModelRequest,
-    clientIp: string,
-    externalTraceId: string,
-    startTime: Date,
-    error: any,
+  // TODO: 异步记录失败的计费信息
+  private recordFailedBilling() {
+    // 使用 setTimeout 来异步处理，不阻塞响应?
+  }
+
+  // 设置响应头
+  private setupResponseHeaders(
+    reply: FastifyReply,
+    requestId: string,
+    externalTraceId = undefined,
+    isStream = false,
   ) {
-    // 使用 setTimeout 来异步处理，不阻塞响应
-    setTimeout(async () => {
-      try {
-        await this.proxyService.recordFailedBilling({
-          eventId: sourceId,
-          userId: apiKeyRecord.creatorId,
-          walletId: apiKeyRecord.walletId,
-          model: requestBody.model,
-          clientIp,
-          externalTraceId,
-          startTime,
-          endTime: new Date(),
-          requestBody,
-          responseBody: null,
-          status: error.status || 500,
-          errorMessage: error.message || 'Internal server error',
-        });
-      } catch (billingError) {
-        this.logger.error(
-          `Failed to record billing for failed request: ${billingError.message}`,
-        );
-      }
-    }, 0);
+    // 必须发送的header
+    reply.header(REQUEST_ID_HEADER, requestId);
+
+    // 如果请求者携带了externalTraceId, 则继续发送给下游
+    if (externalTraceId) {
+      reply.header(EXTERNAL_TRACE_ID_HEADER, externalTraceId);
+    }
+
+    // 非流式响应, 设置json响应头
+    if (!isStream) {
+      reply.header('Content-Type', 'application/json');
+    } else {
+      // 流式响应, 设置流式响应头
+      reply.header('Content-Type', 'text/event-stream');
+      reply.header('Cache-Control', 'no-cache');
+      reply.header('Connection', 'keep-alive');
+    }
+  }
+
+  // 统一 type = api_error 错误响应
+  private errorReply(
+    reply: FastifyReply,
+    message = 'service temporarily unavailable',
+    code = HttpStatus.INTERNAL_SERVER_ERROR,
+  ) {
+    const err = { type: 'api_error', message, code };
+    return reply.status(code).send({ err });
   }
 }

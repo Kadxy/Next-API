@@ -31,7 +31,7 @@ export type ApiCallRecordAvgAggregateOutputType = {
   durationMs: number | null
   inputToken: number | null
   outputToken: number | null
-  amount: runtime.Decimal | null
+  cost: runtime.Decimal | null
 }
 
 export type ApiCallRecordSumAggregateOutputType = {
@@ -40,7 +40,7 @@ export type ApiCallRecordSumAggregateOutputType = {
   durationMs: number | null
   inputToken: number | null
   outputToken: number | null
-  amount: runtime.Decimal | null
+  cost: runtime.Decimal | null
 }
 
 export type ApiCallRecordMinAggregateOutputType = {
@@ -51,17 +51,15 @@ export type ApiCallRecordMinAggregateOutputType = {
   startTime: Date | null
   endTime: Date | null
   durationMs: number | null
-  isSuccess: boolean | null
   errorMessage: string | null
-  inputToken: number | null
-  outputToken: number | null
   clientIp: string | null
   externalTraceId: string | null
-  amount: runtime.Decimal | null
+  inputToken: number | null
+  outputToken: number | null
+  cost: runtime.Decimal | null
   isBilled: boolean | null
-  billedAt: Date | null
-  billingError: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ApiCallRecordMaxAggregateOutputType = {
@@ -72,17 +70,15 @@ export type ApiCallRecordMaxAggregateOutputType = {
   startTime: Date | null
   endTime: Date | null
   durationMs: number | null
-  isSuccess: boolean | null
   errorMessage: string | null
-  inputToken: number | null
-  outputToken: number | null
   clientIp: string | null
   externalTraceId: string | null
-  amount: runtime.Decimal | null
+  inputToken: number | null
+  outputToken: number | null
+  cost: runtime.Decimal | null
   isBilled: boolean | null
-  billedAt: Date | null
-  billingError: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ApiCallRecordCountAggregateOutputType = {
@@ -93,17 +89,15 @@ export type ApiCallRecordCountAggregateOutputType = {
   startTime: number
   endTime: number
   durationMs: number
-  isSuccess: number
   errorMessage: number
-  inputToken: number
-  outputToken: number
   clientIp: number
   externalTraceId: number
-  amount: number
+  inputToken: number
+  outputToken: number
+  cost: number
   isBilled: number
-  billedAt: number
-  billingError: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -114,7 +108,7 @@ export type ApiCallRecordAvgAggregateInputType = {
   durationMs?: true
   inputToken?: true
   outputToken?: true
-  amount?: true
+  cost?: true
 }
 
 export type ApiCallRecordSumAggregateInputType = {
@@ -123,7 +117,7 @@ export type ApiCallRecordSumAggregateInputType = {
   durationMs?: true
   inputToken?: true
   outputToken?: true
-  amount?: true
+  cost?: true
 }
 
 export type ApiCallRecordMinAggregateInputType = {
@@ -134,17 +128,15 @@ export type ApiCallRecordMinAggregateInputType = {
   startTime?: true
   endTime?: true
   durationMs?: true
-  isSuccess?: true
   errorMessage?: true
-  inputToken?: true
-  outputToken?: true
   clientIp?: true
   externalTraceId?: true
-  amount?: true
+  inputToken?: true
+  outputToken?: true
+  cost?: true
   isBilled?: true
-  billedAt?: true
-  billingError?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type ApiCallRecordMaxAggregateInputType = {
@@ -155,17 +147,15 @@ export type ApiCallRecordMaxAggregateInputType = {
   startTime?: true
   endTime?: true
   durationMs?: true
-  isSuccess?: true
   errorMessage?: true
-  inputToken?: true
-  outputToken?: true
   clientIp?: true
   externalTraceId?: true
-  amount?: true
+  inputToken?: true
+  outputToken?: true
+  cost?: true
   isBilled?: true
-  billedAt?: true
-  billingError?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type ApiCallRecordCountAggregateInputType = {
@@ -176,17 +166,15 @@ export type ApiCallRecordCountAggregateInputType = {
   startTime?: true
   endTime?: true
   durationMs?: true
-  isSuccess?: true
   errorMessage?: true
-  inputToken?: true
-  outputToken?: true
   clientIp?: true
   externalTraceId?: true
-  amount?: true
+  inputToken?: true
+  outputToken?: true
+  cost?: true
   isBilled?: true
-  billedAt?: true
-  billingError?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -284,17 +272,15 @@ export type ApiCallRecordGroupByOutputType = {
   startTime: Date
   endTime: Date | null
   durationMs: number
-  isSuccess: boolean
   errorMessage: string | null
-  inputToken: number
-  outputToken: number
   clientIp: string
   externalTraceId: string
-  amount: runtime.Decimal
+  inputToken: number
+  outputToken: number
+  cost: runtime.Decimal
   isBilled: boolean
-  billedAt: Date | null
-  billingError: string | null
   createdAt: Date
+  updatedAt: Date
   _count: ApiCallRecordCountAggregateOutputType | null
   _avg: ApiCallRecordAvgAggregateOutputType | null
   _sum: ApiCallRecordSumAggregateOutputType | null
@@ -328,17 +314,15 @@ export type ApiCallRecordWhereInput = {
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeNullableFilter<"ApiCallRecord"> | Date | string | null
   durationMs?: Prisma.IntFilter<"ApiCallRecord"> | number
-  isSuccess?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
   errorMessage?: Prisma.StringNullableFilter<"ApiCallRecord"> | string | null
-  inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
-  outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   clientIp?: Prisma.StringFilter<"ApiCallRecord"> | string
   externalTraceId?: Prisma.StringFilter<"ApiCallRecord"> | string
-  amount?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
+  outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
+  cost?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
-  billedAt?: Prisma.DateTimeNullableFilter<"ApiCallRecord"> | Date | string | null
-  billingError?: Prisma.StringNullableFilter<"ApiCallRecord"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
 }
 
@@ -350,17 +334,15 @@ export type ApiCallRecordOrderByWithRelationInput = {
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  isSuccess?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
-  inputToken?: Prisma.SortOrder
-  outputToken?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  inputToken?: Prisma.SortOrder
+  outputToken?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   isBilled?: Prisma.SortOrder
-  billedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  billingError?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   wallet?: Prisma.WalletOrderByWithRelationInput
   _relevance?: Prisma.ApiCallRecordOrderByRelevanceInput
 }
@@ -376,17 +358,15 @@ export type ApiCallRecordWhereUniqueInput = Prisma.AtLeast<{
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeNullableFilter<"ApiCallRecord"> | Date | string | null
   durationMs?: Prisma.IntFilter<"ApiCallRecord"> | number
-  isSuccess?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
   errorMessage?: Prisma.StringNullableFilter<"ApiCallRecord"> | string | null
-  inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
-  outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   clientIp?: Prisma.StringFilter<"ApiCallRecord"> | string
   externalTraceId?: Prisma.StringFilter<"ApiCallRecord"> | string
-  amount?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
+  outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
+  cost?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
-  billedAt?: Prisma.DateTimeNullableFilter<"ApiCallRecord"> | Date | string | null
-  billingError?: Prisma.StringNullableFilter<"ApiCallRecord"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
 }, "requestId">
 
@@ -398,17 +378,15 @@ export type ApiCallRecordOrderByWithAggregationInput = {
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  isSuccess?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
-  inputToken?: Prisma.SortOrder
-  outputToken?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  inputToken?: Prisma.SortOrder
+  outputToken?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   isBilled?: Prisma.SortOrder
-  billedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  billingError?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ApiCallRecordCountOrderByAggregateInput
   _avg?: Prisma.ApiCallRecordAvgOrderByAggregateInput
   _max?: Prisma.ApiCallRecordMaxOrderByAggregateInput
@@ -427,17 +405,15 @@ export type ApiCallRecordScalarWhereWithAggregatesInput = {
   startTime?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeNullableWithAggregatesFilter<"ApiCallRecord"> | Date | string | null
   durationMs?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  isSuccess?: Prisma.BoolWithAggregatesFilter<"ApiCallRecord"> | boolean
   errorMessage?: Prisma.StringNullableWithAggregatesFilter<"ApiCallRecord"> | string | null
-  inputToken?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  outputToken?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   clientIp?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
   externalTraceId?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
-  amount?: Prisma.DecimalWithAggregatesFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
+  outputToken?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
+  cost?: Prisma.DecimalWithAggregatesFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolWithAggregatesFilter<"ApiCallRecord"> | boolean
-  billedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApiCallRecord"> | Date | string | null
-  billingError?: Prisma.StringNullableWithAggregatesFilter<"ApiCallRecord"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
 }
 
 export type ApiCallRecordCreateInput = {
@@ -447,17 +423,15 @@ export type ApiCallRecordCreateInput = {
   startTime: Date | string
   endTime?: Date | string | null
   durationMs?: number
-  isSuccess?: boolean
   errorMessage?: string | null
-  inputToken?: number
-  outputToken?: number
   clientIp?: string
   externalTraceId?: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: number
+  outputToken?: number
+  cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: boolean
-  billedAt?: Date | string | null
-  billingError?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   wallet: Prisma.WalletCreateNestedOneWithoutApiCallRecordsInput
 }
 
@@ -469,17 +443,15 @@ export type ApiCallRecordUncheckedCreateInput = {
   startTime: Date | string
   endTime?: Date | string | null
   durationMs?: number
-  isSuccess?: boolean
   errorMessage?: string | null
-  inputToken?: number
-  outputToken?: number
   clientIp?: string
   externalTraceId?: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: number
+  outputToken?: number
+  cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: boolean
-  billedAt?: Date | string | null
-  billingError?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApiCallRecordUpdateInput = {
@@ -489,17 +461,15 @@ export type ApiCallRecordUpdateInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  isSuccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
-  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  billedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  billingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneRequiredWithoutApiCallRecordsNestedInput
 }
 
@@ -511,17 +481,15 @@ export type ApiCallRecordUncheckedUpdateInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  isSuccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
-  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  billedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  billingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallRecordCreateManyInput = {
@@ -532,17 +500,15 @@ export type ApiCallRecordCreateManyInput = {
   startTime: Date | string
   endTime?: Date | string | null
   durationMs?: number
-  isSuccess?: boolean
   errorMessage?: string | null
-  inputToken?: number
-  outputToken?: number
   clientIp?: string
   externalTraceId?: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: number
+  outputToken?: number
+  cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: boolean
-  billedAt?: Date | string | null
-  billingError?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApiCallRecordUpdateManyMutationInput = {
@@ -552,17 +518,15 @@ export type ApiCallRecordUpdateManyMutationInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  isSuccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
-  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  billedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  billingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallRecordUncheckedUpdateManyInput = {
@@ -573,17 +537,15 @@ export type ApiCallRecordUncheckedUpdateManyInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  isSuccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
-  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  billedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  billingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallRecordListRelationFilter = {
@@ -610,17 +572,15 @@ export type ApiCallRecordCountOrderByAggregateInput = {
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  isSuccess?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
-  inputToken?: Prisma.SortOrder
-  outputToken?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  inputToken?: Prisma.SortOrder
+  outputToken?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   isBilled?: Prisma.SortOrder
-  billedAt?: Prisma.SortOrder
-  billingError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ApiCallRecordAvgOrderByAggregateInput = {
@@ -629,7 +589,7 @@ export type ApiCallRecordAvgOrderByAggregateInput = {
   durationMs?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
 }
 
 export type ApiCallRecordMaxOrderByAggregateInput = {
@@ -640,17 +600,15 @@ export type ApiCallRecordMaxOrderByAggregateInput = {
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  isSuccess?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
-  inputToken?: Prisma.SortOrder
-  outputToken?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  inputToken?: Prisma.SortOrder
+  outputToken?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   isBilled?: Prisma.SortOrder
-  billedAt?: Prisma.SortOrder
-  billingError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ApiCallRecordMinOrderByAggregateInput = {
@@ -661,17 +619,15 @@ export type ApiCallRecordMinOrderByAggregateInput = {
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  isSuccess?: Prisma.SortOrder
   errorMessage?: Prisma.SortOrder
-  inputToken?: Prisma.SortOrder
-  outputToken?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  inputToken?: Prisma.SortOrder
+  outputToken?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
   isBilled?: Prisma.SortOrder
-  billedAt?: Prisma.SortOrder
-  billingError?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ApiCallRecordSumOrderByAggregateInput = {
@@ -680,7 +636,7 @@ export type ApiCallRecordSumOrderByAggregateInput = {
   durationMs?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
+  cost?: Prisma.SortOrder
 }
 
 export type ApiCallRecordCreateNestedManyWithoutWalletInput = {
@@ -732,17 +688,15 @@ export type ApiCallRecordCreateWithoutWalletInput = {
   startTime: Date | string
   endTime?: Date | string | null
   durationMs?: number
-  isSuccess?: boolean
   errorMessage?: string | null
-  inputToken?: number
-  outputToken?: number
   clientIp?: string
   externalTraceId?: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: number
+  outputToken?: number
+  cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: boolean
-  billedAt?: Date | string | null
-  billingError?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApiCallRecordUncheckedCreateWithoutWalletInput = {
@@ -752,17 +706,15 @@ export type ApiCallRecordUncheckedCreateWithoutWalletInput = {
   startTime: Date | string
   endTime?: Date | string | null
   durationMs?: number
-  isSuccess?: boolean
   errorMessage?: string | null
-  inputToken?: number
-  outputToken?: number
   clientIp?: string
   externalTraceId?: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: number
+  outputToken?: number
+  cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: boolean
-  billedAt?: Date | string | null
-  billingError?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApiCallRecordCreateOrConnectWithoutWalletInput = {
@@ -802,17 +754,15 @@ export type ApiCallRecordScalarWhereInput = {
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeNullableFilter<"ApiCallRecord"> | Date | string | null
   durationMs?: Prisma.IntFilter<"ApiCallRecord"> | number
-  isSuccess?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
   errorMessage?: Prisma.StringNullableFilter<"ApiCallRecord"> | string | null
-  inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
-  outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   clientIp?: Prisma.StringFilter<"ApiCallRecord"> | string
   externalTraceId?: Prisma.StringFilter<"ApiCallRecord"> | string
-  amount?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
+  outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
+  cost?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
-  billedAt?: Prisma.DateTimeNullableFilter<"ApiCallRecord"> | Date | string | null
-  billingError?: Prisma.StringNullableFilter<"ApiCallRecord"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
 }
 
 export type ApiCallRecordCreateManyWalletInput = {
@@ -822,17 +772,15 @@ export type ApiCallRecordCreateManyWalletInput = {
   startTime: Date | string
   endTime?: Date | string | null
   durationMs?: number
-  isSuccess?: boolean
   errorMessage?: string | null
-  inputToken?: number
-  outputToken?: number
   clientIp?: string
   externalTraceId?: string
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: number
+  outputToken?: number
+  cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: boolean
-  billedAt?: Date | string | null
-  billingError?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApiCallRecordUpdateWithoutWalletInput = {
@@ -842,17 +790,15 @@ export type ApiCallRecordUpdateWithoutWalletInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  isSuccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
-  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  billedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  billingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallRecordUncheckedUpdateWithoutWalletInput = {
@@ -862,17 +808,15 @@ export type ApiCallRecordUncheckedUpdateWithoutWalletInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  isSuccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
-  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  billedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  billingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallRecordUncheckedUpdateManyWithoutWalletInput = {
@@ -882,17 +826,15 @@ export type ApiCallRecordUncheckedUpdateManyWithoutWalletInput = {
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  isSuccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
-  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  inputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  outputToken?: Prisma.IntFieldUpdateOperationsInput | number
+  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  billedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  billingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -905,17 +847,15 @@ export type ApiCallRecordSelect<ExtArgs extends runtime.Types.Extensions.Interna
   startTime?: boolean
   endTime?: boolean
   durationMs?: boolean
-  isSuccess?: boolean
   errorMessage?: boolean
-  inputToken?: boolean
-  outputToken?: boolean
   clientIp?: boolean
   externalTraceId?: boolean
-  amount?: boolean
+  inputToken?: boolean
+  outputToken?: boolean
+  cost?: boolean
   isBilled?: boolean
-  billedAt?: boolean
-  billingError?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["apiCallRecord"]>
 
@@ -929,20 +869,18 @@ export type ApiCallRecordSelectScalar = {
   startTime?: boolean
   endTime?: boolean
   durationMs?: boolean
-  isSuccess?: boolean
   errorMessage?: boolean
-  inputToken?: boolean
-  outputToken?: boolean
   clientIp?: boolean
   externalTraceId?: boolean
-  amount?: boolean
+  inputToken?: boolean
+  outputToken?: boolean
+  cost?: boolean
   isBilled?: boolean
-  billedAt?: boolean
-  billingError?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "walletId" | "userId" | "model" | "startTime" | "endTime" | "durationMs" | "isSuccess" | "errorMessage" | "inputToken" | "outputToken" | "clientIp" | "externalTraceId" | "amount" | "isBilled" | "billedAt" | "billingError" | "createdAt", ExtArgs["result"]["apiCallRecord"]>
+export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "walletId" | "userId" | "model" | "startTime" | "endTime" | "durationMs" | "errorMessage" | "clientIp" | "externalTraceId" | "inputToken" | "outputToken" | "cost" | "isBilled" | "createdAt" | "updatedAt", ExtArgs["result"]["apiCallRecord"]>
 export type ApiCallRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
 }
@@ -960,17 +898,15 @@ export type $ApiCallRecordPayload<ExtArgs extends runtime.Types.Extensions.Inter
     startTime: Date
     endTime: Date | null
     durationMs: number
-    isSuccess: boolean
     errorMessage: string | null
-    inputToken: number
-    outputToken: number
     clientIp: string
     externalTraceId: string
-    amount: runtime.Decimal
+    inputToken: number
+    outputToken: number
+    cost: runtime.Decimal
     isBilled: boolean
-    billedAt: Date | null
-    billingError: string | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["apiCallRecord"]>
   composites: {}
 }
@@ -1348,17 +1284,15 @@ export interface ApiCallRecordFieldRefs {
   readonly startTime: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
   readonly durationMs: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly isSuccess: Prisma.FieldRef<"ApiCallRecord", 'Boolean'>
   readonly errorMessage: Prisma.FieldRef<"ApiCallRecord", 'String'>
-  readonly inputToken: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly outputToken: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly clientIp: Prisma.FieldRef<"ApiCallRecord", 'String'>
   readonly externalTraceId: Prisma.FieldRef<"ApiCallRecord", 'String'>
-  readonly amount: Prisma.FieldRef<"ApiCallRecord", 'Decimal'>
+  readonly inputToken: Prisma.FieldRef<"ApiCallRecord", 'Int'>
+  readonly outputToken: Prisma.FieldRef<"ApiCallRecord", 'Int'>
+  readonly cost: Prisma.FieldRef<"ApiCallRecord", 'Decimal'>
   readonly isBilled: Prisma.FieldRef<"ApiCallRecord", 'Boolean'>
-  readonly billedAt: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
-  readonly billingError: Prisma.FieldRef<"ApiCallRecord", 'String'>
   readonly createdAt: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
 }
     
 

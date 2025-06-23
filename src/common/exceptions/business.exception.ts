@@ -1,5 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import { DEFAULT_ERROR_MSG } from './index';
+import { ULID } from 'ulid';
 
 export class BusinessException extends Error {
   constructor(
@@ -28,5 +29,14 @@ export class ForbiddenException extends BusinessException {
 export class TooManyRequestsException extends BusinessException {
   constructor(message: string = 'Too many requests, please try again later') {
     super(message, HttpStatus.TOO_MANY_REQUESTS);
+  }
+}
+
+// 500 Internal Server Error - 调用上游API失败
+export class APICallException extends BusinessException {
+  constructor(requestId: ULID, message: string = 'API call failed') {
+    const errorMessage = `${message}(RequestId:${requestId})`;
+
+    super(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

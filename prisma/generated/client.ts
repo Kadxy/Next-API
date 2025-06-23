@@ -80,9 +80,9 @@ export type ApiCallRecord = Prisma.ApiCallRecordModel
  */
 export type AIModel = Prisma.AIModelModel
 /**
- * Model AIModelChannel
+ * Model UpstreamConfig
  * 
  */
-export type AIModelChannel = Prisma.AIModelChannelModel
+export type UpstreamConfig = Prisma.UpstreamConfigModel
 
 

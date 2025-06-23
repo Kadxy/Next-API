@@ -144,20 +144,17 @@ model ApiCallRecord {
   startTime       DateTime // 请求开始时间
   endTime         DateTime? // 请求结束时间
   durationMs      Int       @default(0) // 耗时(单位: ms)
-  isSuccess       Boolean   @default(true) // 调用是否成功
-  errorMessage    String?   @db.Text // 如果调用失败的错误信息
-  inputToken      Int       @default(0) // 输入 token 数量
-  outputToken     Int       @default(0) // 输出 token 数量
+  errorMessage    String?   @db.Text // 如果调用失败, 储存的错误信息
   clientIp        String    @default("0.0.0.0") @db.VarChar(45) // IPv4或IPv6
   externalTraceId String    @default("") @db.VarChar(63) // 外部追踪ID
+  inputToken      Int       @default(0) // 输入 token 数量
+  outputToken     Int       @default(0) // 输出 token 数量
+  cost            Decimal   @default(0) @db.Decimal(16, 8) // 费用, 以当前模型价格计算
+  isBilled        Boolean   @default(false) // 是否已计费
 
-  // 计费信息
-  amount       Decimal   @default(0) @db.Decimal(16, 8) // 费用金额
-  isBilled     Boolean   @default(false) // 是否已计费
-  billedAt     DateTime? // 计费时间
-  billingError String?   @db.Text // 计费错误信息（如果有）
-
+  // 审计信息
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([walletId, createdAt(sort: Desc)]) // 按钱包查询优化
   @@index([userId, createdAt(sort: Desc)]) // 按用户查询优化
@@ -183,13 +180,13 @@ model AIModel {
 }
 
 // 模型渠道(上游, 不一定是一级供应商) - 默认渠道支持全部模型, 所以不关联模型表
-model AIModelChannel {
+model UpstreamConfig {
   id        Int      @id @default(autoincrement())
-  name      String   @unique @db.VarChar(31) // 模型渠道名称, 全局唯一
+  name      String   @unique @db.VarChar(31) // 上游名称, 全局唯一
   weight    Int      @default(100) // 权重, 用于负载均衡, 默认100, 越大权重越高
-  baseUrl   String   @db.VarChar(63) // 模型渠道基础URL
-  apiKey    String   @db.VarChar(63) // 模型渠道API Key
+  baseUrl   String   @db.VarChar(63) // 上游基础URL
+  apiKey    String   @db.VarChar(63) // 上游API Key
   createdAt DateTime @default(now())
 
-  @@map("ai_model_channels")
+  @@map("upstream_configs")
 }

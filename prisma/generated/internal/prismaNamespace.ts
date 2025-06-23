@@ -402,7 +402,7 @@ export const ModelName = {
   RedemptionCode: 'RedemptionCode',
   ApiCallRecord: 'ApiCallRecord',
   AIModel: 'AIModel',
-  AIModelChannel: 'AIModelChannel'
+  UpstreamConfig: 'UpstreamConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "apiCallRecord" | "aIModel" | "aIModelChannel"
+    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "apiCallRecord" | "aIModel" | "upstreamConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -950,69 +950,69 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    AIModelChannel: {
-      payload: Prisma.$AIModelChannelPayload<ExtArgs>
-      fields: Prisma.AIModelChannelFieldRefs
+    UpstreamConfig: {
+      payload: Prisma.$UpstreamConfigPayload<ExtArgs>
+      fields: Prisma.UpstreamConfigFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.AIModelChannelFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload> | null
+          args: Prisma.UpstreamConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.AIModelChannelFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+          args: Prisma.UpstreamConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>
         }
         findFirst: {
-          args: Prisma.AIModelChannelFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload> | null
+          args: Prisma.UpstreamConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.AIModelChannelFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+          args: Prisma.UpstreamConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>
         }
         findMany: {
-          args: Prisma.AIModelChannelFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>[]
+          args: Prisma.UpstreamConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>[]
         }
         create: {
-          args: Prisma.AIModelChannelCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+          args: Prisma.UpstreamConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>
         }
         createMany: {
-          args: Prisma.AIModelChannelCreateManyArgs<ExtArgs>
+          args: Prisma.UpstreamConfigCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.AIModelChannelDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+          args: Prisma.UpstreamConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>
         }
         update: {
-          args: Prisma.AIModelChannelUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+          args: Prisma.UpstreamConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>
         }
         deleteMany: {
-          args: Prisma.AIModelChannelDeleteManyArgs<ExtArgs>
+          args: Prisma.UpstreamConfigDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.AIModelChannelUpdateManyArgs<ExtArgs>
+          args: Prisma.UpstreamConfigUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.AIModelChannelUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelChannelPayload>
+          args: Prisma.UpstreamConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>
         }
         aggregate: {
-          args: Prisma.AIModelChannelAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAIModelChannel>
+          args: Prisma.UpstreamConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUpstreamConfig>
         }
         groupBy: {
-          args: Prisma.AIModelChannelGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AIModelChannelGroupByOutputType>[]
+          args: Prisma.UpstreamConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UpstreamConfigGroupByOutputType>[]
         }
         count: {
-          args: Prisma.AIModelChannelCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AIModelChannelCountAggregateOutputType> | number
+          args: Prisma.UpstreamConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UpstreamConfigCountAggregateOutputType> | number
         }
       }
     }
@@ -1160,17 +1160,15 @@ export const ApiCallRecordScalarFieldEnum = {
   startTime: 'startTime',
   endTime: 'endTime',
   durationMs: 'durationMs',
-  isSuccess: 'isSuccess',
   errorMessage: 'errorMessage',
-  inputToken: 'inputToken',
-  outputToken: 'outputToken',
   clientIp: 'clientIp',
   externalTraceId: 'externalTraceId',
-  amount: 'amount',
+  inputToken: 'inputToken',
+  outputToken: 'outputToken',
+  cost: 'cost',
   isBilled: 'isBilled',
-  billedAt: 'billedAt',
-  billingError: 'billingError',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ApiCallRecordScalarFieldEnum = (typeof ApiCallRecordScalarFieldEnum)[keyof typeof ApiCallRecordScalarFieldEnum]
@@ -1190,7 +1188,7 @@ export const AIModelScalarFieldEnum = {
 export type AIModelScalarFieldEnum = (typeof AIModelScalarFieldEnum)[keyof typeof AIModelScalarFieldEnum]
 
 
-export const AIModelChannelScalarFieldEnum = {
+export const UpstreamConfigScalarFieldEnum = {
   id: 'id',
   name: 'name',
   weight: 'weight',
@@ -1199,7 +1197,7 @@ export const AIModelChannelScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type AIModelChannelScalarFieldEnum = (typeof AIModelChannelScalarFieldEnum)[keyof typeof AIModelChannelScalarFieldEnum]
+export type UpstreamConfigScalarFieldEnum = (typeof UpstreamConfigScalarFieldEnum)[keyof typeof UpstreamConfigScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1279,8 +1277,7 @@ export const ApiCallRecordOrderByRelevanceFieldEnum = {
   model: 'model',
   errorMessage: 'errorMessage',
   clientIp: 'clientIp',
-  externalTraceId: 'externalTraceId',
-  billingError: 'billingError'
+  externalTraceId: 'externalTraceId'
 } as const
 
 export type ApiCallRecordOrderByRelevanceFieldEnum = (typeof ApiCallRecordOrderByRelevanceFieldEnum)[keyof typeof ApiCallRecordOrderByRelevanceFieldEnum]
@@ -1293,13 +1290,13 @@ export const AIModelOrderByRelevanceFieldEnum = {
 export type AIModelOrderByRelevanceFieldEnum = (typeof AIModelOrderByRelevanceFieldEnum)[keyof typeof AIModelOrderByRelevanceFieldEnum]
 
 
-export const AIModelChannelOrderByRelevanceFieldEnum = {
+export const UpstreamConfigOrderByRelevanceFieldEnum = {
   name: 'name',
   baseUrl: 'baseUrl',
   apiKey: 'apiKey'
 } as const
 
-export type AIModelChannelOrderByRelevanceFieldEnum = (typeof AIModelChannelOrderByRelevanceFieldEnum)[keyof typeof AIModelChannelOrderByRelevanceFieldEnum]
+export type UpstreamConfigOrderByRelevanceFieldEnum = (typeof UpstreamConfigOrderByRelevanceFieldEnum)[keyof typeof UpstreamConfigOrderByRelevanceFieldEnum]
 
 
 
@@ -1446,7 +1443,7 @@ export type GlobalOmitConfig = {
   redemptionCode?: Prisma.RedemptionCodeOmit
   apiCallRecord?: Prisma.ApiCallRecordOmit
   aIModel?: Prisma.AIModelOmit
-  aIModelChannel?: Prisma.AIModelChannelOmit
+  upstreamConfig?: Prisma.UpstreamConfigOmit
 }
 
 /* Types for Logging */

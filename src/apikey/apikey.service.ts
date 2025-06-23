@@ -17,6 +17,10 @@ import {
 import { WalletService } from '../wallet/wallet.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
+export interface ApiKeyRecord extends ApiKey {
+  wallet: Wallet;
+}
+
 @Injectable()
 export class ApikeyService implements OnModuleInit {
   private readonly logger = new Logger(ApikeyService.name);
@@ -180,7 +184,7 @@ export class ApikeyService implements OnModuleInit {
   }
 
   // 验证 API Key 并返回记录
-  async verifyApiKey(apiKey: string): Promise<ApiKey & { wallet: Wallet }> {
+  async verifyApiKey(apiKey: string): Promise<ApiKeyRecord> {
     // 检查传入参数格式
     if (!apiKey || typeof apiKey !== 'string') {
       throw new UnauthorizedException('API key is required');

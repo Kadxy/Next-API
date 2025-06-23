@@ -1,4 +1,4 @@
-import { AIModel, AIModelChannel, PrismaClient } from '../generated';
+import { AIModel, PrismaClient, UpstreamConfig } from '../generated';
 import { Decimal } from '@prisma/client/runtime/library';
 import * as dotenv from 'dotenv';
 
@@ -14,8 +14,8 @@ enum providers {
 
 type Unit = 'k' | 'm';
 type SeedAIModel = Omit<AIModel, 'id' | 'isActive' | 'createdAt' | 'updatedAt'>;
-type SeedAIModelChannel = Omit<
-  AIModelChannel,
+type SeedUpstreamConfig = Omit<
+  UpstreamConfig,
   'id' | 'createdAt' | 'updatedAt'
 >;
 
@@ -38,6 +38,12 @@ const aiModels: SeedAIModel[] = [
     outputPrice: getPrice(0.6, 'm'), // $0.60 per 1M tokens
   },
   {
+    name: 'gpt-4.1',
+    providerId: providers.OpenAI,
+    inputPrice: getPrice(2, 'm'), // $0.15 per 1M tokens
+    outputPrice: getPrice(4, 'm'), // $0.60 per 1M tokens
+  },
+  {
     name: 'deepseek-r1',
     providerId: providers.Deepseek,
     inputPrice: getPrice(1, 'm'), // $1.00 per 1M tokens
@@ -45,33 +51,56 @@ const aiModels: SeedAIModel[] = [
   },
 ];
 
-const aiModelChannels: SeedAIModelChannel[] = [
+const upstreamConfigs: SeedUpstreamConfig[] = [
   {
     name: 'openai-next-1',
-    weight: 100,
+    weight: 20,
     baseUrl: 'https://api.openai-next.com',
+    apiKey: 'sk-1234567890',
+  },
+  {
+    name: 'openai-next-2',
+    weight: 10,
+    baseUrl: 'https://api.openai-next.com',
+    apiKey: 'sk-muHpR82P4qyo8Frq0cCf8593C2Af448bA2CaE0143a169d39',
+  },
+  {
+    name: 'test-upstream',
+    weight: 30,
+    baseUrl: 'https://api.test-upstream.com',
     apiKey: 'sk-1234567890',
   },
 ];
 
 async function main() {
-  await prisma.aIModel.createMany({
-    data: aiModels,
-  });
+  await Promise.all([
+    aiModels.map(async (aiModel, index) => {
+      console.log(`🔄 AI Model ${index + 1}/${aiModels.length}`);
+      await prisma.aIModel.upsert({
+        where: { name: aiModel.name },
+        update: aiModel,
+        create: aiModel,
+      });
+    }),
 
-  await prisma.aIModelChannel.createMany({
-    data: aiModelChannels,
-  });
+    upstreamConfigs.map(async (upstreamConfig, index) => {
+      console.log(`🔄 Upstream Config ${index + 1}/${upstreamConfigs.length}`);
+      await prisma.upstreamConfig.upsert({
+        where: { name: upstreamConfig.name },
+        update: upstreamConfig,
+        create: upstreamConfig,
+      });
+    }),
+  ]);
 
   console.log('✅ Seed data created successfully');
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
+  .then(async () => await prisma.$disconnect())
   .catch(async (e) => {
-    console.error(e);
+    console.error(e.message);
+    console.error(e.stack);
     await prisma.$disconnect();
     process.exit(1);
   });

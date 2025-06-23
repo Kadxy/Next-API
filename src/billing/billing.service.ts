@@ -7,7 +7,7 @@ import {
   TiktokenService,
   OpenAIRequest,
 } from '../billing/tiktoken/tiktoken.service';
-import { BillingRawData } from '../proxy/interfaces/proxy.interface';
+import { BillingContext } from './dto/billing-context';
 
 @Injectable()
 export class BillingService {
@@ -15,17 +15,14 @@ export class BillingService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly ulidService: UlidService,
     private readonly tiktokenService: TiktokenService,
   ) {}
 
-  /**
-   * 记录API调用并计算费用（单表写入）
-   */
-  async recordApiCall(rawData: BillingRawData) {
+  // 记录API调用并计算费用（单表写入）
+  async recordApiCall(billingContext: BillingContext) {
     try {
       // 1. 计算token和费用
-      const billingResult = await this.calculateBilling(rawData);
+      const billingResult = await this.calculateBilling(billingContext);
 
       // 2. 写入 ApiCallRecord（包含所有信息）
       await this.prisma.apiCallRecord.create({
@@ -70,7 +67,7 @@ export class BillingService {
   /**
    * 计算计费信息
    */
-  private async calculateBilling(rawData: BillingRawData): Promise<{
+  private async calculateBilling(billingContext: BillingContext): Promise<{
     inputTokens: number;
     outputTokens: number;
     cost: number;
@@ -82,28 +79,29 @@ export class BillingService {
     try {
       // 获取模型信息
       const model = await this.prisma.aIModel.findUnique({
-        where: { name: rawData.model, isActive: true },
+        where: { name: billingContext.model, isActive: true },
       });
 
       if (!model) {
         this.logger.warn(
-          `Model ${rawData.model} not found, using default pricing`,
+          `Model ${billingContext.model} not found, using default pricing`,
         );
         return { inputTokens: 0, outputTokens: 0, cost: 0 };
       }
 
       // 如果是失败请求或没有响应体，返回零费用
-      if (rawData.status >= 40000 || !rawData.responseBody) {
+      if (billingContext.errorMessage || !billingContext.responseText) {
         return { inputTokens: 0, outputTokens: 0, cost: 0 };
       }
 
       // 优先使用响应中的usage信息
-      if (rawData.responseBody.usage) {
-        inputTokens = rawData.responseBody.usage.prompt_tokens || 0;
-        outputTokens = rawData.responseBody.usage.completion_tokens || 0;
+      if (billingContext.responseText.usage) {
+        inputTokens = billingContext.responseText.usage.prompt_tokens || 0;
+        outputTokens = billingContext.responseText.usage.completion_tokens || 0;
       } else {
         // 使用tiktoken计算
-        const tokenResult = await this.calculateTokensWithTiktoken(rawData);
+        const tokenResult =
+          await this.calculateTokensWithTiktoken(billingContext);
         inputTokens = tokenResult.inputTokens;
         outputTokens = tokenResult.outputTokens;
       }
@@ -123,28 +121,27 @@ export class BillingService {
   /**
    * 使用tiktoken计算token数量
    */
-  private async calculateTokensWithTiktoken(rawData: BillingRawData): Promise<{
+  private async calculateTokensWithTiktoken(
+    billingContext: BillingContext,
+  ): Promise<{
     inputTokens: number;
     outputTokens: number;
   }> {
     try {
       // 构造输入请求
       const openAIRequest: OpenAIRequest = {
-        messages: rawData.requestBody.messages.map((msg) => ({
+        messages: billingContext.requestBody.messages.map((msg) => ({
           role: msg.role,
           content: msg.content,
           name: msg.name,
         })),
-        tools: rawData.requestBody.tools,
+        tools: billingContext.requestBody.tools,
       };
 
       // 构造输出文本
       let outputText = '';
-      if (
-        rawData.responseBody?.choices &&
-        Array.isArray(rawData.responseBody.choices)
-      ) {
-        outputText = rawData.responseBody.choices
+      if (billingContext.responseText?.choices) {
+        outputText = billingContext.responseText.choices
           .map((choice) => choice.message?.content || choice.text || '')
           .join('\n');
       }
@@ -309,91 +306,5 @@ export class BillingService {
           this.logger.error(`Failed to mark records as failed: ${err.message}`);
         });
     }
-  }
-
-  /**
-   * 获取单个API调用记录
-   */
-  async getApiCallRecord(requestId: string) {
-    return this.prisma.apiCallRecord.findUnique({
-      where: { requestId },
-    });
-  }
-
-  /**
-   * 获取钱包的API调用记录
-   */
-  async getWalletApiCallHistory(
-    walletId: number,
-    options?: {
-      startDate?: Date;
-      endDate?: Date;
-      page?: number;
-      pageSize?: number;
-    },
-  ) {
-    const where: any = { walletId };
-    const page = options?.page || 1;
-    const pageSize = options?.pageSize || 20;
-
-    if (options?.startDate || options?.endDate) {
-      where.createdAt = {};
-      if (options.startDate) where.createdAt.gte = options.startDate;
-      if (options.endDate) where.createdAt.lte = options.endDate;
-    }
-
-    const [records, total] = await Promise.all([
-      this.prisma.apiCallRecord.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
-      this.prisma.apiCallRecord.count({ where }),
-    ]);
-
-    return {
-      records,
-      pagination: {
-        page,
-        pageSize,
-        total,
-        totalPages: Math.ceil(total / pageSize),
-      },
-    };
-  }
-
-  /**
-   * 获取钱包的计费统计
-   */
-  async getWalletBillingStats(
-    walletId: number,
-    startDate?: Date,
-    endDate?: Date,
-  ) {
-    const where: any = { walletId };
-
-    if (startDate || endDate) {
-      where.createdAt = {};
-      if (startDate) where.createdAt.gte = startDate;
-      if (endDate) where.createdAt.lte = endDate;
-    }
-
-    const stats = await this.prisma.apiCallRecord.aggregate({
-      where,
-      _sum: {
-        amount: true,
-        inputToken: true,
-        outputToken: true,
-      },
-      _count: true,
-    });
-
-    return {
-      totalCost: Number(stats._sum.amount) || 0,
-      totalInputTokens: stats._sum.inputToken || 0,
-      totalOutputTokens: stats._sum.outputToken || 0,
-      totalRequests: stats._count,
-    };
   }
 }
