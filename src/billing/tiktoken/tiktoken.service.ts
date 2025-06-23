@@ -1,22 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { get_encoding, Tiktoken } from 'tiktoken';
 import { Jimp } from 'jimp';
+import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
 
 export interface TikTokenResult {
   inputTokens: number;
   outputTokens: number;
-}
-
-export interface OpenAIRequest {
-  messages: {
-    role: string;
-    content:
-      | string
-      | { type: string; text?: string; image_url?: { url: string } }[];
-    name?: string;
-  }[];
-  tools?: any[];
-  [key: string]: any;
 }
 
 @Injectable()
@@ -28,9 +17,9 @@ export class TiktokenService {
     this.encoder = get_encoding('cl100k_base');
   }
 
-  /** 计算请求和响应的 token 数量 */
+  // 计算请求和响应的 token 数量
   public async countTokens(
-    req: OpenAIRequest,
+    req: AIModelRequest,
     resText: string,
   ): Promise<TikTokenResult> {
     return {
@@ -39,13 +28,13 @@ export class TiktokenService {
     };
   }
 
-  /** 计算文本的 token 数量 */
+  // 计算文本的 token 数量
   private countText(text: string): number {
     return this.encoder.encode(text).length;
   }
 
-  /** 计算请求体的 token 数量 */
-  private async countRequestTokens(request: OpenAIRequest): Promise<number> {
+  // 计算请求体的 token 数量
+  private async countRequestTokens(request: AIModelRequest): Promise<number> {
     const { messages, tools } = request;
 
     let tokens = 0;
@@ -61,9 +50,9 @@ export class TiktokenService {
     return tokens;
   }
 
-  /** 计算消息数组的 token 数量 */
+  // 计算消息数组的 token 数量
   private async countMessagesTokens(
-    messages: OpenAIRequest['messages'],
+    messages: AIModelRequest['messages'],
   ): Promise<number> {
     const TOKENS_PER_MESSAGE = 3;
     const TOKENS_PER_NAME = 1;
@@ -101,9 +90,9 @@ export class TiktokenService {
     return tokens;
   }
 
-  /** 计算消息内容数组的 token 数量 */
+  // 计算消息内容数组的 token 数量
   private async countContentArray(
-    content: OpenAIRequest['messages'][number]['content'],
+    content: AIModelRequest['messages'][number]['content'],
   ): Promise<number> {
     if (!Array.isArray(content)) return 0;
 
@@ -130,7 +119,7 @@ export class TiktokenService {
     return tokens;
   }
 
-  /** 获取图片的长、宽 */
+  // 获取图片的长、宽
   private async getImageTokenCount(base64Str: string): Promise<number> {
     // 读取图片
     const image = await Jimp.read(base64Str);

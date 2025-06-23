@@ -14,6 +14,7 @@ import fastifyCsrf from '@fastify/csrf-protection';
 import helmet from '@fastify/helmet';
 import compression from '@fastify/compress';
 import { constants as ZlibConstants } from 'zlib';
+import { FeishuWebhookService } from './core/feishu-webhook/feishu-webhook.service';
 
 // Swagger API Docs
 export const BASE_URL = 'http://localhost:9527';
@@ -87,6 +88,10 @@ async function bootstrap() {
   console.log(`Server is running on PORT[${port}]`);
   console.log('API DOCS: ', `${BASE_URL}${SCALAR_PATH}`);
   console.log('OPENAPI JSON: ', `${BASE_URL}${OPENAPI_PATH}`);
+
+  // 发送飞书消息
+  const feishuService = app.get(FeishuWebhookService);
+  feishuService.sendText(`service started at ${new Date().toLocaleString()}`);
 }
 
 bootstrap();

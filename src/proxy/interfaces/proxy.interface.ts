@@ -1,8 +1,15 @@
 // AI模型请求接口
 export interface AIModelRequest {
   model: string;
-  messages: any[];
   stream?: boolean;
+  messages: {
+    role: string;
+    content:
+      | string
+      | { type: string; text?: string; image_url?: { url: string } }[];
+    name?: string;
+  }[];
+  tools?: any[];
   [key: string]: any;
 }
 

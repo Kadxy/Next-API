@@ -85,4 +85,5 @@ export type AIModel = Prisma.AIModelModel
  */
 export type UpstreamConfig = Prisma.UpstreamConfigModel
 
-
+export type BillStatus = $Enums.BillStatus
+export const BillStatus = $Enums.BillStatus

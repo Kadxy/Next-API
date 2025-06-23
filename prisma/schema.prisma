@@ -140,17 +140,17 @@ model ApiCallRecord {
   userId    Int    @db.Int // 冗余 userId，方便查询
 
   // API 调用信息
-  model           String    @db.VarChar(63) // 模型名称
+  model           String     @db.VarChar(63) // 模型名称
   startTime       DateTime // 请求开始时间
   endTime         DateTime? // 请求结束时间
-  durationMs      Int       @default(0) // 耗时(单位: ms)
-  errorMessage    String?   @db.Text // 如果调用失败, 储存的错误信息
-  clientIp        String    @default("0.0.0.0") @db.VarChar(45) // IPv4或IPv6
-  externalTraceId String    @default("") @db.VarChar(63) // 外部追踪ID
-  inputToken      Int       @default(0) // 输入 token 数量
-  outputToken     Int       @default(0) // 输出 token 数量
-  cost            Decimal   @default(0) @db.Decimal(16, 8) // 费用, 以当前模型价格计算
-  isBilled        Boolean   @default(false) // 是否已计费
+  durationMs      Int        @default(0) // 耗时(单位: ms)
+  errorMessage    String?    @db.Text // 如果调用失败, 储存的错误信息
+  clientIp        String     @default("0.0.0.0") @db.VarChar(45) // IPv4或IPv6
+  externalTraceId String     @default("") @db.VarChar(63) // 外部追踪ID
+  inputToken      Int        @default(0) // 输入 token 数量
+  outputToken     Int        @default(0) // 输出 token 数量
+  cost            Decimal    @default(0) @db.Decimal(16, 8) // 费用, 以当前模型价格计算
+  billStatus      BillStatus @default(PENDING) // 计费状态
 
   // 审计信息
   createdAt DateTime @default(now())
@@ -158,8 +158,16 @@ model ApiCallRecord {
 
   @@index([walletId, createdAt(sort: Desc)]) // 按钱包查询优化
   @@index([userId, createdAt(sort: Desc)]) // 按用户查询优化
-  @@index([isBilled, createdAt]) // 计费队列查询优化
+  @@index([billStatus, createdAt]) // 计费队列查询优化
   @@map("api_call_records")
+}
+
+// 计费状态枚举
+enum BillStatus {
+  PENDING // 待计费
+  PROCESSING // 计费中（已被某个实例锁定）
+  COMPLETED // 计费完成
+  FAILED // 计费失败
 }
 
 // ----- AI Models & Channels -----

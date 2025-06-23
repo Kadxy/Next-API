@@ -9,12 +9,14 @@ import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { AIModelRequest, AIModelResponse } from './interfaces/proxy.interface';
 import { BillingService } from '../billing/billing.service';
-import { AIModel, UpstreamConfig } from '@prisma-client';
+import { AIModel, BillStatus, UpstreamConfig } from '@prisma-client';
 import { APICallException, BusinessException } from '../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ULID } from 'ulid';
 import { AxiosRequestConfig } from 'axios';
 import { BillingContext } from 'src/billing/dto/billing-context';
+import { TiktokenService } from 'src/billing/tiktoken/tiktoken.service';
+import { Decimal } from '@prisma-client/internal/prismaNamespace';
 
 @Injectable()
 export class ProxyService implements OnModuleInit, OnModuleDestroy {
@@ -25,9 +27,10 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   private upstreams: Map<number, UpstreamConfig> = new Map();
 
   constructor(
-    private readonly httpService: HttpService,
     private readonly prisma: PrismaService,
+    private readonly httpService: HttpService,
     private readonly billingService: BillingService,
+    private readonly tiktokenService: TiktokenService,
   ) {}
 
   async onModuleInit() {
@@ -44,14 +47,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
     body: AIModelRequest,
     billingContext: BillingContext,
   ): Promise<AIModelResponse> {
-    const {
-      requestId,
-      userId,
-      walletId,
-      clientIp,
-      externalTraceId,
-      startTime,
-    } = billingContext;
+    const { requestId } = billingContext;
 
     // 1. 检查模型是否支持
     const isModelSupported = this.models.has(body.model);
@@ -59,56 +55,30 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       throw new APICallException(requestId, `model ${body.model} not support`);
     }
 
-    // TODO: 添加钱包余额快速检查（可选，用 Redis 缓存）
+    // 2. 钱包余额检查
 
-    // 2. 转发请求
-    const response = await this.sendToUpstream(body);
+    // 3. 转发请求
+    const response = await this.sendToUpstream(body, billingContext);
 
-    // 3. 异步处理计费（不阻塞响应）
-    setTimeout(async () => {
-      try {
-        await this.billingService.recordApiCall({
-          requestId: billingContext.requestId,
-          userId: billingContext.userId,
-          walletId: billingContext.walletId,
-          model: body.model,
-          clientIp: billingContext.clientIp,
-          externalTraceId: billingContext.externalTraceId,
-          startTime: new Date(billingContext.startTime),
-          endTime: new Date(),
-          requestBody: body,
-          responseBody: response,
-          status: 20000, // 成功状态
-        });
+    // 3. 异步计算费用(不阻塞响应)
+    // this.tiktokenService
 
-        this.logger.debug(`Billing recorded for ${billingContext.eventId}`);
-      } catch (error) {
-        this.logger.error(
-          `Failed to process billing for ${billingContext.eventId}: ${error.message}`,
-        );
-      }
-    }, 0);
+    // 4. 异步处理计费(不阻塞响应)
+    // this.billingService
 
     return response;
-  }
-
-  // 记录失败的计费信息
-  async recordFailedBilling(billingData: BillingRawData) {
-    try {
-      await this.billingService.recordApiCall(billingData);
-    } catch (error) {
-      this.logger.error(`Failed to record failed billing: ${error.message}`);
-    }
   }
 
   // 发送请求到上游
   private async sendToUpstream(
     body: AIModelRequest,
-    retry: { count: number; exceptIds: number[] } = { count: 0, exceptIds: [] },
+    billingContext: BillingContext,
+    retry: { count: number; excludeIds: number[] } = {
+      count: 0,
+      excludeIds: [],
+    },
   ): Promise<AIModelResponse> {
-    this.logger.debug(`retry: ${JSON.stringify(retry)}`);
-
-    const { id, config } = await this.getUpstream(retry.exceptIds);
+    const { id, config } = await this.getUpstream(retry.excludeIds);
 
     try {
       const response = await firstValueFrom(
@@ -120,11 +90,12 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       this.logger.error(`Upstream request failed: ${error.message}`);
 
       if (retry.count < 3) {
-        return this.sendToUpstream(body, {
+        return this.sendToUpstream(body, billingContext, {
           count: retry.count + 1,
-          exceptIds: [...retry.exceptIds, id],
+          excludeIds: [...retry.excludeIds, id],
         });
       } else {
+        this.recordFailedBilling(billingContext); // 记录失败的计费信息
         throw new BusinessException('service error');
       }
     }
@@ -147,16 +118,16 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
     this.logger.log(`✅ Loaded ${this.upstreams.size} upstreams`);
   }
 
-  // 基于权重选择上游服务, 返回上游id 和 axios请求配置
+  // 基于权重选择上游服务, 返回上游 id 和 axios请求配置
   private async getUpstream(
-    exceptIds: number[],
+    excludeIds: number[],
   ): Promise<{ id: number; config: AxiosRequestConfig }> {
     let availableTotalWeight = 0;
     const availableUpstreams: UpstreamConfig[] = [];
 
     // 遍历全部上游, 过滤掉已排除的上游
     for (const upstream of this.upstreams.values()) {
-      if (!exceptIds.includes(upstream.id)) {
+      if (!excludeIds.includes(upstream.id)) {
         availableUpstreams.push(upstream);
         availableTotalWeight += upstream.weight;
       }
@@ -197,5 +168,27 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
         timeout: this.proxyTimeoutMs,
       },
     };
+  }
+
+  // 记录失败的计费信息
+  private async recordFailedBilling(data: BillingContext) {
+    try {
+      await this.billingService.createBillingRecord({
+        requestId: data.requestId,
+        userId: data.userId,
+        wallet: { connect: { id: data.walletId } },
+        model: data.model.name,
+        clientIp: data.clientIp,
+        externalTraceId: data.externalTraceId.slice(0, 63),
+        startTime: data.startTime,
+        endTime: data.endTime || new Date(),
+        inputToken: data.inputTokens || 0,
+        outputToken: data.outputTokens || 0,
+        cost: data.cost || new Decimal(0),
+        billStatus: BillStatus.COMPLETED, // 失败请求无需计费, 直接标记为已完成
+      });
+    } catch (error) {
+      this.logger.error(`Failed to record failed billing: ${error.message}`);
+    }
   }
 }

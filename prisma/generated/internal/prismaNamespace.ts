@@ -1166,7 +1166,7 @@ export const ApiCallRecordScalarFieldEnum = {
   inputToken: 'inputToken',
   outputToken: 'outputToken',
   cost: 'cost',
-  isBilled: 'isBilled',
+  billStatus: 'billStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1351,6 +1351,13 @@ export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'BigInt'
  */
 export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BillStatus'
+ */
+export type EnumBillStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillStatus'>
     
 
 

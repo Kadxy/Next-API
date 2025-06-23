@@ -20,6 +20,7 @@ import { UlidService } from 'src/core/ulid/ulid.service';
 import { AIModelRequest } from './interfaces/proxy.interface';
 import { ApiKey, Wallet } from '@prisma-client';
 import { BillingContext } from 'src/billing/dto/billing-context';
+import { Decimal } from '@prisma-client/internal/prismaNamespace';
 
 export const REQUEST_ID_HEADER = 'X-APIGrip-RequestId';
 export const EXTERNAL_TRACE_ID_HEADER = 'X-APIGrip-ExternalTraceId';
@@ -64,13 +65,13 @@ export class ProxyController {
       walletId: apiKeyRecord.wallet.id,
       clientIp,
       externalTraceId,
-      startTime,
+      startTime: new Date(startTime),
       model: body.model,
       prompt: body.messages[0].content,
       response: '',
       status: 'pending',
       duration: 0,
-      cost: 0,
+      cost: new Decimal(0),
       error: undefined,
     };
 

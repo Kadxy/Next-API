@@ -57,7 +57,7 @@ export type ApiCallRecordMinAggregateOutputType = {
   inputToken: number | null
   outputToken: number | null
   cost: runtime.Decimal | null
-  isBilled: boolean | null
+  billStatus: $Enums.BillStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -76,7 +76,7 @@ export type ApiCallRecordMaxAggregateOutputType = {
   inputToken: number | null
   outputToken: number | null
   cost: runtime.Decimal | null
-  isBilled: boolean | null
+  billStatus: $Enums.BillStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -95,7 +95,7 @@ export type ApiCallRecordCountAggregateOutputType = {
   inputToken: number
   outputToken: number
   cost: number
-  isBilled: number
+  billStatus: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -134,7 +134,7 @@ export type ApiCallRecordMinAggregateInputType = {
   inputToken?: true
   outputToken?: true
   cost?: true
-  isBilled?: true
+  billStatus?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -153,7 +153,7 @@ export type ApiCallRecordMaxAggregateInputType = {
   inputToken?: true
   outputToken?: true
   cost?: true
-  isBilled?: true
+  billStatus?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -172,7 +172,7 @@ export type ApiCallRecordCountAggregateInputType = {
   inputToken?: true
   outputToken?: true
   cost?: true
-  isBilled?: true
+  billStatus?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -278,7 +278,7 @@ export type ApiCallRecordGroupByOutputType = {
   inputToken: number
   outputToken: number
   cost: runtime.Decimal
-  isBilled: boolean
+  billStatus: $Enums.BillStatus
   createdAt: Date
   updatedAt: Date
   _count: ApiCallRecordCountAggregateOutputType | null
@@ -320,7 +320,7 @@ export type ApiCallRecordWhereInput = {
   inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   cost?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
+  billStatus?: Prisma.EnumBillStatusFilter<"ApiCallRecord"> | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
@@ -340,7 +340,7 @@ export type ApiCallRecordOrderByWithRelationInput = {
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   cost?: Prisma.SortOrder
-  isBilled?: Prisma.SortOrder
+  billStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   wallet?: Prisma.WalletOrderByWithRelationInput
@@ -364,7 +364,7 @@ export type ApiCallRecordWhereUniqueInput = Prisma.AtLeast<{
   inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   cost?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
+  billStatus?: Prisma.EnumBillStatusFilter<"ApiCallRecord"> | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
@@ -384,7 +384,7 @@ export type ApiCallRecordOrderByWithAggregationInput = {
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   cost?: Prisma.SortOrder
-  isBilled?: Prisma.SortOrder
+  billStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ApiCallRecordCountOrderByAggregateInput
@@ -411,7 +411,7 @@ export type ApiCallRecordScalarWhereWithAggregatesInput = {
   inputToken?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   outputToken?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   cost?: Prisma.DecimalWithAggregatesFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolWithAggregatesFilter<"ApiCallRecord"> | boolean
+  billStatus?: Prisma.EnumBillStatusWithAggregatesFilter<"ApiCallRecord"> | $Enums.BillStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
 }
@@ -429,7 +429,7 @@ export type ApiCallRecordCreateInput = {
   inputToken?: number
   outputToken?: number
   cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: boolean
+  billStatus?: $Enums.BillStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet: Prisma.WalletCreateNestedOneWithoutApiCallRecordsInput
@@ -449,7 +449,7 @@ export type ApiCallRecordUncheckedCreateInput = {
   inputToken?: number
   outputToken?: number
   cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: boolean
+  billStatus?: $Enums.BillStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -467,7 +467,7 @@ export type ApiCallRecordUpdateInput = {
   inputToken?: Prisma.IntFieldUpdateOperationsInput | number
   outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  billStatus?: Prisma.EnumBillStatusFieldUpdateOperationsInput | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneRequiredWithoutApiCallRecordsNestedInput
@@ -487,7 +487,7 @@ export type ApiCallRecordUncheckedUpdateInput = {
   inputToken?: Prisma.IntFieldUpdateOperationsInput | number
   outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  billStatus?: Prisma.EnumBillStatusFieldUpdateOperationsInput | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -506,7 +506,7 @@ export type ApiCallRecordCreateManyInput = {
   inputToken?: number
   outputToken?: number
   cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: boolean
+  billStatus?: $Enums.BillStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -524,7 +524,7 @@ export type ApiCallRecordUpdateManyMutationInput = {
   inputToken?: Prisma.IntFieldUpdateOperationsInput | number
   outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  billStatus?: Prisma.EnumBillStatusFieldUpdateOperationsInput | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -543,7 +543,7 @@ export type ApiCallRecordUncheckedUpdateManyInput = {
   inputToken?: Prisma.IntFieldUpdateOperationsInput | number
   outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  billStatus?: Prisma.EnumBillStatusFieldUpdateOperationsInput | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -578,7 +578,7 @@ export type ApiCallRecordCountOrderByAggregateInput = {
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   cost?: Prisma.SortOrder
-  isBilled?: Prisma.SortOrder
+  billStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -606,7 +606,7 @@ export type ApiCallRecordMaxOrderByAggregateInput = {
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   cost?: Prisma.SortOrder
-  isBilled?: Prisma.SortOrder
+  billStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -625,7 +625,7 @@ export type ApiCallRecordMinOrderByAggregateInput = {
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   cost?: Prisma.SortOrder
-  isBilled?: Prisma.SortOrder
+  billStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -681,6 +681,10 @@ export type ApiCallRecordUncheckedUpdateManyWithoutWalletNestedInput = {
   deleteMany?: Prisma.ApiCallRecordScalarWhereInput | Prisma.ApiCallRecordScalarWhereInput[]
 }
 
+export type EnumBillStatusFieldUpdateOperationsInput = {
+  set?: $Enums.BillStatus
+}
+
 export type ApiCallRecordCreateWithoutWalletInput = {
   requestId: string
   userId: number
@@ -694,7 +698,7 @@ export type ApiCallRecordCreateWithoutWalletInput = {
   inputToken?: number
   outputToken?: number
   cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: boolean
+  billStatus?: $Enums.BillStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -712,7 +716,7 @@ export type ApiCallRecordUncheckedCreateWithoutWalletInput = {
   inputToken?: number
   outputToken?: number
   cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: boolean
+  billStatus?: $Enums.BillStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -760,7 +764,7 @@ export type ApiCallRecordScalarWhereInput = {
   inputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   outputToken?: Prisma.IntFilter<"ApiCallRecord"> | number
   cost?: Prisma.DecimalFilter<"ApiCallRecord"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
+  billStatus?: Prisma.EnumBillStatusFilter<"ApiCallRecord"> | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
 }
@@ -778,7 +782,7 @@ export type ApiCallRecordCreateManyWalletInput = {
   inputToken?: number
   outputToken?: number
   cost?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: boolean
+  billStatus?: $Enums.BillStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -796,7 +800,7 @@ export type ApiCallRecordUpdateWithoutWalletInput = {
   inputToken?: Prisma.IntFieldUpdateOperationsInput | number
   outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  billStatus?: Prisma.EnumBillStatusFieldUpdateOperationsInput | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -814,7 +818,7 @@ export type ApiCallRecordUncheckedUpdateWithoutWalletInput = {
   inputToken?: Prisma.IntFieldUpdateOperationsInput | number
   outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  billStatus?: Prisma.EnumBillStatusFieldUpdateOperationsInput | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -832,7 +836,7 @@ export type ApiCallRecordUncheckedUpdateManyWithoutWalletInput = {
   inputToken?: Prisma.IntFieldUpdateOperationsInput | number
   outputToken?: Prisma.IntFieldUpdateOperationsInput | number
   cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  isBilled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  billStatus?: Prisma.EnumBillStatusFieldUpdateOperationsInput | $Enums.BillStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -853,7 +857,7 @@ export type ApiCallRecordSelect<ExtArgs extends runtime.Types.Extensions.Interna
   inputToken?: boolean
   outputToken?: boolean
   cost?: boolean
-  isBilled?: boolean
+  billStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
@@ -875,12 +879,12 @@ export type ApiCallRecordSelectScalar = {
   inputToken?: boolean
   outputToken?: boolean
   cost?: boolean
-  isBilled?: boolean
+  billStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "walletId" | "userId" | "model" | "startTime" | "endTime" | "durationMs" | "errorMessage" | "clientIp" | "externalTraceId" | "inputToken" | "outputToken" | "cost" | "isBilled" | "createdAt" | "updatedAt", ExtArgs["result"]["apiCallRecord"]>
+export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "walletId" | "userId" | "model" | "startTime" | "endTime" | "durationMs" | "errorMessage" | "clientIp" | "externalTraceId" | "inputToken" | "outputToken" | "cost" | "billStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["apiCallRecord"]>
 export type ApiCallRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
 }
@@ -904,7 +908,7 @@ export type $ApiCallRecordPayload<ExtArgs extends runtime.Types.Extensions.Inter
     inputToken: number
     outputToken: number
     cost: runtime.Decimal
-    isBilled: boolean
+    billStatus: $Enums.BillStatus
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["apiCallRecord"]>
@@ -1290,7 +1294,7 @@ export interface ApiCallRecordFieldRefs {
   readonly inputToken: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly outputToken: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly cost: Prisma.FieldRef<"ApiCallRecord", 'Decimal'>
-  readonly isBilled: Prisma.FieldRef<"ApiCallRecord", 'Boolean'>
+  readonly billStatus: Prisma.FieldRef<"ApiCallRecord", 'BillStatus'>
   readonly createdAt: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
 }
