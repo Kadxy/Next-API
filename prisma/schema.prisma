@@ -134,23 +134,24 @@ model RedemptionCode {
 
 // API 调用记录（包含计费信息）
 model ApiCallRecord {
-  requestId String @id @db.VarChar(26) // 使用 ULID 作为全局唯一请求ID
-  wallet    Wallet @relation(fields: [walletId], references: [id])
-  walletId  Int    @db.Int // 关联钱包
-  userId    Int    @db.Int // 冗余 userId，方便查询
+  requestId         String @id @db.VarChar(26) // 使用 ULID 作为全局唯一请求ID
+  wallet            Wallet @relation(fields: [walletId], references: [id])
+  walletId          Int    @db.Int // 关联钱包
+  userId            Int    @db.Int // 冗余 userId，方便查询
+  apikeyDisplayName String @db.VarChar(32)
 
   // API 调用信息
   model           String     @db.VarChar(63) // 模型名称
   startTime       DateTime // 请求开始时间
-  endTime         DateTime? // 请求结束时间
-  durationMs      Int        @default(0) // 耗时(单位: ms)
+  endTime         DateTime // 请求结束时间
+  durationMs      Int // 耗时(单位: ms)
   errorMessage    String?    @db.Text // 如果调用失败, 储存的错误信息
-  clientIp        String     @default("0.0.0.0") @db.VarChar(45) // IPv4或IPv6
-  externalTraceId String     @default("") @db.VarChar(63) // 外部追踪ID
-  inputToken      Int        @default(0) // 输入 token 数量
-  outputToken     Int        @default(0) // 输出 token 数量
-  cost            Decimal    @default(0) @db.Decimal(16, 8) // 费用, 以当前模型价格计算
-  billStatus      BillStatus @default(PENDING) // 计费状态
+  clientIp        String?    @db.VarChar(45) // IPv4或IPv6
+  externalTraceId String?    @db.VarChar(63) // 外部追踪ID
+  inputToken      Int // 输入 token 数量
+  outputToken     Int // 输出 token 数量
+  cost            Decimal    @db.Decimal(16, 8) // 费用, 以当前模型价格计算
+  billStatus      BillStatus
 
   // 审计信息
   createdAt DateTime @default(now())

@@ -1156,6 +1156,7 @@ export const ApiCallRecordScalarFieldEnum = {
   requestId: 'requestId',
   walletId: 'walletId',
   userId: 'userId',
+  apikeyDisplayName: 'apikeyDisplayName',
   model: 'model',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -1274,6 +1275,7 @@ export type RedemptionCodeOrderByRelevanceFieldEnum = (typeof RedemptionCodeOrde
 
 export const ApiCallRecordOrderByRelevanceFieldEnum = {
   requestId: 'requestId',
+  apikeyDisplayName: 'apikeyDisplayName',
   model: 'model',
   errorMessage: 'errorMessage',
   clientIp: 'clientIp',

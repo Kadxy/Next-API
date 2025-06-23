@@ -14,14 +14,56 @@ export interface AIModelRequest {
 }
 
 // AI模型响应接口
-export interface AIModelResponse {
+export interface AIModelNonStreamResponse {
   id?: string;
   model?: string;
-  usage?: {
-    prompt_tokens: number;
-    completion_tokens: number;
-    total_tokens: number;
-  };
-  choices?: any[];
+  object?: string;
+  created?: number;
+  choices?: {
+    index: number;
+    message: {
+      role?: string | 'assistant';
+      content?: string;
+      reasoning_content?: string;
+    };
+    finish_reason: string | 'stop';
+  }[];
+  system_fingerprint?: string;
+  usage?: AIModelUsage;
   [key: string]: any;
+}
+
+export interface AIModelStreamResponse {
+  id?: string;
+  object?: string;
+  created?: number;
+  model?: string;
+  choices?: {
+    index?: number;
+    delta?: {
+      role?: string | 'assistant';
+      content?: string;
+      reasoning_content?: string;
+    };
+  }[];
+  usage?: AIModelUsage;
+}
+
+export interface AIModelUsage {
+  prompt_tokens?: number; // ✅ 取这个
+  completion_tokens?: number; // ✅ 取这个
+  total_tokens?: number;
+  input_tokens?: number; // ❌ 不取这个
+  output_tokens?: number; // ❌ 不取这个
+  input_tokens_details?: any;
+  prompt_tokens_details?: {
+    cached_tokens?: number;
+    audio_tokens?: number;
+  };
+  completion_tokens_details?: {
+    reasoning_tokens?: number;
+    audio_tokens?: number;
+    accepted_prediction_tokens?: number;
+    rejected_prediction_tokens?: number;
+  };
 }

@@ -34,7 +34,7 @@ export class TooManyRequestsException extends BusinessException {
 
 // 500 Internal Server Error - 调用上游API失败
 export class APICallException extends BusinessException {
-  constructor(requestId: ULID, message: string = 'API call failed') {
+  constructor(requestId: ULID, message: string) {
     const errorMessage = `${message}(RequestId:${requestId})`;
 
     super(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);

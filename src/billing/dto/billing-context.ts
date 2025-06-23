@@ -1,3 +1,4 @@
+import { AIModel } from '@prisma-client';
 import { Decimal } from '@prisma-client/internal/prismaNamespace';
 import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
 
@@ -7,9 +8,10 @@ export class BillingContext {
   requestId: string; // 请求ID (ULID)
   userId: number; // 用户ID
   walletId: number; // 钱包ID
+  apikeyDisplayName: string;
 
   // 请求信息
-  model: string; // 模型名称
+  model: AIModel; // 模型名称
   clientIp: string; // 客户端IP
   externalTraceId: string; // 外部追踪ID（如果有）
 
@@ -25,11 +27,7 @@ export class BillingContext {
   // 计费信息（请求结束后填充）
   inputTokens?: number; // 输入 token 数量
   outputTokens?: number; // 输出 token 数量
-  totalTokens?: number; // 总 token 数量
   cost?: Decimal; // 费用
-
-  // 错误信息（如果失败）
-  errorMessage?: string;
 
   // 计算持续时间（毫秒）
   get durationMs(): number {

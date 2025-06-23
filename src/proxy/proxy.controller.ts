@@ -47,7 +47,7 @@ export class ProxyController {
   @ApiOperation({ summary: 'chat completion api' })
   @Post('chat/completions')
   @HttpCode(HttpStatus.OK)
-  async handleV1Request(
+  async handleChatCompletions(
     @Body() body: AIModelRequest,
     @Res() reply: FastifyReply,
     @Req() request: RequestWithApiKey,
@@ -68,40 +68,19 @@ export class ProxyController {
     billingContext.clientIp = clientIp;
     billingContext.externalTraceId = externalTraceId.slice(0, 63); // 限制长度
     billingContext.startTime = new Date();
-    billingContext.model = body.model;
 
-    try {
-      // 4. 设置响应头
-      this.setupResponseHeaders(reply, requestId, externalTraceId, body.stream);
+    // 4. 设置响应头
+    this.setupResponseHeaders(reply, requestId, externalTraceId, body.stream);
 
-      // 5. 根据是否为流式请求选择不同的处理方式
-      if (body.stream) {
-        return this.handleStreamRequest(body, billingContext, reply);
-      } else {
-        return this.handleNormalRequest(body, billingContext, reply);
-      }
-    } catch (error) {
-      // 记录错误
-      billingContext.endTime = new Date();
-      billingContext.errorMessage = error.message;
-
-      // 异步记录失败的计费信息
-      this.proxyService.recordFailedBilling(billingContext).catch((err) => {
-        this.logger.error(
-          `Failed to record billing for ${requestId}: ${err.message}`,
-        );
-      });
-
-      // 根据错误类型返回相应的错误响应
-      if (error.name === 'APICallException') {
-        return this.errorReply(reply, error.message, HttpStatus.BAD_REQUEST);
-      }
-
-      return this.errorReply(reply);
+    // 5. 根据是否为流式请求选择不同的处理方式
+    if (body.stream) {
+      return this.handleStreamRequest(body, billingContext, reply);
+    } else {
+      return this.handleNormalRequest(body, billingContext, reply);
     }
   }
 
-  // 处理普通请求
+  // 处理非流式请求
   private async handleNormalRequest(
     body: AIModelRequest,
     billingContext: BillingContext,
@@ -110,17 +89,19 @@ export class ProxyController {
     let isClientDisconnected = false;
     let isBillingProcessed = false;
 
+    const { requestId } = billingContext;
+
     // 监听客户端断开连接
     reply.raw.on('close', () => {
       if (!reply.raw.writableEnded && !isBillingProcessed) {
         isClientDisconnected = true;
         this.logger.warn(
-          `Client disconnected for normal request ${billingContext.requestId}, will still process billing if upstream completes`,
+          `[${requestId}] Client disconnected for, waiting upstream complete`,
         );
       }
     });
 
-    const response = await this.proxyService.forwardRequest(
+    const response = await this.proxyService.forwardNonStreamRequest(
       body,
       billingContext,
     );
@@ -132,7 +113,7 @@ export class ProxyController {
     } else {
       // 客户端已断开，但计费已处理，记录日志
       this.logger.debug(
-        `Request ${billingContext.requestId} completed but client disconnected, billing already processed`,
+        `[${requestId}] Request completed but client disconnected, billing already processed`,
       );
       return;
     }
@@ -161,7 +142,7 @@ export class ProxyController {
 
     // 创建一个 Transform 流用于数据收集和转发
     const dataCollector = new Transform({
-      transform(chunk: Buffer, encoding, callback) {
+      transform(chunk: Buffer, _encoding, callback) {
         const chunkStr = chunk.toString();
         fullResponseData += chunkStr;
 
@@ -177,9 +158,6 @@ export class ProxyController {
       isBillingProcessed = true;
 
       billingContext.endTime = new Date();
-      if (errorMessage) {
-        billingContext.errorMessage = errorMessage;
-      }
 
       try {
         if (isError) {
