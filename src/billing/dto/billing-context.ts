@@ -1,5 +1,5 @@
-import { AIModel } from '@prisma-client';
 import { Decimal } from '@prisma-client/internal/prismaNamespace';
+import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
 
 // 请求上下文，贯穿整个请求生命周期
 export class BillingContext {
@@ -9,9 +9,14 @@ export class BillingContext {
   walletId: number; // 钱包ID
 
   // 请求信息
-  model: AIModel; // 模型信息
+  model: string; // 模型名称
   clientIp: string; // 客户端IP
-  externalTraceId: string; // 外部追踪ID（如果有, 63字符以上部分需要截断）
+  externalTraceId: string; // 外部追踪ID（如果有）
+
+  // 请求和响应内容（用于存储到 MongoDB）
+  requestBody?: AIModelRequest; // 原始请求体
+  responseBody?: any; // 非流式响应的完整响应体
+  responseText?: string; // 流式响应的文本内容或非流式响应提取的文本
 
   // 时间信息
   startTime: Date; // 开始时间

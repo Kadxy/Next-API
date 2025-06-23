@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ApiCallRecord, BillStatus, Wallet } from '@prisma-client';
-import { BillingContext } from './dto/billing-context';
 import { ApiCallRecordCreateInput } from '@prisma-client/models';
 import { FeishuWebhookService } from 'src/core/feishu-webhook/feishu-webhook.service';
 import {

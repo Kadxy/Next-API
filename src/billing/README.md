@@ -24,6 +24,85 @@ PENDING -> PROCESSING -> COMPLETED
 - **COMPLETED**: 计费完成
 - **FAILED**: 计费失败，等待重试
 
+## 计费流程详解
+
+### 1. 请求接收阶段（ProxyController）
+
+```typescript
+// 初始化基础计费上下文
+const billingContext = new BillingContext();
+billingContext.requestId = ulid();
+billingContext.userId = apiKey.creatorId;
+billingContext.walletId = apiKey.walletId;
+billingContext.clientIp = clientIp;
+billingContext.externalTraceId = externalTraceId;
+billingContext.startTime = new Date();
+billingContext.model = body.model;
+```
+
+### 2. 请求处理阶段（ProxyService）
+
+```typescript
+// 检查模型 -> 转发请求 -> 计算费用
+async forwardRequest(body, billingContext) {
+  // 1. 检查模型是否支持
+  const modelInfo = this.models.get(body.model);
+
+  // 2. 转发请求到上游
+  const response = await this.sendToUpstream(body);
+
+  // 3. 记录结束时间
+  billingContext.endTime = new Date();
+
+  // 4. 计算 token 使用量
+  if (response.usage) {
+    // 直接使用响应中的 usage
+    billingContext.inputTokens = response.usage.prompt_tokens;
+    billingContext.outputTokens = response.usage.completion_tokens;
+  } else {
+    // 使用 tiktoken 计算
+    const result = await tiktokenService.countTokens(body, responseText);
+    billingContext.inputTokens = result.inputTokens;
+    billingContext.outputTokens = result.outputTokens;
+  }
+
+  // 5. 计算费用
+  billingContext.cost = inputPrice * inputTokens + outputPrice * outputTokens;
+
+  // 6. 异步记录计费（不阻塞响应）
+  setImmediate(() => this.recordBilling(billingContext));
+
+  return response;
+}
+```
+
+### 3. 计费记录阶段（异步）
+
+```typescript
+// 创建计费记录，状态为 PENDING
+await billingService.createBillingRecord({
+  requestId: context.requestId,
+  walletId: context.walletId,
+  userId: context.userId,
+  model: context.model,
+  inputToken: context.inputTokens,
+  outputToken: context.outputTokens,
+  cost: context.cost,
+  billStatus: BillStatus.PENDING,
+  // ... 其他字段
+});
+```
+
+### 4. 批量扣费阶段（定时任务）
+
+每分钟执行一次，处理流程：
+
+1. 查询 PENDING 记录
+2. 在事务中标记为 PROCESSING
+3. 按钱包分组
+4. 批量扣减余额
+5. 更新状态为 COMPLETED
+
 ## 并发控制方案
 
 ### 问题分析
@@ -59,45 +138,40 @@ const updateResult = await prisma.apiCallRecord.updateMany({
 // 3. 只处理成功锁定的记录
 ```
 
-## 计费流程
+## 错误处理
 
-### 1. 记录创建（实时）
+### 请求失败时的处理
 
-```typescript
-// 请求完成后立即创建记录
-await billingService.createBillingRecord({
-  requestId: ulid(),
-  model: 'gpt-4',
-  inputTokens: 100,
-  outputTokens: 200,
-  // ...
-});
-```
+- 记录错误信息到 errorMessage 字段
+- cost 设为 0
+- billStatus 直接设为 COMPLETED（无需扣费）
 
-### 2. 批量处理（定时任务，每分钟）
+### 计费失败时的处理
 
-- 查询并锁定PENDING记录
-- 按钱包分组
-- 批量扣费
-- 更新状态为COMPLETED
+- 将记录状态设为 FAILED
+- 每30分钟重试一次
+- 只重试48小时内的失败记录
 
-### 3. 失败重试（定时任务，每10分钟）
+## Token计算策略
 
-- 将FAILED记录重置为PENDING
-- 只重试最近24小时内的记录
+### 优先级
 
-## Token计算时机
+1. **优先使用响应中的 usage 信息**
 
-Token计算发生在请求完成时，而不是批量处理时：
+   - OpenAI API 通常会返回准确的 token 使用量
+   - 直接使用 `response.usage.prompt_tokens` 和 `completion_tokens`
 
-1. **实时计算**（当前方案）
+2. **备用 tiktoken 计算**
+   - 当响应中没有 usage 信息时
+   - 使用 tiktoken 库计算请求和响应的 token 数量
+   - 支持文本和图片的 token 计算
 
-   - 优点：响应中包含usage信息时直接使用
-   - 缺点：无usage信息时需要调用tiktoken
+### tiktoken 计算细节
 
-2. **延迟计算**（备选方案）
-   - 优点：批量处理时统一计算，减少实时压力
-   - 缺点：需要存储完整的请求/响应内容
+- 文本：直接编码计算长度
+- 图片：每 600x600 像素块计算 1000 tokens
+- 消息格式：每条消息额外 3 tokens
+- 工具调用：序列化后计算 token 数量
 
 ## 费用计算公式
 
@@ -127,3 +201,10 @@ Token计算发生在请求完成时，而不是批量处理时：
 2. **使用Redis**：缓存用户余额，快速预检
 3. **分片处理**：按walletId分片，提高并发度
 4. **消息队列**：未来可考虑使用MQ替代定时任务
+
+## 性能优化点
+
+1. **异步记录**：使用 `setImmediate` 确保不阻塞响应
+2. **批量处理**：减少数据库操作次数
+3. **事务优化**：单机环境下使用大事务保证一致性
+4. **索引优化**：在 billStatus 和 createdAt 上建立复合索引

@@ -14,7 +14,7 @@ export class TiktokenService {
   private encoder: Tiktoken;
 
   constructor() {
-    this.encoder = get_encoding('cl100k_base');
+    this.encoder = get_encoding('o200k_base');
   }
 
   // 计算请求和响应的 token 数量
