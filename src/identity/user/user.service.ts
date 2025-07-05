@@ -102,6 +102,18 @@ export class UserService {
     return this.findUserWithCaching({ googleId });
   }
 
+  // 更新用户显示名称
+  async updateDisplayName(uid: User['uid'], displayName: string) {
+    const user = await this.prisma.user.update({
+      where: { uid },
+      data: { displayName },
+    });
+
+    await this.updateUserCache(user);
+
+    return this.constructLimitedUser(user);
+  }
+
   // 通用查询方法 - 查询完整信息，更新缓存，返回受限字段
   private async findUserWithCaching(
     where: Prisma.UserWhereUniqueInput,

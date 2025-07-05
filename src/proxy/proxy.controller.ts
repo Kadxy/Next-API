@@ -305,20 +305,4 @@ export class ProxyController {
       reply.header('Connection', 'keep-alive');
     }
   }
-
-  // 统一 type = api_error 错误响应
-  private errorReply(
-    reply: FastifyReply,
-    message = 'service temporarily unavailable',
-    code = HttpStatus.INTERNAL_SERVER_ERROR,
-  ) {
-    const error = {
-      error: {
-        type: 'api_error',
-        message,
-        code: code.toString(),
-      },
-    };
-    return reply.status(code).send(error);
-  }
 }

@@ -83,7 +83,7 @@ export class JwtTokenService {
         throw new UnauthorizedException(JWT_ERR_MESSAGE.TOKEN_EXPIRED);
       }
 
-      this.logger.debug(`Token verified: ${JSON.stringify(payload)}`);
+      // this.logger.debug(`Token verified: ${JSON.stringify(payload)}`);
 
       // Return user info
       return this.userService.getCachedUser(payload.uid);

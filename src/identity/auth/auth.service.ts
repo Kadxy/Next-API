@@ -137,6 +137,16 @@ export class AuthService {
     }
   }
 
+  // 更新用户显示名称
+  async updateDisplayName(uid: User['uid'], displayName: string) {
+    try {
+      return this.userService.updateDisplayName(uid, displayName);
+    } catch (error) {
+      this.logger.error(error?.stack);
+      throw new BusinessException();
+    }
+  }
+
   // 生成验证码(数字+字母)
   private generateRandomCode(length: number = 6): string {
     return Math.random()
