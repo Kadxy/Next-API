@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { Cache } from '@nestjs/cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Passkey, User } from '@prisma-client';
+import { Passkey, User } from '@prisma-client/client';
 import {
   generateRegistrationOptions,
   verifyRegistrationResponse,

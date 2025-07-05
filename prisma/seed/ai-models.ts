@@ -1,4 +1,4 @@
-import { AIModel, PrismaClient, UpstreamConfig } from '../generated';
+import { AIModel, PrismaClient, UpstreamConfig } from '../generated/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import * as dotenv from 'dotenv';
 

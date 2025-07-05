@@ -134,11 +134,11 @@ model RedemptionCode {
 
 // API 调用记录（包含计费信息）
 model ApiCallRecord {
-  requestId         String @id @db.VarChar(26) // 使用 ULID 作为全局唯一请求ID
-  wallet            Wallet @relation(fields: [walletId], references: [id])
-  walletId          Int    @db.Int // 关联钱包
-  userId            Int    @db.Int // 冗余 userId，方便查询
-  apikeyDisplayName String @db.VarChar(32)
+  requestId String @id @db.VarChar(26) // 使用 ULID 作为全局唯一请求ID
+  wallet    Wallet @relation(fields: [walletId], references: [id])
+  walletId  Int    @db.Int // 关联钱包
+  userId    Int    @db.Int // 冗余 userId，方便查询
+  apikeyId  Int    @db.Int // 冗余 apikeyId，方便查询
 
   // API 调用信息
   model           String     @db.VarChar(63) // 模型名称
@@ -150,16 +150,16 @@ model ApiCallRecord {
   externalTraceId String?    @db.VarChar(63) // 外部追踪ID
   inputToken      Int // 输入 token 数量
   outputToken     Int // 输出 token 数量
-  cost            Decimal    @db.Decimal(16, 8) // 费用, 以当前模型价格计算
+  cost            Decimal    @db.Decimal(16, 8) // 费用, 以模型当前价格计算
   billStatus      BillStatus
 
   // 审计信息
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([walletId, createdAt(sort: Desc)]) // 按钱包查询优化
-  @@index([userId, createdAt(sort: Desc)]) // 按用户查询优化
-  @@index([billStatus, createdAt]) // 计费队列查询优化
+  @@index([walletId, createdAt(sort: Desc)]) // (所有者)按钱包查询
+  @@index([walletId, userId, createdAt(sort: Desc)]) // (成员)按用户查询
+  @@index([billStatus, createdAt]) // 计费队列查询
   @@map("api_call_records")
 }
 

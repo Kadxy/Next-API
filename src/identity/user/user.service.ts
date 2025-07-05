@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Prisma, User } from '@prisma-client';
+import { Prisma, User } from '@prisma-client/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CACHE_KEYS, getCacheKey } from '../../core/cache/chche.constant';
 import { Cache } from 'cache-manager';

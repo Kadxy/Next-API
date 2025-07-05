@@ -4,7 +4,7 @@ import { PrismaService } from '../core/prisma/prisma.service';
 import { CryptoService } from '../core/crypto/crypto.service';
 import { BloomFilterService } from '../core/bloom-filter/bloom-filter.service';
 import { Cache } from '@nestjs/cache-manager';
-import { ApiKey, User, Wallet } from '@prisma-client';
+import { ApiKey, User, Wallet } from '@prisma-client/client';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import {
   BusinessException,

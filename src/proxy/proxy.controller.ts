@@ -63,8 +63,9 @@ export class ProxyController {
     // 3. 初始化 BillingContext（只包含基本信息）
     const billingContext = new BillingContext();
     billingContext.requestId = requestId;
-    billingContext.userId = apiKeyRecord.creatorId;
     billingContext.walletId = apiKeyRecord.walletId;
+    billingContext.userId = apiKeyRecord.creatorId;
+    billingContext.apikeyId = apiKeyRecord.id;
     billingContext.clientIp = clientIp;
     billingContext.externalTraceId = externalTraceId.slice(0, 63); // 限制长度
     billingContext.startTime = new Date();

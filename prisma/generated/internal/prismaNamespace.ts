@@ -92,12 +92,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 6.8.2
- * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
+ * Prisma Client JS version: 6.11.1
+ * Query Engine version: f40f79ec31188888a2e33acda0ecc8fd10a853a9
  */
 export const prismaVersion: PrismaVersion = {
-  client: "6.8.2",
-  engine: "2060c79ba17c6bb9f5823312b6f6b7f4a845738e"
+  client: "6.11.1",
+  engine: "f40f79ec31188888a2e33acda0ecc8fd10a853a9"
 }
 
 /**
@@ -1156,7 +1156,7 @@ export const ApiCallRecordScalarFieldEnum = {
   requestId: 'requestId',
   walletId: 'walletId',
   userId: 'userId',
-  apikeyDisplayName: 'apikeyDisplayName',
+  apikeyId: 'apikeyId',
   model: 'model',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -1275,7 +1275,6 @@ export type RedemptionCodeOrderByRelevanceFieldEnum = (typeof RedemptionCodeOrde
 
 export const ApiCallRecordOrderByRelevanceFieldEnum = {
   requestId: 'requestId',
-  apikeyDisplayName: 'apikeyDisplayName',
   model: 'model',
   errorMessage: 'errorMessage',
   clientIp: 'clientIp',

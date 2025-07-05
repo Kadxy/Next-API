@@ -4,7 +4,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { getCacheKey, CACHE_KEYS } from 'src/core/cache/chche.constant';
 import { BusinessException } from 'src/common/exceptions';
-import { Prisma, User, Wallet, WalletMember } from '@prisma-client';
+import { Prisma, User, Wallet, WalletMember } from '@prisma-client/client';
 import {
   OWNER_WALLET_QUERY_OMIT,
   OWNER_WALLET_QUERY_WALLETMEMBER_SELECT,

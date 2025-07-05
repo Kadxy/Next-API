@@ -28,6 +28,7 @@ export type AggregateApiCallRecord = {
 export type ApiCallRecordAvgAggregateOutputType = {
   walletId: number | null
   userId: number | null
+  apikeyId: number | null
   durationMs: number | null
   inputToken: number | null
   outputToken: number | null
@@ -37,6 +38,7 @@ export type ApiCallRecordAvgAggregateOutputType = {
 export type ApiCallRecordSumAggregateOutputType = {
   walletId: number | null
   userId: number | null
+  apikeyId: number | null
   durationMs: number | null
   inputToken: number | null
   outputToken: number | null
@@ -47,7 +49,7 @@ export type ApiCallRecordMinAggregateOutputType = {
   requestId: string | null
   walletId: number | null
   userId: number | null
-  apikeyDisplayName: string | null
+  apikeyId: number | null
   model: string | null
   startTime: Date | null
   endTime: Date | null
@@ -67,7 +69,7 @@ export type ApiCallRecordMaxAggregateOutputType = {
   requestId: string | null
   walletId: number | null
   userId: number | null
-  apikeyDisplayName: string | null
+  apikeyId: number | null
   model: string | null
   startTime: Date | null
   endTime: Date | null
@@ -87,7 +89,7 @@ export type ApiCallRecordCountAggregateOutputType = {
   requestId: number
   walletId: number
   userId: number
-  apikeyDisplayName: number
+  apikeyId: number
   model: number
   startTime: number
   endTime: number
@@ -108,6 +110,7 @@ export type ApiCallRecordCountAggregateOutputType = {
 export type ApiCallRecordAvgAggregateInputType = {
   walletId?: true
   userId?: true
+  apikeyId?: true
   durationMs?: true
   inputToken?: true
   outputToken?: true
@@ -117,6 +120,7 @@ export type ApiCallRecordAvgAggregateInputType = {
 export type ApiCallRecordSumAggregateInputType = {
   walletId?: true
   userId?: true
+  apikeyId?: true
   durationMs?: true
   inputToken?: true
   outputToken?: true
@@ -127,7 +131,7 @@ export type ApiCallRecordMinAggregateInputType = {
   requestId?: true
   walletId?: true
   userId?: true
-  apikeyDisplayName?: true
+  apikeyId?: true
   model?: true
   startTime?: true
   endTime?: true
@@ -147,7 +151,7 @@ export type ApiCallRecordMaxAggregateInputType = {
   requestId?: true
   walletId?: true
   userId?: true
-  apikeyDisplayName?: true
+  apikeyId?: true
   model?: true
   startTime?: true
   endTime?: true
@@ -167,7 +171,7 @@ export type ApiCallRecordCountAggregateInputType = {
   requestId?: true
   walletId?: true
   userId?: true
-  apikeyDisplayName?: true
+  apikeyId?: true
   model?: true
   startTime?: true
   endTime?: true
@@ -274,7 +278,7 @@ export type ApiCallRecordGroupByOutputType = {
   requestId: string
   walletId: number
   userId: number
-  apikeyDisplayName: string
+  apikeyId: number
   model: string
   startTime: Date
   endTime: Date
@@ -317,7 +321,7 @@ export type ApiCallRecordWhereInput = {
   requestId?: Prisma.StringFilter<"ApiCallRecord"> | string
   walletId?: Prisma.IntFilter<"ApiCallRecord"> | number
   userId?: Prisma.IntFilter<"ApiCallRecord"> | number
-  apikeyDisplayName?: Prisma.StringFilter<"ApiCallRecord"> | string
+  apikeyId?: Prisma.IntFilter<"ApiCallRecord"> | number
   model?: Prisma.StringFilter<"ApiCallRecord"> | string
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
@@ -338,7 +342,7 @@ export type ApiCallRecordOrderByWithRelationInput = {
   requestId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  apikeyDisplayName?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
   model?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -363,7 +367,7 @@ export type ApiCallRecordWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ApiCallRecordWhereInput | Prisma.ApiCallRecordWhereInput[]
   walletId?: Prisma.IntFilter<"ApiCallRecord"> | number
   userId?: Prisma.IntFilter<"ApiCallRecord"> | number
-  apikeyDisplayName?: Prisma.StringFilter<"ApiCallRecord"> | string
+  apikeyId?: Prisma.IntFilter<"ApiCallRecord"> | number
   model?: Prisma.StringFilter<"ApiCallRecord"> | string
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
@@ -384,7 +388,7 @@ export type ApiCallRecordOrderByWithAggregationInput = {
   requestId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  apikeyDisplayName?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
   model?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -412,7 +416,7 @@ export type ApiCallRecordScalarWhereWithAggregatesInput = {
   requestId?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
   walletId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   userId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  apikeyDisplayName?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
+  apikeyId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   model?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
   startTime?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
@@ -431,7 +435,7 @@ export type ApiCallRecordScalarWhereWithAggregatesInput = {
 export type ApiCallRecordCreateInput = {
   requestId: string
   userId: number
-  apikeyDisplayName: string
+  apikeyId: number
   model: string
   startTime: Date | string
   endTime: Date | string
@@ -452,7 +456,7 @@ export type ApiCallRecordUncheckedCreateInput = {
   requestId: string
   walletId: number
   userId: number
-  apikeyDisplayName: string
+  apikeyId: number
   model: string
   startTime: Date | string
   endTime: Date | string
@@ -471,7 +475,7 @@ export type ApiCallRecordUncheckedCreateInput = {
 export type ApiCallRecordUpdateInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  apikeyDisplayName?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -492,7 +496,7 @@ export type ApiCallRecordUncheckedUpdateInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  apikeyDisplayName?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -512,7 +516,7 @@ export type ApiCallRecordCreateManyInput = {
   requestId: string
   walletId: number
   userId: number
-  apikeyDisplayName: string
+  apikeyId: number
   model: string
   startTime: Date | string
   endTime: Date | string
@@ -531,7 +535,7 @@ export type ApiCallRecordCreateManyInput = {
 export type ApiCallRecordUpdateManyMutationInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  apikeyDisplayName?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -551,7 +555,7 @@ export type ApiCallRecordUncheckedUpdateManyInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   walletId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  apikeyDisplayName?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -587,7 +591,7 @@ export type ApiCallRecordCountOrderByAggregateInput = {
   requestId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  apikeyDisplayName?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
   model?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -606,6 +610,7 @@ export type ApiCallRecordCountOrderByAggregateInput = {
 export type ApiCallRecordAvgOrderByAggregateInput = {
   walletId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
@@ -616,7 +621,7 @@ export type ApiCallRecordMaxOrderByAggregateInput = {
   requestId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  apikeyDisplayName?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
   model?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -636,7 +641,7 @@ export type ApiCallRecordMinOrderByAggregateInput = {
   requestId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  apikeyDisplayName?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
   model?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
@@ -655,6 +660,7 @@ export type ApiCallRecordMinOrderByAggregateInput = {
 export type ApiCallRecordSumOrderByAggregateInput = {
   walletId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
@@ -710,7 +716,7 @@ export type EnumBillStatusFieldUpdateOperationsInput = {
 export type ApiCallRecordCreateWithoutWalletInput = {
   requestId: string
   userId: number
-  apikeyDisplayName: string
+  apikeyId: number
   model: string
   startTime: Date | string
   endTime: Date | string
@@ -729,7 +735,7 @@ export type ApiCallRecordCreateWithoutWalletInput = {
 export type ApiCallRecordUncheckedCreateWithoutWalletInput = {
   requestId: string
   userId: number
-  apikeyDisplayName: string
+  apikeyId: number
   model: string
   startTime: Date | string
   endTime: Date | string
@@ -778,7 +784,7 @@ export type ApiCallRecordScalarWhereInput = {
   requestId?: Prisma.StringFilter<"ApiCallRecord"> | string
   walletId?: Prisma.IntFilter<"ApiCallRecord"> | number
   userId?: Prisma.IntFilter<"ApiCallRecord"> | number
-  apikeyDisplayName?: Prisma.StringFilter<"ApiCallRecord"> | string
+  apikeyId?: Prisma.IntFilter<"ApiCallRecord"> | number
   model?: Prisma.StringFilter<"ApiCallRecord"> | string
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
@@ -797,7 +803,7 @@ export type ApiCallRecordScalarWhereInput = {
 export type ApiCallRecordCreateManyWalletInput = {
   requestId: string
   userId: number
-  apikeyDisplayName: string
+  apikeyId: number
   model: string
   startTime: Date | string
   endTime: Date | string
@@ -816,7 +822,7 @@ export type ApiCallRecordCreateManyWalletInput = {
 export type ApiCallRecordUpdateWithoutWalletInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  apikeyDisplayName?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -835,7 +841,7 @@ export type ApiCallRecordUpdateWithoutWalletInput = {
 export type ApiCallRecordUncheckedUpdateWithoutWalletInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  apikeyDisplayName?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -854,7 +860,7 @@ export type ApiCallRecordUncheckedUpdateWithoutWalletInput = {
 export type ApiCallRecordUncheckedUpdateManyWithoutWalletInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  apikeyDisplayName?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
   model?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -876,7 +882,7 @@ export type ApiCallRecordSelect<ExtArgs extends runtime.Types.Extensions.Interna
   requestId?: boolean
   walletId?: boolean
   userId?: boolean
-  apikeyDisplayName?: boolean
+  apikeyId?: boolean
   model?: boolean
   startTime?: boolean
   endTime?: boolean
@@ -899,7 +905,7 @@ export type ApiCallRecordSelectScalar = {
   requestId?: boolean
   walletId?: boolean
   userId?: boolean
-  apikeyDisplayName?: boolean
+  apikeyId?: boolean
   model?: boolean
   startTime?: boolean
   endTime?: boolean
@@ -915,7 +921,7 @@ export type ApiCallRecordSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "walletId" | "userId" | "apikeyDisplayName" | "model" | "startTime" | "endTime" | "durationMs" | "errorMessage" | "clientIp" | "externalTraceId" | "inputToken" | "outputToken" | "cost" | "billStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["apiCallRecord"]>
+export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "walletId" | "userId" | "apikeyId" | "model" | "startTime" | "endTime" | "durationMs" | "errorMessage" | "clientIp" | "externalTraceId" | "inputToken" | "outputToken" | "cost" | "billStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["apiCallRecord"]>
 export type ApiCallRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
 }
@@ -929,7 +935,7 @@ export type $ApiCallRecordPayload<ExtArgs extends runtime.Types.Extensions.Inter
     requestId: string
     walletId: number
     userId: number
-    apikeyDisplayName: string
+    apikeyId: number
     model: string
     startTime: Date
     endTime: Date
@@ -1316,7 +1322,7 @@ export interface ApiCallRecordFieldRefs {
   readonly requestId: Prisma.FieldRef<"ApiCallRecord", 'String'>
   readonly walletId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly userId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly apikeyDisplayName: Prisma.FieldRef<"ApiCallRecord", 'String'>
+  readonly apikeyId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly model: Prisma.FieldRef<"ApiCallRecord", 'String'>
   readonly startTime: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>

@@ -14,7 +14,7 @@ import {
   AIModelUsage,
 } from './interfaces/proxy.interface';
 import { BillingService } from '../billing/billing.service';
-import { AIModel, BillStatus, UpstreamConfig } from '@prisma-client';
+import { AIModel, BillStatus, UpstreamConfig } from '@prisma-client/client';
 import { APICallException, BusinessException } from '../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { AxiosRequestConfig } from 'axios';
@@ -218,7 +218,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       requestId: context.requestId,
       userId: context.userId,
       wallet: { connect: { id: context.walletId } },
-      apikeyDisplayName: context.apikeyDisplayName,
+      apikeyId: context.apikeyId,
       model: context.model.name,
       clientIp: context.clientIp,
       externalTraceId: context.externalTraceId,
@@ -344,7 +344,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       requestId: context.requestId,
       userId: context.userId,
       wallet: { connect: { id: context.walletId } },
-      apikeyDisplayName: context.apikeyDisplayName,
+      apikeyId: context.apikeyId,
       model: context.model.name,
       clientIp: context.clientIp,
       externalTraceId: context.externalTraceId,

@@ -1,4 +1,4 @@
-import { AIModel } from '@prisma-client';
+import { AIModel } from '@prisma-client/client';
 import { Decimal } from '@prisma-client/internal/prismaNamespace';
 import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
 
@@ -8,7 +8,7 @@ export class BillingContext {
   requestId: string; // 请求ID (ULID)
   userId: number; // 用户ID
   walletId: number; // 钱包ID
-  apikeyDisplayName: string;
+  apikeyId: number; // APIKey Id
 
   // 请求信息
   model: AIModel; // 模型名称

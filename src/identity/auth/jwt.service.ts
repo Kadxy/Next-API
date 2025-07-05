@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
-import { User } from '@prisma-client';
+import { User } from '@prisma-client/client';
 import { UnauthorizedException } from 'src/common/exceptions/business.exception';
 import { JwtPayload, JwtSignPayload } from './auth.guard';
 import { Cache } from '@nestjs/cache-manager';
