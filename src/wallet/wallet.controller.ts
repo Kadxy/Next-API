@@ -4,12 +4,10 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Put,
   Req,
   UseGuards,
-  Query,
 } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { AuthGuard, RequestWithUser } from 'src/identity/auth/auth.guard';
@@ -21,16 +19,11 @@ import {
 } from './dto/wallet.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BaseResponse } from 'src/common/interceptors/transform.interceptor';
-import { BillingService } from '../billing/billing.service';
-import { BusinessException } from 'src/common/exceptions/business.exception';
 
 @Controller('wallets')
 @UseGuards(AuthGuard)
 export class WalletController {
-  constructor(
-    private readonly walletService: WalletService,
-    private readonly billingService: BillingService,
-  ) {}
+  constructor(private readonly walletService: WalletService) {}
 
   @Get()
   @ApiOperation({ summary: '获取用户可访问的钱包列表' })
@@ -45,6 +38,21 @@ export class WalletController {
   @ApiResponse({ type: WalletDetailResponseDto })
   async getWalletDetail(@Param('walletUid') walletUid: string) {
     return this.walletService.getWalletDetail(walletUid);
+  }
+
+  @Put(':walletUid/displayName')
+  @ApiOperation({ summary: '更新钱包名称' })
+  @ApiResponse({ type: BaseResponse })
+  async updateWalletDisplayName(
+    @Param('walletUid') walletUid: string,
+    @Body() body: { displayName: string },
+    @Req() req: RequestWithUser,
+  ) {
+    return this.walletService.updateWalletDisplayName(
+      walletUid,
+      body.displayName,
+      req.user.id,
+    );
   }
 
   @Post(':walletUid/members/:memberUid')
@@ -80,6 +88,16 @@ export class WalletController {
       memberUid,
       req.user.id,
     );
+  }
+
+  @Post(':walletUid/members/leave')
+  @ApiOperation({ summary: '离开钱包' })
+  @ApiResponse({ type: BaseResponse })
+  async leaveWallet(
+    @Param('walletUid') walletUid: string,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.walletService.leaveWallet(walletUid, req.user.id);
   }
 
   @Put(':walletUid/members/:memberUid')

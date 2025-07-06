@@ -1,8 +1,8 @@
-import { Injectable, Inject, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { getCacheKey, CACHE_KEYS } from 'src/core/cache/chche.constant';
+import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import { BusinessException } from 'src/common/exceptions';
 import { Prisma, User, Wallet, WalletMember } from '@prisma-client/client';
 import {
@@ -51,9 +51,9 @@ export class WalletService {
   /**
    * @param where - wallet id or uid
    * @param userId - user id
-   * @param isOwner - whether to check owner permission, default is false
+   * @param requireOwner - whether to check owner permission, default is false
    * @throws {BusinessException} if wallet not found or permission denied
-   * @returns wallet info if has access, otherwise throw error
+   * @returns wallet info if accessible, otherwise throw error
    */
   async getAuthorizedWallet(
     where: Prisma.WalletWhereUniqueInput,
@@ -119,7 +119,32 @@ export class WalletService {
       },
     });
 
-    return [...ownerWallets, ...memberWallets];
+    return [
+      ...ownerWallets.map((w) => ({
+        isOwner: true,
+        ...w,
+      })),
+      ...memberWallets.map((w) => ({
+        isOwner: false,
+        ...w.wallet,
+        creditLimit: w.creditLimit,
+        creditUsed: w.creditUsed,
+      })),
+    ]
+  }
+
+  async updateWalletDisplayName(walletUid: Wallet['uid'], displayName: string,userId: User['id']) {
+    // 1. 验证用户是否是钱包所有者
+    const wallet = await this.getAuthorizedWallet({ uid: walletUid }, userId, true);
+
+    // 2. 更新钱包名称
+    await this.prisma.wallet.update({
+      where: { id: wallet.id },
+      data: { displayName },
+    });
+
+    // 3. 更新缓存
+    await this.updateWalletCache(wallet);
   }
 
   async addWalletMember(
@@ -219,6 +244,24 @@ export class WalletService {
         walletId_userId: {
           walletId: authorizedWallet.id,
           userId: memberUserToRemove.id,
+        },
+      },
+      data: {
+        isActive: false,
+      },
+    });
+  }
+
+  async leaveWallet(walletUid: Wallet['uid'], userId: User['id']) {
+    // 1. 验证用户是否在钱包中
+    const wallet = await this.getAuthorizedWallet({ uid: walletUid }, userId);
+
+    // 2. 更新记录，将 isActive 设置为 false
+    await this.prisma.walletMember.update({
+      where: {
+        walletId_userId: {
+          walletId: wallet.id,
+          userId,
         },
       },
       data: {
