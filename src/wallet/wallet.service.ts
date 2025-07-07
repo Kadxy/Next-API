@@ -100,8 +100,12 @@ export class WalletService {
     if (ownerWallets.length === 0) {
       this.logger.log(`User ${userId} has no owner wallet, creating one`);
 
+      const randomWalletName = `Wallet_${Math.random()
+        .toString(36)
+        .substring(2, 8)}`;
+
       const newWallet = await this.prisma.wallet.create({
-        data: { ownerId: userId },
+        data: { ownerId: userId, displayName: randomWalletName },
         select: SIMPLE_WALLET_QUERY_SELECT,
       });
       ownerWallets.push(newWallet);
@@ -109,7 +113,7 @@ export class WalletService {
 
     // 再查用户作为 member 的 wallet
     const memberWallets = await this.prisma.walletMember.findMany({
-      where: { userId },
+      where: { userId, isActive: true },
       select: {
         wallet: {
           select: SIMPLE_WALLET_QUERY_SELECT,
@@ -130,12 +134,20 @@ export class WalletService {
         creditLimit: w.creditLimit,
         creditUsed: w.creditUsed,
       })),
-    ]
+    ];
   }
 
-  async updateWalletDisplayName(walletUid: Wallet['uid'], displayName: string,userId: User['id']) {
+  async updateWalletDisplayName(
+    walletUid: Wallet['uid'],
+    displayName: string,
+    userId: User['id'],
+  ) {
     // 1. 验证用户是否是钱包所有者
-    const wallet = await this.getAuthorizedWallet({ uid: walletUid }, userId, true);
+    const wallet = await this.getAuthorizedWallet(
+      { uid: walletUid },
+      userId,
+      true,
+    );
 
     // 2. 更新钱包名称
     await this.prisma.wallet.update({
@@ -143,8 +155,8 @@ export class WalletService {
       data: { displayName },
     });
 
-    // 3. 更新缓存
-    await this.updateWalletCache(wallet);
+    // 3. 清理缓存
+    await this.cleanWalletCache(wallet);
   }
 
   async addWalletMember(
@@ -204,6 +216,9 @@ export class WalletService {
         creditUsed: 0,
       },
     });
+
+    // 5. 清理缓存
+    await this.cleanWalletCache(authorizedWallet);
   }
 
   async removeWalletMember(
@@ -250,11 +265,19 @@ export class WalletService {
         isActive: false,
       },
     });
+
+    // 5. 清理缓存
+    await this.cleanWalletCache(authorizedWallet);
   }
 
   async leaveWallet(walletUid: Wallet['uid'], userId: User['id']) {
     // 1. 验证用户是否在钱包中
     const wallet = await this.getAuthorizedWallet({ uid: walletUid }, userId);
+
+    // 2. 检查用户是否owner, owner 不允许离开
+    if (wallet.ownerId === userId) {
+      throw new BusinessException('Owner cannot leave wallet');
+    }
 
     // 2. 更新记录，将 isActive 设置为 false
     await this.prisma.walletMember.update({
@@ -268,6 +291,9 @@ export class WalletService {
         isActive: false,
       },
     });
+
+    // 3. 清理缓存
+    await this.cleanWalletCache(wallet);
   }
 
   async updateWalletMember(
@@ -312,11 +338,14 @@ export class WalletService {
         ...(resetCreditUsed && { creditUsed: { set: 0 } }),
       },
     });
+
+    // 5. 清理缓存
+    await this.cleanWalletCache(authorizedWallet);
   }
 
-  async getWalletDetail(walletUid: Wallet['uid']) {
+  async getWalletDetail(walletUid: Wallet['uid'], userId: User['id']) {
     return this.prisma.wallet.findUnique({
-      where: { uid: walletUid },
+      where: { uid: walletUid, ownerId: userId }, // 只允许所有者查看钱包详情
       include: {
         members: {
           where: { isActive: true },
@@ -352,5 +381,14 @@ export class WalletService {
 
     await this.cacheService.set(cacheKeyId, wallet);
     await this.cacheService.set(cacheKeyUid, wallet);
+  }
+
+  // Clean wallet cache
+  private async cleanWalletCache(wallet: Wallet) {
+    const cacheKeyId = getCacheKey(CACHE_KEYS.WALLET_INFO_ID, wallet.id);
+    const cacheKeyUid = getCacheKey(CACHE_KEYS.WALLET_INFO_UID, wallet.uid);
+
+    await this.cacheService.del(cacheKeyId);
+    await this.cacheService.del(cacheKeyUid);
   }
 }

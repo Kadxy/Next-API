@@ -15,6 +15,7 @@ import {
   AddMemberDto,
   ListWalletResponseDto,
   UpdateMemberDto,
+  UpdateWalletDisplayNameDto,
   WalletDetailResponseDto,
 } from './dto/wallet.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -36,17 +37,20 @@ export class WalletController {
   @Get(':walletUid')
   @ApiOperation({ summary: '获取钱包详情' })
   @ApiResponse({ type: WalletDetailResponseDto })
-  async getWalletDetail(@Param('walletUid') walletUid: string) {
-    return this.walletService.getWalletDetail(walletUid);
+  async getWalletDetail(
+    @Req() req: RequestWithUser,
+    @Param('walletUid') walletUid: string,
+  ) {
+    return this.walletService.getWalletDetail(walletUid, req.user.id);
   }
 
   @Put(':walletUid/displayName')
   @ApiOperation({ summary: '更新钱包名称' })
   @ApiResponse({ type: BaseResponse })
   async updateWalletDisplayName(
-    @Param('walletUid') walletUid: string,
-    @Body() body: { displayName: string },
     @Req() req: RequestWithUser,
+    @Body() body: UpdateWalletDisplayNameDto,
+    @Param('walletUid') walletUid: string,
   ) {
     return this.walletService.updateWalletDisplayName(
       walletUid,
@@ -55,16 +59,15 @@ export class WalletController {
     );
   }
 
-  @Post(':walletUid/members/:memberUid')
+  @Post(':walletUid/members/add')
   @ApiOperation({ summary: '添加钱包成员' })
   @ApiResponse({ type: BaseResponse })
   async addMember(
-    @Param('walletUid') walletUid: string,
-    @Param('memberUid') memberUid: string,
-    @Body() body: AddMemberDto,
     @Req() req: RequestWithUser,
+    @Body() body: AddMemberDto,
+    @Param('walletUid') walletUid: string,
   ) {
-    const { alias, creditLimit } = body;
+    const { memberUid, alias, creditLimit } = body;
 
     return this.walletService.addWalletMember(
       walletUid,
@@ -79,9 +82,9 @@ export class WalletController {
   @ApiOperation({ summary: '移除钱包成员' })
   @ApiResponse({ type: BaseResponse })
   async removeMember(
+    @Req() req: RequestWithUser,
     @Param('walletUid') walletUid: string,
     @Param('memberUid') memberUid: string,
-    @Req() req: RequestWithUser,
   ) {
     return this.walletService.removeWalletMember(
       walletUid,
@@ -94,8 +97,8 @@ export class WalletController {
   @ApiOperation({ summary: '离开钱包' })
   @ApiResponse({ type: BaseResponse })
   async leaveWallet(
-    @Param('walletUid') walletUid: string,
     @Req() req: RequestWithUser,
+    @Param('walletUid') walletUid: string,
   ) {
     return this.walletService.leaveWallet(walletUid, req.user.id);
   }
@@ -104,10 +107,10 @@ export class WalletController {
   @ApiOperation({ summary: '更新钱包成员' })
   @ApiResponse({ type: BaseResponse })
   async updateMember(
-    @Param('walletUid') walletUid: string,
-    @Param('memberUid') memberUid: string,
     @Body() body: UpdateMemberDto,
     @Req() req: RequestWithUser,
+    @Param('walletUid') walletUid: string,
+    @Param('memberUid') memberUid: string,
   ) {
     const { alias, creditLimit } = body;
 
@@ -118,6 +121,24 @@ export class WalletController {
       alias,
       creditLimit,
       false,
+    );
+  }
+
+  @Post(':walletUid/members/:memberUid/resetCreditUsage')
+  @ApiOperation({ summary: '重置钱包成员已使用额度' })
+  @ApiResponse({ type: BaseResponse })
+  async resetCreditUsage(
+    @Req() req: RequestWithUser,
+    @Param('walletUid') walletUid: string,
+    @Param('memberUid') memberUid: string,
+  ) {
+    return this.walletService.updateWalletMember(
+      walletUid,
+      memberUid,
+      req.user.id,
+      undefined,
+      undefined,
+      true,
     );
   }
 }

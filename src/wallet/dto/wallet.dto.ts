@@ -27,6 +27,10 @@ export class ListWalletResponseDto extends createResponseDto<
 >(ListWalletResponseItemData, { isArray: true }) {}
 
 export class AddMemberDto {
+  @ApiProperty({ description: '用户UID' })
+  @IsString()
+  memberUid: string;
+
   @ApiProperty({ description: '钱包成员别名' })
   @IsString()
   alias: string;
@@ -39,18 +43,30 @@ export class AddMemberDto {
 
 export class UpdateMemberDto extends PartialType(AddMemberDto) {}
 
-export class WalletDetailResponseMemberItemData {
-  @ApiProperty({ description: '用户唯一标识符' })
+
+export class WalletDetailResponseMemberUserItemData {
+  @ApiProperty({ description: '用户UID' })
   uid: string;
 
+  @ApiProperty({ description: '用户显示名称' })
+  displayName: string;
+}
+
+export class WalletDetailResponseMemberItemData {
   @ApiProperty({ description: '钱包成员别名' })
   alias: string;
 
   @ApiProperty({ description: '钱包成员额度限制' })
-  creditLimit: number;
+  creditLimit: string;
 
   @ApiProperty({ description: '钱包成员已使用额度' })
-  creditUsed: number;
+  creditUsed: string;
+
+  @ApiProperty({ description: '是否激活' })
+  isActive: string;
+
+  @ApiProperty({ description: '用户信息' })
+  user: WalletDetailResponseMemberUserItemData;
 }
 
 export class WalletDetailResponseItemData {
@@ -59,6 +75,15 @@ export class WalletDetailResponseItemData {
 
   @ApiProperty({ description: '钱包名称' })
   displayName: string;
+
+  @ApiProperty({ description: '钱包余额' })
+  balance: string;
+
+  @ApiProperty({ description: '创建时间' })
+  createdAt: string;
+
+  @ApiProperty({ description: '更新时间' })
+  updatedAt: string;
 
   @ApiProperty({
     description: '钱包成员',
@@ -71,3 +96,9 @@ export class WalletDetailResponseItemData {
 export class WalletDetailResponseDto extends createResponseDto<WalletDetailResponseItemData>(
   WalletDetailResponseItemData,
 ) {}
+
+export class UpdateWalletDisplayNameDto {
+  @ApiProperty({ description: '钱包成员别名' })
+  @IsString()
+  displayName: string;
+}

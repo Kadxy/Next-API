@@ -29,6 +29,7 @@ export const OWNER_WALLET_QUERY_WALLETMEMBER_SELECT: Prisma.WalletMemberSelect =
     alias: true,
     creditLimit: true,
     creditUsed: true,
+    isActive: true,
     user: { select: { uid: true, displayName: true } },
   };
 
