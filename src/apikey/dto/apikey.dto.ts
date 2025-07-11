@@ -19,7 +19,7 @@ export class UpdateApiKeyDisplayNameRequestDto {
   @ApiProperty({ description: '显示名称' })
   @IsString({ message: '显示名称必须为字符串' })
   @IsNotEmpty({ message: '显示名称不能为空' })
-  @Length(1, 32, { message: '显示名称长度必须在1到32之间' })
+  @Length(1, 15, { message: '显示名称长度必须在1到15之间' })
   displayName: string;
 }
 
@@ -44,10 +44,12 @@ export class ListApiKeyResponseItemData {
   @ApiProperty({ description: '哈希密钥' })
   hashKey: string;
 
+  @ApiProperty({ description: '是否有效' })
+  isActive: boolean;
+
   @ApiProperty({
-    description:
-      '前4位和后4位拼接的字符串, 如asidewsk即rawKey为asid***ewsk, 如果rawKey不足8位，则显示为rawKey的前4位',
-    example: 'asidewsk',
+    description: '前4位和后4位拼接的字符串, 如abc123xy即rawKey为sk-abc1**...**23xy',
+    example: 'abc123xy',
   })
   preview: string;
 

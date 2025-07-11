@@ -14,7 +14,7 @@ datasource db {
 model User {
   id             Int              @id @default(autoincrement())
   uid            String           @unique @default(uuid())
-  displayName    String?          @db.VarChar(32)
+  displayName    String?          @db.VarChar(15)
   avatar         String?          @db.Text
   email          String?          @unique
   phone          String?          @unique
@@ -38,7 +38,7 @@ model User {
 model Wallet {
   id          Int      @id @default(autoincrement())
   uid         String   @unique @default(uuid())
-  displayName String   @default("Default Wallet") @db.VarChar(32)
+  displayName String   @db.VarChar(15)
   balance     Decimal  @default(0) @db.Decimal(12, 6)
   version     Int      @default(1) // 乐观锁
   owner       User     @relation(fields: [ownerId], references: [id])
@@ -59,9 +59,9 @@ model WalletMember {
   walletId    Int
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
-  alias       String   @default("") @db.VarChar(32) // 成员别名
-  creditLimit Decimal  @db.Decimal(16, 8) // 信用额度
-  creditUsed  Decimal  @default(0) @db.Decimal(16, 8) // 历史总消费（累计）
+  alias       String   @default("") @db.VarChar(15) // 成员别名
+  creditLimit Decimal  @db.Decimal(14, 8) // 信用额度
+  creditUsed  Decimal  @default(0) @db.Decimal(14, 8) // 累计消费
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -80,15 +80,16 @@ model ApiKey {
   creatorId   Int
   hashKey     String    @unique @db.VarChar(64)
   preview     String    @db.VarChar(8)
-  displayName String    @db.VarChar(32)
+  displayName String    @db.VarChar(15)
   isActive    Boolean   @default(true)
+  isDeleted   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   lastUsedAt  DateTime?
 
-  @@index([hashKey, isActive])
-  @@index([walletId, isActive])
-  @@index([creatorId, isActive])
+  @@index([hashKey, isActive]) // API key verification (most frequent query)
+  @@index([creatorId, isDeleted]) // list user's API keys
+  @@index([isActive]) // bloom filter rebuild
   @@map("api_keys")
 }
 
@@ -97,9 +98,9 @@ model Passkey {
   publicKey      Bytes
   webAuthnUserID String    @db.VarChar(255)
   counter        BigInt    @default(0)
-  displayName    String    @default("")
+  displayName    String    @default("") @db.VarChar(15)
   transports     String?   @db.VarChar(255)
-  deviceType     String    @default("singleDevice") @db.VarChar(32)
+  deviceType     String    @default("singleDevice") @db.VarChar(31)
   backedUp       Boolean   @default(false)
   isDeleted      Boolean   @default(false)
   createdAt      DateTime  @default(now())
@@ -150,7 +151,7 @@ model ApiCallRecord {
   externalTraceId String?    @db.VarChar(63) // 外部追踪ID
   inputToken      Int // 输入 token 数量
   outputToken     Int // 输出 token 数量
-  cost            Decimal    @db.Decimal(16, 8) // 费用, 以模型当前价格计算
+  cost            Decimal    @db.Decimal(14, 8) // 费用, 以模型当前价格计算
   billStatus      BillStatus
 
   // 审计信息
@@ -179,8 +180,8 @@ model AIModel {
   name        String   @unique @db.VarChar(63) // 模型名称, 请求名称, 全局唯一
   providerId  Int      @default(0) // 0: 其他, 1: OpenAI, 2: Anthropic... [内部约定, 不关联表]
   isActive    Boolean  @default(true) // 是否可用
-  inputPrice  Decimal  @db.Decimal(16, 8) // 输入价格(单位: 个 token)
-  outputPrice Decimal  @db.Decimal(16, 8) // 输出价格(单位: 个 token)
+  inputPrice  Decimal  @db.Decimal(14, 8) // 输入价格(单位: 个 token)
+  outputPrice Decimal  @db.Decimal(14, 8) // 输出价格(单位: 个 token)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

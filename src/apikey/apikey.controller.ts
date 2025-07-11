@@ -71,6 +71,6 @@ export class ApikeyController {
     @Param('hashKey') hashKey: string,
   ) {
     const { user } = req;
-    return this.apikeyService.inactivateApiKey(hashKey, user.id);
+    return this.apikeyService.deleteApiKey(hashKey, user.id);
   }
 }

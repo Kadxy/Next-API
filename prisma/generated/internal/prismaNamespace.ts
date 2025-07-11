@@ -1111,6 +1111,7 @@ export const ApiKeyScalarFieldEnum = {
   preview: 'preview',
   displayName: 'displayName',
   isActive: 'isActive',
+  isDeleted: 'isDeleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastUsedAt: 'lastUsedAt'

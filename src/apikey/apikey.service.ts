@@ -1,9 +1,8 @@
-import { Inject, Injectable, OnModuleInit, Logger } from '@nestjs/common';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { CryptoService } from '../core/crypto/crypto.service';
 import { BloomFilterService } from '../core/bloom-filter/bloom-filter.service';
-import { Cache } from '@nestjs/cache-manager';
 import { ApiKey, User, Wallet } from '@prisma-client/client';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import {
@@ -23,9 +22,10 @@ export interface ApiKeyRecord extends ApiKey {
 
 @Injectable()
 export class ApikeyService implements OnModuleInit {
-  private readonly logger = new Logger(ApikeyService.name);
   private static readonly API_KEY_PREFIX = 'sk';
   private static readonly BLOOM_FILTER_NAME = 'api_keys';
+  private readonly logger = new Logger(ApikeyService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly cryptoService: CryptoService,
@@ -122,28 +122,21 @@ export class ApikeyService implements OnModuleInit {
     });
   }
 
-  // 撤销 API Key
-  async inactivateApiKey(hashKey: ApiKey['hashKey'], userId: User['id']) {
+  // 删除 API Key
+  async deleteApiKey(hashKey: ApiKey['hashKey'], creatorId: User['id']) {
     // 先获取 API Key 信息
     const apiKey = await this.prisma.apiKey.findUnique({
-      where: { hashKey, isActive: true },
-      select: { walletId: true, creatorId: true },
+      where: { hashKey, creatorId, isDeleted: false },
     });
 
     if (!apiKey) {
       throw new BusinessException('API Key not found');
     }
 
-    // 验证钱包权限
-    await this.walletService.getAuthorizedWallet(
-      { id: apiKey.walletId },
-      userId,
-    );
-
-    // 更新状态
+    // 软删除
     await this.prisma.apiKey.update({
       where: { hashKey },
-      data: { isActive: false },
+      data: { isActive: false, isDeleted: true },
     });
 
     // 清除缓存
@@ -151,33 +144,10 @@ export class ApikeyService implements OnModuleInit {
     await this.cacheManager.del(cacheKey);
   }
 
-  // 批量撤销用户创建的所有 API Keys（当用户被删除或离开钱包时）
-  async inactivateWalletMemberApiKeys(
-    walletId: Wallet['id'],
-    creatorId: User['id'],
-  ) {
-    // 查询
-    const apiKeys = await this.prisma.apiKey.findMany({
-      where: { walletId, creatorId, isActive: true },
-      select: { hashKey: true },
-    });
-
-    // 清除缓存
-    apiKeys.forEach((key) => {
-      this.cacheManager.del(getCacheKey(CACHE_KEYS.API_KEY, key.hashKey));
-    });
-
-    // 更新数据库
-    await this.prisma.apiKey.updateMany({
-      where: { walletId, creatorId, isActive: true },
-      data: { isActive: false },
-    });
-  }
-
   // 列出用户创建的 API Key
-  async listApiKeys(userId: User['id']) {
+  async listApiKeys(creatorId: User['id']) {
     return this.prisma.apiKey.findMany({
-      where: { creatorId: userId, isActive: true },
+      where: { creatorId, isDeleted: false }, // 不包含已删除的, 但包含失效的
       include: { wallet: { select: APIKEY_INCLUDE_WALLET_SELECT } },
       omit: API_KEY_QUERY_OMIT,
     });

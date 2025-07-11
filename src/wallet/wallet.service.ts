@@ -7,9 +7,10 @@ import { BusinessException } from 'src/common/exceptions';
 import { Prisma, User, Wallet, WalletMember } from '@prisma-client/client';
 import {
   OWNER_WALLET_QUERY_OMIT,
-  OWNER_WALLET_QUERY_WALLETMEMBER_SELECT,
+  OWNER_WALLET_QUERY_WALLET_MEMBER_SELECT,
   SIMPLE_WALLET_QUERY_SELECT,
 } from 'prisma/query.constant';
+import { generateDisplayName } from '../utils';
 
 @Injectable()
 export class WalletService {
@@ -17,7 +18,9 @@ export class WalletService {
 
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
+    @Inject(CACHE_MANAGER)
+    private readonly cacheService: Cache,
+    // private readonly apikeyService: ApikeyService,
   ) {}
 
   /**
@@ -100,9 +103,7 @@ export class WalletService {
     if (ownerWallets.length === 0) {
       this.logger.log(`User ${userId} has no owner wallet, creating one`);
 
-      const randomWalletName = `Wallet_${Math.random()
-        .toString(36)
-        .substring(2, 8)}`;
+      const randomWalletName = generateDisplayName('Wallet', 6);
 
       const newWallet = await this.prisma.wallet.create({
         data: { ownerId: userId, displayName: randomWalletName },
@@ -242,18 +243,18 @@ export class WalletService {
       throw new BusinessException('User not found');
     }
 
-    // 3. 检查 member 是否已经加入钱包且有效
+    // 3. 检查 member 是否已经加入钱包且已经被取消激活
     if (
       authorizedWallet.members.some(
         (existingMember) =>
-          existingMember.userId === memberUserToRemove.id &&
-          existingMember.isActive,
+          (existingMember.userId === memberUserToRemove.id &&
+          !existingMember.isActive),
       )
     ) {
-      throw new BusinessException('User not in wallet');
+      throw new BusinessException('Member already inactive');
     }
 
-    // 4. 更新记录，将 isActive 设置为 false
+    // 4.1 更新 walletMember
     await this.prisma.walletMember.update({
       where: {
         walletId_userId: {
@@ -265,6 +266,9 @@ export class WalletService {
         isActive: false,
       },
     });
+
+    // 4.2 更新 apiKey
+    await this.inactiveApiKeys(authorizedWallet.id, memberUserToRemove.id);
 
     // 5. 清理缓存
     await this.cleanWalletCache(authorizedWallet);
@@ -279,7 +283,7 @@ export class WalletService {
       throw new BusinessException('Owner cannot leave wallet');
     }
 
-    // 2. 更新记录，将 isActive 设置为 false
+    // 2.1 更新 walletMember
     await this.prisma.walletMember.update({
       where: {
         walletId_userId: {
@@ -291,6 +295,9 @@ export class WalletService {
         isActive: false,
       },
     });
+
+    // 2.2 更新 apiKey
+    await this.inactiveApiKeys(wallet.id, userId);
 
     // 3. 清理缓存
     await this.cleanWalletCache(wallet);
@@ -348,8 +355,11 @@ export class WalletService {
       where: { uid: walletUid, ownerId: userId }, // 只允许所有者查看钱包详情
       include: {
         members: {
-          where: { isActive: true },
-          select: OWNER_WALLET_QUERY_WALLETMEMBER_SELECT,
+          select: OWNER_WALLET_QUERY_WALLET_MEMBER_SELECT,
+          orderBy: {
+            isActive: 'desc', // 激活的成员在前
+            // createdAt: 'asc', // 创建时间早的在前
+          },
         },
       },
       omit: OWNER_WALLET_QUERY_OMIT,
@@ -390,5 +400,13 @@ export class WalletService {
 
     await this.cacheService.del(cacheKeyId);
     await this.cacheService.del(cacheKeyUid);
+  }
+
+  // Inactivate all api keys belong to a wallet member
+  private async inactiveApiKeys(walletId: Wallet['id'], creatorId: User['id']) {
+    await this.prisma.apiKey.updateMany({
+      where: { walletId, creatorId, isActive: true },
+      data: { isActive: false },
+    });
   }
 }

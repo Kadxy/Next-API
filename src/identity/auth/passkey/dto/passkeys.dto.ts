@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 import { createResponseDto } from 'src/common/interceptors/transform.interceptor';
 
 export class ListPasskeysResponseData {
@@ -21,8 +21,9 @@ export class ListPasskeysResponseData {
 
 export class UpdatePasskeyDisplayNameRequestDto {
   @ApiProperty({ description: 'Passkey Display Name', example: 'My Passkey' })
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: '显示名称必须为字符串' })
+  @IsNotEmpty({ message: '显示名称不能为空' })
+  @Length(1, 15, { message: '显示名称长度必须在1到15之间' })
   displayName: string;
 }
 

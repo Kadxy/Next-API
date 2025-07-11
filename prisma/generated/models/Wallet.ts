@@ -323,7 +323,7 @@ export type WalletScalarWhereWithAggregatesInput = {
 
 export type WalletCreateInput = {
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -337,7 +337,7 @@ export type WalletCreateInput = {
 export type WalletUncheckedCreateInput = {
   id?: number
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -378,7 +378,7 @@ export type WalletUncheckedUpdateInput = {
 export type WalletCreateManyInput = {
   id?: number
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -553,7 +553,7 @@ export type WalletUpdateOneRequiredWithoutApiCallRecordsNestedInput = {
 
 export type WalletCreateWithoutOwnerInput = {
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -566,7 +566,7 @@ export type WalletCreateWithoutOwnerInput = {
 export type WalletUncheckedCreateWithoutOwnerInput = {
   id?: number
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -619,7 +619,7 @@ export type WalletUncheckedUpdateWithoutOwnerInput = {
 
 export type WalletCreateWithoutMembersInput = {
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -632,7 +632,7 @@ export type WalletCreateWithoutMembersInput = {
 export type WalletUncheckedCreateWithoutMembersInput = {
   id?: number
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -685,7 +685,7 @@ export type WalletUncheckedUpdateWithoutMembersInput = {
 
 export type WalletCreateWithoutApiKeysInput = {
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -698,7 +698,7 @@ export type WalletCreateWithoutApiKeysInput = {
 export type WalletUncheckedCreateWithoutApiKeysInput = {
   id?: number
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number
@@ -751,7 +751,7 @@ export type WalletUncheckedUpdateWithoutApiKeysInput = {
 
 export type WalletCreateWithoutApiCallRecordsInput = {
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   createdAt?: Date | string
@@ -764,7 +764,7 @@ export type WalletCreateWithoutApiCallRecordsInput = {
 export type WalletUncheckedCreateWithoutApiCallRecordsInput = {
   id?: number
   uid?: string
-  displayName?: string
+  displayName: string
   balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   version?: number
   ownerId: number

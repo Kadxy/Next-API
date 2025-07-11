@@ -5,9 +5,7 @@ export class UpdateDisplayNameDto {
   @ApiProperty({ description: 'Display Name', example: 'John Doe' })
   @IsString({ message: 'Display name must be a string' })
   @IsNotEmpty({ message: 'Display name cannot be empty' })
-  @MinLength(4, { message: 'Display name must be at least 4 character' })
-  @MaxLength(31, {
-    message: 'Display name cannot be longer than 31 characters',
-  })
+  @MinLength(3, { message: '显示名称不能少于 3 个字符' })
+  @MaxLength(15, { message: '显示名称不能超过 15 个字符' })
   displayName: string;
 }

@@ -7,6 +7,7 @@ import { FeishuWebhookService } from '../../core/feishu-webhook/feishu-webhook.s
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { USER_QUERY_INCLUDE, USER_QUERY_OMIT } from 'prisma/query.constant';
 import { BusinessException } from 'src/common/exceptions';
+import { generateDisplayName } from '../../utils';
 
 // 使用 Prisma 生成的类型定义受限用户查询结果
 export type LimitedUser = Prisma.UserGetPayload<{
@@ -41,7 +42,7 @@ export class UserService {
 
     const user = await this.prisma.user.create({
       data: {
-        displayName: this.generateDisplayName('User', 4),
+        displayName: generateDisplayName('User', 6),
         ...data, // 使用提供的用户数据
       },
     });
@@ -142,16 +143,6 @@ export class UserService {
     return {
       ...userWithoutOmitted,
     } as unknown as LimitedUser;
-  }
-
-  // 生成随机字符串，格式为：{prefix}_{random_string}
-  private generateDisplayName(prefix: string, length: number): string {
-    return [
-      prefix,
-      Math.random()
-        .toString(36)
-        .substring(2, 2 + length),
-    ].join('_');
   }
 
   // 更新用户缓存（存储完整信息）
