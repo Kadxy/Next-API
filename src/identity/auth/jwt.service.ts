@@ -59,8 +59,8 @@ export class JwtTokenService {
     // Assemble payload
     const payload: JwtSignPayload = { uid, version };
 
-    // Update last login
-    this.userService.updateLastLoginAt(user.uid).catch();
+    // Update last login [async, don't block]
+    this.userService.updateLastLoginAt(user.uid, new Date()).catch();
 
     this.logger.debug(`Token signed, payload: ${JSON.stringify(payload)}`);
 

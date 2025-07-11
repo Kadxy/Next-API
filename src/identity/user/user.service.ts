@@ -26,11 +26,13 @@ export class UserService {
   ) {}
 
   // 更新用户最后登录时间
-  async updateLastLoginAt(uid: User['uid']) {
-    await this.prisma.user.update({
+  async updateLastLoginAt(uid: User['uid'], lastLoginAt: Date) {
+    const result = await this.prisma.user.update({
       where: { uid },
-      data: { lastLoginAt: new Date() },
+      data: { lastLoginAt },
     });
+
+    await this.updateUserCache(result);
   }
 
   // 统一创建用户（钱包创建移到独立的事务或服务中）
