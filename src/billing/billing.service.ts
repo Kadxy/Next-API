@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { ApiCallRecord, BillStatus, Wallet } from '@prisma-client/client';
+import { ApiCallRecord, BillStatus, User, Wallet } from '@prisma-client/client';
 import { ApiCallRecordCreateInput } from '@prisma-client/models';
 import { FeishuWebhookService } from 'src/core/feishu-webhook/feishu-webhook.service';
 import {
@@ -11,7 +11,7 @@ import {
 
 type ApiCallRecordGroup = Pick<
   ApiCallRecord,
-  'requestId' | 'walletId' | 'cost'
+  'requestId' | 'walletId' | 'userId' | 'cost'
 >;
 
 @Injectable()
@@ -26,7 +26,6 @@ export class BillingService {
   // 创建计费记录
   async createBillingRecord(data: ApiCallRecordCreateInput): Promise<void> {
     try {
-      // 创建记录
       await this.prisma.apiCallRecord.create({ data });
     } catch (error) {
       // 如果是重复的requestId，忽略错误（幂等性）
@@ -34,10 +33,12 @@ export class BillingService {
         this.logger.warn(`Duplicate requestId: ${data.requestId}`);
         return;
       }
-      this.feishuWebhookService.sendText(
-        'Failed to create billing record: ' + error,
-      );
+
+      // 其他错误，记录并抛出异常
       this.logger.error(`Failed to create billing record: ${error.message}`);
+      this.feishuWebhookService
+        .sendText('Failed to create billing record: ' + error)
+        .catch();
       throw error;
     }
   }
@@ -58,19 +59,12 @@ export class BillingService {
     }
   }
 
-  // 定时重试 48小时内的失败的计费记录（每 30 分钟执行）
+  // 定时将 FAILED 的记录重置为 PENDING
   @Cron(CronExpression.EVERY_30_MINUTES)
   async retryFailedBillings() {
-    const cutoffTime = new Date(Date.now() - 48 * 60 * 60 * 1000);
-
     const result = await this.prisma.apiCallRecord.updateMany({
-      where: {
-        billStatus: BillStatus.FAILED,
-        createdAt: { gte: cutoffTime },
-      },
-      data: {
-        billStatus: BillStatus.PENDING,
-      },
+      where: { billStatus: BillStatus.FAILED },
+      data: { billStatus: BillStatus.PENDING },
     });
 
     if (result.count > 0) {
@@ -80,7 +74,7 @@ export class BillingService {
 
   // 批量处理未计费的记录
   private async processBillingBatch(): Promise<number> {
-    const batchSize = 1000; // 每次处理1000条记录
+    const batchSize = 2000; // 每次处理2000条记录
     const cutoffTime = new Date(Date.now() - 10 * 1000); // 10秒前，避免处理正在进行的请求
 
     // 使用事务来保证原子性
@@ -92,7 +86,7 @@ export class BillingService {
           createdAt: { lte: cutoffTime },
         },
         take: batchSize,
-        select: { requestId: true, walletId: true, cost: true }, // 只查询必要的字段，避免不必要的开销
+        select: { requestId: true, walletId: true, userId: true, cost: true }, // 只查询必要的字段，避免不必要的开销
         orderBy: { createdAt: 'asc' }, // 按创建时间排序，确保幂等性
       });
 
@@ -111,24 +105,33 @@ export class BillingService {
         data: { billStatus: BillStatus.PROCESSING },
       });
 
-      // 3. 按钱包分组
-      const recordsByWallet = this.groupRecordsByWallet(pendingRecords);
+      // 3. 按钱包和用户双重分组
+      const recordsByWallet = this.groupRecordsByWalletAndUser(pendingRecords);
 
       // 4. 处理每个钱包的记录（仍在事务中）
       let successCount = 0;
-      for (const [walletId, records] of Object.entries(recordsByWallet)) {
+      for (const [walletId, walletUserRecords] of Object.entries(recordsByWallet)) {
         try {
-          await this.processWalletBillingInTx(tx, parseInt(walletId), records);
-          successCount += records.length;
+          await this.processWalletBillingInTx(tx, parseInt(walletId), walletUserRecords);
+
+          // 计算成功处理的记录数
+          const recordCount = Object.values(walletUserRecords).reduce(
+            (total, userRecords) => total + userRecords.length,
+            0,
+          );
+          successCount += recordCount;
         } catch (error) {
           // 单个钱包失败不影响其他钱包
           this.logger.error(
             `wallet ${walletId} failed to process, error: ${error.message}`,
           );
 
+          // 收集所有失败的记录ID
+          const failedRequestIds = Object.values(walletUserRecords).flat().map((r) => r.requestId);
+
           // 将失败的记录标记为FAILED
           await tx.apiCallRecord.updateMany({
-            where: { requestId: { in: records.map((r) => r.requestId) } },
+            where: { requestId: { in: failedRequestIds } },
             data: { billStatus: BillStatus.FAILED },
           });
         }
@@ -137,41 +140,82 @@ export class BillingService {
       return successCount;
     });
   }
-  // 按钱包分组记录
-  private groupRecordsByWallet(records: ApiCallRecordGroup[]) {
+
+  // 按钱包和用户双重分组记录
+  private groupRecordsByWalletAndUser(records: ApiCallRecordGroup[]) {
     return records.reduce(
-      (g, r) => {
-        const walletId = r.walletId;
-        if (!g[walletId]) {
-          g[walletId] = [];
+      (group, r) => {
+        const { walletId, userId } = r;
+
+        if (!group[walletId]) {
+          group[walletId] = {};
         }
-        g[walletId].push(r);
-        return g;
+        if (!group[walletId][userId]) {
+          group[walletId][userId] = [];
+        }
+        group[walletId][userId].push(r);
+        return group;
       },
-      {} as Record<Wallet['id'], ApiCallRecordGroup[]>,
+      {} as Record<Wallet['id'], Record<User['id'], ApiCallRecordGroup[]>>,
     );
   }
 
-  // 在事务中处理单个钱包的计费
+  // 在事务中处理单个钱包的计费（分开算的实现）
   private async processWalletBillingInTx(
     tx: TransactionClient,
     walletId: Wallet['id'],
-    records: ApiCallRecordGroup[],
+    recordsByUser: Record<User['id'], ApiCallRecordGroup[]>,
   ) {
-    // 计算总费用
-    let totalCost = new Decimal(0);
-    records.forEach((r) => (totalCost = totalCost.plus(r.cost)));
+    // 第一步：计算总费用和收集所有记录ID
+    const { totalCost, allRequestIds } = this.calculateTotalCost(recordsByUser);
 
     // 如果费用为0，只更新状态
     if (totalCost.equals(0)) {
       await tx.apiCallRecord.updateMany({
-        where: { requestId: { in: records.map((r) => r.requestId) } },
+        where: { requestId: { in: allRequestIds } },
         data: { billStatus: BillStatus.COMPLETED },
       });
       return;
     }
 
-    // 扣减钱包余额（使用乐观锁）
+    // 第二步：扣减钱包余额（使用乐观锁）
+    await this.deductWalletBalance(tx, walletId, totalCost);
+
+    // 第三步：更新每个用户的creditUsed
+    await this.updateUserCreditUsed(tx, walletId, recordsByUser);
+
+    // 第四步：更新记录状态为已计费
+    await tx.apiCallRecord.updateMany({
+      where: { requestId: { in: allRequestIds } },
+      data: { billStatus: BillStatus.COMPLETED },
+    });
+
+    this.logger.log(
+      `Wallet ${walletId}: deducted ${totalCost}, updated creditUsed for ${Object.keys(recordsByUser).length} users`,
+    );
+  }
+
+  // 计算总费用和收集记录ID
+  private calculateTotalCost(recordsByUser: Record<User['id'], ApiCallRecordGroup[]>) {
+    let totalCost = new Decimal(0);
+    const allRequestIds: string[] = [];
+
+    for (const userRecords of Object.values(recordsByUser)) {
+      userRecords.forEach((r) => {
+        totalCost = totalCost.plus(r.cost);
+        allRequestIds.push(r.requestId);
+      });
+    }
+
+    return { totalCost, allRequestIds };
+  }
+
+  // 扣减钱包余额
+  private async deductWalletBalance(
+    tx: TransactionClient,
+    walletId: Wallet['id'],
+    totalCost: Decimal,
+  ) {
     const updateResult = await tx.wallet.updateMany({
       where: { id: walletId },
       data: {
@@ -183,37 +227,34 @@ export class BillingService {
     if (updateResult.count === 0) {
       throw new Error(`Version conflict for wallet ${walletId}`);
     }
-
-    // 更新记录状态为已计费
-    await tx.apiCallRecord.updateMany({
-      where: { requestId: { in: records.map((r) => r.requestId) } },
-      data: { billStatus: BillStatus.COMPLETED },
-    });
-
-    this.logger.log(`Wallet ${walletId}: deducted ${totalCost}`);
   }
 
-  // [ADMIN] 获取计费统计信息（用于监控）
-  async getBillingStats() {
-    const [pending, processing, failed] = await Promise.all([
-      this.prisma.apiCallRecord.count({
-        where: { billStatus: BillStatus.PENDING },
-      }),
-      this.prisma.apiCallRecord.count({
-        where: { billStatus: BillStatus.PROCESSING },
-      }),
-      this.prisma.apiCallRecord.count({
-        where: {
-          billStatus: BillStatus.FAILED,
-          createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-        },
-      }),
-    ]);
+  // 更新用户creditUsed
+  private async updateUserCreditUsed(
+    tx: TransactionClient,
+    walletId: Wallet['id'],
+    recordsByUser: Record<User['id'], ApiCallRecordGroup[]>,
+  ) {
+    for (const [userId, userRecords] of Object.entries(recordsByUser)) {
+      // 计算该用户的总费用
+      let userCost = new Decimal(0);
+      userRecords.forEach((r) => {
+        userCost = userCost.plus(r.cost);
+      });
 
-    return {
-      pending,
-      processing,
-      failed,
-    };
+      // 只有费用大于0的用户才需要更新creditUsed
+      if (userCost.greaterThan(0)) {
+        await tx.walletMember.updateMany({
+          where: {
+            walletId,
+            userId: parseInt(userId),
+            isActive: true,
+          },
+          data: {
+            creditUsed: { increment: userCost },
+          },
+        });
+      }
+    }
   }
 }

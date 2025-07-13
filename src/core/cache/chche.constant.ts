@@ -54,6 +54,10 @@ export const CACHE_KEYS = {
     KEY: 'wallet-info:{uid}',
     EXPIRE: minutes(1),
   },
+  WALLET_MEMBER_CREDIT_INSUFFICIENT: {
+    KEY: 'wallet-member-credit-insufficient:{walletId}:{userId}',
+    EXPIRE: minutes(1),
+  },
 } as const;
 
 export const CACHE_FLAG = {
