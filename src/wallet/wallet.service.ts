@@ -65,6 +65,8 @@ export class WalletService {
       where: { userId, isActive: true },
       select: {
         isOwner: true,
+        creditUsed: true,
+        creditLimit: true,
         wallet: { select: SIMPLE_WALLET_QUERY_SELECT },
       },
       orderBy: [
@@ -74,8 +76,10 @@ export class WalletService {
     });
 
     return joinedWallet.map((wallet) => ({
-      ...wallet.wallet,
       isOwner: wallet.isOwner,
+      creditUsed: wallet.creditUsed.toString(),
+      creditLimit: wallet.creditLimit.toString(),
+      ...wallet.wallet,
     }));
   }
 
@@ -108,12 +112,13 @@ export class WalletService {
     alias: string,
     creditLimit: number,
   ) {
-    const { wallet, memberUser, existRecord } = await this.validateWalletMemberOperation(
-      walletUid,
-      memberUid,
-      operatorId,
-      true, // requireOwner
-    );
+    const { wallet, memberUser, existRecord } =
+      await this.validateWalletMemberOperation(
+        walletUid,
+        memberUid,
+        operatorId,
+        true, // requireOwner
+      );
 
     if (existRecord) {
       throw new BusinessException('Member already in wallet');
@@ -138,12 +143,13 @@ export class WalletService {
     memberUid: User['uid'],
     operatorId: User['id'],
   ) {
-    const { wallet, memberUser, existRecord } = await this.validateWalletMemberOperation(
-      walletUid,
-      memberUid,
-      operatorId,
-      true, // requireOwner
-    );
+    const { wallet, memberUser, existRecord } =
+      await this.validateWalletMemberOperation(
+        walletUid,
+        memberUid,
+        operatorId,
+        true, // requireOwner
+      );
 
     if (!existRecord) {
       throw new BusinessException('Member not found');
@@ -333,9 +339,7 @@ export class WalletService {
     }
 
     // 3. 查找现有成员记录
-    const existRecord = wallet.members.find(
-      (m) => m.userId === memberUser.id,
-    );
+    const existRecord = wallet.members.find((m) => m.userId === memberUser.id);
 
     return { wallet, memberUser, existRecord };
   }

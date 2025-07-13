@@ -289,7 +289,7 @@ export class ApikeyService implements OnModuleInit {
 
     try {
       const apiKeys = await this.prisma.apiKey.findMany({
-        where: { isActive: true },
+        where: { isActive: true, isDeleted: false },
         select: { hashKey: true },
       });
 
