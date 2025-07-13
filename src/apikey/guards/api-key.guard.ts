@@ -5,11 +5,12 @@ import {
   Logger,
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { ApikeyService, VerifiedApiKeyRecord } from '../apikey.service';
+import { ApikeyService } from '../apikey.service';
 import { UnauthorizedException } from 'src/common/exceptions';
+import { ApiKey } from '@prisma-client/client';
 
 export interface RequestWithApiKey extends FastifyRequest {
-  apiKey: VerifiedApiKeyRecord;
+  apiKey: ApiKey;
 }
 
 @Injectable()

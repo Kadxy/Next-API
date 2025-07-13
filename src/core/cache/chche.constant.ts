@@ -1,6 +1,6 @@
 // https://docs.nestjs.com/techniques/caching#interacting-with-the-cache-store
 
-import { minutes, days } from '@nestjs/throttler';
+import { days, hours, minutes } from '@nestjs/throttler';
 
 // Default cache TTL: 5 minutes
 export const DEFAULT_CACHE_TTL = minutes(5);
@@ -56,7 +56,7 @@ export const CACHE_KEYS = {
   },
   WALLET_MEMBER_CREDIT_INSUFFICIENT: {
     KEY: 'wallet-member-credit-insufficient:{walletId}:{userId}',
-    EXPIRE: minutes(1),
+    EXPIRE: hours(3),
   },
 } as const;
 
@@ -65,15 +65,30 @@ export const CACHE_FLAG = {
 } as const;
 
 /**
- * 获取缓存键
+ * 获取缓存键。
  * @param cache 缓存信息
- * @param param 参数
- * @returns 缓存键
- * @example getCacheKey(CACHE_KEYS.USER_INFO, '123') => 'user-info:123'
+ * @param params 用来替换占位符的参数列表，可以是字符串或数字。
+ * @returns 替换了占位符的完整缓存键。
+ * @example getCacheKey({ KEY: 'user-info:{uid}', EXPIRE: 300 }, 123) => 'user-info:123'
+ * @example getCacheKey({ KEY: 'user-info:{uid}:{email}', EXPIRE: 300 }, 123, 'a@b.com') => 'user-info:123:a@b.com'
  */
 export const getCacheKey = (
-  cache: (typeof CACHE_KEYS)[keyof typeof CACHE_KEYS],
-  param: string | number,
-) => {
-  return cache.KEY.replace(/{[^}]+}/, String(param));
+  cache: { KEY: string; [key: string]: any }, // 使用简化类型或你原来的精确类型均可
+  ...params: (string | number | null | undefined)[] // 进一步放宽类型，使其更健壮
+): string => {
+  // 使用 String() 进行安全的类型转换，避免因 null/undefined 报错。
+  // 这会将 null 转换为 'null'，undefined 转换为 'undefined'。
+  const stringParams = params.map((param) => String(param));
+
+  // 从副本进行操作，不修改原始数组
+  const paramsCopy = [...stringParams];
+
+  return cache.KEY.replace(/{[^}]+}/g, () => {
+    const replacement = paramsCopy.shift();
+    if (replacement === undefined) {
+      // 抛出明确的错误，告知调用者参数数量不足
+      throw new Error('Not enough parameters provided for cache key.');
+    }
+    return replacement;
+  });
 };

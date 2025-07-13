@@ -10,10 +10,10 @@ import { CoreModule } from './core/core.module';
 import { ConfigModule } from './core/config/config.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { RedemptionModule } from './redemption/redemption.module';
-import { WalletService } from './wallet/wallet.service';
 import { BillingModule } from './billing/billing.module';
 import { ProxyModule } from './proxy/proxy.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
   imports: [
@@ -40,7 +40,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     RedemptionModule,
     BillingModule,
     ProxyModule,
+    WalletModule,
   ],
-  providers: [WalletService],
+  providers: [],
 })
 export class AppModule {}

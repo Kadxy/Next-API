@@ -3,7 +3,7 @@ import { PrismaService } from '../core/prisma/prisma.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
-import { BusinessException } from 'src/common/exceptions';
+import { BusinessException, ForbiddenException } from 'src/common/exceptions';
 import { Prisma, User, Wallet, WalletMember } from '@prisma-client/client';
 import {
   OWNER_WALLET_QUERY_OMIT,
@@ -38,7 +38,7 @@ export class WalletService {
     userId: User['id'],
     requireOwner = false,
   ): Promise<WalletWithMembers | null> {
-    const wallet = await this.getCachedWallet(where);
+    const wallet = await this.getWallet(where);
 
     if (!wallet) {
       throw new BusinessException('wallet not found');
@@ -304,6 +304,28 @@ export class WalletService {
     });
   }
 
+  async checkBalance(walletId: Wallet['id'], userId: User['id']) {
+    const wallet = await this.getWallet({ id: walletId });
+    const member = wallet.members.find(
+      (m) => m.userId === userId && m.isActive,
+    );
+
+    if (!wallet || !member) {
+      throw new BusinessException('Failed to check balance');
+    }
+
+    if (Number(wallet.balance) < 0) {
+      throw new ForbiddenException('Insufficient wallet balance');
+    }
+
+    if (
+      Number(member.creditLimit) !== 0 && // 不是无限额度
+      Number(member.creditLimit) < Number(member.creditUsed) // 已使用额度超过限制
+    ) {
+      throw new ForbiddenException('Insufficient member credit');
+    }
+  }
+
   /**
    * 验证钱包成员操作的通用方法
    * @param walletUid - 钱包UID
@@ -350,7 +372,7 @@ export class WalletService {
    * @returns wallet info if cached or found in database, null only if not found in database
    * @throws BusinessException if invalid wallet ID or UID
    */
-  private async getCachedWallet(
+  private async getWallet(
     where: Prisma.WalletWhereUniqueInput,
   ): Promise<WalletWithMembers | null> {
     let cacheKey: string;

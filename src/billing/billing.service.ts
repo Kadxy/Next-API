@@ -77,6 +77,8 @@ export class BillingService {
     const batchSize = 2000; // 每次处理2000条记录
     const cutoffTime = new Date(Date.now() - 10 * 1000); // 10秒前，避免处理正在进行的请求
 
+    const needUpdateCreditLimit = new Map<Wallet['id'], Set<User['id']>>();
+
     // 使用事务来保证原子性
     return await this.prisma.$transaction(async (tx) => {
       // 1. 查询并锁定待处理的记录
@@ -106,20 +108,35 @@ export class BillingService {
       });
 
       // 3. 按钱包和用户双重分组
-      const recordsByWallet = this.groupRecordsByWalletAndUser(pendingRecords);
+      const groupedRecords = this.groupRecordsByWalletAndUser(pendingRecords);
 
       // 4. 处理每个钱包的记录（仍在事务中）
-      let successCount = 0;
-      for (const [walletId, walletUserRecords] of Object.entries(recordsByWallet)) {
+      let processedCount = 0;
+      for (const [walletId, walletUserRecords] of Object.entries(
+        groupedRecords,
+      )) {
         try {
-          await this.processWalletBillingInTx(tx, parseInt(walletId), walletUserRecords);
+          await this.processWalletBillingInTx(
+            tx,
+            parseInt(walletId),
+            walletUserRecords,
+          );
 
           // 计算成功处理的记录数
           const recordCount = Object.values(walletUserRecords).reduce(
             (total, userRecords) => total + userRecords.length,
             0,
           );
-          successCount += recordCount;
+          processedCount += recordCount;
+
+          // 收集成功处理的 walletId 和 userIds
+          if (!needUpdateCreditLimit.has(parseInt(walletId))) {
+            needUpdateCreditLimit.set(parseInt(walletId), new Set());
+          }
+          const userIds = Object.keys(walletUserRecords).map(Number);
+          userIds.forEach((userId) =>
+            needUpdateCreditLimit.get(parseInt(walletId))!.add(userId),
+          );
         } catch (error) {
           // 单个钱包失败不影响其他钱包
           this.logger.error(
@@ -127,7 +144,9 @@ export class BillingService {
           );
 
           // 收集所有失败的记录ID
-          const failedRequestIds = Object.values(walletUserRecords).flat().map((r) => r.requestId);
+          const failedRequestIds = Object.values(walletUserRecords)
+            .flat()
+            .map((r) => r.requestId);
 
           // 将失败的记录标记为FAILED
           await tx.apiCallRecord.updateMany({
@@ -136,8 +155,7 @@ export class BillingService {
           });
         }
       }
-
-      return successCount;
+      return processedCount;
     });
   }
 
@@ -196,7 +214,9 @@ export class BillingService {
   }
 
   // 计算总费用和收集记录ID
-  private calculateTotalCost(recordsByUser: Record<User['id'], ApiCallRecordGroup[]>) {
+  private calculateTotalCost(
+    recordsByUser: Record<User['id'], ApiCallRecordGroup[]>,
+  ) {
     let totalCost = new Decimal(0);
     const allRequestIds: string[] = [];
 

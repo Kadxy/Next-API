@@ -17,14 +17,6 @@ import { WalletService } from '../wallet/wallet.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { FeishuWebhookService } from '../core/feishu-webhook/feishu-webhook.service';
 
-export interface VerifiedApiKeyRecord extends ApiKey {
-  isActive: true;
-  isDeleted: false;
-  wallet: {
-    id: Wallet['id'];
-  };
-}
-
 @Injectable()
 export class ApikeyService implements OnModuleInit {
   public static readonly BLOOM_FILTER_NAME = 'api_keys';
@@ -220,8 +212,10 @@ export class ApikeyService implements OnModuleInit {
     });
   }
 
-  // 验证 API Key 并返回记录 [
-  async verifyApiKey(apiKey: string): Promise<VerifiedApiKeyRecord> {
+  // 验证 API Key 并返回记录 [有效、未删除、钱包额度充足、成员信用额度充足]
+  async verifyApiKey(apiKey: string): Promise<ApiKey> {
+    let record: ApiKey;
+
     if (!apiKey) {
       throw new UnauthorizedException('API key is required');
     }
@@ -251,30 +245,33 @@ export class ApikeyService implements OnModuleInit {
       throw new UnauthorizedException('Invalid API key');
     }
 
-    // 4. 优先查询缓存
+    // 4.1 优先查询缓存
     const cacheKey = getCacheKey(CACHE_KEYS.API_KEY, hashKey);
-    const cachedApiKey =
-      await this.cacheManager.get<VerifiedApiKeyRecord>(cacheKey);
-    if (cachedApiKey) {
-      return cachedApiKey;
-    }
+    record = await this.cacheManager.get<ApiKey>(cacheKey);
 
-    // 5. 查询数据库（包含钱包信息）
-    const record = (await this.prisma.apiKey.findUnique({
-      where: { hashKey, isActive: true, isDeleted: false },
-      include: { wallet: { select: { id: true } } },
-    })) as VerifiedApiKeyRecord;
-
+    // 4.2 缓存未命中则查询数据库
     if (!record) {
-      throw new UnauthorizedException('Invalid API key');
+      record = await this.prisma.apiKey.findUnique({
+        where: { hashKey, isActive: true, isDeleted: false },
+      });
+
+      // 4.2.1 数据库无记录
+      if (!record) {
+        throw new UnauthorizedException('Invalid API key');
+      }
+
+      // 4.2.2 更新缓存
+      this.cacheManager
+        .set(cacheKey, record, CACHE_KEYS.API_KEY.EXPIRE)
+        .catch((err) => {
+          console.error('Failed to cache API key', err);
+        });
     }
 
-    // 6. 缓存结果(不阻塞)
-    this.cacheManager
-      .set(cacheKey, record, CACHE_KEYS.API_KEY.EXPIRE)
-      .catch((err) => {
-        console.error('Failed to cache API key', err);
-      });
+    const { walletId, creatorId } = record;
+
+    // 5 检查钱包和成员余额
+    await this.walletService.checkBalance(walletId, creatorId);
 
     return record;
   }
