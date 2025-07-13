@@ -58,3 +58,15 @@ export class UserResponseDto extends createResponseDto<UserResponseData>(
 export class LoginResponseDto extends createResponseDto<LoginResponseData>(
   LoginResponseData,
 ) {}
+
+export class PublicUserInfoData {
+  @ApiProperty({ description: 'User Display Name' })
+  displayName: string;
+
+  @ApiProperty({ description: 'User Avatar' })
+  avatar: string;
+}
+
+export class GetPublicUserInfoResponseDto extends createResponseDto<PublicUserInfoData>(
+  PublicUserInfoData,
+) {}

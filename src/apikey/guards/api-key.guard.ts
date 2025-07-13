@@ -5,11 +5,11 @@ import {
   Logger,
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { ApiKeyRecord, ApikeyService } from '../apikey.service';
+import { VerifiedApiKeyRecord, ApikeyService } from '../apikey.service';
 import { UnauthorizedException } from 'src/common/exceptions';
 
 export interface RequestWithApiKey extends FastifyRequest {
-  apiKey: ApiKeyRecord;
+  apiKey: VerifiedApiKeyRecord;
 }
 
 @Injectable()
@@ -38,6 +38,11 @@ export class ApiKeyGuard implements CanActivate {
     }
   }
 
+  /**
+   * 从请求头中提取 API Key
+   * @param request
+   * @return API Key (sk-xxx)
+   */
   private extractApiKey(request: FastifyRequest): string {
     const authHeader = request.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {

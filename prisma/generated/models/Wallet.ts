@@ -406,9 +406,14 @@ export type WalletUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type WalletNullableScalarRelationFilter = {
-  is?: Prisma.WalletWhereInput | null
-  isNot?: Prisma.WalletWhereInput | null
+export type WalletListRelationFilter = {
+  every?: Prisma.WalletWhereInput
+  some?: Prisma.WalletWhereInput
+  none?: Prisma.WalletWhereInput
+}
+
+export type WalletOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type WalletOrderByRelevanceInput = {
@@ -469,36 +474,46 @@ export type WalletScalarRelationFilter = {
   isNot?: Prisma.WalletWhereInput
 }
 
-export type WalletCreateNestedOneWithoutOwnerInput = {
-  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput>
-  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput
-  connect?: Prisma.WalletWhereUniqueInput
+export type WalletCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput> | Prisma.WalletCreateWithoutOwnerInput[] | Prisma.WalletUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput | Prisma.WalletCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.WalletCreateManyOwnerInputEnvelope
+  connect?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
 }
 
-export type WalletUncheckedCreateNestedOneWithoutOwnerInput = {
-  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput>
-  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput
-  connect?: Prisma.WalletWhereUniqueInput
+export type WalletUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput> | Prisma.WalletCreateWithoutOwnerInput[] | Prisma.WalletUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput | Prisma.WalletCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.WalletCreateManyOwnerInputEnvelope
+  connect?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
 }
 
-export type WalletUpdateOneWithoutOwnerNestedInput = {
-  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput>
-  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput
-  upsert?: Prisma.WalletUpsertWithoutOwnerInput
-  disconnect?: Prisma.WalletWhereInput | boolean
-  delete?: Prisma.WalletWhereInput | boolean
-  connect?: Prisma.WalletWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WalletUpdateToOneWithWhereWithoutOwnerInput, Prisma.WalletUpdateWithoutOwnerInput>, Prisma.WalletUncheckedUpdateWithoutOwnerInput>
+export type WalletUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput> | Prisma.WalletCreateWithoutOwnerInput[] | Prisma.WalletUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput | Prisma.WalletCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.WalletUpsertWithWhereUniqueWithoutOwnerInput | Prisma.WalletUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.WalletCreateManyOwnerInputEnvelope
+  set?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  disconnect?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  delete?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  connect?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  update?: Prisma.WalletUpdateWithWhereUniqueWithoutOwnerInput | Prisma.WalletUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.WalletUpdateManyWithWhereWithoutOwnerInput | Prisma.WalletUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.WalletScalarWhereInput | Prisma.WalletScalarWhereInput[]
 }
 
-export type WalletUncheckedUpdateOneWithoutOwnerNestedInput = {
-  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput>
-  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput
-  upsert?: Prisma.WalletUpsertWithoutOwnerInput
-  disconnect?: Prisma.WalletWhereInput | boolean
-  delete?: Prisma.WalletWhereInput | boolean
-  connect?: Prisma.WalletWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WalletUpdateToOneWithWhereWithoutOwnerInput, Prisma.WalletUpdateWithoutOwnerInput>, Prisma.WalletUncheckedUpdateWithoutOwnerInput>
+export type WalletUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput> | Prisma.WalletCreateWithoutOwnerInput[] | Prisma.WalletUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.WalletCreateOrConnectWithoutOwnerInput | Prisma.WalletCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.WalletUpsertWithWhereUniqueWithoutOwnerInput | Prisma.WalletUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.WalletCreateManyOwnerInputEnvelope
+  set?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  disconnect?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  delete?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  connect?: Prisma.WalletWhereUniqueInput | Prisma.WalletWhereUniqueInput[]
+  update?: Prisma.WalletUpdateWithWhereUniqueWithoutOwnerInput | Prisma.WalletUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.WalletUpdateManyWithWhereWithoutOwnerInput | Prisma.WalletUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.WalletScalarWhereInput | Prisma.WalletScalarWhereInput[]
 }
 
 export type DecimalFieldUpdateOperationsInput = {
@@ -581,40 +596,39 @@ export type WalletCreateOrConnectWithoutOwnerInput = {
   create: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput>
 }
 
-export type WalletUpsertWithoutOwnerInput = {
-  update: Prisma.XOR<Prisma.WalletUpdateWithoutOwnerInput, Prisma.WalletUncheckedUpdateWithoutOwnerInput>
-  create: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput>
-  where?: Prisma.WalletWhereInput
+export type WalletCreateManyOwnerInputEnvelope = {
+  data: Prisma.WalletCreateManyOwnerInput | Prisma.WalletCreateManyOwnerInput[]
+  skipDuplicates?: boolean
 }
 
-export type WalletUpdateToOneWithWhereWithoutOwnerInput = {
-  where?: Prisma.WalletWhereInput
+export type WalletUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.WalletWhereUniqueInput
+  update: Prisma.XOR<Prisma.WalletUpdateWithoutOwnerInput, Prisma.WalletUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.WalletCreateWithoutOwnerInput, Prisma.WalletUncheckedCreateWithoutOwnerInput>
+}
+
+export type WalletUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.WalletWhereUniqueInput
   data: Prisma.XOR<Prisma.WalletUpdateWithoutOwnerInput, Prisma.WalletUncheckedUpdateWithoutOwnerInput>
 }
 
-export type WalletUpdateWithoutOwnerInput = {
-  uid?: Prisma.StringFieldUpdateOperationsInput | string
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  version?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  members?: Prisma.WalletMemberUpdateManyWithoutWalletNestedInput
-  apiKeys?: Prisma.ApiKeyUpdateManyWithoutWalletNestedInput
-  apiCallRecords?: Prisma.ApiCallRecordUpdateManyWithoutWalletNestedInput
+export type WalletUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.WalletScalarWhereInput
+  data: Prisma.XOR<Prisma.WalletUpdateManyMutationInput, Prisma.WalletUncheckedUpdateManyWithoutOwnerInput>
 }
 
-export type WalletUncheckedUpdateWithoutOwnerInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  uid?: Prisma.StringFieldUpdateOperationsInput | string
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  version?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  members?: Prisma.WalletMemberUncheckedUpdateManyWithoutWalletNestedInput
-  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutWalletNestedInput
-  apiCallRecords?: Prisma.ApiCallRecordUncheckedUpdateManyWithoutWalletNestedInput
+export type WalletScalarWhereInput = {
+  AND?: Prisma.WalletScalarWhereInput | Prisma.WalletScalarWhereInput[]
+  OR?: Prisma.WalletScalarWhereInput[]
+  NOT?: Prisma.WalletScalarWhereInput | Prisma.WalletScalarWhereInput[]
+  id?: Prisma.IntFilter<"Wallet"> | number
+  uid?: Prisma.StringFilter<"Wallet"> | string
+  displayName?: Prisma.StringFilter<"Wallet"> | string
+  balance?: Prisma.DecimalFilter<"Wallet"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  version?: Prisma.IntFilter<"Wallet"> | number
+  ownerId?: Prisma.IntFilter<"Wallet"> | number
+  createdAt?: Prisma.DateTimeFilter<"Wallet"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Wallet"> | Date | string
 }
 
 export type WalletCreateWithoutMembersInput = {
@@ -813,6 +827,51 @@ export type WalletUncheckedUpdateWithoutApiCallRecordsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.WalletMemberUncheckedUpdateManyWithoutWalletNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutWalletNestedInput
+}
+
+export type WalletCreateManyOwnerInput = {
+  id?: number
+  uid?: string
+  displayName: string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WalletUpdateWithoutOwnerInput = {
+  uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WalletMemberUpdateManyWithoutWalletNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutWalletNestedInput
+  apiCallRecords?: Prisma.ApiCallRecordUpdateManyWithoutWalletNestedInput
+}
+
+export type WalletUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WalletMemberUncheckedUpdateManyWithoutWalletNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutWalletNestedInput
+  apiCallRecords?: Prisma.ApiCallRecordUncheckedUpdateManyWithoutWalletNestedInput
+}
+
+export type WalletUncheckedUpdateManyWithoutOwnerInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 

@@ -25,9 +25,9 @@ model User {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   lastLoginAt    DateTime?
-  wallet         Wallet? // 拥有的钱包(一对一，一个用户只能作为一个钱包的owner)
-  walletMembers  WalletMember[] // 作为成员加入的钱包
-  passkeys       Passkey[] // 绑定的passkey，用于登录
+  wallet         Wallet[] // 管理的钱包
+  walletMembers  WalletMember[] // 加入的钱包
+  passkeys       Passkey[] // 绑定的passkey
   redeemCodes    RedemptionCode[] // 使用过的兑换码
   createdApiKeys ApiKey[] // 创建的API Keys
 
@@ -36,16 +36,15 @@ model User {
 }
 
 model Wallet {
-  id          Int      @id @default(autoincrement())
-  uid         String   @unique @default(uuid())
-  displayName String   @db.VarChar(15)
-  balance     Decimal  @default(0) @db.Decimal(12, 6)
-  version     Int      @default(1) // 乐观锁
-  owner       User     @relation(fields: [ownerId], references: [id])
-  ownerId     Int      @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
+  id             Int             @id @default(autoincrement())
+  uid            String          @unique @default(uuid())
+  displayName    String          @db.VarChar(15)
+  balance        Decimal         @default(0) @db.Decimal(12, 6)
+  version        Int             @default(1) // 乐观锁
+  owner          User            @relation(fields: [ownerId], references: [id])
+  ownerId        Int             @unique
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   members        WalletMember[] // 钱包成员
   apiKeys        ApiKey[] // 使用此钱包的API Keys
   apiCallRecords ApiCallRecord[] // API 调用记录
@@ -60,9 +59,10 @@ model WalletMember {
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
   alias       String   @default("") @db.VarChar(15) // 成员别名
-  creditLimit Decimal  @db.Decimal(14, 8) // 信用额度
+  creditLimit Decimal  @default(0) @db.Decimal(14, 8) // 信用额度(0表示无限制)
   creditUsed  Decimal  @default(0) @db.Decimal(14, 8) // 累计消费
-  isActive    Boolean  @default(true)
+  isActive    Boolean  @default(true) // 是否激活(退出或被踢出时设置为false)
+  isOwner     Boolean  @default(false) // 是否是钱包所有者
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

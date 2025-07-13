@@ -35,13 +35,15 @@ export class UserService {
     await this.updateUserCache(result);
   }
 
-  // 统一创建用户（钱包创建移到独立的事务或服务中）
+  // 统一创建用户
   async createUser(data: Prisma.UserCreateInput): Promise<LimitedUser> {
+    // 0. 打印日志, 发送通知
     this.logger.log(`Creating user with data: ${JSON.stringify(data)}`);
     this.feishuWebhookService
       .sendText(`New user: ${JSON.stringify(data)}`)
       .catch();
 
+    // 1. 创建用户
     const user = await this.prisma.user.create({
       data: {
         displayName: generateDisplayName('User', 6),
@@ -49,13 +51,29 @@ export class UserService {
       },
     });
 
-    if (user?.id) {
-      // 更新缓存
-      await this.updateUserCache(user);
-      return this.constructLimitedUser(user);
+    if (!user?.id) {
+      throw new BusinessException('Failed to register');
     }
 
-    throw new BusinessException('Failed to register');
+    // 2. 更新缓存
+    await this.updateUserCache(user);
+
+    // 3. 创建默认钱包
+    await this.prisma.wallet.create({
+      data: {
+        owner: { connect: { id: user.id } },
+        members: {
+          create: {
+            user: { connect: { id: user.id } },
+            isOwner: true,
+          },
+        },
+        displayName: generateDisplayName('Wallet', 6),
+      },
+    });
+
+    // 4. 返回受限用户对象
+    return this.constructLimitedUser(user);
   }
 
   // 从缓存获取用户 - 通过 UID 【这个方法会返回全部字段信息】
@@ -75,7 +93,7 @@ export class UserService {
       }
     }
 
-    // 返回完整用户信息（可能为空）
+    // 返回完整用户信息（可能为空或者isDeleted=true）
     return user;
   }
 
@@ -87,22 +105,22 @@ export class UserService {
 
   // 从数据库获取用户 - 通过自增 ID
   async getUserById(id: User['id']) {
-    return this.findUserWithCaching({ id });
+    return this.getDbUser({ id });
   }
 
   // 从数据库获取用户 - 通过邮箱
   async getUserByEmail(email: User['email']) {
-    return this.findUserWithCaching({ email });
+    return this.getDbUser({ email });
   }
 
   // 从数据库获取用户 - 通过 GitHub ID
   async getUserByGitHubId(gitHubId: User['gitHubId']) {
-    return this.findUserWithCaching({ gitHubId });
+    return this.getDbUser({ gitHubId });
   }
 
   // 从数据库获取用户 - 通过 Google ID
   async getUserByGoogleId(googleId: User['googleId']) {
-    return this.findUserWithCaching({ googleId });
+    return this.getDbUser({ googleId });
   }
 
   // 更新用户显示名称
@@ -117,8 +135,8 @@ export class UserService {
     return this.constructLimitedUser(user);
   }
 
-  // 通用查询方法 - 查询完整信息，更新缓存，返回受限字段
-  private async findUserWithCaching(
+  // 通用查询方法 - 从数据库查询完整信息，更新缓存，返回受限字段
+  private async getDbUser(
     where: Prisma.UserWhereUniqueInput,
   ): Promise<LimitedUser | null> {
     // 查询完整信息

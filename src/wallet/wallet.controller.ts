@@ -31,7 +31,7 @@ export class WalletController {
   @ApiResponse({ type: ListWalletResponseDto })
   async getWallets(@Req() req: RequestWithUser) {
     const { user } = req;
-    return this.walletService.listUserAvailableWallets(user.id);
+    return this.walletService.listUserAccessibleWallets(user.id);
   }
 
   @Get(':walletUid')
@@ -52,7 +52,7 @@ export class WalletController {
     @Body() body: UpdateWalletDisplayNameDto,
     @Param('walletUid') walletUid: string,
   ) {
-    return this.walletService.updateWalletDisplayName(
+    return this.walletService.updateDisplayName(
       walletUid,
       body.displayName,
       req.user.id,
@@ -132,13 +132,25 @@ export class WalletController {
     @Param('walletUid') walletUid: string,
     @Param('memberUid') memberUid: string,
   ) {
-    return this.walletService.updateWalletMember(
+    return this.walletService.resetWalletMemberCreditUsage(
       walletUid,
       memberUid,
       req.user.id,
-      undefined,
-      undefined,
-      true,
+    );
+  }
+
+  @Post(':walletUid/members/:memberUid/reactivate')
+  @ApiOperation({ summary: '重新激活钱包成员' })
+  @ApiResponse({ type: BaseResponse })
+  async reactivateMember(
+    @Req() req: RequestWithUser,
+    @Param('walletUid') walletUid: string,
+    @Param('memberUid') memberUid: string,
+  ) {
+    return this.walletService.reactivateWalletMember(
+      walletUid,
+      memberUid,
+      req.user.id,
     );
   }
 }

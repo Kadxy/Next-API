@@ -279,7 +279,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
+  wallet?: Prisma.WalletListRelationFilter
   walletMembers?: Prisma.WalletMemberListRelationFilter
   passkeys?: Prisma.PasskeyListRelationFilter
   redeemCodes?: Prisma.RedemptionCodeListRelationFilter
@@ -300,7 +300,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  wallet?: Prisma.WalletOrderByWithRelationInput
+  wallet?: Prisma.WalletOrderByRelationAggregateInput
   walletMembers?: Prisma.WalletMemberOrderByRelationAggregateInput
   passkeys?: Prisma.PasskeyOrderByRelationAggregateInput
   redeemCodes?: Prisma.RedemptionCodeOrderByRelationAggregateInput
@@ -325,7 +325,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
+  wallet?: Prisma.WalletListRelationFilter
   walletMembers?: Prisma.WalletMemberListRelationFilter
   passkeys?: Prisma.PasskeyListRelationFilter
   redeemCodes?: Prisma.RedemptionCodeListRelationFilter
@@ -385,7 +385,7 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
@@ -406,7 +406,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletUncheckedCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
@@ -426,7 +426,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
@@ -447,7 +447,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUncheckedUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
@@ -780,7 +780,7 @@ export type UserCreateWithoutWalletMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletCreateNestedManyWithoutOwnerInput
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
@@ -800,7 +800,7 @@ export type UserUncheckedCreateWithoutWalletMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletUncheckedCreateNestedManyWithoutOwnerInput
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
@@ -835,7 +835,7 @@ export type UserUpdateWithoutWalletMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUpdateManyWithoutOwnerNestedInput
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
@@ -855,7 +855,7 @@ export type UserUncheckedUpdateWithoutWalletMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUncheckedUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateManyWithoutOwnerNestedInput
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -874,7 +874,7 @@ export type UserCreateWithoutCreatedApiKeysInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
@@ -894,7 +894,7 @@ export type UserUncheckedCreateWithoutCreatedApiKeysInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletUncheckedCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
@@ -929,7 +929,7 @@ export type UserUpdateWithoutCreatedApiKeysInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
@@ -949,7 +949,7 @@ export type UserUncheckedUpdateWithoutCreatedApiKeysInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUncheckedUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
@@ -968,7 +968,7 @@ export type UserCreateWithoutPasskeysInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
@@ -988,7 +988,7 @@ export type UserUncheckedCreateWithoutPasskeysInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletUncheckedCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
@@ -1023,7 +1023,7 @@ export type UserUpdateWithoutPasskeysInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
@@ -1043,7 +1043,7 @@ export type UserUncheckedUpdateWithoutPasskeysInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUncheckedUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1062,7 +1062,7 @@ export type UserCreateWithoutRedeemCodesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
@@ -1082,7 +1082,7 @@ export type UserUncheckedCreateWithoutRedeemCodesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
-  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutOwnerInput
+  wallet?: Prisma.WalletUncheckedCreateNestedManyWithoutOwnerInput
   walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
@@ -1117,7 +1117,7 @@ export type UserUpdateWithoutRedeemCodesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
@@ -1137,7 +1137,7 @@ export type UserUncheckedUpdateWithoutRedeemCodesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  wallet?: Prisma.WalletUncheckedUpdateOneWithoutOwnerNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
@@ -1149,6 +1149,7 @@ export type UserUncheckedUpdateWithoutRedeemCodesInput = {
  */
 
 export type UserCountOutputType = {
+  wallet: number
   walletMembers: number
   passkeys: number
   redeemCodes: number
@@ -1156,6 +1157,7 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  wallet?: boolean | UserCountOutputTypeCountWalletArgs
   walletMembers?: boolean | UserCountOutputTypeCountWalletMembersArgs
   passkeys?: boolean | UserCountOutputTypeCountPasskeysArgs
   redeemCodes?: boolean | UserCountOutputTypeCountRedeemCodesArgs
@@ -1170,6 +1172,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWalletArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WalletWhereInput
 }
 
 /**
@@ -1254,7 +1263,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    wallet: Prisma.$WalletPayload<ExtArgs> | null
+    wallet: Prisma.$WalletPayload<ExtArgs>[]
     walletMembers: Prisma.$WalletMemberPayload<ExtArgs>[]
     passkeys: Prisma.$PasskeyPayload<ExtArgs>[]
     redeemCodes: Prisma.$RedemptionCodePayload<ExtArgs>[]
@@ -1614,7 +1623,7 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  wallet<T extends Prisma.User$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletArgs<ExtArgs>>): Prisma.Prisma__WalletClient<runtime.Types.Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  wallet<T extends Prisma.User$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   walletMembers<T extends Prisma.User$walletMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WalletMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   passkeys<T extends Prisma.User$passkeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passkeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasskeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   redeemCodes<T extends Prisma.User$redeemCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$redeemCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2020,6 +2029,11 @@ export type User$walletArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.WalletInclude<ExtArgs> | null
   where?: Prisma.WalletWhereInput
+  orderBy?: Prisma.WalletOrderByWithRelationInput | Prisma.WalletOrderByWithRelationInput[]
+  cursor?: Prisma.WalletWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WalletScalarFieldEnum | Prisma.WalletScalarFieldEnum[]
 }
 
 /**

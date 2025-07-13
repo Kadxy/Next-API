@@ -49,6 +49,7 @@ export type WalletMemberMinAggregateOutputType = {
   creditLimit: runtime.Decimal | null
   creditUsed: runtime.Decimal | null
   isActive: boolean | null
+  isOwner: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -61,6 +62,7 @@ export type WalletMemberMaxAggregateOutputType = {
   creditLimit: runtime.Decimal | null
   creditUsed: runtime.Decimal | null
   isActive: boolean | null
+  isOwner: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -73,6 +75,7 @@ export type WalletMemberCountAggregateOutputType = {
   creditLimit: number
   creditUsed: number
   isActive: number
+  isOwner: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -103,6 +106,7 @@ export type WalletMemberMinAggregateInputType = {
   creditLimit?: true
   creditUsed?: true
   isActive?: true
+  isOwner?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -115,6 +119,7 @@ export type WalletMemberMaxAggregateInputType = {
   creditLimit?: true
   creditUsed?: true
   isActive?: true
+  isOwner?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -127,6 +132,7 @@ export type WalletMemberCountAggregateInputType = {
   creditLimit?: true
   creditUsed?: true
   isActive?: true
+  isOwner?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -226,6 +232,7 @@ export type WalletMemberGroupByOutputType = {
   creditLimit: runtime.Decimal
   creditUsed: runtime.Decimal
   isActive: boolean
+  isOwner: boolean
   createdAt: Date
   updatedAt: Date
   _count: WalletMemberCountAggregateOutputType | null
@@ -261,6 +268,7 @@ export type WalletMemberWhereInput = {
   creditLimit?: Prisma.DecimalFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFilter<"WalletMember"> | boolean
+  isOwner?: Prisma.BoolFilter<"WalletMember"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WalletMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WalletMember"> | Date | string
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
@@ -275,6 +283,7 @@ export type WalletMemberOrderByWithRelationInput = {
   creditLimit?: Prisma.SortOrder
   creditUsed?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   wallet?: Prisma.WalletOrderByWithRelationInput
@@ -294,6 +303,7 @@ export type WalletMemberWhereUniqueInput = Prisma.AtLeast<{
   creditLimit?: Prisma.DecimalFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFilter<"WalletMember"> | boolean
+  isOwner?: Prisma.BoolFilter<"WalletMember"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WalletMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WalletMember"> | Date | string
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
@@ -308,6 +318,7 @@ export type WalletMemberOrderByWithAggregationInput = {
   creditLimit?: Prisma.SortOrder
   creditUsed?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.WalletMemberCountOrderByAggregateInput
@@ -328,15 +339,17 @@ export type WalletMemberScalarWhereWithAggregatesInput = {
   creditLimit?: Prisma.DecimalWithAggregatesFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalWithAggregatesFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolWithAggregatesFilter<"WalletMember"> | boolean
+  isOwner?: Prisma.BoolWithAggregatesFilter<"WalletMember"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WalletMember"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WalletMember"> | Date | string
 }
 
 export type WalletMemberCreateInput = {
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet: Prisma.WalletCreateNestedOneWithoutMembersInput
@@ -348,9 +361,10 @@ export type WalletMemberUncheckedCreateInput = {
   walletId: number
   userId: number
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -360,6 +374,7 @@ export type WalletMemberUpdateInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneRequiredWithoutMembersNestedInput
@@ -374,6 +389,7 @@ export type WalletMemberUncheckedUpdateInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -383,9 +399,10 @@ export type WalletMemberCreateManyInput = {
   walletId: number
   userId: number
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -395,6 +412,7 @@ export type WalletMemberUpdateManyMutationInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -407,6 +425,7 @@ export type WalletMemberUncheckedUpdateManyInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -440,6 +459,7 @@ export type WalletMemberCountOrderByAggregateInput = {
   creditLimit?: Prisma.SortOrder
   creditUsed?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -460,6 +480,7 @@ export type WalletMemberMaxOrderByAggregateInput = {
   creditLimit?: Prisma.SortOrder
   creditUsed?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -472,6 +493,7 @@ export type WalletMemberMinOrderByAggregateInput = {
   creditLimit?: Prisma.SortOrder
   creditUsed?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  isOwner?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -570,9 +592,10 @@ export type WalletMemberUncheckedUpdateManyWithoutWalletNestedInput = {
 
 export type WalletMemberCreateWithoutUserInput = {
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet: Prisma.WalletCreateNestedOneWithoutMembersInput
@@ -582,9 +605,10 @@ export type WalletMemberUncheckedCreateWithoutUserInput = {
   id?: number
   walletId: number
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -626,15 +650,17 @@ export type WalletMemberScalarWhereInput = {
   creditLimit?: Prisma.DecimalFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFilter<"WalletMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFilter<"WalletMember"> | boolean
+  isOwner?: Prisma.BoolFilter<"WalletMember"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WalletMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WalletMember"> | Date | string
 }
 
 export type WalletMemberCreateWithoutWalletInput = {
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutWalletMembersInput
@@ -644,9 +670,10 @@ export type WalletMemberUncheckedCreateWithoutWalletInput = {
   id?: number
   userId: number
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -681,9 +708,10 @@ export type WalletMemberCreateManyUserInput = {
   id?: number
   walletId: number
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -693,6 +721,7 @@ export type WalletMemberUpdateWithoutUserInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneRequiredWithoutMembersNestedInput
@@ -705,6 +734,7 @@ export type WalletMemberUncheckedUpdateWithoutUserInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -716,6 +746,7 @@ export type WalletMemberUncheckedUpdateManyWithoutUserInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -724,9 +755,10 @@ export type WalletMemberCreateManyWalletInput = {
   id?: number
   userId: number
   alias?: string
-  creditLimit: runtime.Decimal | runtime.DecimalJsLike | number | string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -736,6 +768,7 @@ export type WalletMemberUpdateWithoutWalletInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutWalletMembersNestedInput
@@ -748,6 +781,7 @@ export type WalletMemberUncheckedUpdateWithoutWalletInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -759,6 +793,7 @@ export type WalletMemberUncheckedUpdateManyWithoutWalletInput = {
   creditLimit?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   creditUsed?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -773,6 +808,7 @@ export type WalletMemberSelect<ExtArgs extends runtime.Types.Extensions.Internal
   creditLimit?: boolean
   creditUsed?: boolean
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
@@ -789,11 +825,12 @@ export type WalletMemberSelectScalar = {
   creditLimit?: boolean
   creditUsed?: boolean
   isActive?: boolean
+  isOwner?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type WalletMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "walletId" | "userId" | "alias" | "creditLimit" | "creditUsed" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["walletMember"]>
+export type WalletMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "walletId" | "userId" | "alias" | "creditLimit" | "creditUsed" | "isActive" | "isOwner" | "createdAt" | "updatedAt", ExtArgs["result"]["walletMember"]>
 export type WalletMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -813,6 +850,7 @@ export type $WalletMemberPayload<ExtArgs extends runtime.Types.Extensions.Intern
     creditLimit: runtime.Decimal
     creditUsed: runtime.Decimal
     isActive: boolean
+    isOwner: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["walletMember"]>
@@ -1193,6 +1231,7 @@ export interface WalletMemberFieldRefs {
   readonly creditLimit: Prisma.FieldRef<"WalletMember", 'Decimal'>
   readonly creditUsed: Prisma.FieldRef<"WalletMember", 'Decimal'>
   readonly isActive: Prisma.FieldRef<"WalletMember", 'Boolean'>
+  readonly isOwner: Prisma.FieldRef<"WalletMember", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WalletMember", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WalletMember", 'DateTime'>
 }

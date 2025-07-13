@@ -1096,6 +1096,7 @@ export const WalletMemberScalarFieldEnum = {
   creditLimit: 'creditLimit',
   creditUsed: 'creditUsed',
   isActive: 'isActive',
+  isOwner: 'isOwner',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

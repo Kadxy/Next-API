@@ -117,6 +117,22 @@ export class AuthService {
     }
   }
 
+  // 获取指定用户信息公开信息
+  async getPublicUser(uid: User['uid']) {
+    try {
+      const user = await this.userService.getCachedLimitedUser(uid);
+      if (!user) {
+        throw new BusinessException('User not found');
+      }
+
+      const { displayName, avatar } = user;
+      return { displayName, avatar };
+    } catch (error) {
+      this.logger.error(error?.stack);
+      throw new BusinessException();
+    }
+  }
+
   // 注销登录
   async logout(token: string) {
     try {

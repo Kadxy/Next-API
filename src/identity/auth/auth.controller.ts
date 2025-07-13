@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Put,
   Req,
@@ -13,7 +14,11 @@ import { AuthService } from './auth.service';
 import { EmailLoginDto } from './dto/email-login.dto';
 import { SendEmailLoginCodeDto } from './dto/send-email-login-code.dto';
 import { JwtTokenService } from './jwt.service';
-import { LoginResponseDto, UserResponseDto } from '../user/dto/user.dto';
+import {
+  GetPublicUserInfoResponseDto,
+  LoginResponseDto,
+  UserResponseDto,
+} from '../user/dto/user.dto';
 import { UpdateDisplayNameDto } from './dto/update-display-name.dto';
 
 @ApiTags('Authentication')
@@ -72,5 +77,13 @@ export class AuthController {
     @Body() body: UpdateDisplayNameDto,
   ) {
     return this.authService.updateDisplayName(req.user.uid, body.displayName);
+  }
+
+  @Get('/public/:uid')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get User Public Info By Target User UID' })
+  @ApiResponse({ type: GetPublicUserInfoResponseDto })
+  async getPublicUserInfo(@Param('uid') uid: string) {
+    return this.authService.getPublicUser(uid);
   }
 }
