@@ -104,138 +104,94 @@ export class WalletService {
   async addWalletMember(
     walletUid: Wallet['uid'],
     memberUid: User['uid'],
-    inviterId: User['id'],
+    operatorId: User['id'],
     alias: string,
     creditLimit: number,
   ) {
-    // 1. 验证 inviter 是否有权限添加成员
-    const authorizedWallet = await this.getAccessibleWallet(
-      { uid: walletUid },
-      inviterId,
-      true,
-    );
-
-    // 2. 根据的 memberUid 查询 user.id
-    const memberUser = await this.prisma.user.findUnique({
-      where: { uid: memberUid, isDeleted: false },
-    });
-
-    if (!memberUser) {
-      throw new BusinessException('User not found');
-    }
-
-    // 3.1 检查 memberUser 是否已经加入钱包
-    const existRecord = authorizedWallet.members.find(
-      (m) => m.userId === memberUser.id,
+    const { wallet, memberUser, existRecord } = await this.validateWalletMemberOperation(
+      walletUid,
+      memberUid,
+      operatorId,
+      true, // requireOwner
     );
 
     if (existRecord) {
       throw new BusinessException('Member already in wallet');
     }
 
-    // 3. 创建成员记录
+    // 创建成员记录
     await this.prisma.walletMember.create({
       data: {
         alias,
         creditLimit,
-        wallet: { connect: { id: authorizedWallet.id } },
+        wallet: { connect: { id: wallet.id } },
         user: { connect: { id: memberUser.id } },
       },
     });
 
-    // 4. 清理缓存
-    await this.cleanCache(authorizedWallet);
+    // 清理缓存
+    await this.cleanCache(wallet);
   }
 
   async removeWalletMember(
     walletUid: Wallet['uid'],
     memberUid: User['uid'],
-    inviterId: User['id'],
+    operatorId: User['id'],
   ) {
-    // 1. 验证 inviter 是否有权限删除成员
-    const authorizedWallet = await this.getAccessibleWallet(
-      { uid: walletUid },
-      inviterId,
-      true,
-    );
-
-    // 2. 根据的 memberUid 查询 user.id
-    const memberUser = await this.prisma.user.findUnique({
-      where: { uid: memberUid, isDeleted: false },
-    });
-
-    if (!memberUser) {
-      throw new BusinessException('User not found');
-    }
-
-    // 3.1 检查 memberUser 是否存在
-    const existRecord = authorizedWallet.members.find(
-      (m) => m.userId === memberUser.id,
+    const { wallet, memberUser, existRecord } = await this.validateWalletMemberOperation(
+      walletUid,
+      memberUid,
+      operatorId,
+      true, // requireOwner
     );
 
     if (!existRecord) {
       throw new BusinessException('Member not found');
     }
 
-    // 3.2 检查 memberUser 是否已经失效
     if (!existRecord.isActive) {
       throw new BusinessException('Member already removed');
     }
 
-    // 3.3 检查 memberUser 是否是 owner
     if (existRecord.isOwner) {
       throw new BusinessException('Cannot remove wallet owner');
     }
 
     await Promise.all([
-      // 4.1 更新 walletMember, isActive = false
+      // 更新 walletMember, isActive = false
       this.prisma.walletMember.update({
         where: { id: existRecord.id },
         data: { isActive: false },
       }),
 
-      // 4.2 禁用 apiKey
-      this.inactiveApiKeys(authorizedWallet.id, memberUser.id),
+      // 禁用 apiKey
+      this.inactiveApiKeys(wallet.id, memberUser.id),
     ]);
 
-    // 5. 清理缓存
-    await this.cleanCache(authorizedWallet);
+    // 清理缓存
+    await this.cleanCache(wallet);
   }
 
   async updateWalletMember(
     walletUid: Wallet['uid'],
     memberUid: User['uid'],
-    inviterId: User['id'],
+    operatorId: User['id'],
     alias?: string,
     creditLimit?: number,
     resetCreditUsed = false,
   ) {
-    // 1. 验证 inviter 是否有权限更新成员
-    const authorizedWallet = await this.getAccessibleWallet(
-      { uid: walletUid },
-      inviterId,
-      true,
-    );
-
-    // 2. 根据的 memberUid 查询 user.id
-    const memberUser = await this.prisma.user.findUnique({
-      where: { uid: memberUid, isDeleted: false },
-    });
-
-    if (!memberUser) {
-      throw new BusinessException('User not found');
-    }
-
-    // 3.1 检查 memberUser 是否存在
-    const existRecord = authorizedWallet.members.find(
-      (m) => m.userId === memberUser.id,
+    const { wallet, existRecord } = await this.validateWalletMemberOperation(
+      walletUid,
+      memberUid,
+      operatorId,
+      true, // requireOwner
     );
 
     if (!existRecord) {
       throw new BusinessException('Member not found');
     }
 
-    // 4. 更新记录
+    // 更新记录
     await this.prisma.walletMember.update({
       where: { id: existRecord.id },
       data: {
@@ -245,44 +201,32 @@ export class WalletService {
       },
     });
 
-    // 5. 清理缓存
-    await this.cleanCache(authorizedWallet);
+    // 清理缓存
+    await this.cleanCache(wallet);
   }
 
   async reactivateWalletMember(
     walletUid: Wallet['uid'],
     memberUid: User['uid'],
-    inviterId: User['id'],
+    operatorId: User['id'],
   ) {
-    // 1. 验证 inviter 是否有权限更新成员
-    const authorizedWallet = await this.getAccessibleWallet(
-      { uid: walletUid },
-      inviterId,
-      true,
-    );
-
-    // 2. 根据的 memberUid 查询 user.id
-    const memberUser = await this.userService.getCachedUser(memberUid);
-
-    if (!memberUser || memberUser.isDeleted) {
-      throw new BusinessException('User not found');
-    }
-
-    // 3.1 检查 memberUser 是否存在
-    const existRecord = authorizedWallet.members.find(
-      (m) => m.userId === memberUser.id,
+    const { wallet, existRecord } = await this.validateWalletMemberOperation(
+      walletUid,
+      memberUid,
+      operatorId,
+      true, // requireOwner
+      true, // useCachedUser
     );
 
     if (!existRecord) {
       throw new BusinessException('Member not found');
     }
 
-    // 3.2 检查 memberUser 是否已经激活
     if (existRecord.isActive) {
       throw new BusinessException('Member already active');
     }
 
-    // 4. 更新记录
+    // 更新记录
     await this.prisma.walletMember.update({
       where: { id: existRecord.id },
       data: {
@@ -292,19 +236,19 @@ export class WalletService {
       },
     });
 
-    // 5. 清理缓存
-    await this.cleanCache(authorizedWallet);
+    // 清理缓存
+    await this.cleanCache(wallet);
   }
 
   async resetWalletMemberCreditUsage(
     walletUid: Wallet['uid'],
     memberUid: User['uid'],
-    inviterId: User['id'],
+    operatorId: User['id'],
   ) {
     return this.updateWalletMember(
       walletUid,
       memberUid,
-      inviterId,
+      operatorId,
       undefined,
       undefined,
       true,
@@ -352,6 +296,48 @@ export class WalletService {
       },
       omit: OWNER_WALLET_QUERY_OMIT,
     });
+  }
+
+  /**
+   * 验证钱包成员操作的通用方法
+   * @param walletUid - 钱包UID
+   * @param memberUid - 成员UID
+   * @param operatorId - 操作者ID
+   * @param requireOwner - 是否需要所有者权限
+   * @param useCachedUser - 是否使用缓存用户查询
+   * @returns 验证后的钱包、成员用户和现有记录
+   */
+  private async validateWalletMemberOperation(
+    walletUid: Wallet['uid'],
+    memberUid: User['uid'],
+    operatorId: User['id'],
+    requireOwner = false,
+    useCachedUser = false,
+  ) {
+    // 1. 验证操作者是否有权限
+    const wallet = await this.getAccessibleWallet(
+      { uid: walletUid },
+      operatorId,
+      requireOwner,
+    );
+
+    // 2. 查询目标用户
+    const memberUser = useCachedUser
+      ? await this.userService.getCachedUser(memberUid)
+      : await this.prisma.user.findUnique({
+          where: { uid: memberUid, isDeleted: false },
+        });
+
+    if (!memberUser || memberUser.isDeleted) {
+      throw new BusinessException('User not found');
+    }
+
+    // 3. 查找现有成员记录
+    const existRecord = wallet.members.find(
+      (m) => m.userId === memberUser.id,
+    );
+
+    return { wallet, memberUser, existRecord };
   }
 
   /**
