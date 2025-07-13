@@ -30,19 +30,6 @@ export class BloomFilterService {
     this.filters.set(name, newFilter);
   }
 
-  /** 获取或创建布隆过滤器 */
-  getOrCreateFilter(
-    name: string,
-    size: number = 10000,
-    hashFunctions: number = 3,
-  ): BloomFilter {
-    let filter = this.filters.get(name);
-    if (!filter) {
-      filter = this.createFilter(name, size, hashFunctions);
-    }
-    return filter;
-  }
-
   /** 删除布隆过滤器  */
   deleteFilter(name: string): boolean {
     return this.filters.delete(name);

@@ -37,27 +37,25 @@ export class WalletService {
     where: Prisma.WalletWhereUniqueInput,
     userId: User['id'],
     requireOwner = false,
-  ): ReturnType<typeof this.getCachedWallet> | null {
+  ): Promise<WalletWithMembers | null> {
     const wallet = await this.getCachedWallet(where);
 
     if (!wallet) {
-      throw new BusinessException('Wallet not found');
+      throw new BusinessException('wallet not found');
     }
 
-    const isOwner = wallet.ownerId === userId;
-    const isMember = wallet.members.some(
-      (member) => member.userId === userId && member.isActive,
-    );
+    const { id, ownerId, members } = wallet;
 
-    // 所有者权限判断
-    if (requireOwner && !isOwner) {
-      throw new BusinessException('Permission denied: owner access required');
+    const isOwner = ownerId === userId;
+    const isMember = members.some((m) => m.userId === userId && m.isActive);
+
+    const accessible = isOwner || (!requireOwner && isMember);
+
+    if (!accessible) {
+      throw new BusinessException('permission denied');
     }
 
-    // 成员权限判断 (当不需要所有者权限时，是所有者或成员均可)
-    if (!requireOwner && !isOwner && !isMember) {
-      throw new BusinessException('Permission denied: no wallet access');
-    }
+    this.logger.debug(`Wallet (id:${id}) accessible by user (id:${userId})`);
 
     return wallet;
   }
@@ -242,7 +240,7 @@ export class WalletService {
       where: { id: existRecord.id },
       data: {
         ...(alias && { alias }),
-        ...(creditLimit && { creditLimit }),
+        ...(creditLimit !== undefined && { creditLimit: { set: creditLimit } }),
         ...(resetCreditUsed && { creditUsed: { set: 0 } }),
       },
     });
@@ -313,7 +311,6 @@ export class WalletService {
     );
   }
 
-
   async leaveWallet(walletUid: Wallet['uid'], userId: User['id']) {
     // 1. 验证用户是否在钱包中
     const wallet = await this.getAuthorizedWallet({ uid: walletUid }, userId);
@@ -365,7 +362,7 @@ export class WalletService {
    */
   private async getCachedWallet(
     where: Prisma.WalletWhereUniqueInput,
-  ): ReturnType<typeof this.getDbWallet> {
+  ): Promise<WalletWithMembers | null> {
     let cacheKey: string;
 
     if (where.id) {
@@ -379,7 +376,7 @@ export class WalletService {
     const cachedWallet = await this.cacheManager.get(cacheKey);
 
     if (cachedWallet) {
-      return cachedWallet as Wallet & { members: WalletMember[] };
+      return cachedWallet as WalletWithMembers;
     }
 
     return this.getDbWallet(where);

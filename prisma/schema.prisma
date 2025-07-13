@@ -9,7 +9,7 @@ datasource db {
 }
 
 // -----------------------------------------------------------------------------
-// Core User & Wallet Management Models (保持不变，已是你原有设计)
+// Core User & Wallet Management Models
 // -----------------------------------------------------------------------------
 model User {
   id             Int              @id @default(autoincrement())
