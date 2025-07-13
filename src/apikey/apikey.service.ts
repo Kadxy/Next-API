@@ -124,7 +124,7 @@ export class ApikeyService implements OnModuleInit {
     creatorId: User['id'],
   ) {
     // 1. 验证钱包访问权限
-    const wallet = await this.walletService.getAuthorizedWallet(
+    const wallet = await this.walletService.getAccessibleWallet(
       { uid: walletUid },
       creatorId,
     );
@@ -181,7 +181,7 @@ export class ApikeyService implements OnModuleInit {
     }
 
     // 验证权限：必须是创建者或钱包 owner
-    await this.walletService.getAuthorizedWallet(
+    await this.walletService.getAccessibleWallet(
       { id: apiKey.walletId },
       userId,
     );

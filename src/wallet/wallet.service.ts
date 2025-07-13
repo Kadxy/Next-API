@@ -33,7 +33,7 @@ export class WalletService {
    * @throws {BusinessException} if wallet not found or permission denied
    * @returns wallet info if accessible, otherwise throw error
    */
-  async getAuthorizedWallet(
+  async getAccessibleWallet(
     where: Prisma.WalletWhereUniqueInput,
     userId: User['id'],
     requireOwner = false,
@@ -85,7 +85,7 @@ export class WalletService {
     userId: User['id'],
   ) {
     // 1. 验证用户是否是钱包所有者
-    const wallet = await this.getAuthorizedWallet(
+    const wallet = await this.getAccessibleWallet(
       { uid: walletUid },
       userId,
       true,
@@ -109,7 +109,7 @@ export class WalletService {
     creditLimit: number,
   ) {
     // 1. 验证 inviter 是否有权限添加成员
-    const authorizedWallet = await this.getAuthorizedWallet(
+    const authorizedWallet = await this.getAccessibleWallet(
       { uid: walletUid },
       inviterId,
       true,
@@ -153,7 +153,7 @@ export class WalletService {
     inviterId: User['id'],
   ) {
     // 1. 验证 inviter 是否有权限删除成员
-    const authorizedWallet = await this.getAuthorizedWallet(
+    const authorizedWallet = await this.getAccessibleWallet(
       { uid: walletUid },
       inviterId,
       true,
@@ -211,7 +211,7 @@ export class WalletService {
     resetCreditUsed = false,
   ) {
     // 1. 验证 inviter 是否有权限更新成员
-    const authorizedWallet = await this.getAuthorizedWallet(
+    const authorizedWallet = await this.getAccessibleWallet(
       { uid: walletUid },
       inviterId,
       true,
@@ -255,7 +255,7 @@ export class WalletService {
     inviterId: User['id'],
   ) {
     // 1. 验证 inviter 是否有权限更新成员
-    const authorizedWallet = await this.getAuthorizedWallet(
+    const authorizedWallet = await this.getAccessibleWallet(
       { uid: walletUid },
       inviterId,
       true,
@@ -313,7 +313,7 @@ export class WalletService {
 
   async leaveWallet(walletUid: Wallet['uid'], userId: User['id']) {
     // 1. 验证用户是否在钱包中
-    const wallet = await this.getAuthorizedWallet({ uid: walletUid }, userId);
+    const wallet = await this.getAccessibleWallet({ uid: walletUid }, userId);
 
     // 2. 检查用户是否 owner
     if (wallet.ownerId === userId) {
