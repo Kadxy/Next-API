@@ -18,7 +18,11 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { FeishuWebhookService } from '../core/feishu-webhook/feishu-webhook.service';
 
 export interface VerifiedApiKeyRecord extends ApiKey {
-  wallet: Wallet;
+  isActive: true;
+  isDeleted: false;
+  wallet: {
+    id: Wallet['id'];
+  };
 }
 
 @Injectable()
@@ -33,8 +37,7 @@ export class ApikeyService implements OnModuleInit {
     private readonly bloomFilterService: BloomFilterService,
     private readonly walletService: WalletService,
     private readonly feishuWebhookService: FeishuWebhookService,
-    @Inject(CACHE_MANAGER)
-    private readonly cacheManager: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   /**
@@ -50,7 +53,7 @@ export class ApikeyService implements OnModuleInit {
     await this.rebuildBloomFilter();
   }
 
-  // 每小时检查, 确保apikey全部合法
+  // 每 30 分钟检查, 确保 apikey 绑定的 wallet 全部合法
   @Cron(CronExpression.EVERY_30_MINUTES)
   async cronScanWalletKey() {
     const startTime = Date.now();
@@ -129,13 +132,15 @@ export class ApikeyService implements OnModuleInit {
       creatorId,
     );
 
-    // 2. 生成随机字符串
+    const { id: walletId } = wallet;
+
+    // 2. 生成密钥
     const randomStr = this.cryptoService.generateRandomString();
 
     // 3. 生成预览(前4位和后4位)
     const preview = [randomStr.slice(0, 4), randomStr.slice(-4)].join('');
 
-    // 4. 拼接原始密钥
+    // 4. 拼接
     const rawKey = [ApikeyService.API_KEY_PREFIX, randomStr].join('-');
 
     // 5. 计算哈希密钥
@@ -143,23 +148,14 @@ export class ApikeyService implements OnModuleInit {
 
     // 6. 创建记录
     const apiKey = await this.prisma.apiKey.create({
-      data: {
-        walletId: wallet.id,
-        creatorId,
-        hashKey,
-        preview,
-        displayName,
-      },
+      data: { hashKey, creatorId, displayName, preview, walletId },
       omit: API_KEY_QUERY_OMIT,
     });
 
     // 7. 将新密钥添加到布隆过滤器
-    const filter = this.bloomFilterService.getFilter(
-      ApikeyService.BLOOM_FILTER_NAME,
-    );
-    if (filter) {
-      filter.add(hashKey);
-    }
+    this.bloomFilterService
+      .getFilter(ApikeyService.BLOOM_FILTER_NAME)
+      .add(hashKey);
 
     return { rawKey, apiKey };
   }
@@ -224,7 +220,7 @@ export class ApikeyService implements OnModuleInit {
     });
   }
 
-  // 验证 API Key 并返回记录
+  // 验证 API Key 并返回记录 [
   async verifyApiKey(apiKey: string): Promise<VerifiedApiKeyRecord> {
     if (!apiKey) {
       throw new UnauthorizedException('API key is required');
@@ -264,10 +260,10 @@ export class ApikeyService implements OnModuleInit {
     }
 
     // 5. 查询数据库（包含钱包信息）
-    const record: VerifiedApiKeyRecord = await this.prisma.apiKey.findUnique({
-      where: { hashKey, isActive: true },
-      include: { wallet: true },
-    });
+    const record = (await this.prisma.apiKey.findUnique({
+      where: { hashKey, isActive: true, isDeleted: false },
+      include: { wallet: { select: { id: true } } },
+    })) as VerifiedApiKeyRecord;
 
     if (!record) {
       throw new UnauthorizedException('Invalid API key');

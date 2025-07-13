@@ -1,11 +1,11 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
+  Injectable,
   Logger,
 } from '@nestjs/common';
 import { FastifyRequest } from 'fastify';
-import { VerifiedApiKeyRecord, ApikeyService } from '../apikey.service';
+import { ApikeyService, VerifiedApiKeyRecord } from '../apikey.service';
 import { UnauthorizedException } from 'src/common/exceptions';
 
 export interface RequestWithApiKey extends FastifyRequest {
@@ -25,11 +25,8 @@ export class ApiKeyGuard implements CanActivate {
       // 从请求头中获取
       const apiKey = this.extractApiKey(request);
 
-      // 验证
-      const apiKeyRecord = await this.apikeyService.verifyApiKey(apiKey);
-
-      // 附加 APIKEY 记录到请求对象
-      request['apiKey'] = apiKeyRecord;
+      // 验证并附加 APIKey 记录到请求对象
+      request['apiKey'] = await this.apikeyService.verifyApiKey(apiKey);
 
       return true;
     } catch (error) {
