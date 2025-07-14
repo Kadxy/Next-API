@@ -1,5 +1,5 @@
-import { AIModel } from '@prisma-client/client';
-import { Decimal } from '@prisma-client/internal/prismaNamespace';
+import { AIModel } from '@prisma-mysql-client/client';
+import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
 import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
 
 // 请求上下文，贯穿整个请求生命周期
@@ -14,6 +14,9 @@ export class BillingContext {
   model: AIModel; // 模型名称
   clientIp: string; // 客户端IP
   externalTraceId: string; // 外部追踪ID（如果有）
+  requestPath?: string; // 请求路径
+  upstreamId?: number; // 上游服务ID
+  retryCount?: number; // 重试次数
 
   // 请求和响应内容（用于存储到 MongoDB）
   requestBody?: AIModelRequest; // 原始请求体
@@ -28,6 +31,10 @@ export class BillingContext {
   inputTokens?: number; // 输入 token 数量
   outputTokens?: number; // 输出 token 数量
   cost?: Decimal; // 费用
+
+  // 错误信息
+  errorMessage?: string; // 错误消息
+  errorStack?: string; // 错误堆栈
 
   // 计算持续时间（毫秒）
   get durationMs(): number {

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { PrismaService } from '../core/prisma/prisma.service';
+import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import {
   AIModelRequest,
   AIModelNonStreamResponse,
@@ -14,7 +14,7 @@ import {
   AIModelUsage,
 } from './interfaces/proxy.interface';
 import { BillingService } from '../billing/billing.service';
-import { AIModel, BillStatus, UpstreamConfig } from '@prisma-client/client';
+import { AIModel, BillStatus, UpstreamConfig } from '@prisma-mysql-client/client';
 import { APICallException, BusinessException } from '../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { AxiosRequestConfig } from 'axios';
@@ -23,7 +23,7 @@ import {
   extractTokenUsage,
 } from 'src/billing/dto/billing-context';
 import { TiktokenService } from 'src/billing/tiktoken/tiktoken.service';
-import { Decimal } from '@prisma-client/internal/prismaNamespace';
+import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
 import { ULID } from 'ulid';
 
 interface RetryInfo {
@@ -41,7 +41,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   private upstreams: Map<number, UpstreamConfig> = new Map();
 
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: MysqlPrismaService,
     private readonly httpService: HttpService,
     private readonly billingService: BillingService,
     private readonly tiktokenService: TiktokenService,

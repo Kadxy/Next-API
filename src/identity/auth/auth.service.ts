@@ -1,6 +1,6 @@
 // src/identity/identity.service.ts
 import { Injectable, Logger } from '@nestjs/common';
-import { User } from '@prisma-client/client';
+import { User } from '@prisma-mysql-client/client';
 import {
   BusinessException,
   TooManyRequestsException,

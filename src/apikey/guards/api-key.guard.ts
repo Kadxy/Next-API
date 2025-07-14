@@ -7,7 +7,7 @@ import {
 import { FastifyRequest } from 'fastify';
 import { ApikeyService } from '../apikey.service';
 import { UnauthorizedException } from 'src/common/exceptions';
-import { ApiKey } from '@prisma-client/client';
+import { ApiKey } from '@prisma-mysql-client/client';
 
 export interface RequestWithApiKey extends FastifyRequest {
   apiKey: ApiKey;

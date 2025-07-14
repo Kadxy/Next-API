@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RedemptionCode, User } from '@prisma-client/client';
-import { Decimal } from '@prisma-client/internal/prismaNamespace';
+import { RedemptionCode, User } from '@prisma-mysql-client/client';
+import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
 import { BusinessException } from 'src/common/exceptions';
 import { CryptoService } from 'src/core/crypto/crypto.service';
-import { PrismaService } from 'src/core/prisma/prisma.service';
+import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 
 @Injectable()
 export class RedemptionService {
@@ -12,7 +12,7 @@ export class RedemptionService {
   static readonly REDEMPTION_CODE_LENGTH = 24;
 
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: MysqlPrismaService,
     private readonly cryptoService: CryptoService,
   ) {}
 

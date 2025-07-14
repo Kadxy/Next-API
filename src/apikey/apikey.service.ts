@@ -1,9 +1,9 @@
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
-import { PrismaService } from '../core/prisma/prisma.service';
+import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import { CryptoService } from '../core/crypto/crypto.service';
 import { BloomFilterService } from '../core/bloom-filter/bloom-filter.service';
-import { ApiKey, User, Wallet } from '@prisma-client/client';
+import { ApiKey, User, Wallet } from '@prisma-mysql-client/client';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import {
   BusinessException,
@@ -12,7 +12,7 @@ import {
 import {
   API_KEY_QUERY_OMIT,
   APIKEY_INCLUDE_WALLET_SELECT,
-} from 'prisma/query.constant';
+} from 'prisma/mysql/query.constant';
 import { WalletService } from '../wallet/wallet.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { FeishuWebhookService } from '../core/feishu-webhook/feishu-webhook.service';
@@ -24,7 +24,7 @@ export class ApikeyService implements OnModuleInit {
   private readonly logger = new Logger(ApikeyService.name);
 
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: MysqlPrismaService,
     private readonly cryptoService: CryptoService,
     private readonly bloomFilterService: BloomFilterService,
     private readonly walletService: WalletService,

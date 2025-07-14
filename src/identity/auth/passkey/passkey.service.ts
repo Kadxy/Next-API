@@ -1,9 +1,9 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '../../../core/prisma/prisma.service';
+import { MysqlPrismaService } from '../../../core/prisma/mysql-prisma.service';
 import { Cache } from '@nestjs/cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Passkey, User } from '@prisma-client/client';
+import { Passkey, User } from '@prisma-mysql-client/client';
 import {
   generateRegistrationOptions,
   verifyRegistrationResponse,
@@ -44,7 +44,7 @@ export class PasskeyService {
   private readonly origin: string;
 
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: MysqlPrismaService,
     private readonly configService: ConfigService,
     private readonly userService: UserService,
     private readonly jwtTokenService: JwtTokenService,

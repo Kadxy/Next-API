@@ -1,11 +1,11 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Prisma, User } from '@prisma-client/client';
-import { PrismaService } from '../../core/prisma/prisma.service';
+import { Prisma, User } from '@prisma-mysql-client/client';
+import { MysqlPrismaService } from '../../core/prisma/mysql-prisma.service';
 import { CACHE_KEYS, getCacheKey } from '../../core/cache/chche.constant';
 import { Cache } from 'cache-manager';
 import { FeishuWebhookService } from '../../core/feishu-webhook/feishu-webhook.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { USER_QUERY_INCLUDE, USER_QUERY_OMIT } from 'prisma/query.constant';
+import { USER_QUERY_INCLUDE, USER_QUERY_OMIT } from 'prisma/mysql/query.constant';
 import { BusinessException } from 'src/common/exceptions';
 import { generateDisplayName } from '../../utils';
 
@@ -20,7 +20,7 @@ export class UserService {
   private readonly logger = new Logger(UserService.name);
 
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: MysqlPrismaService,
     @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}

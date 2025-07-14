@@ -1,15 +1,15 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../core/prisma/prisma.service';
+import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import { BusinessException, ForbiddenException } from 'src/common/exceptions';
-import { Prisma, User, Wallet, WalletMember } from '@prisma-client/client';
+import { Prisma, User, Wallet, WalletMember } from '@prisma-mysql-client/client';
 import {
   OWNER_WALLET_QUERY_OMIT,
   OWNER_WALLET_QUERY_WALLET_MEMBER_SELECT,
   SIMPLE_WALLET_QUERY_SELECT,
-} from 'prisma/query.constant';
+} from 'prisma/mysql/query.constant';
 import { UserService } from '../identity/user/user.service';
 import { Decimal } from '@prisma/client/runtime/library';
 
@@ -22,7 +22,7 @@ export class WalletService {
   private readonly logger = new Logger(WalletService.name);
 
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: MysqlPrismaService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly userService: UserService,
   ) {}

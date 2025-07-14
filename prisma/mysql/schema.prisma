@@ -1,0 +1,202 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_URL")
+}
+
+// -----------------------------------------------------------------------------
+// Core User & Wallet Management Models
+// -----------------------------------------------------------------------------
+model User {
+  id             Int              @id @default(autoincrement())
+  uid            String           @unique @default(uuid())
+  displayName    String?          @db.VarChar(15)
+  avatar         String?          @db.Text
+  email          String?          @unique
+  phone          String?          @unique
+  gitHubId       String?          @unique
+  googleId       String?          @unique
+  isDeleted      Boolean          @default(false)
+  isAdmin        Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  lastLoginAt    DateTime?
+  wallet         Wallet[] // 管理的钱包
+  walletMembers  WalletMember[] // 加入的钱包
+  passkeys       Passkey[] // 绑定的passkey
+  redeemCodes    RedemptionCode[] // 使用过的兑换码
+  createdApiKeys ApiKey[] // 创建的API Keys
+
+  @@index([uid, isDeleted])
+  @@map("users")
+}
+
+model Wallet {
+  id             Int             @id @default(autoincrement())
+  uid            String          @unique @default(uuid())
+  displayName    String          @db.VarChar(15)
+  balance        Decimal         @default(0) @db.Decimal(12, 6)
+  version        Int             @default(1) // 乐观锁
+  owner          User            @relation(fields: [ownerId], references: [id])
+  ownerId        Int             @unique
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  members        WalletMember[] // 钱包成员
+  apiKeys        ApiKey[] // 使用此钱包的API Keys
+  apiCallRecords ApiCallRecord[] // API 调用记录
+
+  @@map("wallets")
+}
+
+model WalletMember {
+  id          Int      @id @default(autoincrement())
+  wallet      Wallet   @relation(fields: [walletId], references: [id])
+  walletId    Int
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  alias       String   @default("") @db.VarChar(15) // 成员别名
+  creditLimit Decimal  @default(0) @db.Decimal(14, 8) // 信用额度(0表示无限制)
+  creditUsed  Decimal  @default(0) @db.Decimal(14, 8) // 累计消费
+  isActive    Boolean  @default(true) // 是否激活(退出或被踢出时设置为false)
+  isOwner     Boolean  @default(false) // 是否是钱包所有者
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([walletId, userId])
+  @@index([userId, isActive])
+  @@index([walletId, isActive])
+  @@map("wallet_members")
+}
+
+model ApiKey {
+  id          Int       @id @default(autoincrement())
+  wallet      Wallet    @relation(fields: [walletId], references: [id])
+  walletId    Int
+  creator     User      @relation(fields: [creatorId], references: [id])
+  creatorId   Int
+  hashKey     String    @unique @db.VarChar(64)
+  preview     String    @db.VarChar(8)
+  displayName String    @db.VarChar(15)
+  isActive    Boolean   @default(true)
+  isDeleted   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  lastUsedAt  DateTime?
+
+  @@index([hashKey, isActive]) // API key verification (most frequent query)
+  @@index([creatorId, isDeleted]) // list user's API keys
+  @@index([isActive]) // bloom filter rebuild
+  @@map("api_keys")
+}
+
+model Passkey {
+  id             String    @id @unique @db.VarChar(255)
+  publicKey      Bytes
+  webAuthnUserID String    @db.VarChar(255)
+  counter        BigInt    @default(0)
+  displayName    String    @default("") @db.VarChar(15)
+  transports     String?   @db.VarChar(255)
+  deviceType     String    @default("singleDevice") @db.VarChar(31)
+  backedUp       Boolean   @default(false)
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastUsedAt     DateTime?
+  user           User      @relation(fields: [userId], references: [id])
+  userId         Int
+
+  @@unique([webAuthnUserID, userId])
+  @@index([id])
+  @@index([userId, isDeleted])
+  @@index([id, userId, isDeleted])
+  @@index([webAuthnUserID])
+  @@map("passkeys")
+}
+
+model RedemptionCode {
+  id         Int       @id @default(autoincrement())
+  code       String    @unique @db.VarChar(16)
+  amount     Int       @db.Int
+  remark     String    @default("")
+  createdAt  DateTime  @default(now())
+  expiredAt  DateTime?
+  redeemedAt DateTime?
+  redeemerId Int?
+  redeemer   User?     @relation(fields: [redeemerId], references: [id])
+
+  @@map("redeem_codes")
+}
+
+// ----- Billing Records -----
+
+// API 调用记录（包含计费信息）
+model ApiCallRecord {
+  requestId String @id @db.VarChar(26) // 使用 ULID 作为全局唯一请求ID
+  wallet    Wallet @relation(fields: [walletId], references: [id])
+  walletId  Int    @db.Int // 关联钱包
+  userId    Int    @db.Int // 冗余 userId，方便查询
+  apikeyId  Int    @db.Int // 冗余 apikeyId，方便查询
+
+  // API 调用信息
+  model           String     @db.VarChar(63) // 模型名称
+  startTime       DateTime // 请求开始时间
+  endTime         DateTime // 请求结束时间
+  durationMs      Int // 耗时(单位: ms)
+  errorMessage    String?    @db.Text // 如果调用失败, 储存的错误信息
+  clientIp        String?    @db.VarChar(45) // IPv4或IPv6
+  externalTraceId String?    @db.VarChar(63) // 外部追踪ID
+  inputToken      Int // 输入 token 数量
+  outputToken     Int // 输出 token 数量
+  cost            Decimal    @db.Decimal(14, 8) // 费用, 以模型当前价格计算
+  billStatus      BillStatus
+
+  // 审计信息
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([walletId, createdAt(sort: Desc)]) // (所有者)按钱包查询
+  @@index([walletId, userId, createdAt(sort: Desc)]) // (成员)按用户查询
+  @@index([billStatus, createdAt]) // 计费队列查询
+  @@map("api_call_records")
+}
+
+// 计费状态枚举
+enum BillStatus {
+  PENDING // 待计费
+  PROCESSING // 计费中（已被某个实例锁定）
+  COMPLETED // 计费完成
+  FAILED // 计费失败
+}
+
+// ----- AI Models & Channels -----
+
+// 模型
+model AIModel {
+  id          Int      @id @default(autoincrement()) // 内部id
+  name        String   @unique @db.VarChar(63) // 模型名称, 请求名称, 全局唯一
+  providerId  Int      @default(0) // 0: 其他, 1: OpenAI, 2: Anthropic... [内部约定, 不关联表]
+  isActive    Boolean  @default(true) // 是否可用
+  inputPrice  Decimal  @db.Decimal(14, 8) // 输入价格(单位: 个 token)
+  outputPrice Decimal  @db.Decimal(14, 8) // 输出价格(单位: 个 token)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([name, isActive])
+  @@map("ai_models")
+}
+
+// 模型渠道(上游, 不一定是一级供应商) - 默认渠道支持全部模型, 所以不关联模型表
+model UpstreamConfig {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(31) // 上游名称, 全局唯一
+  weight    Int      @default(100) // 权重, 用于负载均衡, 默认100, 越大权重越高
+  baseUrl   String   @db.VarChar(63) // 上游基础URL
+  apiKey    String   @db.VarChar(63) // 上游API Key
+  createdAt DateTime @default(now())
+
+  @@map("upstream_configs")
+}

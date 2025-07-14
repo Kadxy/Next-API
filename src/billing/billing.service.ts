@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../core/prisma/prisma.service';
+import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { ApiCallRecord, BillStatus, User, Wallet } from '@prisma-client/client';
-import { ApiCallRecordCreateInput } from '@prisma-client/models';
+import { ApiCallRecord, BillStatus, User, Wallet } from '@prisma-mysql-client/client';
+import { ApiCallRecordCreateInput } from '@prisma-mysql-client/models';
 import { FeishuWebhookService } from 'src/core/feishu-webhook/feishu-webhook.service';
 import {
   Decimal,
   TransactionClient,
-} from '@prisma-client/internal/prismaNamespace';
+} from '@prisma-mysql-client/internal/prismaNamespace';
 
 type ApiCallRecordGroup = Pick<
   ApiCallRecord,
@@ -19,7 +19,7 @@ export class BillingService {
   private readonly logger = new Logger(BillingService.name);
 
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly prisma: MysqlPrismaService,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}
 

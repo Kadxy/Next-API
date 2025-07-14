@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { User } from '@prisma-client/client';
+import { User } from '@prisma-mysql-client/client';
 import { FastifyRequest } from 'fastify';
 import { UnauthorizedException } from '../../common/exceptions';
 import { JWT_ERR_MESSAGE, JwtTokenService } from './jwt.service';
