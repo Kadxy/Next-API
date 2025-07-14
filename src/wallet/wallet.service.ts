@@ -11,6 +11,7 @@ import {
   SIMPLE_WALLET_QUERY_SELECT,
 } from 'prisma/query.constant';
 import { UserService } from '../identity/user/user.service';
+import { Decimal } from '@prisma/client/runtime/library';
 
 export interface WalletWithMembers extends Wallet {
   members: WalletMember[];
@@ -314,13 +315,13 @@ export class WalletService {
       throw new BusinessException('Failed to check balance');
     }
 
-    if (Number(wallet.balance) < 0) {
+    if (new Decimal(wallet.balance).lte(0)) {
       throw new ForbiddenException('Insufficient wallet balance');
     }
 
     if (
-      Number(member.creditLimit) !== 0 && // 不是无限额度
-      Number(member.creditLimit) < Number(member.creditUsed) // 已使用额度超过限制
+      !new Decimal(member.creditLimit).eq(0) && // 不是无限额度
+      new Decimal(member.creditLimit).lte(member.creditUsed) // 已使用额度超过限制
     ) {
       throw new ForbiddenException('Insufficient member credit');
     }
