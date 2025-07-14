@@ -14,6 +14,7 @@ import { BillingModule } from './billing/billing.module';
 import { ProxyModule } from './proxy/proxy.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WalletModule } from './wallet/wallet.module';
+import { BillingLogModule } from './billing-log/billing-log.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { WalletModule } from './wallet/wallet.module';
     BillingModule,
     ProxyModule,
     WalletModule,
+    BillingLogModule,
   ],
   providers: [],
 })

@@ -529,15 +529,19 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const ApiCallLogScalarFieldEnum = {
   requestId: 'requestId',
-  requestPath: 'requestPath',
+  walletId: 'walletId',
+  walletUid: 'walletUid',
+  userId: 'userId',
+  userUid: 'userUid',
+  ownerId: 'ownerId',
+  ownerUid: 'ownerUid',
+  apikeyId: 'apikeyId',
+  apiKeyPreview: 'apiKeyPreview',
+  requestHeaders: 'requestHeaders',
   requestBody: 'requestBody',
+  responseHeaders: 'responseHeaders',
   responseBody: 'responseBody',
-  responseText: 'responseText',
-  statusCode: 'statusCode',
-  errorMessage: 'errorMessage',
-  errorStack: 'errorStack',
-  headers: 'headers',
-  metadata: 'metadata',
+  responseStream: 'responseStream',
   createdAt: 'createdAt'
 } as const
 
@@ -550,13 +554,6 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
@@ -613,6 +610,20 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -627,16 +638,9 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'Int'
+ * Reference to a field of type 'Boolean'
  */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

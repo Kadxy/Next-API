@@ -26,88 +26,124 @@ export type AggregateApiCallLog = {
 }
 
 export type ApiCallLogAvgAggregateOutputType = {
-  statusCode: number | null
+  walletId: number | null
+  userId: number | null
+  ownerId: number | null
+  apikeyId: number | null
 }
 
 export type ApiCallLogSumAggregateOutputType = {
-  statusCode: number | null
+  walletId: number | null
+  userId: number | null
+  ownerId: number | null
+  apikeyId: number | null
 }
 
 export type ApiCallLogMinAggregateOutputType = {
   requestId: string | null
-  requestPath: string | null
-  responseText: string | null
-  statusCode: number | null
-  errorMessage: string | null
-  errorStack: string | null
+  walletId: number | null
+  walletUid: string | null
+  userId: number | null
+  userUid: string | null
+  ownerId: number | null
+  ownerUid: string | null
+  apikeyId: number | null
+  apiKeyPreview: string | null
+  responseStream: boolean | null
   createdAt: Date | null
 }
 
 export type ApiCallLogMaxAggregateOutputType = {
   requestId: string | null
-  requestPath: string | null
-  responseText: string | null
-  statusCode: number | null
-  errorMessage: string | null
-  errorStack: string | null
+  walletId: number | null
+  walletUid: string | null
+  userId: number | null
+  userUid: string | null
+  ownerId: number | null
+  ownerUid: string | null
+  apikeyId: number | null
+  apiKeyPreview: string | null
+  responseStream: boolean | null
   createdAt: Date | null
 }
 
 export type ApiCallLogCountAggregateOutputType = {
   requestId: number
-  requestPath: number
+  walletId: number
+  walletUid: number
+  userId: number
+  userUid: number
+  ownerId: number
+  ownerUid: number
+  apikeyId: number
+  apiKeyPreview: number
+  requestHeaders: number
   requestBody: number
+  responseHeaders: number
   responseBody: number
-  responseText: number
-  statusCode: number
-  errorMessage: number
-  errorStack: number
-  headers: number
-  metadata: number
+  responseStream: number
   createdAt: number
   _all: number
 }
 
 
 export type ApiCallLogAvgAggregateInputType = {
-  statusCode?: true
+  walletId?: true
+  userId?: true
+  ownerId?: true
+  apikeyId?: true
 }
 
 export type ApiCallLogSumAggregateInputType = {
-  statusCode?: true
+  walletId?: true
+  userId?: true
+  ownerId?: true
+  apikeyId?: true
 }
 
 export type ApiCallLogMinAggregateInputType = {
   requestId?: true
-  requestPath?: true
-  responseText?: true
-  statusCode?: true
-  errorMessage?: true
-  errorStack?: true
+  walletId?: true
+  walletUid?: true
+  userId?: true
+  userUid?: true
+  ownerId?: true
+  ownerUid?: true
+  apikeyId?: true
+  apiKeyPreview?: true
+  responseStream?: true
   createdAt?: true
 }
 
 export type ApiCallLogMaxAggregateInputType = {
   requestId?: true
-  requestPath?: true
-  responseText?: true
-  statusCode?: true
-  errorMessage?: true
-  errorStack?: true
+  walletId?: true
+  walletUid?: true
+  userId?: true
+  userUid?: true
+  ownerId?: true
+  ownerUid?: true
+  apikeyId?: true
+  apiKeyPreview?: true
+  responseStream?: true
   createdAt?: true
 }
 
 export type ApiCallLogCountAggregateInputType = {
   requestId?: true
-  requestPath?: true
+  walletId?: true
+  walletUid?: true
+  userId?: true
+  userUid?: true
+  ownerId?: true
+  ownerUid?: true
+  apikeyId?: true
+  apiKeyPreview?: true
+  requestHeaders?: true
   requestBody?: true
+  responseHeaders?: true
   responseBody?: true
-  responseText?: true
-  statusCode?: true
-  errorMessage?: true
-  errorStack?: true
-  headers?: true
-  metadata?: true
+  responseStream?: true
   createdAt?: true
   _all?: true
 }
@@ -200,15 +236,19 @@ export type ApiCallLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type ApiCallLogGroupByOutputType = {
   requestId: string
-  requestPath: string
-  requestBody: runtime.JsonValue
+  walletId: number
+  walletUid: string
+  userId: number
+  userUid: string
+  ownerId: number
+  ownerUid: string
+  apikeyId: number
+  apiKeyPreview: string
+  requestHeaders: runtime.JsonValue | null
+  requestBody: runtime.JsonValue | null
+  responseHeaders: runtime.JsonValue | null
   responseBody: runtime.JsonValue | null
-  responseText: string | null
-  statusCode: number | null
-  errorMessage: string | null
-  errorStack: string | null
-  headers: runtime.JsonValue | null
-  metadata: runtime.JsonValue | null
+  responseStream: boolean
   createdAt: Date
   _count: ApiCallLogCountAggregateOutputType | null
   _avg: ApiCallLogAvgAggregateOutputType | null
@@ -237,29 +277,37 @@ export type ApiCallLogWhereInput = {
   OR?: Prisma.ApiCallLogWhereInput[]
   NOT?: Prisma.ApiCallLogWhereInput | Prisma.ApiCallLogWhereInput[]
   requestId?: Prisma.StringFilter<"ApiCallLog"> | string
-  requestPath?: Prisma.StringFilter<"ApiCallLog"> | string
-  requestBody?: Prisma.JsonFilter<"ApiCallLog">
+  walletId?: Prisma.IntFilter<"ApiCallLog"> | number
+  walletUid?: Prisma.StringFilter<"ApiCallLog"> | string
+  userId?: Prisma.IntFilter<"ApiCallLog"> | number
+  userUid?: Prisma.StringFilter<"ApiCallLog"> | string
+  ownerId?: Prisma.IntFilter<"ApiCallLog"> | number
+  ownerUid?: Prisma.StringFilter<"ApiCallLog"> | string
+  apikeyId?: Prisma.IntFilter<"ApiCallLog"> | number
+  apiKeyPreview?: Prisma.StringFilter<"ApiCallLog"> | string
+  requestHeaders?: Prisma.JsonNullableFilter<"ApiCallLog">
+  requestBody?: Prisma.JsonNullableFilter<"ApiCallLog">
+  responseHeaders?: Prisma.JsonNullableFilter<"ApiCallLog">
   responseBody?: Prisma.JsonNullableFilter<"ApiCallLog">
-  responseText?: Prisma.StringNullableFilter<"ApiCallLog"> | string | null
-  statusCode?: Prisma.IntNullableFilter<"ApiCallLog"> | number | null
-  errorMessage?: Prisma.StringNullableFilter<"ApiCallLog"> | string | null
-  errorStack?: Prisma.StringNullableFilter<"ApiCallLog"> | string | null
-  headers?: Prisma.JsonNullableFilter<"ApiCallLog">
-  metadata?: Prisma.JsonNullableFilter<"ApiCallLog">
+  responseStream?: Prisma.BoolFilter<"ApiCallLog"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApiCallLog"> | Date | string
 }
 
 export type ApiCallLogOrderByWithRelationInput = {
   requestId?: Prisma.SortOrder
-  requestPath?: Prisma.SortOrder
-  requestBody?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  walletUid?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  userUid?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  ownerUid?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
+  apiKeyPreview?: Prisma.SortOrder
+  requestHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestBody?: Prisma.SortOrderInput | Prisma.SortOrder
+  responseHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
   responseBody?: Prisma.SortOrderInput | Prisma.SortOrder
-  responseText?: Prisma.SortOrderInput | Prisma.SortOrder
-  statusCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
-  errorStack?: Prisma.SortOrderInput | Prisma.SortOrder
-  headers?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  responseStream?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -268,29 +316,37 @@ export type ApiCallLogWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ApiCallLogWhereInput | Prisma.ApiCallLogWhereInput[]
   OR?: Prisma.ApiCallLogWhereInput[]
   NOT?: Prisma.ApiCallLogWhereInput | Prisma.ApiCallLogWhereInput[]
-  requestPath?: Prisma.StringFilter<"ApiCallLog"> | string
-  requestBody?: Prisma.JsonFilter<"ApiCallLog">
+  walletId?: Prisma.IntFilter<"ApiCallLog"> | number
+  walletUid?: Prisma.StringFilter<"ApiCallLog"> | string
+  userId?: Prisma.IntFilter<"ApiCallLog"> | number
+  userUid?: Prisma.StringFilter<"ApiCallLog"> | string
+  ownerId?: Prisma.IntFilter<"ApiCallLog"> | number
+  ownerUid?: Prisma.StringFilter<"ApiCallLog"> | string
+  apikeyId?: Prisma.IntFilter<"ApiCallLog"> | number
+  apiKeyPreview?: Prisma.StringFilter<"ApiCallLog"> | string
+  requestHeaders?: Prisma.JsonNullableFilter<"ApiCallLog">
+  requestBody?: Prisma.JsonNullableFilter<"ApiCallLog">
+  responseHeaders?: Prisma.JsonNullableFilter<"ApiCallLog">
   responseBody?: Prisma.JsonNullableFilter<"ApiCallLog">
-  responseText?: Prisma.StringNullableFilter<"ApiCallLog"> | string | null
-  statusCode?: Prisma.IntNullableFilter<"ApiCallLog"> | number | null
-  errorMessage?: Prisma.StringNullableFilter<"ApiCallLog"> | string | null
-  errorStack?: Prisma.StringNullableFilter<"ApiCallLog"> | string | null
-  headers?: Prisma.JsonNullableFilter<"ApiCallLog">
-  metadata?: Prisma.JsonNullableFilter<"ApiCallLog">
+  responseStream?: Prisma.BoolFilter<"ApiCallLog"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApiCallLog"> | Date | string
 }, "requestId">
 
 export type ApiCallLogOrderByWithAggregationInput = {
   requestId?: Prisma.SortOrder
-  requestPath?: Prisma.SortOrder
-  requestBody?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  walletUid?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  userUid?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  ownerUid?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
+  apiKeyPreview?: Prisma.SortOrder
+  requestHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
+  requestBody?: Prisma.SortOrderInput | Prisma.SortOrder
+  responseHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
   responseBody?: Prisma.SortOrderInput | Prisma.SortOrder
-  responseText?: Prisma.SortOrderInput | Prisma.SortOrder
-  statusCode?: Prisma.SortOrderInput | Prisma.SortOrder
-  errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
-  errorStack?: Prisma.SortOrderInput | Prisma.SortOrder
-  headers?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  responseStream?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ApiCallLogCountOrderByAggregateInput
   _avg?: Prisma.ApiCallLogAvgOrderByAggregateInput
@@ -304,172 +360,222 @@ export type ApiCallLogScalarWhereWithAggregatesInput = {
   OR?: Prisma.ApiCallLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ApiCallLogScalarWhereWithAggregatesInput | Prisma.ApiCallLogScalarWhereWithAggregatesInput[]
   requestId?: Prisma.StringWithAggregatesFilter<"ApiCallLog"> | string
-  requestPath?: Prisma.StringWithAggregatesFilter<"ApiCallLog"> | string
-  requestBody?: Prisma.JsonWithAggregatesFilter<"ApiCallLog">
+  walletId?: Prisma.IntWithAggregatesFilter<"ApiCallLog"> | number
+  walletUid?: Prisma.StringWithAggregatesFilter<"ApiCallLog"> | string
+  userId?: Prisma.IntWithAggregatesFilter<"ApiCallLog"> | number
+  userUid?: Prisma.StringWithAggregatesFilter<"ApiCallLog"> | string
+  ownerId?: Prisma.IntWithAggregatesFilter<"ApiCallLog"> | number
+  ownerUid?: Prisma.StringWithAggregatesFilter<"ApiCallLog"> | string
+  apikeyId?: Prisma.IntWithAggregatesFilter<"ApiCallLog"> | number
+  apiKeyPreview?: Prisma.StringWithAggregatesFilter<"ApiCallLog"> | string
+  requestHeaders?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallLog">
+  requestBody?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallLog">
+  responseHeaders?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallLog">
   responseBody?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallLog">
-  responseText?: Prisma.StringNullableWithAggregatesFilter<"ApiCallLog"> | string | null
-  statusCode?: Prisma.IntNullableWithAggregatesFilter<"ApiCallLog"> | number | null
-  errorMessage?: Prisma.StringNullableWithAggregatesFilter<"ApiCallLog"> | string | null
-  errorStack?: Prisma.StringNullableWithAggregatesFilter<"ApiCallLog"> | string | null
-  headers?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallLog">
-  metadata?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallLog">
+  responseStream?: Prisma.BoolWithAggregatesFilter<"ApiCallLog"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallLog"> | Date | string
 }
 
 export type ApiCallLogCreateInput = {
   requestId: string
-  requestPath: string
-  requestBody: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  walletId: number
+  walletUid: string
+  userId: number
+  userUid: string
+  ownerId: number
+  ownerUid: string
+  apikeyId: number
+  apiKeyPreview: string
+  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseText?: string | null
-  statusCode?: number | null
-  errorMessage?: string | null
-  errorStack?: string | null
-  headers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseStream?: boolean
   createdAt?: Date | string
 }
 
 export type ApiCallLogUncheckedCreateInput = {
   requestId: string
-  requestPath: string
-  requestBody: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  walletId: number
+  walletUid: string
+  userId: number
+  userUid: string
+  ownerId: number
+  ownerUid: string
+  apikeyId: number
+  apiKeyPreview: string
+  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseText?: string | null
-  statusCode?: number | null
-  errorMessage?: string | null
-  errorStack?: string | null
-  headers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseStream?: boolean
   createdAt?: Date | string
 }
 
 export type ApiCallLogUpdateInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestPath?: Prisma.StringFieldUpdateOperationsInput | string
-  requestBody?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  walletId?: Prisma.IntFieldUpdateOperationsInput | number
+  walletUid?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  userUid?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerUid?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
+  apiKeyPreview?: Prisma.StringFieldUpdateOperationsInput | string
+  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  statusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  errorStack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  headers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseStream?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallLogUncheckedUpdateInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestPath?: Prisma.StringFieldUpdateOperationsInput | string
-  requestBody?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  walletId?: Prisma.IntFieldUpdateOperationsInput | number
+  walletUid?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  userUid?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerUid?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
+  apiKeyPreview?: Prisma.StringFieldUpdateOperationsInput | string
+  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  statusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  errorStack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  headers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseStream?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallLogCreateManyInput = {
   requestId: string
-  requestPath: string
-  requestBody: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  walletId: number
+  walletUid: string
+  userId: number
+  userUid: string
+  ownerId: number
+  ownerUid: string
+  apikeyId: number
+  apiKeyPreview: string
+  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseText?: string | null
-  statusCode?: number | null
-  errorMessage?: string | null
-  errorStack?: string | null
-  headers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseStream?: boolean
   createdAt?: Date | string
 }
 
 export type ApiCallLogUpdateManyMutationInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestPath?: Prisma.StringFieldUpdateOperationsInput | string
-  requestBody?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  walletId?: Prisma.IntFieldUpdateOperationsInput | number
+  walletUid?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  userUid?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerUid?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
+  apiKeyPreview?: Prisma.StringFieldUpdateOperationsInput | string
+  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  statusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  errorStack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  headers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseStream?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallLogUncheckedUpdateManyInput = {
   requestId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestPath?: Prisma.StringFieldUpdateOperationsInput | string
-  requestBody?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  walletId?: Prisma.IntFieldUpdateOperationsInput | number
+  walletUid?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  userUid?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerUid?: Prisma.StringFieldUpdateOperationsInput | string
+  apikeyId?: Prisma.IntFieldUpdateOperationsInput | number
+  apiKeyPreview?: Prisma.StringFieldUpdateOperationsInput | string
+  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  statusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  errorStack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  headers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  responseStream?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallLogCountOrderByAggregateInput = {
   requestId?: Prisma.SortOrder
-  requestPath?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  walletUid?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  userUid?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  ownerUid?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
+  apiKeyPreview?: Prisma.SortOrder
+  requestHeaders?: Prisma.SortOrder
   requestBody?: Prisma.SortOrder
+  responseHeaders?: Prisma.SortOrder
   responseBody?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
-  statusCode?: Prisma.SortOrder
-  errorMessage?: Prisma.SortOrder
-  errorStack?: Prisma.SortOrder
-  headers?: Prisma.SortOrder
-  metadata?: Prisma.SortOrder
+  responseStream?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type ApiCallLogAvgOrderByAggregateInput = {
-  statusCode?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
 }
 
 export type ApiCallLogMaxOrderByAggregateInput = {
   requestId?: Prisma.SortOrder
-  requestPath?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
-  statusCode?: Prisma.SortOrder
-  errorMessage?: Prisma.SortOrder
-  errorStack?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  walletUid?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  userUid?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  ownerUid?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
+  apiKeyPreview?: Prisma.SortOrder
+  responseStream?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type ApiCallLogMinOrderByAggregateInput = {
   requestId?: Prisma.SortOrder
-  requestPath?: Prisma.SortOrder
-  responseText?: Prisma.SortOrder
-  statusCode?: Prisma.SortOrder
-  errorMessage?: Prisma.SortOrder
-  errorStack?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  walletUid?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  userUid?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  ownerUid?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
+  apiKeyPreview?: Prisma.SortOrder
+  responseStream?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type ApiCallLogSumOrderByAggregateInput = {
-  statusCode?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  apikeyId?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
+export type IntFieldUpdateOperationsInput = {
+  set?: number
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -480,76 +586,96 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type ApiCallLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   requestId?: boolean
-  requestPath?: boolean
+  walletId?: boolean
+  walletUid?: boolean
+  userId?: boolean
+  userUid?: boolean
+  ownerId?: boolean
+  ownerUid?: boolean
+  apikeyId?: boolean
+  apiKeyPreview?: boolean
+  requestHeaders?: boolean
   requestBody?: boolean
+  responseHeaders?: boolean
   responseBody?: boolean
-  responseText?: boolean
-  statusCode?: boolean
-  errorMessage?: boolean
-  errorStack?: boolean
-  headers?: boolean
-  metadata?: boolean
+  responseStream?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallLog"]>
 
 export type ApiCallLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   requestId?: boolean
-  requestPath?: boolean
+  walletId?: boolean
+  walletUid?: boolean
+  userId?: boolean
+  userUid?: boolean
+  ownerId?: boolean
+  ownerUid?: boolean
+  apikeyId?: boolean
+  apiKeyPreview?: boolean
+  requestHeaders?: boolean
   requestBody?: boolean
+  responseHeaders?: boolean
   responseBody?: boolean
-  responseText?: boolean
-  statusCode?: boolean
-  errorMessage?: boolean
-  errorStack?: boolean
-  headers?: boolean
-  metadata?: boolean
+  responseStream?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallLog"]>
 
 export type ApiCallLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   requestId?: boolean
-  requestPath?: boolean
+  walletId?: boolean
+  walletUid?: boolean
+  userId?: boolean
+  userUid?: boolean
+  ownerId?: boolean
+  ownerUid?: boolean
+  apikeyId?: boolean
+  apiKeyPreview?: boolean
+  requestHeaders?: boolean
   requestBody?: boolean
+  responseHeaders?: boolean
   responseBody?: boolean
-  responseText?: boolean
-  statusCode?: boolean
-  errorMessage?: boolean
-  errorStack?: boolean
-  headers?: boolean
-  metadata?: boolean
+  responseStream?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallLog"]>
 
 export type ApiCallLogSelectScalar = {
   requestId?: boolean
-  requestPath?: boolean
+  walletId?: boolean
+  walletUid?: boolean
+  userId?: boolean
+  userUid?: boolean
+  ownerId?: boolean
+  ownerUid?: boolean
+  apikeyId?: boolean
+  apiKeyPreview?: boolean
+  requestHeaders?: boolean
   requestBody?: boolean
+  responseHeaders?: boolean
   responseBody?: boolean
-  responseText?: boolean
-  statusCode?: boolean
-  errorMessage?: boolean
-  errorStack?: boolean
-  headers?: boolean
-  metadata?: boolean
+  responseStream?: boolean
   createdAt?: boolean
 }
 
-export type ApiCallLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "requestPath" | "requestBody" | "responseBody" | "responseText" | "statusCode" | "errorMessage" | "errorStack" | "headers" | "metadata" | "createdAt", ExtArgs["result"]["apiCallLog"]>
+export type ApiCallLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"requestId" | "walletId" | "walletUid" | "userId" | "userUid" | "ownerId" | "ownerUid" | "apikeyId" | "apiKeyPreview" | "requestHeaders" | "requestBody" | "responseHeaders" | "responseBody" | "responseStream" | "createdAt", ExtArgs["result"]["apiCallLog"]>
 
 export type $ApiCallLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ApiCallLog"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     requestId: string
-    requestPath: string
-    requestBody: runtime.JsonValue
+    walletId: number
+    walletUid: string
+    userId: number
+    userUid: string
+    ownerId: number
+    ownerUid: string
+    apikeyId: number
+    apiKeyPreview: string
+    requestHeaders: runtime.JsonValue | null
+    requestBody: runtime.JsonValue | null
+    responseHeaders: runtime.JsonValue | null
     responseBody: runtime.JsonValue | null
-    responseText: string | null
-    statusCode: number | null
-    errorMessage: string | null
-    errorStack: string | null
-    headers: runtime.JsonValue | null
-    metadata: runtime.JsonValue | null
+    responseStream: boolean
     createdAt: Date
   }, ExtArgs["result"]["apiCallLog"]>
   composites: {}
@@ -975,15 +1101,19 @@ export interface Prisma__ApiCallLogClient<T, Null = never, ExtArgs extends runti
  */
 export interface ApiCallLogFieldRefs {
   readonly requestId: Prisma.FieldRef<"ApiCallLog", 'String'>
-  readonly requestPath: Prisma.FieldRef<"ApiCallLog", 'String'>
+  readonly walletId: Prisma.FieldRef<"ApiCallLog", 'Int'>
+  readonly walletUid: Prisma.FieldRef<"ApiCallLog", 'String'>
+  readonly userId: Prisma.FieldRef<"ApiCallLog", 'Int'>
+  readonly userUid: Prisma.FieldRef<"ApiCallLog", 'String'>
+  readonly ownerId: Prisma.FieldRef<"ApiCallLog", 'Int'>
+  readonly ownerUid: Prisma.FieldRef<"ApiCallLog", 'String'>
+  readonly apikeyId: Prisma.FieldRef<"ApiCallLog", 'Int'>
+  readonly apiKeyPreview: Prisma.FieldRef<"ApiCallLog", 'String'>
+  readonly requestHeaders: Prisma.FieldRef<"ApiCallLog", 'Json'>
   readonly requestBody: Prisma.FieldRef<"ApiCallLog", 'Json'>
+  readonly responseHeaders: Prisma.FieldRef<"ApiCallLog", 'Json'>
   readonly responseBody: Prisma.FieldRef<"ApiCallLog", 'Json'>
-  readonly responseText: Prisma.FieldRef<"ApiCallLog", 'String'>
-  readonly statusCode: Prisma.FieldRef<"ApiCallLog", 'Int'>
-  readonly errorMessage: Prisma.FieldRef<"ApiCallLog", 'String'>
-  readonly errorStack: Prisma.FieldRef<"ApiCallLog", 'String'>
-  readonly headers: Prisma.FieldRef<"ApiCallLog", 'Json'>
-  readonly metadata: Prisma.FieldRef<"ApiCallLog", 'Json'>
+  readonly responseStream: Prisma.FieldRef<"ApiCallLog", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ApiCallLog", 'DateTime'>
 }
     
