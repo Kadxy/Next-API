@@ -1,11 +1,14 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Prisma, User } from '@prisma-mysql-client/client';
-import { MysqlPrismaService } from '../../core/prisma/mysql-prisma.service';
+import { PrismaService } from '../../core/prisma/prisma.service';
 import { CACHE_KEYS, getCacheKey } from '../../core/cache/chche.constant';
 import { Cache } from 'cache-manager';
 import { FeishuWebhookService } from '../../core/feishu-webhook/feishu-webhook.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { USER_QUERY_INCLUDE, USER_QUERY_OMIT } from 'prisma/mysql/query.constant';
+import {
+  USER_QUERY_INCLUDE,
+  USER_QUERY_OMIT,
+} from 'prisma/mysql/query.constant';
 import { BusinessException } from 'src/common/exceptions';
 import { generateDisplayName } from '../../utils';
 
@@ -20,14 +23,14 @@ export class UserService {
   private readonly logger = new Logger(UserService.name);
 
   constructor(
-    private readonly prisma: MysqlPrismaService,
+    private readonly prisma: PrismaService,
     @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}
 
   // 更新用户最后登录时间
   async updateLastLoginAt(uid: User['uid'], lastLoginAt: Date) {
-    const result = await this.prisma.user.update({
+    const result = await this.prisma.mysql.user.update({
       where: { uid },
       data: { lastLoginAt },
     });
@@ -44,7 +47,7 @@ export class UserService {
       .catch();
 
     // 1. 创建用户
-    const user = await this.prisma.user.create({
+    const user = await this.prisma.mysql.user.create({
       data: {
         displayName: generateDisplayName('User', 6),
         ...data, // 使用提供的用户数据
@@ -59,7 +62,7 @@ export class UserService {
     await this.updateUserCache(user);
 
     // 3. 创建默认钱包
-    await this.prisma.wallet.create({
+    await this.prisma.mysql.wallet.create({
       data: {
         owner: { connect: { id: user.id } },
         members: {
@@ -86,7 +89,7 @@ export class UserService {
 
     // 如果缓存中没有，则从数据库获取
     if (!user) {
-      user = await this.prisma.user.findUnique({ where: { uid } });
+      user = await this.prisma.mysql.user.findUnique({ where: { uid } });
 
       if (user) {
         await this.updateUserCache(user);
@@ -125,7 +128,7 @@ export class UserService {
 
   // 更新用户显示名称
   async updateDisplayName(uid: User['uid'], displayName: string) {
-    const user = await this.prisma.user.update({
+    const user = await this.prisma.mysql.user.update({
       where: { uid },
       data: { displayName },
     });
@@ -140,7 +143,7 @@ export class UserService {
     where: Prisma.UserWhereUniqueInput,
   ): Promise<LimitedUser | null> {
     // 查询完整信息
-    const user = await this.prisma.user.findUnique({ where });
+    const user = await this.prisma.mysql.user.findUnique({ where });
 
     if (!user) {
       return null;

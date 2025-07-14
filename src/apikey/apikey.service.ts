@@ -1,6 +1,5 @@
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
-import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import { CryptoService } from '../core/crypto/crypto.service';
 import { BloomFilterService } from '../core/bloom-filter/bloom-filter.service';
 import { ApiKey, User, Wallet } from '@prisma-mysql-client/client';
@@ -16,6 +15,7 @@ import {
 import { WalletService } from '../wallet/wallet.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { FeishuWebhookService } from '../core/feishu-webhook/feishu-webhook.service';
+import { PrismaService } from 'src/core/prisma/prisma.service';
 
 @Injectable()
 export class ApikeyService implements OnModuleInit {
@@ -24,7 +24,7 @@ export class ApikeyService implements OnModuleInit {
   private readonly logger = new Logger(ApikeyService.name);
 
   constructor(
-    private readonly prisma: MysqlPrismaService,
+    private readonly prisma: PrismaService,
     private readonly cryptoService: CryptoService,
     private readonly bloomFilterService: BloomFilterService,
     private readonly walletService: WalletService,
@@ -52,7 +52,7 @@ export class ApikeyService implements OnModuleInit {
 
     this.logger.log('Scanning wallet keys');
 
-    const wallets = await this.prisma.wallet.findMany({
+    const wallets = await this.prisma.mysql.wallet.findMany({
       select: {
         id: true, // wallet id
         ownerId: true, // wallet owner userId
@@ -69,7 +69,7 @@ export class ApikeyService implements OnModuleInit {
       );
 
       // 1. 找到所有无效的API Key
-      const invalidApiKeys = await this.prisma.apiKey.findMany({
+      const invalidApiKeys = await this.prisma.mysql.apiKey.findMany({
         where: {
           walletId: wallet.id,
           isActive: true,
@@ -92,7 +92,7 @@ export class ApikeyService implements OnModuleInit {
         );
 
         // 2.2 删除
-        await this.prisma.apiKey.updateMany({
+        await this.prisma.mysql.apiKey.updateMany({
           where: { hashKey: { in: invalidApiKeys.map((k) => k.hashKey) } },
           data: { isActive: false },
         });
@@ -139,7 +139,7 @@ export class ApikeyService implements OnModuleInit {
     const hashKey = this.cryptoService.hashString(rawKey);
 
     // 6. 创建记录
-    const apiKey = await this.prisma.apiKey.create({
+    const apiKey = await this.prisma.mysql.apiKey.create({
       data: { hashKey, creatorId, displayName, preview, walletId },
       omit: API_KEY_QUERY_OMIT,
     });
@@ -159,7 +159,7 @@ export class ApikeyService implements OnModuleInit {
     userId: User['id'],
   ) {
     // 先获取 API Key 信息
-    const apiKey = await this.prisma.apiKey.findUnique({
+    const apiKey = await this.prisma.mysql.apiKey.findUnique({
       where: { hashKey, isActive: true },
       select: { walletId: true, creatorId: true },
     });
@@ -174,7 +174,7 @@ export class ApikeyService implements OnModuleInit {
       userId,
     );
 
-    return this.prisma.apiKey.update({
+    return this.prisma.mysql.apiKey.update({
       where: { hashKey },
       data: { displayName: newDisplayName },
       omit: API_KEY_QUERY_OMIT,
@@ -184,7 +184,7 @@ export class ApikeyService implements OnModuleInit {
   // 删除 API Key
   async deleteApiKey(hashKey: ApiKey['hashKey'], creatorId: User['id']) {
     // 先获取 API Key 信息
-    const apiKey = await this.prisma.apiKey.findUnique({
+    const apiKey = await this.prisma.mysql.apiKey.findUnique({
       where: { hashKey, creatorId, isDeleted: false },
     });
 
@@ -193,7 +193,7 @@ export class ApikeyService implements OnModuleInit {
     }
 
     // 软删除
-    await this.prisma.apiKey.update({
+    await this.prisma.mysql.apiKey.update({
       where: { hashKey },
       data: { isActive: false, isDeleted: true },
     });
@@ -205,7 +205,7 @@ export class ApikeyService implements OnModuleInit {
 
   // 列出用户创建的 API Key
   async listApiKeys(creatorId: User['id']) {
-    return this.prisma.apiKey.findMany({
+    return this.prisma.mysql.apiKey.findMany({
       where: { creatorId, isDeleted: false }, // 不包含已删除的, 但包含失效的
       include: { wallet: { select: APIKEY_INCLUDE_WALLET_SELECT } },
       omit: API_KEY_QUERY_OMIT,
@@ -251,7 +251,7 @@ export class ApikeyService implements OnModuleInit {
 
     // 4.2 缓存未命中则查询数据库
     if (!record) {
-      record = await this.prisma.apiKey.findUnique({
+      record = await this.prisma.mysql.apiKey.findUnique({
         where: { hashKey, isActive: true, isDeleted: false },
       });
 
@@ -281,7 +281,7 @@ export class ApikeyService implements OnModuleInit {
     const tempFilterName = ApikeyService.BLOOM_FILTER_NAME + '_rebuild_temp';
 
     try {
-      const apiKeys = await this.prisma.apiKey.findMany({
+      const apiKeys = await this.prisma.mysql.apiKey.findMany({
         where: { isActive: true, isDeleted: false },
         select: { hashKey: true },
       });

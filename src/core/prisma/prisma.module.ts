@@ -6,6 +6,6 @@ import { PrismaService } from './prisma.service';
 @Global()
 @Module({
   providers: [MysqlPrismaService, PostgresqlPrismaService, PrismaService],
-  exports: [MysqlPrismaService, PostgresqlPrismaService, PrismaService],
+  exports: [PrismaService],
 })
 export class PrismaModule {}

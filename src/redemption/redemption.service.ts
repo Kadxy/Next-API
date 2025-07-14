@@ -3,7 +3,7 @@ import { RedemptionCode, User } from '@prisma-mysql-client/client';
 import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
 import { BusinessException } from 'src/common/exceptions';
 import { CryptoService } from 'src/core/crypto/crypto.service';
-import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
+import { PrismaService } from '../core/prisma/prisma.service';
 
 @Injectable()
 export class RedemptionService {
@@ -12,7 +12,7 @@ export class RedemptionService {
   static readonly REDEMPTION_CODE_LENGTH = 24;
 
   constructor(
-    private readonly prisma: MysqlPrismaService,
+    private readonly prisma: PrismaService,
     private readonly cryptoService: CryptoService,
   ) {}
 
@@ -30,7 +30,7 @@ export class RedemptionService {
   ): Promise<RedemptionCode> {
     const code = this.generateRedemptionCode();
 
-    return this.prisma.redemptionCode.create({
+    return this.prisma.mysql.redemptionCode.create({
       data: {
         code,
         amount,
@@ -46,7 +46,7 @@ export class RedemptionService {
    */
   async doRedeem(code: string, redeemerId: User['id']): Promise<Decimal> {
     try {
-      const result = await this.prisma.$transaction(async (tx) => {
+      const result = await this.prisma.mysql.$transaction(async (tx) => {
         // 1. 查询兑换码记录
         const record = await tx.redemptionCode.findUnique({ where: { code } });
 
@@ -92,12 +92,12 @@ export class RedemptionService {
    * @returns 兑换码列表
    */
   async getAllRedemptionCodes() {
-    return this.prisma.redemptionCode.findMany();
+    return this.prisma.mysql.redemptionCode.findMany();
   }
 
   /**
    * 生成兑换码
-   * @example abcdabcdabcdabcd
+   * @example undecidability
    * @returns 兑换码（小写）
    */
   private generateRedemptionCode() {

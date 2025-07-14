@@ -1,25 +1,25 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MysqlPrismaService } from '../../../core/prisma/mysql-prisma.service';
-import { Cache } from '@nestjs/cache-manager';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Passkey, User } from '@prisma-mysql-client/client';
-import {
-  generateRegistrationOptions,
-  verifyRegistrationResponse,
-  generateAuthenticationOptions,
-  verifyAuthenticationResponse,
-} from '@simplewebauthn/server';
 import type {
-  RegistrationResponseJSON,
   AuthenticationResponseJSON,
   AuthenticatorTransportFuture,
+  RegistrationResponseJSON,
+  VerifiedAuthenticationResponse,
   VerifiedRegistrationResponse,
+} from '@simplewebauthn/server';
+import {
+  generateAuthenticationOptions,
+  generateRegistrationOptions,
+  verifyAuthenticationResponse,
+  verifyRegistrationResponse,
 } from '@simplewebauthn/server';
 import { BusinessException } from '../../../common/exceptions';
 import { CACHE_KEYS, getCacheKey } from '../../../core/cache/chche.constant';
 import { UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
+import { PrismaService } from '../../../core/prisma/prisma.service';
 
 @Injectable()
 export class PasskeyService {
@@ -44,7 +44,7 @@ export class PasskeyService {
   private readonly origin: string;
 
   constructor(
-    private readonly prisma: MysqlPrismaService,
+    private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
     private readonly userService: UserService,
     private readonly jwtTokenService: JwtTokenService,
@@ -130,7 +130,7 @@ export class PasskeyService {
     }
 
     // 2. Verify registration response
-    let verification;
+    let verification: VerifiedRegistrationResponse;
     try {
       verification = await verifyRegistrationResponse({
         response,
@@ -233,7 +233,7 @@ export class PasskeyService {
     );
 
     // 3. Verify authentication response
-    let verification;
+    let verification: VerifiedAuthenticationResponse;
     try {
       verification = await verifyAuthenticationResponse({
         response,
@@ -277,22 +277,11 @@ export class PasskeyService {
   ////////////////////////
 
   /**
-   * 获取用户的所有 passkeys - 管理员
-   * @param userId 用户ID
-   */
-  private async getUserPasskeys(userId: User['id']) {
-    return this.prisma.passkey.findMany({
-      where: { userId, isDeleted: false },
-      select: { id: true, transports: true },
-    });
-  }
-
-  /**
    * 获取用户的所有 passkeys - 展示给用户
    * @param userId 用户ID
    */
   async listUserPasskeys(userId: User['id']) {
-    return this.prisma.passkey.findMany({
+    return this.prisma.mysql.passkey.findMany({
       where: { userId, isDeleted: false },
       select: {
         id: true,
@@ -315,7 +304,7 @@ export class PasskeyService {
     passkeyId: Passkey['id'],
     displayName: Passkey['displayName'],
   ) {
-    return this.prisma.passkey.update({
+    return this.prisma.mysql.passkey.update({
       where: { id: passkeyId, userId, isDeleted: false },
       data: { displayName },
     });
@@ -328,9 +317,20 @@ export class PasskeyService {
    */
   async deletePasskey(userId: User['id'], passkeyId: Passkey['id']) {
     // not return, because it contains bigint type, which cannot be serialized
-    await this.prisma.passkey.update({
+    await this.prisma.mysql.passkey.update({
       where: { id: passkeyId, userId, isDeleted: false },
       data: { isDeleted: true },
+    });
+  }
+
+  /**
+   * 获取用户的所有 passkeys - 管理员
+   * @param userId 用户ID
+   */
+  private async getUserPasskeys(userId: User['id']) {
+    return this.prisma.mysql.passkey.findMany({
+      where: { userId, isDeleted: false },
+      select: { id: true, transports: true },
     });
   }
 
@@ -339,7 +339,9 @@ export class PasskeyService {
    * @param id passkey ID
    */
   private async getPasskey(id: Passkey['id']) {
-    return this.prisma.passkey.findUnique({ where: { id, isDeleted: false } });
+    return this.prisma.mysql.passkey.findUnique({
+      where: { id, isDeleted: false },
+    });
   }
 
   //////////////////////////////////////////
@@ -358,7 +360,7 @@ export class PasskeyService {
   ) {
     const { credential, credentialDeviceType, credentialBackedUp } = info;
 
-    await this.prisma.passkey.create({
+    await this.prisma.mysql.passkey.create({
       data: {
         userId,
 
@@ -395,7 +397,7 @@ export class PasskeyService {
     passkeyId: Passkey['id'],
     newCounter: number,
   ) {
-    return this.prisma.passkey.update({
+    return this.prisma.mysql.passkey.update({
       where: { id: passkeyId, isDeleted: false },
       data: { counter: BigInt(newCounter), lastUsedAt: new Date() },
     });

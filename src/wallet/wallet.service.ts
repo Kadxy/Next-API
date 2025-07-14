@@ -1,10 +1,14 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import { BusinessException, ForbiddenException } from 'src/common/exceptions';
-import { Prisma, User, Wallet, WalletMember } from '@prisma-mysql-client/client';
+import {
+  Prisma,
+  User,
+  Wallet,
+  WalletMember,
+} from '@prisma-mysql-client/client';
 import {
   OWNER_WALLET_QUERY_OMIT,
   OWNER_WALLET_QUERY_WALLET_MEMBER_SELECT,
@@ -12,6 +16,7 @@ import {
 } from 'prisma/mysql/query.constant';
 import { UserService } from '../identity/user/user.service';
 import { Decimal } from '@prisma/client/runtime/library';
+import { PrismaService } from '../core/prisma/prisma.service';
 
 export interface WalletWithMembers extends Wallet {
   members: WalletMember[];
@@ -22,7 +27,7 @@ export class WalletService {
   private readonly logger = new Logger(WalletService.name);
 
   constructor(
-    private readonly prisma: MysqlPrismaService,
+    private readonly prisma: PrismaService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly userService: UserService,
   ) {}
@@ -62,7 +67,7 @@ export class WalletService {
   }
 
   async listUserAccessibleWallets(userId: User['id']) {
-    const joinedWallet = await this.prisma.walletMember.findMany({
+    const joinedWallet = await this.prisma.mysql.walletMember.findMany({
       where: { userId, isActive: true },
       select: {
         isOwner: true,
@@ -97,7 +102,7 @@ export class WalletService {
     );
 
     // 2. 更新钱包名称
-    await this.prisma.wallet.update({
+    await this.prisma.mysql.wallet.update({
       where: { id: wallet.id },
       data: { displayName },
     });
@@ -126,7 +131,7 @@ export class WalletService {
     }
 
     // 创建成员记录
-    await this.prisma.walletMember.create({
+    await this.prisma.mysql.walletMember.create({
       data: {
         alias,
         creditLimit,
@@ -166,7 +171,7 @@ export class WalletService {
 
     await Promise.all([
       // 更新 walletMember, isActive = false
-      this.prisma.walletMember.update({
+      this.prisma.mysql.walletMember.update({
         where: { id: existRecord.id },
         data: { isActive: false },
       }),
@@ -199,7 +204,7 @@ export class WalletService {
     }
 
     // 更新记录
-    await this.prisma.walletMember.update({
+    await this.prisma.mysql.walletMember.update({
       where: { id: existRecord.id },
       data: {
         ...(alias && { alias }),
@@ -234,7 +239,7 @@ export class WalletService {
     }
 
     // 更新记录
-    await this.prisma.walletMember.update({
+    await this.prisma.mysql.walletMember.update({
       where: { id: existRecord.id },
       data: {
         isActive: true,
@@ -273,7 +278,7 @@ export class WalletService {
 
     await Promise.all([
       // 2.1 更新 walletMember
-      await this.prisma.walletMember.update({
+      await this.prisma.mysql.walletMember.update({
         where: {
           walletId_userId: { walletId: wallet.id, userId },
         },
@@ -289,7 +294,7 @@ export class WalletService {
   }
 
   async getWalletDetail(walletUid: Wallet['uid'], userId: User['id']) {
-    return this.prisma.wallet.findUnique({
+    return this.prisma.mysql.wallet.findUnique({
       where: { uid: walletUid, ownerId: userId },
       include: {
         members: {
@@ -353,7 +358,7 @@ export class WalletService {
     // 2. 查询目标用户
     const memberUser = useCachedUser
       ? await this.userService.getCachedUser(memberUid)
-      : await this.prisma.user.findUnique({
+      : await this.prisma.mysql.user.findUnique({
           where: { uid: memberUid, isDeleted: false },
         });
 
@@ -396,7 +401,7 @@ export class WalletService {
   }
 
   private async getDbWallet(where: Prisma.WalletWhereUniqueInput) {
-    const wallet = await this.prisma.wallet.findUnique({
+    const wallet = await this.prisma.mysql.wallet.findUnique({
       where,
       include: { members: true },
     });
@@ -427,14 +432,14 @@ export class WalletService {
 
   // Inactivate all api keys belong to a wallet member
   private async inactiveApiKeys(walletId: Wallet['id'], creatorId: User['id']) {
-    const apiKeys = await this.prisma.apiKey.findMany({
+    const apiKeys = await this.prisma.mysql.apiKey.findMany({
       where: { walletId, creatorId, isActive: true },
     });
 
     if (apiKeys.length > 0) {
       for (const key of apiKeys) {
         await Promise.all([
-          this.prisma.apiKey.update({
+          this.prisma.mysql.apiKey.update({
             where: { hashKey: key.hashKey },
             data: { isActive: false },
           }),

@@ -27,10 +27,12 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ logger: false }),
     {
-      logger: new ConsoleLogger({ prefix: 'Nest', timestamp: true }),
+      logger: new ConsoleLogger({ prefix: 'APIGrip', timestamp: true }),
     },
   );
+
   const configService = app.get(ConfigService);
+  const feishuService = app.get(FeishuWebhookService);
 
   // Compression: https://docs.nestjs.com/techniques/compression#use-with-fastify
   await app.register(compression, {
@@ -78,20 +80,27 @@ async function bootstrap() {
     }),
   );
 
-  setupApiDoc(app, SCALAR_PATH, OPENAPI_PATH, JWT_TOKEN_NAME, BASE_URL);
+  // Swagger API Docs
+  await setupApiDoc(app, SCALAR_PATH, OPENAPI_PATH, JWT_TOKEN_NAME, BASE_URL);
 
   // 启动服务器
   const port = configService.getOrThrow<number>('PORT');
   const listenHost = configService.getOrThrow<string>('LISTEN_HOST');
   await app.listen(port, listenHost);
 
-  console.log(`Server is running on PORT[${port}]`);
-  console.log('API DOCS: ', `${BASE_URL}${SCALAR_PATH}`);
-  console.log('OPENAPI JSON: ', `${BASE_URL}${OPENAPI_PATH}`);
-
   // 发送飞书消息
-  const feishuService = app.get(FeishuWebhookService);
-  feishuService.sendText(`service started at ${new Date().toLocaleString()}`);
+  feishuService
+    .sendText(`service started at ${new Date().toLocaleString()}`)
+    .catch();
+
+  console.log(`---------------------------------------------------`);
+  console.log(`Server is running on PORT[${port}]`);
+  console.log('API Docs: ', `${BASE_URL}${SCALAR_PATH}`);
+  console.log('OpenAPI Json: ', `${BASE_URL}${OPENAPI_PATH}`);
+  console.log(`---------------------------------------------------`);
 }
 
-bootstrap();
+bootstrap().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

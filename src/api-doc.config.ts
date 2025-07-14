@@ -2,7 +2,7 @@ import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import helmet from '@fastify/helmet';
-export function setupApiDoc(
+export async function setupApiDoc(
   app: NestFastifyApplication,
   docsPath: string,
   openapiPath: string,
@@ -42,7 +42,7 @@ export function setupApiDoc(
   });
 
   // When using fastify and helmet, there may be a problem with CSP, to solve this collision, configure the CSP as shown below:
-  app.register(helmet, {
+  await app.register(helmet, {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: [`'self'`],

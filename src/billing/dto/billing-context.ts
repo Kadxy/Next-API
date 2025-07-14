@@ -8,7 +8,7 @@ export class BillingContext {
   requestId: string; // 请求ID (ULID)
   userId: number; // 用户ID
   walletId: number; // 钱包ID
-  apikeyId: number; // APIKey Id
+  apikeyId: number; // APIKeyId
 
   // 请求信息
   model: AIModel; // 模型名称

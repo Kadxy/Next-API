@@ -1,13 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { ApiCallRecord, BillStatus, User, Wallet } from '@prisma-mysql-client/client';
+import {
+  ApiCallRecord,
+  BillStatus,
+  User,
+  Wallet,
+} from '@prisma-mysql-client/client';
 import { ApiCallRecordCreateInput } from '@prisma-mysql-client/models';
 import { FeishuWebhookService } from 'src/core/feishu-webhook/feishu-webhook.service';
 import {
   Decimal,
   TransactionClient,
 } from '@prisma-mysql-client/internal/prismaNamespace';
+import { PrismaService } from '../core/prisma/prisma.service';
 
 type ApiCallRecordGroup = Pick<
   ApiCallRecord,
@@ -19,14 +24,14 @@ export class BillingService {
   private readonly logger = new Logger(BillingService.name);
 
   constructor(
-    private readonly prisma: MysqlPrismaService,
+    private readonly prisma: PrismaService,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}
 
   // 创建计费记录
   async createBillingRecord(data: ApiCallRecordCreateInput): Promise<void> {
     try {
-      await this.prisma.apiCallRecord.create({ data });
+      await this.prisma.mysql.apiCallRecord.create({ data });
     } catch (error) {
       // 如果是重复的requestId，忽略错误（幂等性）
       if (error.code === 'P2002') {
@@ -62,7 +67,7 @@ export class BillingService {
   // 定时将 FAILED 的记录重置为 PENDING
   @Cron(CronExpression.EVERY_30_MINUTES)
   async retryFailedBillings() {
-    const result = await this.prisma.apiCallRecord.updateMany({
+    const result = await this.prisma.mysql.apiCallRecord.updateMany({
       where: { billStatus: BillStatus.FAILED },
       data: { billStatus: BillStatus.PENDING },
     });
@@ -80,7 +85,7 @@ export class BillingService {
     const needUpdateCreditLimit = new Map<Wallet['id'], Set<User['id']>>();
 
     // 使用事务来保证原子性
-    return await this.prisma.$transaction(async (tx) => {
+    return await this.prisma.mysql.$transaction(async (tx) => {
       // 1. 查询并锁定待处理的记录
       const pendingRecords = await tx.apiCallRecord.findMany({
         where: {

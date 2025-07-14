@@ -6,15 +6,18 @@ import {
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { MysqlPrismaService } from '../core/prisma/mysql-prisma.service';
 import {
-  AIModelRequest,
   AIModelNonStreamResponse,
+  AIModelRequest,
   AIModelStreamResponse,
   AIModelUsage,
 } from './interfaces/proxy.interface';
 import { BillingService } from '../billing/billing.service';
-import { AIModel, BillStatus, UpstreamConfig } from '@prisma-mysql-client/client';
+import {
+  AIModel,
+  BillStatus,
+  UpstreamConfig,
+} from '@prisma-mysql-client/client';
 import { APICallException, BusinessException } from '../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { AxiosRequestConfig } from 'axios';
@@ -25,6 +28,7 @@ import {
 import { TiktokenService } from 'src/billing/tiktoken/tiktoken.service';
 import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
 import { ULID } from 'ulid';
+import { PrismaService } from '../core/prisma/prisma.service';
 
 interface RetryInfo {
   count: number;
@@ -41,7 +45,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   private upstreams: Map<number, UpstreamConfig> = new Map();
 
   constructor(
-    private readonly prisma: MysqlPrismaService,
+    private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
     private readonly billingService: BillingService,
     private readonly tiktokenService: TiktokenService,
@@ -109,7 +113,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       }
 
       // 7. 计算费用
-      billingContext.cost = await this.calculateCost(
+      billingContext.cost = this.calculateCost(
         billingContext.model,
         billingContext.inputTokens,
         billingContext.outputTokens,
@@ -192,7 +196,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       }
 
       // 4. 计算费用
-      billingContext.cost = await this.calculateCost(
+      billingContext.cost = this.calculateCost(
         modelInfo,
         billingContext.inputTokens,
         billingContext.outputTokens,
@@ -238,12 +242,12 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   @Cron(CronExpression.EVERY_5_MINUTES)
   private async initialize() {
     // load ai models
-    await this.prisma.aIModel
+    await this.prisma.mysql.aIModel
       .findMany({ where: { isActive: true } })
       .then((m) => m.forEach((m) => this.models.set(m.name, m)));
 
     // load upstream configs
-    await this.prisma.upstreamConfig
+    await this.prisma.mysql.upstreamConfig
       .findMany()
       .then((c) => c.forEach((c) => this.upstreams.set(c.id, c)));
 
@@ -336,7 +340,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
     return texts.join('\n');
   }
 
-  // 记录成功的计费信息
+  // 记录成功请求计费信息
   private async recordSuccessfulBilling(
     context: BillingContext,
   ): Promise<void> {
@@ -413,9 +417,9 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       const upstreamStream = response.data;
 
       // 添加流的基本日志和错误处理
-      upstreamStream.on('error', (error) => {
+      upstreamStream.on('error', (error: unknown) => {
         this.logger.error(
-          `[${billingContext.requestId}] raw stream error: ${error.message}`,
+          `[${billingContext.requestId}] raw stream error: ${error instanceof Error ? error.message : error}`,
         );
       });
 
