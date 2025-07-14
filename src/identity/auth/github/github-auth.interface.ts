@@ -1,4 +1,9 @@
-export interface GitHubTokenResponse {
+import {
+  IOAuth2TokenResponse,
+  IOAuth2UserInfo,
+} from '../oauth/oauth.interface';
+
+export interface GitHubTokenResponse extends IOAuth2TokenResponse {
   /** GitHub Access Token(ghu_xxx) */
   access_token: string;
 
@@ -15,7 +20,7 @@ export interface GitHubTokenResponse {
   expires_in?: number;
 }
 
-export interface GitHubUserResponse {
+export interface GitHubUserResponse extends IOAuth2UserInfo {
   /** GitHub User ID */
   id: number;
 

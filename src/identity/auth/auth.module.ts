@@ -13,6 +13,7 @@ import { GitHubAuthModule } from './github/github-auth.module';
 import { GoogleAuthModule } from './google/google-auth.module';
 import { PasskeyModule } from './passkey/passkey.module';
 import { CoreModule } from 'src/core/core.module';
+import { FeishuAuthModule } from './feishu/feishu-auth.module';
 @Module({
   imports: [
     CoreModule,
@@ -32,6 +33,7 @@ import { CoreModule } from 'src/core/core.module';
       inject: [ConfigService],
       global: true,
     }),
+    FeishuAuthModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthGuard, AdminAuthGuard, JwtTokenService],

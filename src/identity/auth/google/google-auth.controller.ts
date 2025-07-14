@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { GoogleAuthDto } from './dto/google-auth.dto';
 import { GoogleAuthService } from './google-auth.service';
 import { LoginResponseDto } from 'src/identity/user/dto/user.dto';
+import { IOAuth2LoginDto } from '../oauth/oauth.interface';
 
 @ApiTags('Google Authentication')
 @Controller('auth/google')
@@ -11,10 +11,10 @@ export class GoogleAuthController {
 
   @Post('/login')
   @ApiOperation({ summary: 'Google OAuth Login' })
-  @ApiBody({ type: GoogleAuthDto })
   @ApiResponse({ type: LoginResponseDto })
-  async googleLogin(@Body() authDto: GoogleAuthDto) {
-    return this.googleAuthService.login(authDto);
+  @ApiBody({ type: IOAuth2LoginDto })
+  async googleLogin(@Body() authDto: IOAuth2LoginDto) {
+    return this.googleAuthService.loginOrRegister(authDto);
   }
 
   @Get('/config')

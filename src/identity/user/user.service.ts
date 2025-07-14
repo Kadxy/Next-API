@@ -126,6 +126,11 @@ export class UserService {
     return this.getDbUser({ googleId });
   }
 
+  // 从数据库获取用户 - 通过 Feishu ID
+  async getUserByFeishuId(feishuId: User['feishuId']) {
+    return this.getDbUser({ feishuId });
+  }
+
   // 更新用户显示名称
   async updateDisplayName(uid: User['uid'], displayName: string) {
     const user = await this.prisma.mysql.user.update({

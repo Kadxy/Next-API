@@ -1,4 +1,9 @@
-export interface GoogleTokenResponse {
+import {
+  IOAuth2TokenResponse,
+  IOAuth2UserInfo,
+} from '../oauth/oauth.interface';
+
+export interface GoogleTokenResponse extends IOAuth2TokenResponse {
   /** Google Access Token */
   access_token: string;
 
@@ -18,7 +23,7 @@ export interface GoogleTokenResponse {
   scope?: string;
 }
 
-export interface GoogleUserResponse {
+export interface GoogleUserResponse extends IOAuth2UserInfo {
   /** Google User ID */
   id: string;
 

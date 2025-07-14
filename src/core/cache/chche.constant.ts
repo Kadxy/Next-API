@@ -34,6 +34,10 @@ export const CACHE_KEYS = {
     KEY: 'google-state:{state}',
     EXPIRE: minutes(3),
   },
+  FEISHU_STATE: {
+    KEY: 'feishu-state:{state}',
+    EXPIRE: minutes(3),
+  },
   WEBAUTHN_REGISTER_OPTIONS: {
     KEY: 'webauthn-register-options:{userId}',
     EXPIRE: minutes(5),

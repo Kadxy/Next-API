@@ -42,6 +42,7 @@ export type UserMinAggregateOutputType = {
   phone: string | null
   gitHubId: string | null
   googleId: string | null
+  feishuId: string | null
   isDeleted: boolean | null
   isAdmin: boolean | null
   createdAt: Date | null
@@ -58,6 +59,7 @@ export type UserMaxAggregateOutputType = {
   phone: string | null
   gitHubId: string | null
   googleId: string | null
+  feishuId: string | null
   isDeleted: boolean | null
   isAdmin: boolean | null
   createdAt: Date | null
@@ -74,6 +76,7 @@ export type UserCountAggregateOutputType = {
   phone: number
   gitHubId: number
   googleId: number
+  feishuId: number
   isDeleted: number
   isAdmin: number
   createdAt: number
@@ -100,6 +103,7 @@ export type UserMinAggregateInputType = {
   phone?: true
   gitHubId?: true
   googleId?: true
+  feishuId?: true
   isDeleted?: true
   isAdmin?: true
   createdAt?: true
@@ -116,6 +120,7 @@ export type UserMaxAggregateInputType = {
   phone?: true
   gitHubId?: true
   googleId?: true
+  feishuId?: true
   isDeleted?: true
   isAdmin?: true
   createdAt?: true
@@ -132,6 +137,7 @@ export type UserCountAggregateInputType = {
   phone?: true
   gitHubId?: true
   googleId?: true
+  feishuId?: true
   isDeleted?: true
   isAdmin?: true
   createdAt?: true
@@ -235,6 +241,7 @@ export type UserGroupByOutputType = {
   phone: string | null
   gitHubId: string | null
   googleId: string | null
+  feishuId: string | null
   isDeleted: boolean
   isAdmin: boolean
   createdAt: Date
@@ -274,6 +281,7 @@ export type UserWhereInput = {
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   gitHubId?: Prisma.StringNullableFilter<"User"> | string | null
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
+  feishuId?: Prisma.StringNullableFilter<"User"> | string | null
   isDeleted?: Prisma.BoolFilter<"User"> | boolean
   isAdmin?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -295,6 +303,7 @@ export type UserOrderByWithRelationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   gitHubId?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  feishuId?: Prisma.SortOrderInput | Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -315,6 +324,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   phone?: string
   gitHubId?: string
   googleId?: string
+  feishuId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -330,7 +340,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passkeys?: Prisma.PasskeyListRelationFilter
   redeemCodes?: Prisma.RedemptionCodeListRelationFilter
   createdApiKeys?: Prisma.ApiKeyListRelationFilter
-}, "id" | "uid" | "email" | "phone" | "gitHubId" | "googleId">
+}, "id" | "uid" | "email" | "phone" | "gitHubId" | "googleId" | "feishuId">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -341,6 +351,7 @@ export type UserOrderByWithAggregationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   gitHubId?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  feishuId?: Prisma.SortOrderInput | Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -365,6 +376,7 @@ export type UserScalarWhereWithAggregatesInput = {
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   gitHubId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  feishuId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isDeleted?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   isAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -380,6 +392,7 @@ export type UserCreateInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -401,6 +414,7 @@ export type UserUncheckedCreateInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -421,6 +435,7 @@ export type UserUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -442,6 +457,7 @@ export type UserUncheckedUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -463,6 +479,7 @@ export type UserCreateManyInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -478,6 +495,7 @@ export type UserUpdateManyMutationInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -494,6 +512,7 @@ export type UserUncheckedUpdateManyInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -516,6 +535,7 @@ export type UserCountOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   gitHubId?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  feishuId?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -536,6 +556,7 @@ export type UserMaxOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   gitHubId?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  feishuId?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -552,6 +573,7 @@ export type UserMinOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   gitHubId?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
+  feishuId?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -681,6 +703,7 @@ export type UserCreateWithoutWalletInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -701,6 +724,7 @@ export type UserUncheckedCreateWithoutWalletInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -736,6 +760,7 @@ export type UserUpdateWithoutWalletInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -756,6 +781,7 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -775,6 +801,7 @@ export type UserCreateWithoutWalletMembersInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -795,6 +822,7 @@ export type UserUncheckedCreateWithoutWalletMembersInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -830,6 +858,7 @@ export type UserUpdateWithoutWalletMembersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -850,6 +879,7 @@ export type UserUncheckedUpdateWithoutWalletMembersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -869,6 +899,7 @@ export type UserCreateWithoutCreatedApiKeysInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -889,6 +920,7 @@ export type UserUncheckedCreateWithoutCreatedApiKeysInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -924,6 +956,7 @@ export type UserUpdateWithoutCreatedApiKeysInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -944,6 +977,7 @@ export type UserUncheckedUpdateWithoutCreatedApiKeysInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -963,6 +997,7 @@ export type UserCreateWithoutPasskeysInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -983,6 +1018,7 @@ export type UserUncheckedCreateWithoutPasskeysInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -1018,6 +1054,7 @@ export type UserUpdateWithoutPasskeysInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1038,6 +1075,7 @@ export type UserUncheckedUpdateWithoutPasskeysInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1057,6 +1095,7 @@ export type UserCreateWithoutRedeemCodesInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -1077,6 +1116,7 @@ export type UserUncheckedCreateWithoutRedeemCodesInput = {
   phone?: string | null
   gitHubId?: string | null
   googleId?: string | null
+  feishuId?: string | null
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: Date | string
@@ -1112,6 +1152,7 @@ export type UserUpdateWithoutRedeemCodesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1132,6 +1173,7 @@ export type UserUncheckedUpdateWithoutRedeemCodesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1219,6 +1261,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   phone?: boolean
   gitHubId?: boolean
   googleId?: boolean
+  feishuId?: boolean
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: boolean
@@ -1243,6 +1286,7 @@ export type UserSelectScalar = {
   phone?: boolean
   gitHubId?: boolean
   googleId?: boolean
+  feishuId?: boolean
   isDeleted?: boolean
   isAdmin?: boolean
   createdAt?: boolean
@@ -1250,7 +1294,7 @@ export type UserSelectScalar = {
   lastLoginAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "isDeleted" | "isAdmin" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "feishuId" | "isDeleted" | "isAdmin" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   walletMembers?: boolean | Prisma.User$walletMembersArgs<ExtArgs>
@@ -1278,6 +1322,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     phone: string | null
     gitHubId: string | null
     googleId: string | null
+    feishuId: string | null
     isDeleted: boolean
     isAdmin: boolean
     createdAt: Date
@@ -1665,6 +1710,7 @@ export interface UserFieldRefs {
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly gitHubId: Prisma.FieldRef<"User", 'String'>
   readonly googleId: Prisma.FieldRef<"User", 'String'>
+  readonly feishuId: Prisma.FieldRef<"User", 'String'>
   readonly isDeleted: Prisma.FieldRef<"User", 'Boolean'>
   readonly isAdmin: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
