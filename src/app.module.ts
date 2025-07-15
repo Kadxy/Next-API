@@ -15,6 +15,8 @@ import { ProxyModule } from './proxy/proxy.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WalletModule } from './wallet/wallet.module';
 import { BillingLogModule } from './billing-log/billing-log.module';
+import { FeishuAppService } from './feishu-app/feishu-app.service';
+import { FeishuAppModule } from './feishu-app/feishu-app.module';
 
 @Module({
   imports: [
@@ -43,7 +45,8 @@ import { BillingLogModule } from './billing-log/billing-log.module';
     ProxyModule,
     WalletModule,
     BillingLogModule,
+    FeishuAppModule,
   ],
-  providers: [],
+  providers: [FeishuAppService],
 })
 export class AppModule {}

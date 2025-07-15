@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import { BusinessException } from '../../../common/exceptions';
-import { UserService } from '../../user/user.service';
+import { LimitedUser, UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -12,19 +12,21 @@ import {
   GoogleUserResponse,
 } from './google-auth.interface';
 import {
+  IOAuth2ConfigResponse,
   IOAuth2LoginDto,
   IOAuth2ServiceConfig,
-  IOAuth2ConfigResponse,
+  OAuthActionType,
 } from '../oauth/oauth.interface';
 import { BaseOAuth2Service } from '../oauth/oauth-base.service';
-import { getCacheKey, CACHE_KEYS } from 'src/core/cache/chche.constant';
+import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
+import { User } from '@prisma-mysql-client/client';
 
 @Injectable()
 export class GoogleAuthService extends BaseOAuth2Service {
   protected readonly config: IOAuth2ServiceConfig = {
     clientIdKey: 'GOOGLE_CLIENT_ID',
     clientSecretKey: 'GOOGLE_CLIENT_SECRET',
-    redirectUri: 'http://localhost:5173/login?google_callback=1',
+    redirectUri: 'http://localhost:5173/callback/google/{action}',
     authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
     tokenUrl: 'https://oauth2.googleapis.com/token',
     userInfoUrl: 'https://www.googleapis.com/oauth2/v2/userinfo',
@@ -49,7 +51,7 @@ export class GoogleAuthService extends BaseOAuth2Service {
     this.clientSecret = this.configService.getOrThrow<string>(clientSecretKey);
   }
 
-  async getConfig(): Promise<IOAuth2ConfigResponse> {
+  async getConfig(action: OAuthActionType): Promise<IOAuth2ConfigResponse> {
     const clientId = this.clientId;
     const { authUrl, redirectUri } = this.config;
 
@@ -57,18 +59,24 @@ export class GoogleAuthService extends BaseOAuth2Service {
 
     const oauthUrl = new URL(authUrl);
     oauthUrl.searchParams.set('client_id', clientId);
-    oauthUrl.searchParams.set('redirect_uri', redirectUri);
+    oauthUrl.searchParams.set(
+      'redirect_uri',
+      redirectUri.replace('{action}', action),
+    );
     oauthUrl.searchParams.set('response_type', 'code');
     oauthUrl.searchParams.set('state', state);
     oauthUrl.searchParams.set('scope', 'openid email profile');
     oauthUrl.searchParams.set('access_type', 'offline');
     oauthUrl.searchParams.set('prompt', 'consent');
 
-    this.logger.log(`Google OAuth URL: ${oauthUrl.toString()}`);
+    this.logger.debug({ oauthUrl: oauthUrl.toString() });
     return { oauthUrl: oauthUrl.toString() };
   }
 
-  async getAccessToken(code: string): Promise<GoogleTokenResponse> {
+  async getAccessToken(
+    code: string,
+    action: OAuthActionType,
+  ): Promise<GoogleTokenResponse> {
     const { tokenUrl, redirectUri } = this.config;
     try {
       const response = await firstValueFrom(
@@ -78,7 +86,7 @@ export class GoogleAuthService extends BaseOAuth2Service {
             code,
             client_id: this.clientId,
             client_secret: this.clientSecret,
-            redirect_uri: redirectUri,
+            redirect_uri: redirectUri.replace('{action}', action),
             grant_type: 'authorization_code',
           },
           {
@@ -92,7 +100,12 @@ export class GoogleAuthService extends BaseOAuth2Service {
 
       return response.data;
     } catch (error) {
-      this.logger.error(`Failed to get Google access token: ${error?.message}`);
+      // 关键：打印出 Google 返回的具体错误信息
+      const errorResponse = error.response?.data;
+      this.logger.error(
+        `Failed to get Google access token. Status: ${error.response?.status}, Data: ${JSON.stringify(errorResponse)}`,
+      );
+      // this.logger.error('Full error object:', error); // 也可以打印完整错误对象以供调试
       throw error;
     }
   }
@@ -127,7 +140,7 @@ export class GoogleAuthService extends BaseOAuth2Service {
     await this.validateState(state);
 
     // 2. 使用 code 获取 access_token
-    const { access_token } = await this.getAccessToken(code);
+    const { access_token } = await this.getAccessToken(code, 'login');
 
     // 3. 使用 access_token 获取用户信息
     const googleUser = await this.getUserInfo(access_token);
@@ -167,6 +180,26 @@ export class GoogleAuthService extends BaseOAuth2Service {
     const token = await this.jwtTokenService.sign(user);
 
     return { user, token };
+  }
+
+  async bind(userId: User['id'], dto: IOAuth2LoginDto): Promise<LimitedUser> {
+    const { code, state } = dto;
+
+    // 1. 检查 state 是否合法
+    await this.validateState(state);
+
+    // 2. 使用 code 获取 access_token
+    const { access_token } = await this.getAccessToken(code, 'bind');
+
+    // 3. 使用 access_token 获取用户信息
+    const googleUser = await this.getUserInfo(access_token);
+    const { id: googleId } = googleUser;
+
+    if (!googleId) {
+      throw new BusinessException('Missing required google id');
+    }
+
+    return this.userService.bindOAuthAccount(userId, 'googleId', googleId);
   }
 
   async generateAndCacheState(): Promise<string> {

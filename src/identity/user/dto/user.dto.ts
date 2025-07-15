@@ -28,8 +28,11 @@ export class UserResponseData {
   @ApiProperty({ description: 'User Google ID' })
   googleId: string;
 
-  @ApiProperty({ description: 'User Is Admin' })
-  isAdmin: boolean;
+  @ApiProperty({ description: 'User Feishu Union ID' })
+  feishuId: string;
+
+  // @ApiProperty({ description: 'User Is Admin' })
+  // isAdmin: boolean;
 
   @ApiProperty({ description: 'User Created At' })
   createdAt: string;

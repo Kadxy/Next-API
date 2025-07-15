@@ -63,6 +63,12 @@ export class PasskeyController {
     return this.passkeyService.generateAuthenticationOptions();
   }
 
+  @Get('authentication/:email')
+  @ApiOperation({ summary: 'Start Passkey Authentication by Email' })
+  async generateAuthenticationOptionsByEmail(@Param('email') email: string) {
+    return this.passkeyService.generateAuthenticationOptionsByEmail(email);
+  }
+
   @Post('authentication')
   @ApiQuery({ name: 'state', type: String, required: true })
   @ApiBody({ type: Object })

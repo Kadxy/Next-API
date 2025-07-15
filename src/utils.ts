@@ -21,3 +21,19 @@ export const generateDisplayName = (
 
   return [prefix, randomSuffix].join(separator);
 };
+
+export const generateRandomString = (length: number) => {
+  if (length <= 0) {
+    throw new Error('Length must be positive');
+  }
+
+  const alphabet =
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_';
+
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return result;
+};

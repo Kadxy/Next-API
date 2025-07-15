@@ -131,6 +131,44 @@ export class UserService {
     return this.getDbUser({ feishuId });
   }
 
+  // 绑定 OAuth 账号
+  async bindOAuthAccount(
+    userId: User['id'],
+    oauthType: 'gitHubId' | 'googleId' | 'feishuId',
+    oauthId: string,
+  ): Promise<LimitedUser> {
+    let existUser = null;
+    let updateSql: Prisma.UserUpdateInput;
+
+    switch (oauthType) {
+      case 'gitHubId':
+        existUser = await this.getUserByGitHubId(oauthId);
+        updateSql = { gitHubId: oauthId };
+        break;
+      case 'googleId':
+        existUser = await this.getUserByGoogleId(oauthId);
+        updateSql = { googleId: oauthId };
+        break;
+      case 'feishuId':
+        existUser = await this.getUserByFeishuId(oauthId);
+        updateSql = { feishuId: oauthId };
+        break;
+    }
+
+    if (existUser) {
+      throw new BusinessException('Account already bound');
+    }
+
+    const user = await this.prisma.mysql.user.update({
+      where: { id: userId },
+      data: updateSql,
+    });
+
+    await this.updateUserCache(user);
+
+    return this.constructLimitedUser(user)
+  }
+
   // 更新用户显示名称
   async updateDisplayName(uid: User['uid'], displayName: string) {
     const user = await this.prisma.mysql.user.update({

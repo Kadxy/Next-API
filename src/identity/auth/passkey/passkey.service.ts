@@ -20,6 +20,7 @@ import { CACHE_KEYS, getCacheKey } from '../../../core/cache/chche.constant';
 import { UserService } from '../../user/user.service';
 import { JwtTokenService } from '../jwt.service';
 import { PrismaService } from '../../../core/prisma/prisma.service';
+import { generateRandomString } from 'src/utils';
 
 @Injectable()
 export class PasskeyService {
@@ -156,6 +157,26 @@ export class PasskeyService {
     await this.createPasskey(userId, options, registrationInfo);
   }
 
+  ////////////////////////////////////
+  // Helper: When User Input Email ///
+  ////////////////////////////////////
+  async generateAuthenticationOptionsByEmail(email: string) {
+    const user = await this.userService.getUserByEmail(email);
+    if (!user) {
+      return null;
+    }
+
+    const passkeys = await this.getUserPasskeys(user.id);
+
+    return this.generateAuthenticationOptions(
+      passkeys.map((passkey) => ({
+        id: passkey.id,
+        transports: this.parseTransports(passkey.transports),
+      })),
+      'preferred',
+    );
+  }
+
   //////////////////////////////////////////////////////////
   // Authentication: analogous to existing account login. //
   //////////////////////////////////////////////////////////
@@ -164,9 +185,15 @@ export class PasskeyService {
    * Generate authentication options
    * One endpoint (GET) needs to return the result of a call to generateAuthenticationOptions():
    */
-  async generateAuthenticationOptions() {
-    // 0. 生成一个基于时间戳的唯一标识
-    const state = new Date().getTime() + Math.floor(Math.random() * 1000000);
+  async generateAuthenticationOptions(
+    allowCredentials: {
+      id: string;
+      transports: AuthenticatorTransportFuture[];
+    }[] = [],
+    userVerification: 'required' | 'preferred' | 'discouraged' = 'required',
+  ) {
+    // 0. 生成一个随机唯一标识
+    const state = generateRandomString(15);
 
     // 1. Generate authentication options
     const options: PublicKeyCredentialRequestOptionsJSON =
@@ -174,11 +201,13 @@ export class PasskeyService {
         rpID: this.rpID,
         // Require users to use a previously-registered authenticator
         // In this case, allow user select any passkey
-        allowCredentials: [],
+        allowCredentials,
 
         // 如果用户没有验证身份，会报错 Error: User verification required, but user could not be verified
         // 比如 MacBook 的 Touch ID 在盒盖时，会报错，需要显示设置为 required
-        userVerification: 'required',
+        userVerification,
+
+        extensions: {},
       });
 
     // 3. Remember this challenge for this user
@@ -246,6 +275,7 @@ export class PasskeyService {
           counter: Number(passkey.counter),
           transports: this.parseTransports(passkey.transports),
         },
+        requireUserVerification: options.userVerification === 'required',
       });
     } catch (error) {
       this.logger.error(`Passkey authentication error: ${error.message}`);

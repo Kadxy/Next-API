@@ -1,7 +1,22 @@
 import { User } from '@prisma-mysql-client/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { CACHE_KEYS } from '../../../core/cache/chche.constant';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+
+export type OAuthActionType = 'login' | 'bind';
+
+export const OAuthTypeEnum = {
+  LOGIN: 'login',
+  BIND: 'bind',
+};
+
+export class OAuthTypeParam {
+  @ApiProperty({ description: 'OAuth type', example: 'login' })
+  @IsString({ message: 'OAuth type必须是字符串' })
+  @IsNotEmpty({ message: 'OAuth type不能为空' })
+  @IsEnum(OAuthTypeEnum, { message: 'OAuth type必须是login或bind' })
+  type: OAuthActionType;
+}
 
 /**
  * OAuth2通用登录DTO接口
