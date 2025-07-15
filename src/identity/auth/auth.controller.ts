@@ -11,7 +11,7 @@ import {
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard, RequestWithUser } from './auth.guard';
 import { AuthService } from './auth.service';
-import { EmailLoginDto } from './dto/email-login.dto';
+import { EmailBindDto, EmailLoginDto } from './dto/email-login.dto';
 import { SendEmailLoginCodeDto } from './dto/send-email-login-code.dto';
 import { JwtTokenService } from './jwt.service';
 import {
@@ -29,19 +29,39 @@ export class AuthController {
     private readonly jwtTokenService: JwtTokenService,
   ) {}
 
-  @Post('/verification/email')
+  @Post('/email/login/send-verification-code')
   @ApiOperation({ summary: 'Send Email Verification Code' })
   @ApiBody({ type: SendEmailLoginCodeDto })
   async sendEmailLoginCode(@Body() body: SendEmailLoginCodeDto): Promise<void> {
     return this.authService.sendEmailLoginCode(body);
   }
 
-  @Post('/login/email')
+  @Post('/email/login/verify-code')
   @ApiOperation({ summary: 'Login' })
   @ApiBody({ type: EmailLoginDto })
   @ApiResponse({ type: LoginResponseDto })
   async login(@Body() loginDto: EmailLoginDto) {
     return this.authService.emailLogin(loginDto);
+  }
+
+  @Post('/email/bind/send-verify-code')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Send Email Bind Verification Code' })
+  @ApiBody({ type: SendEmailLoginCodeDto })
+  async sendEmailBindVerificationCode(
+    @Req() req: RequestWithUser,
+    @Body() body: SendEmailLoginCodeDto,
+  ): Promise<void> {
+    return this.authService.sendEmailBindVerifyEmail(req.user.id, body);
+  }
+
+  @Post('/email/bind/verify-code')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Bind Email' })
+  @ApiBody({ type: EmailBindDto })
+  @ApiResponse({ type: UserResponseDto })
+  async bindEmail(@Req() req: RequestWithUser, @Body() body: EmailBindDto) {
+    return this.authService.emailBind(req.user.id, body);
   }
 
   @Post('/logout')

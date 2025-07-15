@@ -199,7 +199,7 @@ export class GoogleAuthService extends BaseOAuth2Service {
       throw new BusinessException('Missing required google id');
     }
 
-    return this.userService.bindOAuthAccount(userId, 'googleId', googleId);
+    return this.userService.bindThirdPartyAccount(userId, 'googleId', googleId);
   }
 
   async generateAndCacheState(): Promise<string> {
@@ -219,7 +219,7 @@ export class GoogleAuthService extends BaseOAuth2Service {
     const cacheKey = getCacheKey(CACHE_KEYS[this.config.stateKeyPrefix], state);
     const cachedState = await this.cacheManager.get(cacheKey);
     if (!cachedState) {
-      throw new BusinessException('Invalid state parameter');
+      throw new BusinessException('Invalid state');
     }
     // 异步删除state，防止重复使用
     this.cacheManager.del(cacheKey).catch();

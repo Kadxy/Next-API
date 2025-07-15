@@ -54,12 +54,21 @@ export class LoginResponseData {
   token: string;
 }
 
+export class BindEmailResponseData {
+  @ApiProperty({ description: 'User Info', type: UserResponseData })
+  user: UserResponseData;
+}
+
 export class UserResponseDto extends createResponseDto<UserResponseData>(
   UserResponseData,
 ) {}
 
 export class LoginResponseDto extends createResponseDto<LoginResponseData>(
   LoginResponseData,
+) {}
+
+export class BindEmailResponseDto extends createResponseDto<BindEmailResponseData>(
+  BindEmailResponseData,
 ) {}
 
 export class PublicUserInfoData {

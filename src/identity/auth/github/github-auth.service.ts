@@ -123,7 +123,7 @@ export class GitHubAuthService extends BaseOAuth2Service {
       throw new BusinessException('Missing required github id');
     }
 
-    return await this.userService.bindOAuthAccount(
+    return await this.userService.bindThirdPartyAccount(
       userId,
       'gitHubId',
       gitHubId.toString(),
@@ -199,7 +199,7 @@ export class GitHubAuthService extends BaseOAuth2Service {
     const cacheKey = getCacheKey(CACHE_KEYS[this.config.stateKeyPrefix], state);
     const cachedState = await this.cacheManager.get(cacheKey);
     if (!cachedState) {
-      throw new BusinessException('Invalid state parameter');
+      throw new BusinessException('Invalid state');
     }
     this.cacheManager.del(cacheKey).catch();
   }

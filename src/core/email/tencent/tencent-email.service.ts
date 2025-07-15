@@ -82,4 +82,15 @@ export class TencentEmailService {
       throw error;
     }
   }
+
+  async sendBindEmail(email: string, code: string) {
+    const url = new URL('http://localhost:5173/callback/email/bind');
+    url.searchParams.set('code', code);
+    url.searchParams.set('email', email);
+
+    this.logger.log(
+      `Send bind email to ${email}, code: ${code}, url: ${url.toString()}`,
+    );
+    // pass
+  }
 }

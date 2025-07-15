@@ -140,7 +140,7 @@ export class FeishuAuthService extends BaseOAuth2Service {
       throw new BusinessException('Missing required feishu id');
     }
 
-    return this.userService.bindOAuthAccount(userId, 'feishuId', union_id);
+    return this.userService.bindThirdPartyAccount(userId, 'feishuId', union_id);
   }
 
   // 获取 Feishu User Access Token

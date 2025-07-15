@@ -18,6 +18,10 @@ export const CACHE_KEYS = {
     KEY: 'login-email-code:{email}',
     EXPIRE: minutes(10),
   },
+  EMAIL_BIND_TOKEN: {
+    KEY: 'email-bind-token:{userId}:{email}',
+    EXPIRE: hours(12),
+  },
   JWT_VERSION: {
     KEY: 'jwt-version:{uid}',
     EXPIRE: days(1),

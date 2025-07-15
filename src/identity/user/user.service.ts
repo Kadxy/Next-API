@@ -131,28 +131,34 @@ export class UserService {
     return this.getDbUser({ feishuId });
   }
 
-  // 绑定 OAuth 账号
-  async bindOAuthAccount(
+  // 绑定第三方账号
+  async bindThirdPartyAccount(
     userId: User['id'],
-    oauthType: 'gitHubId' | 'googleId' | 'feishuId',
-    oauthId: string,
+    thirdPartyType: 'gitHubId' | 'googleId' | 'feishuId' | 'email',
+    value: string,
   ): Promise<LimitedUser> {
     let existUser = null;
     let updateSql: Prisma.UserUpdateInput;
 
-    switch (oauthType) {
+    switch (thirdPartyType) {
       case 'gitHubId':
-        existUser = await this.getUserByGitHubId(oauthId);
-        updateSql = { gitHubId: oauthId };
+        existUser = await this.getUserByGitHubId(value);
+        updateSql = { gitHubId: value };
         break;
       case 'googleId':
-        existUser = await this.getUserByGoogleId(oauthId);
-        updateSql = { googleId: oauthId };
+        existUser = await this.getUserByGoogleId(value);
+        updateSql = { googleId: value };
         break;
       case 'feishuId':
-        existUser = await this.getUserByFeishuId(oauthId);
-        updateSql = { feishuId: oauthId };
+        existUser = await this.getUserByFeishuId(value);
+        updateSql = { feishuId: value };
         break;
+      case 'email':
+        existUser = await this.getUserByEmail(value);
+        updateSql = { email: value };
+        break;
+      default:
+        throw new BusinessException('Invalid third-party type');
     }
 
     if (existUser) {
@@ -166,7 +172,7 @@ export class UserService {
 
     await this.updateUserCache(user);
 
-    return this.constructLimitedUser(user)
+    return this.constructLimitedUser(user);
   }
 
   // 更新用户显示名称
