@@ -131,10 +131,20 @@ export class UserService {
     return this.getDbUser({ feishuId });
   }
 
+  // 从数据库获取用户 - 通过 Microsoft ID
+  async getUserByMicrosoftId(microsoftId: User['microsoftId']) {
+    return this.getDbUser({ microsoftId });
+  }
+
   // 绑定第三方账号
   async bindThirdPartyAccount(
     userId: User['id'],
-    thirdPartyType: 'gitHubId' | 'googleId' | 'feishuId' | 'email',
+    thirdPartyType:
+      | 'gitHubId'
+      | 'googleId'
+      | 'feishuId'
+      | 'microsoftId'
+      | 'email',
     value: string,
   ): Promise<LimitedUser> {
     let existUser = null;
@@ -152,6 +162,10 @@ export class UserService {
       case 'feishuId':
         existUser = await this.getUserByFeishuId(value);
         updateSql = { feishuId: value };
+        break;
+      case 'microsoftId':
+        existUser = await this.getUserByMicrosoftId(value);
+        updateSql = { microsoftId: value };
         break;
       case 'email':
         existUser = await this.getUserByEmail(value);

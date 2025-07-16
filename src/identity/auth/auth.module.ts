@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { JwtTokenService } from './jwt.service';
 import { GitHubAuthModule } from './github/github-auth.module';
 import { GoogleAuthModule } from './google/google-auth.module';
+import { MicrosoftAuthModule } from './microsoft/microsoft-auth.module';
 import { PasskeyModule } from './passkey/passkey.module';
 import { CoreModule } from 'src/core/core.module';
 import { FeishuAuthModule } from './feishu/feishu-auth.module';
@@ -22,6 +23,7 @@ import { FeishuAuthModule } from './feishu/feishu-auth.module';
     ConfigModule,
     GitHubAuthModule,
     GoogleAuthModule,
+    MicrosoftAuthModule,
     PasskeyModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({

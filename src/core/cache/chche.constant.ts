@@ -42,6 +42,10 @@ export const CACHE_KEYS = {
     KEY: 'feishu-state:{state}',
     EXPIRE: minutes(3),
   },
+  MICROSOFT_STATE: {
+    KEY: 'microsoft-state:{state}',
+    EXPIRE: minutes(3),
+  },
   WEBAUTHN_REGISTER_OPTIONS: {
     KEY: 'webauthn-register-options:{userId}',
     EXPIRE: minutes(5),

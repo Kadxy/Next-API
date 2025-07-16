@@ -1065,6 +1065,7 @@ export const UserScalarFieldEnum = {
   gitHubId: 'gitHubId',
   googleId: 'googleId',
   feishuId: 'feishuId',
+  microsoftId: 'microsoftId',
   isDeleted: 'isDeleted',
   isAdmin: 'isAdmin',
   createdAt: 'createdAt',
@@ -1228,7 +1229,8 @@ export const UserOrderByRelevanceFieldEnum = {
   phone: 'phone',
   gitHubId: 'gitHubId',
   googleId: 'googleId',
-  feishuId: 'feishuId'
+  feishuId: 'feishuId',
+  microsoftId: 'microsoftId'
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]

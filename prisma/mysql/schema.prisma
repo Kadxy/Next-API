@@ -21,6 +21,7 @@ model User {
   gitHubId       String?          @unique
   googleId       String?          @unique
   feishuId       String?          @unique
+  microsoftId    String?          @unique
   isDeleted      Boolean          @default(false)
   isAdmin        Boolean          @default(false)
   createdAt      DateTime         @default(now())

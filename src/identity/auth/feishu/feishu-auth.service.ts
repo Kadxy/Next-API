@@ -173,6 +173,7 @@ export class FeishuAuthService extends BaseOAuth2Service {
   }
 
   protected async validateState(state: string): Promise<void> {
+    // await new Promise((resolve) => setTimeout(resolve, 1000000));
     const { stateKeyPrefix } = this.config;
     const cacheKey = getCacheKey(CACHE_KEYS[stateKeyPrefix], state);
     const cachedState = await this.cacheManager.get(cacheKey);

@@ -31,6 +31,9 @@ export class UserResponseData {
   @ApiProperty({ description: 'User Feishu Union ID' })
   feishuId: string;
 
+  @ApiProperty({ description: 'User Microsoft ID' })
+  microsoftId: string;
+
   // @ApiProperty({ description: 'User Is Admin' })
   // isAdmin: boolean;
 
