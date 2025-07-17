@@ -20,8 +20,8 @@ type TransactionGroup = Pick<
 >;
 
 @Injectable()
-export class BillingService {
-  private readonly logger = new Logger(BillingService.name);
+export class TransactionService {
+  private readonly logger = new Logger(TransactionService.name);
 
   constructor(
     private readonly prisma: PrismaService,
