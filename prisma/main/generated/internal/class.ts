@@ -46,6 +46,7 @@ const config: runtime.GetPrismaClientConfig = {
     "mainDb"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "mainDb": {
       "url": {

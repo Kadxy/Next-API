@@ -619,7 +619,6 @@ export const ApiCallRecordScalarFieldEnum = {
   provider: 'provider',
   billingType: 'billingType',
   billingData: 'billingData',
-  isFailed: 'isFailed',
   createdAt: 'createdAt'
 } as const
 
@@ -629,9 +628,7 @@ export type ApiCallRecordScalarFieldEnum = (typeof ApiCallRecordScalarFieldEnum)
 export const ApiCallDetailScalarFieldEnum = {
   id: 'id',
   businessId: 'businessId',
-  requestHeaders: 'requestHeaders',
   requestBody: 'requestBody',
-  responseHeaders: 'responseHeaders',
   responseBody: 'responseBody',
   responseText: 'responseText',
   internalErrorInfo: 'internalErrorInfo',
@@ -777,13 +774,6 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

@@ -1,6 +1,6 @@
-import { AIModel } from '@prisma-main-client/client';
+import { LLMModel } from '@prisma-main-client/client';
 import { Decimal } from '@prisma-main-client/internal/prismaNamespace';
-import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
+import { AIModelRequest } from 'src/proxy/openai/interfaces/proxy.interface';
 
 // 请求上下文，贯穿整个请求生命周期
 export class TransactionContext {
@@ -11,7 +11,7 @@ export class TransactionContext {
   apikeyId: number; // APIKeyId
 
   // 请求信息
-  model: AIModel; // 模型名称
+  model: LLMModel; // 模型名称
   clientIp: string; // 客户端IP
   externalTraceId: string; // 外部追踪ID（如果有）
   requestPath?: string; // 请求路径
@@ -45,9 +45,9 @@ export class TransactionContext {
 
 // Token 使用情况
 export interface TokenUsage {
-  promptTokens: number;
-  completionTokens: number;
-  totalTokens: number;
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
 }
 
 // 从 OpenAI 响应中提取 token 使用情况
@@ -55,8 +55,8 @@ export function extractTokenUsage(response: any): TokenUsage | null {
   if (!response?.usage) return null;
 
   return {
-    promptTokens: response.usage.prompt_tokens || 0,
-    completionTokens: response.usage.completion_tokens || 0,
-    totalTokens: response.usage.total_tokens || 0,
+    prompt_tokens: response.usage.prompt_tokens || 0,
+    completion_tokens: response.usage.completion_tokens || 0,
+    total_tokens: response.usage.total_tokens || 0,
   };
 }

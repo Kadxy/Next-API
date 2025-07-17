@@ -59,7 +59,6 @@ export type ApiCallRecordMinAggregateOutputType = {
   model: string | null
   provider: $Enums.UpstreamProvider | null
   billingType: $Enums.BillingType | null
-  isFailed: boolean | null
   createdAt: Date | null
 }
 
@@ -79,7 +78,6 @@ export type ApiCallRecordMaxAggregateOutputType = {
   model: string | null
   provider: $Enums.UpstreamProvider | null
   billingType: $Enums.BillingType | null
-  isFailed: boolean | null
   createdAt: Date | null
 }
 
@@ -100,7 +98,6 @@ export type ApiCallRecordCountAggregateOutputType = {
   provider: number
   billingType: number
   billingData: number
-  isFailed: number
   createdAt: number
   _all: number
 }
@@ -140,7 +137,6 @@ export type ApiCallRecordMinAggregateInputType = {
   model?: true
   provider?: true
   billingType?: true
-  isFailed?: true
   createdAt?: true
 }
 
@@ -160,7 +156,6 @@ export type ApiCallRecordMaxAggregateInputType = {
   model?: true
   provider?: true
   billingType?: true
-  isFailed?: true
   createdAt?: true
 }
 
@@ -181,7 +176,6 @@ export type ApiCallRecordCountAggregateInputType = {
   provider?: true
   billingType?: true
   billingData?: true
-  isFailed?: true
   createdAt?: true
   _all?: true
 }
@@ -289,7 +283,6 @@ export type ApiCallRecordGroupByOutputType = {
   provider: $Enums.UpstreamProvider
   billingType: $Enums.BillingType
   billingData: runtime.JsonValue
-  isFailed: boolean
   createdAt: Date
   _count: ApiCallRecordCountAggregateOutputType | null
   _avg: ApiCallRecordAvgAggregateOutputType | null
@@ -333,7 +326,6 @@ export type ApiCallRecordWhereInput = {
   provider?: Prisma.EnumUpstreamProviderFilter<"ApiCallRecord"> | $Enums.UpstreamProvider
   billingType?: Prisma.EnumBillingTypeFilter<"ApiCallRecord"> | $Enums.BillingType
   billingData?: Prisma.JsonFilter<"ApiCallRecord">
-  isFailed?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
 }
 
@@ -354,7 +346,6 @@ export type ApiCallRecordOrderByWithRelationInput = {
   provider?: Prisma.SortOrder
   billingType?: Prisma.SortOrder
   billingData?: Prisma.SortOrder
-  isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -378,7 +369,6 @@ export type ApiCallRecordWhereUniqueInput = Prisma.AtLeast<{
   provider?: Prisma.EnumUpstreamProviderFilter<"ApiCallRecord"> | $Enums.UpstreamProvider
   billingType?: Prisma.EnumBillingTypeFilter<"ApiCallRecord"> | $Enums.BillingType
   billingData?: Prisma.JsonFilter<"ApiCallRecord">
-  isFailed?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
 }, "id" | "businessId">
 
@@ -399,7 +389,6 @@ export type ApiCallRecordOrderByWithAggregationInput = {
   provider?: Prisma.SortOrder
   billingType?: Prisma.SortOrder
   billingData?: Prisma.SortOrder
-  isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ApiCallRecordCountOrderByAggregateInput
   _avg?: Prisma.ApiCallRecordAvgOrderByAggregateInput
@@ -428,7 +417,6 @@ export type ApiCallRecordScalarWhereWithAggregatesInput = {
   provider?: Prisma.EnumUpstreamProviderWithAggregatesFilter<"ApiCallRecord"> | $Enums.UpstreamProvider
   billingType?: Prisma.EnumBillingTypeWithAggregatesFilter<"ApiCallRecord"> | $Enums.BillingType
   billingData?: Prisma.JsonWithAggregatesFilter<"ApiCallRecord">
-  isFailed?: Prisma.BoolWithAggregatesFilter<"ApiCallRecord"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
 }
 
@@ -448,7 +436,6 @@ export type ApiCallRecordCreateInput = {
   provider: $Enums.UpstreamProvider
   billingType?: $Enums.BillingType
   billingData: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  isFailed?: boolean
   createdAt?: Date | string
 }
 
@@ -469,7 +456,6 @@ export type ApiCallRecordUncheckedCreateInput = {
   provider: $Enums.UpstreamProvider
   billingType?: $Enums.BillingType
   billingData: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  isFailed?: boolean
   createdAt?: Date | string
 }
 
@@ -489,7 +475,6 @@ export type ApiCallRecordUpdateInput = {
   provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
   billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -510,7 +495,6 @@ export type ApiCallRecordUncheckedUpdateInput = {
   provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
   billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -531,7 +515,6 @@ export type ApiCallRecordCreateManyInput = {
   provider: $Enums.UpstreamProvider
   billingType?: $Enums.BillingType
   billingData: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  isFailed?: boolean
   createdAt?: Date | string
 }
 
@@ -551,7 +534,6 @@ export type ApiCallRecordUpdateManyMutationInput = {
   provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
   billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -572,7 +554,6 @@ export type ApiCallRecordUncheckedUpdateManyInput = {
   provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
   billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -593,7 +574,6 @@ export type ApiCallRecordCountOrderByAggregateInput = {
   provider?: Prisma.SortOrder
   billingType?: Prisma.SortOrder
   billingData?: Prisma.SortOrder
-  isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -622,7 +602,6 @@ export type ApiCallRecordMaxOrderByAggregateInput = {
   model?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   billingType?: Prisma.SortOrder
-  isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -642,7 +621,6 @@ export type ApiCallRecordMinOrderByAggregateInput = {
   model?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   billingType?: Prisma.SortOrder
-  isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -679,10 +657,6 @@ export type EnumBillingTypeFieldUpdateOperationsInput = {
   set?: $Enums.BillingType
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 
 
 export type ApiCallRecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -702,7 +676,6 @@ export type ApiCallRecordSelect<ExtArgs extends runtime.Types.Extensions.Interna
   provider?: boolean
   billingType?: boolean
   billingData?: boolean
-  isFailed?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallRecord"]>
 
@@ -723,7 +696,6 @@ export type ApiCallRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   provider?: boolean
   billingType?: boolean
   billingData?: boolean
-  isFailed?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallRecord"]>
 
@@ -744,7 +716,6 @@ export type ApiCallRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   provider?: boolean
   billingType?: boolean
   billingData?: boolean
-  isFailed?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallRecord"]>
 
@@ -765,11 +736,10 @@ export type ApiCallRecordSelectScalar = {
   provider?: boolean
   billingType?: boolean
   billingData?: boolean
-  isFailed?: boolean
   createdAt?: boolean
 }
 
-export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "userId" | "walletId" | "apiKeyId" | "clientIp" | "userAgent" | "externalTraceId" | "startTime" | "endTime" | "durationMs" | "upstreamId" | "model" | "provider" | "billingType" | "billingData" | "isFailed" | "createdAt", ExtArgs["result"]["apiCallRecord"]>
+export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "userId" | "walletId" | "apiKeyId" | "clientIp" | "userAgent" | "externalTraceId" | "startTime" | "endTime" | "durationMs" | "upstreamId" | "model" | "provider" | "billingType" | "billingData" | "createdAt", ExtArgs["result"]["apiCallRecord"]>
 
 export type $ApiCallRecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ApiCallRecord"
@@ -791,7 +761,6 @@ export type $ApiCallRecordPayload<ExtArgs extends runtime.Types.Extensions.Inter
     provider: $Enums.UpstreamProvider
     billingType: $Enums.BillingType
     billingData: runtime.JsonValue
-    isFailed: boolean
     createdAt: Date
   }, ExtArgs["result"]["apiCallRecord"]>
   composites: {}
@@ -1232,7 +1201,6 @@ export interface ApiCallRecordFieldRefs {
   readonly provider: Prisma.FieldRef<"ApiCallRecord", 'UpstreamProvider'>
   readonly billingType: Prisma.FieldRef<"ApiCallRecord", 'BillingType'>
   readonly billingData: Prisma.FieldRef<"ApiCallRecord", 'Json'>
-  readonly isFailed: Prisma.FieldRef<"ApiCallRecord", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
 }
     

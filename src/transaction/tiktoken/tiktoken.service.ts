@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { get_encoding, Tiktoken } from 'tiktoken';
 import { Jimp } from 'jimp';
-import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
+import { AIModelRequest } from 'src/proxy/openai/interfaces/proxy.interface';
 
 export interface TikTokenResult {
-  inputTokens: number;
-  outputTokens: number;
+  input_tokens: number;
+  output_tokens: number;
 }
 
 @Injectable()
@@ -23,8 +23,8 @@ export class TiktokenService {
     resText: string,
   ): Promise<TikTokenResult> {
     return {
-      inputTokens: await this.countRequestTokens(req),
-      outputTokens: this.countText(resText),
+      input_tokens: await this.countRequestTokens(req),
+      output_tokens: this.countText(resText),
     };
   }
 

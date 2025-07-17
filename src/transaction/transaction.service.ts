@@ -6,7 +6,6 @@ import {
   User,
   Wallet,
 } from '@prisma-main-client/client';
-import { TransactionCreateInput } from '@prisma-main-client/models';
 import { FeishuWebhookService } from 'src/core/feishu-webhook/feishu-webhook.service';
 import {
   Decimal,
@@ -27,26 +26,6 @@ export class TransactionService {
     private readonly prisma: PrismaService,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}
-
-  // 创建交易记录
-  async createTransaction(data: TransactionCreateInput): Promise<void> {
-    try {
-      await this.prisma.main.transaction.create({ data });
-    } catch (error) {
-      // 如果是重复的requestId，忽略错误（幂等性）
-      if (error.code === 'P2002') {
-        this.logger.warn(`Duplicate businessId: ${data.businessId}`);
-        return;
-      }
-
-      // 其他错误，记录并抛出异常
-      this.logger.error(`Failed to create transaction record: ${error.message}`);
-      this.feishuWebhookService
-        .sendText('Failed to create transaction record: ' + error)
-        .catch();
-      throw error;
-    }
-  }
 
   // 定时批量处理计费（每整分钟执行）
   @Cron('0 * * * * *')

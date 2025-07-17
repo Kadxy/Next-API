@@ -39,7 +39,6 @@ model ApiCallRecord {
   provider        UpstreamProvider // [计费]服务提供商
   billingType     BillingType      @default(OTHER) // [计费]计费类型
   billingData     Json             @detailDb.Json // [计费]计费数据, 例如 { inputTokens: 100, outputTokens: 100 }
-  isFailed        Boolean          @default(false) // [错误]是否失败
   createdAt       DateTime         @default(now())
 
   @@index([walletId, createdAt(sort: Desc)])
@@ -51,13 +50,11 @@ model ApiCallRecord {
 model ApiCallDetail {
   id                Int      @id @default(autoincrement())
   businessId        String   @detailDb.VarChar(26) // ULID, 与 ApiCallRecord.businessId 和 Transaction.businessId 保持一致
-  requestHeaders    Json?    @detailDb.Json // 请求头
   requestBody       Json?    @detailDb.Json // 请求体
-  responseHeaders   Json?    @detailDb.Json // 响应头
   responseBody      Json?    @detailDb.Json // 非流式响应体
   responseText      String?  @detailDb.Text // 流式响应的纯文本
-  internalErrorInfo String?  @detailDb.VarChar(1024) // 内部错误信息(如有)
-  upstreamErrorInfo String?  @detailDb.VarChar(1024) // 上游错误信息(如有)
+  internalErrorInfo Json?    @detailDb.Json // 内部错误信息(结构化JSON)
+  upstreamErrorInfo Json?    @detailDb.Json // 上游错误信息(结构化JSON)
   createdAt         DateTime @default(now())
 
   @@map("api_call_details")

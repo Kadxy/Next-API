@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import { DEFAULT_ERROR_MSG } from './index';
-import { ULID } from 'ulid';
+import { ProxyContext } from 'src/proxy/common/interfaces/proxy-context.interface';
 
 export class BusinessException extends Error {
   constructor(
@@ -34,8 +34,8 @@ export class TooManyRequestsException extends BusinessException {
 
 // 500 Internal Server Error - 调用上游API失败
 export class APICallException extends BusinessException {
-  constructor(requestId: ULID, message: string) {
-    const errorMessage = `${message}(RequestId:${requestId})`;
+  constructor(context: ProxyContext, message: string = 'service error') {
+    const errorMessage = `${message}(RequestId:${context.businessId})`;
 
     super(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
   }

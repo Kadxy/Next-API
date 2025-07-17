@@ -37,8 +37,6 @@ export type ApiCallDetailMinAggregateOutputType = {
   id: number | null
   businessId: string | null
   responseText: string | null
-  internalErrorInfo: string | null
-  upstreamErrorInfo: string | null
   createdAt: Date | null
 }
 
@@ -46,17 +44,13 @@ export type ApiCallDetailMaxAggregateOutputType = {
   id: number | null
   businessId: string | null
   responseText: string | null
-  internalErrorInfo: string | null
-  upstreamErrorInfo: string | null
   createdAt: Date | null
 }
 
 export type ApiCallDetailCountAggregateOutputType = {
   id: number
   businessId: number
-  requestHeaders: number
   requestBody: number
-  responseHeaders: number
   responseBody: number
   responseText: number
   internalErrorInfo: number
@@ -78,8 +72,6 @@ export type ApiCallDetailMinAggregateInputType = {
   id?: true
   businessId?: true
   responseText?: true
-  internalErrorInfo?: true
-  upstreamErrorInfo?: true
   createdAt?: true
 }
 
@@ -87,17 +79,13 @@ export type ApiCallDetailMaxAggregateInputType = {
   id?: true
   businessId?: true
   responseText?: true
-  internalErrorInfo?: true
-  upstreamErrorInfo?: true
   createdAt?: true
 }
 
 export type ApiCallDetailCountAggregateInputType = {
   id?: true
   businessId?: true
-  requestHeaders?: true
   requestBody?: true
-  responseHeaders?: true
   responseBody?: true
   responseText?: true
   internalErrorInfo?: true
@@ -195,13 +183,11 @@ export type ApiCallDetailGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type ApiCallDetailGroupByOutputType = {
   id: number
   businessId: string
-  requestHeaders: runtime.JsonValue | null
   requestBody: runtime.JsonValue | null
-  responseHeaders: runtime.JsonValue | null
   responseBody: runtime.JsonValue | null
   responseText: string | null
-  internalErrorInfo: string | null
-  upstreamErrorInfo: string | null
+  internalErrorInfo: runtime.JsonValue | null
+  upstreamErrorInfo: runtime.JsonValue | null
   createdAt: Date
   _count: ApiCallDetailCountAggregateOutputType | null
   _avg: ApiCallDetailAvgAggregateOutputType | null
@@ -231,22 +217,18 @@ export type ApiCallDetailWhereInput = {
   NOT?: Prisma.ApiCallDetailWhereInput | Prisma.ApiCallDetailWhereInput[]
   id?: Prisma.IntFilter<"ApiCallDetail"> | number
   businessId?: Prisma.StringFilter<"ApiCallDetail"> | string
-  requestHeaders?: Prisma.JsonNullableFilter<"ApiCallDetail">
   requestBody?: Prisma.JsonNullableFilter<"ApiCallDetail">
-  responseHeaders?: Prisma.JsonNullableFilter<"ApiCallDetail">
   responseBody?: Prisma.JsonNullableFilter<"ApiCallDetail">
   responseText?: Prisma.StringNullableFilter<"ApiCallDetail"> | string | null
-  internalErrorInfo?: Prisma.StringNullableFilter<"ApiCallDetail"> | string | null
-  upstreamErrorInfo?: Prisma.StringNullableFilter<"ApiCallDetail"> | string | null
+  internalErrorInfo?: Prisma.JsonNullableFilter<"ApiCallDetail">
+  upstreamErrorInfo?: Prisma.JsonNullableFilter<"ApiCallDetail">
   createdAt?: Prisma.DateTimeFilter<"ApiCallDetail"> | Date | string
 }
 
 export type ApiCallDetailOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  requestHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
   requestBody?: Prisma.SortOrderInput | Prisma.SortOrder
-  responseHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
   responseBody?: Prisma.SortOrderInput | Prisma.SortOrder
   responseText?: Prisma.SortOrderInput | Prisma.SortOrder
   internalErrorInfo?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -260,22 +242,18 @@ export type ApiCallDetailWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ApiCallDetailWhereInput[]
   NOT?: Prisma.ApiCallDetailWhereInput | Prisma.ApiCallDetailWhereInput[]
   businessId?: Prisma.StringFilter<"ApiCallDetail"> | string
-  requestHeaders?: Prisma.JsonNullableFilter<"ApiCallDetail">
   requestBody?: Prisma.JsonNullableFilter<"ApiCallDetail">
-  responseHeaders?: Prisma.JsonNullableFilter<"ApiCallDetail">
   responseBody?: Prisma.JsonNullableFilter<"ApiCallDetail">
   responseText?: Prisma.StringNullableFilter<"ApiCallDetail"> | string | null
-  internalErrorInfo?: Prisma.StringNullableFilter<"ApiCallDetail"> | string | null
-  upstreamErrorInfo?: Prisma.StringNullableFilter<"ApiCallDetail"> | string | null
+  internalErrorInfo?: Prisma.JsonNullableFilter<"ApiCallDetail">
+  upstreamErrorInfo?: Prisma.JsonNullableFilter<"ApiCallDetail">
   createdAt?: Prisma.DateTimeFilter<"ApiCallDetail"> | Date | string
 }, "id">
 
 export type ApiCallDetailOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  requestHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
   requestBody?: Prisma.SortOrderInput | Prisma.SortOrder
-  responseHeaders?: Prisma.SortOrderInput | Prisma.SortOrder
   responseBody?: Prisma.SortOrderInput | Prisma.SortOrder
   responseText?: Prisma.SortOrderInput | Prisma.SortOrder
   internalErrorInfo?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -294,110 +272,92 @@ export type ApiCallDetailScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ApiCallDetailScalarWhereWithAggregatesInput | Prisma.ApiCallDetailScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"ApiCallDetail"> | number
   businessId?: Prisma.StringWithAggregatesFilter<"ApiCallDetail"> | string
-  requestHeaders?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallDetail">
   requestBody?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallDetail">
-  responseHeaders?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallDetail">
   responseBody?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallDetail">
   responseText?: Prisma.StringNullableWithAggregatesFilter<"ApiCallDetail"> | string | null
-  internalErrorInfo?: Prisma.StringNullableWithAggregatesFilter<"ApiCallDetail"> | string | null
-  upstreamErrorInfo?: Prisma.StringNullableWithAggregatesFilter<"ApiCallDetail"> | string | null
+  internalErrorInfo?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallDetail">
+  upstreamErrorInfo?: Prisma.JsonNullableWithAggregatesFilter<"ApiCallDetail">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallDetail"> | Date | string
 }
 
 export type ApiCallDetailCreateInput = {
   businessId: string
-  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseText?: string | null
-  internalErrorInfo?: string | null
-  upstreamErrorInfo?: string | null
+  internalErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  upstreamErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
 export type ApiCallDetailUncheckedCreateInput = {
   id?: number
   businessId: string
-  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseText?: string | null
-  internalErrorInfo?: string | null
-  upstreamErrorInfo?: string | null
+  internalErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  upstreamErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
 export type ApiCallDetailUpdateInput = {
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  upstreamErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  upstreamErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallDetailUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  upstreamErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  upstreamErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallDetailCreateManyInput = {
   id?: number
   businessId: string
-  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseText?: string | null
-  internalErrorInfo?: string | null
-  upstreamErrorInfo?: string | null
+  internalErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  upstreamErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
 export type ApiCallDetailUpdateManyMutationInput = {
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  upstreamErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  upstreamErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallDetailUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  requestHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requestBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  responseHeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseBody?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   responseText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  upstreamErrorInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  internalErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  upstreamErrorInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApiCallDetailCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  requestHeaders?: Prisma.SortOrder
   requestBody?: Prisma.SortOrder
-  responseHeaders?: Prisma.SortOrder
   responseBody?: Prisma.SortOrder
   responseText?: Prisma.SortOrder
   internalErrorInfo?: Prisma.SortOrder
@@ -413,8 +373,6 @@ export type ApiCallDetailMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
   responseText?: Prisma.SortOrder
-  internalErrorInfo?: Prisma.SortOrder
-  upstreamErrorInfo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -422,8 +380,6 @@ export type ApiCallDetailMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
   responseText?: Prisma.SortOrder
-  internalErrorInfo?: Prisma.SortOrder
-  upstreamErrorInfo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -440,9 +396,7 @@ export type NullableStringFieldUpdateOperationsInput = {
 export type ApiCallDetailSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  requestHeaders?: boolean
   requestBody?: boolean
-  responseHeaders?: boolean
   responseBody?: boolean
   responseText?: boolean
   internalErrorInfo?: boolean
@@ -453,9 +407,7 @@ export type ApiCallDetailSelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type ApiCallDetailSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  requestHeaders?: boolean
   requestBody?: boolean
-  responseHeaders?: boolean
   responseBody?: boolean
   responseText?: boolean
   internalErrorInfo?: boolean
@@ -466,9 +418,7 @@ export type ApiCallDetailSelectCreateManyAndReturn<ExtArgs extends runtime.Types
 export type ApiCallDetailSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  requestHeaders?: boolean
   requestBody?: boolean
-  responseHeaders?: boolean
   responseBody?: boolean
   responseText?: boolean
   internalErrorInfo?: boolean
@@ -479,9 +429,7 @@ export type ApiCallDetailSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type ApiCallDetailSelectScalar = {
   id?: boolean
   businessId?: boolean
-  requestHeaders?: boolean
   requestBody?: boolean
-  responseHeaders?: boolean
   responseBody?: boolean
   responseText?: boolean
   internalErrorInfo?: boolean
@@ -489,7 +437,7 @@ export type ApiCallDetailSelectScalar = {
   createdAt?: boolean
 }
 
-export type ApiCallDetailOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "requestHeaders" | "requestBody" | "responseHeaders" | "responseBody" | "responseText" | "internalErrorInfo" | "upstreamErrorInfo" | "createdAt", ExtArgs["result"]["apiCallDetail"]>
+export type ApiCallDetailOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "requestBody" | "responseBody" | "responseText" | "internalErrorInfo" | "upstreamErrorInfo" | "createdAt", ExtArgs["result"]["apiCallDetail"]>
 
 export type $ApiCallDetailPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ApiCallDetail"
@@ -497,13 +445,11 @@ export type $ApiCallDetailPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     businessId: string
-    requestHeaders: runtime.JsonValue | null
     requestBody: runtime.JsonValue | null
-    responseHeaders: runtime.JsonValue | null
     responseBody: runtime.JsonValue | null
     responseText: string | null
-    internalErrorInfo: string | null
-    upstreamErrorInfo: string | null
+    internalErrorInfo: runtime.JsonValue | null
+    upstreamErrorInfo: runtime.JsonValue | null
     createdAt: Date
   }, ExtArgs["result"]["apiCallDetail"]>
   composites: {}
@@ -930,13 +876,11 @@ export interface Prisma__ApiCallDetailClient<T, Null = never, ExtArgs extends ru
 export interface ApiCallDetailFieldRefs {
   readonly id: Prisma.FieldRef<"ApiCallDetail", 'Int'>
   readonly businessId: Prisma.FieldRef<"ApiCallDetail", 'String'>
-  readonly requestHeaders: Prisma.FieldRef<"ApiCallDetail", 'Json'>
   readonly requestBody: Prisma.FieldRef<"ApiCallDetail", 'Json'>
-  readonly responseHeaders: Prisma.FieldRef<"ApiCallDetail", 'Json'>
   readonly responseBody: Prisma.FieldRef<"ApiCallDetail", 'Json'>
   readonly responseText: Prisma.FieldRef<"ApiCallDetail", 'String'>
-  readonly internalErrorInfo: Prisma.FieldRef<"ApiCallDetail", 'String'>
-  readonly upstreamErrorInfo: Prisma.FieldRef<"ApiCallDetail", 'String'>
+  readonly internalErrorInfo: Prisma.FieldRef<"ApiCallDetail", 'Json'>
+  readonly upstreamErrorInfo: Prisma.FieldRef<"ApiCallDetail", 'Json'>
   readonly createdAt: Prisma.FieldRef<"ApiCallDetail", 'DateTime'>
 }
     
