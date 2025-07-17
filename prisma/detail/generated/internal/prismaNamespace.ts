@@ -394,7 +394,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  ApiCallLog: 'ApiCallLog'
+  ApiCallRecord: 'ApiCallRecord',
+  ApiCallDetail: 'ApiCallDetail'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,81 +411,155 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "apiCallLog"
+    modelProps: "apiCallRecord" | "apiCallDetail"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
-    ApiCallLog: {
-      payload: Prisma.$ApiCallLogPayload<ExtArgs>
-      fields: Prisma.ApiCallLogFieldRefs
+    ApiCallRecord: {
+      payload: Prisma.$ApiCallRecordPayload<ExtArgs>
+      fields: Prisma.ApiCallRecordFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ApiCallLogFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload> | null
+          args: Prisma.ApiCallRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ApiCallLogFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>
+          args: Prisma.ApiCallRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
         }
         findFirst: {
-          args: Prisma.ApiCallLogFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload> | null
+          args: Prisma.ApiCallRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ApiCallLogFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>
+          args: Prisma.ApiCallRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
         }
         findMany: {
-          args: Prisma.ApiCallLogFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>[]
+          args: Prisma.ApiCallRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>[]
         }
         create: {
-          args: Prisma.ApiCallLogCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>
+          args: Prisma.ApiCallRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
         }
         createMany: {
-          args: Prisma.ApiCallLogCreateManyArgs<ExtArgs>
+          args: Prisma.ApiCallRecordCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.ApiCallLogCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>[]
+          args: Prisma.ApiCallRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>[]
         }
         delete: {
-          args: Prisma.ApiCallLogDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>
+          args: Prisma.ApiCallRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
         }
         update: {
-          args: Prisma.ApiCallLogUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>
+          args: Prisma.ApiCallRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
         }
         deleteMany: {
-          args: Prisma.ApiCallLogDeleteManyArgs<ExtArgs>
+          args: Prisma.ApiCallRecordDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ApiCallLogUpdateManyArgs<ExtArgs>
+          args: Prisma.ApiCallRecordUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.ApiCallLogUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>[]
+          args: Prisma.ApiCallRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>[]
         }
         upsert: {
-          args: Prisma.ApiCallLogUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallLogPayload>
+          args: Prisma.ApiCallRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
         }
         aggregate: {
-          args: Prisma.ApiCallLogAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateApiCallLog>
+          args: Prisma.ApiCallRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApiCallRecord>
         }
         groupBy: {
-          args: Prisma.ApiCallLogGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ApiCallLogGroupByOutputType>[]
+          args: Prisma.ApiCallRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiCallRecordGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ApiCallLogCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ApiCallLogCountAggregateOutputType> | number
+          args: Prisma.ApiCallRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiCallRecordCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApiCallDetail: {
+      payload: Prisma.$ApiCallDetailPayload<ExtArgs>
+      fields: Prisma.ApiCallDetailFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApiCallDetailFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApiCallDetailFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>
+        }
+        findFirst: {
+          args: Prisma.ApiCallDetailFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApiCallDetailFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>
+        }
+        findMany: {
+          args: Prisma.ApiCallDetailFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>[]
+        }
+        create: {
+          args: Prisma.ApiCallDetailCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>
+        }
+        createMany: {
+          args: Prisma.ApiCallDetailCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ApiCallDetailCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>[]
+        }
+        delete: {
+          args: Prisma.ApiCallDetailDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>
+        }
+        update: {
+          args: Prisma.ApiCallDetailUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApiCallDetailDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApiCallDetailUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApiCallDetailUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>[]
+        }
+        upsert: {
+          args: Prisma.ApiCallDetailUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallDetailPayload>
+        }
+        aggregate: {
+          args: Prisma.ApiCallDetailAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApiCallDetail>
+        }
+        groupBy: {
+          args: Prisma.ApiCallDetailGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiCallDetailGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApiCallDetailCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiCallDetailCountAggregateOutputType> | number
         }
       }
     }
@@ -527,25 +602,45 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const ApiCallLogScalarFieldEnum = {
-  requestId: 'requestId',
-  walletId: 'walletId',
-  walletUid: 'walletUid',
+export const ApiCallRecordScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
   userId: 'userId',
-  userUid: 'userUid',
-  ownerId: 'ownerId',
-  ownerUid: 'ownerUid',
-  apikeyId: 'apikeyId',
-  apiKeyPreview: 'apiKeyPreview',
+  walletId: 'walletId',
+  apiKeyId: 'apiKeyId',
+  model: 'model',
+  upstreamId: 'upstreamId',
+  clientIp: 'clientIp',
+  userAgent: 'userAgent',
+  externalTraceId: 'externalTraceId',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  durationMs: 'durationMs',
+  firstTokenMs: 'firstTokenMs',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  totalTokens: 'totalTokens',
+  isFailed: 'isFailed',
+  createdAt: 'createdAt'
+} as const
+
+export type ApiCallRecordScalarFieldEnum = (typeof ApiCallRecordScalarFieldEnum)[keyof typeof ApiCallRecordScalarFieldEnum]
+
+
+export const ApiCallDetailScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
   requestHeaders: 'requestHeaders',
   requestBody: 'requestBody',
   responseHeaders: 'responseHeaders',
   responseBody: 'responseBody',
-  responseStream: 'responseStream',
+  responseText: 'responseText',
+  internalErrorInfo: 'internalErrorInfo',
+  upstreamErrorInfo: 'upstreamErrorInfo',
   createdAt: 'createdAt'
 } as const
 
-export type ApiCallLogScalarFieldEnum = (typeof ApiCallLogScalarFieldEnum)[keyof typeof ApiCallLogScalarFieldEnum]
+export type ApiCallDetailScalarFieldEnum = (typeof ApiCallDetailScalarFieldEnum)[keyof typeof ApiCallDetailScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -596,20 +691,6 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 /**
- * Reference to a field of type 'String'
- */
-export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-    
-
-
-/**
- * Reference to a field of type 'String[]'
- */
-export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -624,23 +705,16 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Json'
+ * Reference to a field of type 'String'
  */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
     
 
 
 /**
- * Reference to a field of type 'QueryMode'
+ * Reference to a field of type 'String[]'
  */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
     
 
 
@@ -655,6 +729,27 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -683,7 +778,7 @@ export type Datasource = {
   url?: string
 }
 export type Datasources = {
-  postgres?: Datasource
+  detailDb?: Datasource
 }
 
 export const defineExtension = runtime.Extensions.defineExtension as unknown as runtime.Types.Extensions.ExtendsHook<"define", TypeMapCb, runtime.Types.Extensions.DefaultArgs>
@@ -746,7 +841,8 @@ export interface PrismaClientOptions {
   omit?: GlobalOmitConfig
 }
 export type GlobalOmitConfig = {
-  apiCallLog?: Prisma.ApiCallLogOmit
+  apiCallRecord?: Prisma.ApiCallRecordOmit
+  apiCallDetail?: Prisma.ApiCallDetailOmit
 }
 
 /* Types for Logging */

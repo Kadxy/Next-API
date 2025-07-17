@@ -260,7 +260,6 @@ export type RedemptionCodeOrderByWithRelationInput = {
   redeemedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   redeemerId?: Prisma.SortOrderInput | Prisma.SortOrder
   redeemer?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.RedemptionCodeOrderByRelevanceInput
 }
 
 export type RedemptionCodeWhereUniqueInput = Prisma.AtLeast<{
@@ -389,12 +388,6 @@ export type RedemptionCodeListRelationFilter = {
 
 export type RedemptionCodeOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type RedemptionCodeOrderByRelevanceInput = {
-  fields: Prisma.RedemptionCodeOrderByRelevanceFieldEnum | Prisma.RedemptionCodeOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type RedemptionCodeCountOrderByAggregateInput = {
@@ -604,7 +597,29 @@ export type RedemptionCodeSelect<ExtArgs extends runtime.Types.Extensions.Intern
   redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
 }, ExtArgs["result"]["redemptionCode"]>
 
+export type RedemptionCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  code?: boolean
+  amount?: boolean
+  remark?: boolean
+  createdAt?: boolean
+  expiredAt?: boolean
+  redeemedAt?: boolean
+  redeemerId?: boolean
+  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
+}, ExtArgs["result"]["redemptionCode"]>
 
+export type RedemptionCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  code?: boolean
+  amount?: boolean
+  remark?: boolean
+  createdAt?: boolean
+  expiredAt?: boolean
+  redeemedAt?: boolean
+  redeemerId?: boolean
+  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
+}, ExtArgs["result"]["redemptionCode"]>
 
 export type RedemptionCodeSelectScalar = {
   id?: boolean
@@ -619,6 +634,12 @@ export type RedemptionCodeSelectScalar = {
 
 export type RedemptionCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "amount" | "remark" | "createdAt" | "expiredAt" | "redeemedAt" | "redeemerId", ExtArgs["result"]["redemptionCode"]>
 export type RedemptionCodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
+}
+export type RedemptionCodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
+}
+export type RedemptionCodeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
 }
 
@@ -754,6 +775,30 @@ export interface RedemptionCodeDelegate<ExtArgs extends runtime.Types.Extensions
   createMany<T extends RedemptionCodeCreateManyArgs>(args?: Prisma.SelectSubset<T, RedemptionCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many RedemptionCodes and returns the data saved in the database.
+   * @param {RedemptionCodeCreateManyAndReturnArgs} args - Arguments to create many RedemptionCodes.
+   * @example
+   * // Create many RedemptionCodes
+   * const redemptionCode = await prisma.redemptionCode.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many RedemptionCodes and only return the `id`
+   * const redemptionCodeWithIdOnly = await prisma.redemptionCode.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends RedemptionCodeCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, RedemptionCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a RedemptionCode.
    * @param {RedemptionCodeDeleteArgs} args - Arguments to delete one RedemptionCode.
    * @example
@@ -816,6 +861,36 @@ export interface RedemptionCodeDelegate<ExtArgs extends runtime.Types.Extensions
    * 
    */
   updateMany<T extends RedemptionCodeUpdateManyArgs>(args: Prisma.SelectSubset<T, RedemptionCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more RedemptionCodes and returns the data updated in the database.
+   * @param {RedemptionCodeUpdateManyAndReturnArgs} args - Arguments to update many RedemptionCodes.
+   * @example
+   * // Update many RedemptionCodes
+   * const redemptionCode = await prisma.redemptionCode.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more RedemptionCodes and only return the `id`
+   * const redemptionCodeWithIdOnly = await prisma.redemptionCode.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends RedemptionCodeUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, RedemptionCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one RedemptionCode.
@@ -1247,6 +1322,29 @@ export type RedemptionCodeCreateManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * RedemptionCode createManyAndReturn
+ */
+export type RedemptionCodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RedemptionCode
+   */
+  select?: Prisma.RedemptionCodeSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RedemptionCode
+   */
+  omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
+  /**
+   * The data used to create many RedemptionCodes.
+   */
+  data: Prisma.RedemptionCodeCreateManyInput | Prisma.RedemptionCodeCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RedemptionCodeIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * RedemptionCode update
  */
 export type RedemptionCodeUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1288,6 +1386,36 @@ export type RedemptionCodeUpdateManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many RedemptionCodes to update.
    */
   limit?: number
+}
+
+/**
+ * RedemptionCode updateManyAndReturn
+ */
+export type RedemptionCodeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RedemptionCode
+   */
+  select?: Prisma.RedemptionCodeSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the RedemptionCode
+   */
+  omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
+  /**
+   * The data used to update RedemptionCodes.
+   */
+  data: Prisma.XOR<Prisma.RedemptionCodeUpdateManyMutationInput, Prisma.RedemptionCodeUncheckedUpdateManyInput>
+  /**
+   * Filter which RedemptionCodes to update
+   */
+  where?: Prisma.RedemptionCodeWhereInput
+  /**
+   * Limit how many RedemptionCodes to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RedemptionCodeIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

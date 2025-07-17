@@ -273,6 +273,7 @@ export type ApiKeyWhereInput = {
   lastUsedAt?: Prisma.DateTimeNullableFilter<"ApiKey"> | Date | string | null
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  transactions?: Prisma.TransactionListRelationFilter
 }
 
 export type ApiKeyOrderByWithRelationInput = {
@@ -289,7 +290,7 @@ export type ApiKeyOrderByWithRelationInput = {
   lastUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   wallet?: Prisma.WalletOrderByWithRelationInput
   creator?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.ApiKeyOrderByRelevanceInput
+  transactions?: Prisma.TransactionOrderByRelationAggregateInput
 }
 
 export type ApiKeyWhereUniqueInput = Prisma.AtLeast<{
@@ -309,6 +310,7 @@ export type ApiKeyWhereUniqueInput = Prisma.AtLeast<{
   lastUsedAt?: Prisma.DateTimeNullableFilter<"ApiKey"> | Date | string | null
   wallet?: Prisma.XOR<Prisma.WalletScalarRelationFilter, Prisma.WalletWhereInput>
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  transactions?: Prisma.TransactionListRelationFilter
 }, "id" | "hashKey">
 
 export type ApiKeyOrderByWithAggregationInput = {
@@ -358,6 +360,7 @@ export type ApiKeyCreateInput = {
   lastUsedAt?: Date | string | null
   wallet: Prisma.WalletCreateNestedOneWithoutApiKeysInput
   creator: Prisma.UserCreateNestedOneWithoutCreatedApiKeysInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApiKeyInput
 }
 
 export type ApiKeyUncheckedCreateInput = {
@@ -372,6 +375,7 @@ export type ApiKeyUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastUsedAt?: Date | string | null
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApiKeyInput
 }
 
 export type ApiKeyUpdateInput = {
@@ -385,6 +389,7 @@ export type ApiKeyUpdateInput = {
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   wallet?: Prisma.WalletUpdateOneRequiredWithoutApiKeysNestedInput
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedApiKeysNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApiKeyNestedInput
 }
 
 export type ApiKeyUncheckedUpdateInput = {
@@ -399,6 +404,7 @@ export type ApiKeyUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApiKeyNestedInput
 }
 
 export type ApiKeyCreateManyInput = {
@@ -448,12 +454,6 @@ export type ApiKeyListRelationFilter = {
 
 export type ApiKeyOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type ApiKeyOrderByRelevanceInput = {
-  fields: Prisma.ApiKeyOrderByRelevanceFieldEnum | Prisma.ApiKeyOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type ApiKeyCountOrderByAggregateInput = {
@@ -508,6 +508,11 @@ export type ApiKeySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   creatorId?: Prisma.SortOrder
+}
+
+export type ApiKeyNullableScalarRelationFilter = {
+  is?: Prisma.ApiKeyWhereInput | null
+  isNot?: Prisma.ApiKeyWhereInput | null
 }
 
 export type ApiKeyCreateNestedManyWithoutCreatorInput = {
@@ -594,6 +599,22 @@ export type ApiKeyUncheckedUpdateManyWithoutWalletNestedInput = {
   deleteMany?: Prisma.ApiKeyScalarWhereInput | Prisma.ApiKeyScalarWhereInput[]
 }
 
+export type ApiKeyCreateNestedOneWithoutTransactionsInput = {
+  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutTransactionsInput, Prisma.ApiKeyUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutTransactionsInput
+  connect?: Prisma.ApiKeyWhereUniqueInput
+}
+
+export type ApiKeyUpdateOneWithoutTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApiKeyCreateWithoutTransactionsInput, Prisma.ApiKeyUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.ApiKeyCreateOrConnectWithoutTransactionsInput
+  upsert?: Prisma.ApiKeyUpsertWithoutTransactionsInput
+  disconnect?: Prisma.ApiKeyWhereInput | boolean
+  delete?: Prisma.ApiKeyWhereInput | boolean
+  connect?: Prisma.ApiKeyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApiKeyUpdateToOneWithWhereWithoutTransactionsInput, Prisma.ApiKeyUpdateWithoutTransactionsInput>, Prisma.ApiKeyUncheckedUpdateWithoutTransactionsInput>
+}
+
 export type ApiKeyCreateWithoutCreatorInput = {
   hashKey: string
   preview: string
@@ -604,6 +625,7 @@ export type ApiKeyCreateWithoutCreatorInput = {
   updatedAt?: Date | string
   lastUsedAt?: Date | string | null
   wallet: Prisma.WalletCreateNestedOneWithoutApiKeysInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApiKeyInput
 }
 
 export type ApiKeyUncheckedCreateWithoutCreatorInput = {
@@ -617,6 +639,7 @@ export type ApiKeyUncheckedCreateWithoutCreatorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastUsedAt?: Date | string | null
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApiKeyInput
 }
 
 export type ApiKeyCreateOrConnectWithoutCreatorInput = {
@@ -672,6 +695,7 @@ export type ApiKeyCreateWithoutWalletInput = {
   updatedAt?: Date | string
   lastUsedAt?: Date | string | null
   creator: Prisma.UserCreateNestedOneWithoutCreatedApiKeysInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApiKeyInput
 }
 
 export type ApiKeyUncheckedCreateWithoutWalletInput = {
@@ -685,6 +709,7 @@ export type ApiKeyUncheckedCreateWithoutWalletInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lastUsedAt?: Date | string | null
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApiKeyInput
 }
 
 export type ApiKeyCreateOrConnectWithoutWalletInput = {
@@ -713,6 +738,76 @@ export type ApiKeyUpdateManyWithWhereWithoutWalletInput = {
   data: Prisma.XOR<Prisma.ApiKeyUpdateManyMutationInput, Prisma.ApiKeyUncheckedUpdateManyWithoutWalletInput>
 }
 
+export type ApiKeyCreateWithoutTransactionsInput = {
+  hashKey: string
+  preview: string
+  displayName: string
+  isActive?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastUsedAt?: Date | string | null
+  wallet: Prisma.WalletCreateNestedOneWithoutApiKeysInput
+  creator: Prisma.UserCreateNestedOneWithoutCreatedApiKeysInput
+}
+
+export type ApiKeyUncheckedCreateWithoutTransactionsInput = {
+  id?: number
+  walletId: number
+  creatorId: number
+  hashKey: string
+  preview: string
+  displayName: string
+  isActive?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastUsedAt?: Date | string | null
+}
+
+export type ApiKeyCreateOrConnectWithoutTransactionsInput = {
+  where: Prisma.ApiKeyWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApiKeyCreateWithoutTransactionsInput, Prisma.ApiKeyUncheckedCreateWithoutTransactionsInput>
+}
+
+export type ApiKeyUpsertWithoutTransactionsInput = {
+  update: Prisma.XOR<Prisma.ApiKeyUpdateWithoutTransactionsInput, Prisma.ApiKeyUncheckedUpdateWithoutTransactionsInput>
+  create: Prisma.XOR<Prisma.ApiKeyCreateWithoutTransactionsInput, Prisma.ApiKeyUncheckedCreateWithoutTransactionsInput>
+  where?: Prisma.ApiKeyWhereInput
+}
+
+export type ApiKeyUpdateToOneWithWhereWithoutTransactionsInput = {
+  where?: Prisma.ApiKeyWhereInput
+  data: Prisma.XOR<Prisma.ApiKeyUpdateWithoutTransactionsInput, Prisma.ApiKeyUncheckedUpdateWithoutTransactionsInput>
+}
+
+export type ApiKeyUpdateWithoutTransactionsInput = {
+  hashKey?: Prisma.StringFieldUpdateOperationsInput | string
+  preview?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  wallet?: Prisma.WalletUpdateOneRequiredWithoutApiKeysNestedInput
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedApiKeysNestedInput
+}
+
+export type ApiKeyUncheckedUpdateWithoutTransactionsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  walletId?: Prisma.IntFieldUpdateOperationsInput | number
+  creatorId?: Prisma.IntFieldUpdateOperationsInput | number
+  hashKey?: Prisma.StringFieldUpdateOperationsInput | string
+  preview?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
 export type ApiKeyCreateManyCreatorInput = {
   id?: number
   walletId: number
@@ -736,6 +831,7 @@ export type ApiKeyUpdateWithoutCreatorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   wallet?: Prisma.WalletUpdateOneRequiredWithoutApiKeysNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApiKeyNestedInput
 }
 
 export type ApiKeyUncheckedUpdateWithoutCreatorInput = {
@@ -749,6 +845,7 @@ export type ApiKeyUncheckedUpdateWithoutCreatorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApiKeyNestedInput
 }
 
 export type ApiKeyUncheckedUpdateManyWithoutCreatorInput = {
@@ -787,6 +884,7 @@ export type ApiKeyUpdateWithoutWalletInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedApiKeysNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApiKeyNestedInput
 }
 
 export type ApiKeyUncheckedUpdateWithoutWalletInput = {
@@ -800,6 +898,7 @@ export type ApiKeyUncheckedUpdateWithoutWalletInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApiKeyNestedInput
 }
 
 export type ApiKeyUncheckedUpdateManyWithoutWalletInput = {
@@ -816,6 +915,35 @@ export type ApiKeyUncheckedUpdateManyWithoutWalletInput = {
 }
 
 
+/**
+ * Count Type ApiKeyCountOutputType
+ */
+
+export type ApiKeyCountOutputType = {
+  transactions: number
+}
+
+export type ApiKeyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  transactions?: boolean | ApiKeyCountOutputTypeCountTransactionsArgs
+}
+
+/**
+ * ApiKeyCountOutputType without action
+ */
+export type ApiKeyCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApiKeyCountOutputType
+   */
+  select?: Prisma.ApiKeyCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ApiKeyCountOutputType without action
+ */
+export type ApiKeyCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransactionWhereInput
+}
+
 
 export type ApiKeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -831,9 +959,41 @@ export type ApiKeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   lastUsedAt?: boolean
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  transactions?: boolean | Prisma.ApiKey$transactionsArgs<ExtArgs>
+  _count?: boolean | Prisma.ApiKeyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["apiKey"]>
 
+export type ApiKeySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  walletId?: boolean
+  creatorId?: boolean
+  hashKey?: boolean
+  preview?: boolean
+  displayName?: boolean
+  isActive?: boolean
+  isDeleted?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  lastUsedAt?: boolean
+  wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["apiKey"]>
 
+export type ApiKeySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  walletId?: boolean
+  creatorId?: boolean
+  hashKey?: boolean
+  preview?: boolean
+  displayName?: boolean
+  isActive?: boolean
+  isDeleted?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  lastUsedAt?: boolean
+  wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["apiKey"]>
 
 export type ApiKeySelectScalar = {
   id?: boolean
@@ -853,6 +1013,16 @@ export type ApiKeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type ApiKeyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  transactions?: boolean | Prisma.ApiKey$transactionsArgs<ExtArgs>
+  _count?: boolean | Prisma.ApiKeyCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type ApiKeyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type ApiKeyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  wallet?: boolean | Prisma.WalletDefaultArgs<ExtArgs>
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ApiKeyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -860,6 +1030,7 @@ export type $ApiKeyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     wallet: Prisma.$WalletPayload<ExtArgs>
     creator: Prisma.$UserPayload<ExtArgs>
+    transactions: Prisma.$TransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -991,6 +1162,30 @@ export interface ApiKeyDelegate<ExtArgs extends runtime.Types.Extensions.Interna
   createMany<T extends ApiKeyCreateManyArgs>(args?: Prisma.SelectSubset<T, ApiKeyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many ApiKeys and returns the data saved in the database.
+   * @param {ApiKeyCreateManyAndReturnArgs} args - Arguments to create many ApiKeys.
+   * @example
+   * // Create many ApiKeys
+   * const apiKey = await prisma.apiKey.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many ApiKeys and only return the `id`
+   * const apiKeyWithIdOnly = await prisma.apiKey.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends ApiKeyCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, ApiKeyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a ApiKey.
    * @param {ApiKeyDeleteArgs} args - Arguments to delete one ApiKey.
    * @example
@@ -1053,6 +1248,36 @@ export interface ApiKeyDelegate<ExtArgs extends runtime.Types.Extensions.Interna
    * 
    */
   updateMany<T extends ApiKeyUpdateManyArgs>(args: Prisma.SelectSubset<T, ApiKeyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more ApiKeys and returns the data updated in the database.
+   * @param {ApiKeyUpdateManyAndReturnArgs} args - Arguments to update many ApiKeys.
+   * @example
+   * // Update many ApiKeys
+   * const apiKey = await prisma.apiKey.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more ApiKeys and only return the `id`
+   * const apiKeyWithIdOnly = await prisma.apiKey.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends ApiKeyUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, ApiKeyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one ApiKey.
@@ -1215,6 +1440,7 @@ export interface Prisma__ApiKeyClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   wallet<T extends Prisma.WalletDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WalletDefaultArgs<ExtArgs>>): Prisma.Prisma__WalletClient<runtime.Types.Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  transactions<T extends Prisma.ApiKey$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApiKey$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1488,6 +1714,29 @@ export type ApiKeyCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * ApiKey createManyAndReturn
+ */
+export type ApiKeyCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApiKey
+   */
+  select?: Prisma.ApiKeySelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApiKey
+   */
+  omit?: Prisma.ApiKeyOmit<ExtArgs> | null
+  /**
+   * The data used to create many ApiKeys.
+   */
+  data: Prisma.ApiKeyCreateManyInput | Prisma.ApiKeyCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApiKeyIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * ApiKey update
  */
 export type ApiKeyUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1529,6 +1778,36 @@ export type ApiKeyUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many ApiKeys to update.
    */
   limit?: number
+}
+
+/**
+ * ApiKey updateManyAndReturn
+ */
+export type ApiKeyUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApiKey
+   */
+  select?: Prisma.ApiKeySelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApiKey
+   */
+  omit?: Prisma.ApiKeyOmit<ExtArgs> | null
+  /**
+   * The data used to update ApiKeys.
+   */
+  data: Prisma.XOR<Prisma.ApiKeyUpdateManyMutationInput, Prisma.ApiKeyUncheckedUpdateManyInput>
+  /**
+   * Filter which ApiKeys to update
+   */
+  where?: Prisma.ApiKeyWhereInput
+  /**
+   * Limit how many ApiKeys to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApiKeyIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1595,6 +1874,30 @@ export type ApiKeyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many ApiKeys to delete.
    */
   limit?: number
+}
+
+/**
+ * ApiKey.transactions
+ */
+export type ApiKey$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transaction
+   */
+  select?: Prisma.TransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transaction
+   */
+  omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  where?: Prisma.TransactionWhereInput
+  orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[]
+  cursor?: Prisma.TransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
 }
 
 /**

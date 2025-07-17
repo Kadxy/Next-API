@@ -400,7 +400,7 @@ export const ModelName = {
   ApiKey: 'ApiKey',
   Passkey: 'Passkey',
   RedemptionCode: 'RedemptionCode',
-  ApiCallRecord: 'ApiCallRecord',
+  Transaction: 'Transaction',
   AIModel: 'AIModel',
   UpstreamConfig: 'UpstreamConfig'
 } as const
@@ -418,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "apiCallRecord" | "aIModel" | "upstreamConfig"
+    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "transaction" | "aIModel" | "upstreamConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -454,6 +454,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.UserCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
+        }
         delete: {
           args: Prisma.UserDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
@@ -469,6 +473,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.UserUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
         }
         upsert: {
           args: Prisma.UserUpsertArgs<ExtArgs>
@@ -520,6 +528,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.WalletCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.WalletCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>[]
+        }
         delete: {
           args: Prisma.WalletDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>
@@ -535,6 +547,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.WalletUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WalletUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletPayload>[]
         }
         upsert: {
           args: Prisma.WalletUpsertArgs<ExtArgs>
@@ -586,6 +602,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.WalletMemberCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.WalletMemberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletMemberPayload>[]
+        }
         delete: {
           args: Prisma.WalletMemberDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletMemberPayload>
@@ -601,6 +621,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.WalletMemberUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WalletMemberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WalletMemberPayload>[]
         }
         upsert: {
           args: Prisma.WalletMemberUpsertArgs<ExtArgs>
@@ -652,6 +676,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.ApiKeyCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.ApiKeyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>[]
+        }
         delete: {
           args: Prisma.ApiKeyDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>
@@ -667,6 +695,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.ApiKeyUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApiKeyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>[]
         }
         upsert: {
           args: Prisma.ApiKeyUpsertArgs<ExtArgs>
@@ -718,6 +750,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.PasskeyCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.PasskeyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasskeyPayload>[]
+        }
         delete: {
           args: Prisma.PasskeyDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$PasskeyPayload>
@@ -733,6 +769,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.PasskeyUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PasskeyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasskeyPayload>[]
         }
         upsert: {
           args: Prisma.PasskeyUpsertArgs<ExtArgs>
@@ -784,6 +824,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.RedemptionCodeCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.RedemptionCodeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedemptionCodePayload>[]
+        }
         delete: {
           args: Prisma.RedemptionCodeDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$RedemptionCodePayload>
@@ -799,6 +843,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.RedemptionCodeUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RedemptionCodeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedemptionCodePayload>[]
         }
         upsert: {
           args: Prisma.RedemptionCodeUpsertArgs<ExtArgs>
@@ -818,69 +866,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ApiCallRecord: {
-      payload: Prisma.$ApiCallRecordPayload<ExtArgs>
-      fields: Prisma.ApiCallRecordFieldRefs
+    Transaction: {
+      payload: Prisma.$TransactionPayload<ExtArgs>
+      fields: Prisma.TransactionFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ApiCallRecordFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload> | null
+          args: Prisma.TransactionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ApiCallRecordFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
+          args: Prisma.TransactionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>
         }
         findFirst: {
-          args: Prisma.ApiCallRecordFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload> | null
+          args: Prisma.TransactionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ApiCallRecordFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
+          args: Prisma.TransactionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>
         }
         findMany: {
-          args: Prisma.ApiCallRecordFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>[]
+          args: Prisma.TransactionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>[]
         }
         create: {
-          args: Prisma.ApiCallRecordCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
+          args: Prisma.TransactionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>
         }
         createMany: {
-          args: Prisma.ApiCallRecordCreateManyArgs<ExtArgs>
+          args: Prisma.TransactionCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.TransactionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+        }
         delete: {
-          args: Prisma.ApiCallRecordDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
+          args: Prisma.TransactionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>
         }
         update: {
-          args: Prisma.ApiCallRecordUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
+          args: Prisma.TransactionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>
         }
         deleteMany: {
-          args: Prisma.ApiCallRecordDeleteManyArgs<ExtArgs>
+          args: Prisma.TransactionDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ApiCallRecordUpdateManyArgs<ExtArgs>
+          args: Prisma.TransactionUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        updateManyAndReturn: {
+          args: Prisma.TransactionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+        }
         upsert: {
-          args: Prisma.ApiCallRecordUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiCallRecordPayload>
+          args: Prisma.TransactionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionPayload>
         }
         aggregate: {
-          args: Prisma.ApiCallRecordAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateApiCallRecord>
+          args: Prisma.TransactionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransaction>
         }
         groupBy: {
-          args: Prisma.ApiCallRecordGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ApiCallRecordGroupByOutputType>[]
+          args: Prisma.TransactionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransactionGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ApiCallRecordCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ApiCallRecordCountAggregateOutputType> | number
+          args: Prisma.TransactionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransactionCountAggregateOutputType> | number
         }
       }
     }
@@ -916,6 +972,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.AIModelCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.AIModelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>[]
+        }
         delete: {
           args: Prisma.AIModelDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
@@ -931,6 +991,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.AIModelUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AIModelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>[]
         }
         upsert: {
           args: Prisma.AIModelUpsertArgs<ExtArgs>
@@ -982,6 +1046,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.UpstreamConfigCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
+        createManyAndReturn: {
+          args: Prisma.UpstreamConfigCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>[]
+        }
         delete: {
           args: Prisma.UpstreamConfigDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>
@@ -997,6 +1065,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateMany: {
           args: Prisma.UpstreamConfigUpdateManyArgs<ExtArgs>
           result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UpstreamConfigUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UpstreamConfigPayload>[]
         }
         upsert: {
           args: Prisma.UpstreamConfigUpsertArgs<ExtArgs>
@@ -1066,8 +1138,6 @@ export const UserScalarFieldEnum = {
   googleId: 'googleId',
   feishuId: 'feishuId',
   microsoftId: 'microsoftId',
-  isDeleted: 'isDeleted',
-  isAdmin: 'isAdmin',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastLoginAt: 'lastLoginAt'
@@ -1098,7 +1168,6 @@ export const WalletMemberScalarFieldEnum = {
   creditLimit: 'creditLimit',
   creditUsed: 'creditUsed',
   isActive: 'isActive',
-  isOwner: 'isOwner',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1156,27 +1225,23 @@ export const RedemptionCodeScalarFieldEnum = {
 export type RedemptionCodeScalarFieldEnum = (typeof RedemptionCodeScalarFieldEnum)[keyof typeof RedemptionCodeScalarFieldEnum]
 
 
-export const ApiCallRecordScalarFieldEnum = {
-  requestId: 'requestId',
+export const TransactionScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
   walletId: 'walletId',
   userId: 'userId',
-  apikeyId: 'apikeyId',
-  model: 'model',
-  startTime: 'startTime',
-  endTime: 'endTime',
-  durationMs: 'durationMs',
+  apiKeyId: 'apiKeyId',
+  type: 'type',
+  amount: 'amount',
+  description: 'description',
+  metadata: 'metadata',
+  status: 'status',
   errorMessage: 'errorMessage',
-  clientIp: 'clientIp',
-  externalTraceId: 'externalTraceId',
-  inputToken: 'inputToken',
-  outputToken: 'outputToken',
-  cost: 'cost',
-  billStatus: 'billStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ApiCallRecordScalarFieldEnum = (typeof ApiCallRecordScalarFieldEnum)[keyof typeof ApiCallRecordScalarFieldEnum]
+export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
 export const AIModelScalarFieldEnum = {
@@ -1213,6 +1278,21 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
 export const NullsOrder = {
   first: 'first',
   last: 'last'
@@ -1221,89 +1301,13 @@ export const NullsOrder = {
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
-export const UserOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  displayName: 'displayName',
-  avatar: 'avatar',
-  email: 'email',
-  phone: 'phone',
-  gitHubId: 'gitHubId',
-  googleId: 'googleId',
-  feishuId: 'feishuId',
-  microsoftId: 'microsoftId'
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
 } as const
 
-export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
-
-
-export const WalletOrderByRelevanceFieldEnum = {
-  uid: 'uid',
-  displayName: 'displayName'
-} as const
-
-export type WalletOrderByRelevanceFieldEnum = (typeof WalletOrderByRelevanceFieldEnum)[keyof typeof WalletOrderByRelevanceFieldEnum]
-
-
-export const WalletMemberOrderByRelevanceFieldEnum = {
-  alias: 'alias'
-} as const
-
-export type WalletMemberOrderByRelevanceFieldEnum = (typeof WalletMemberOrderByRelevanceFieldEnum)[keyof typeof WalletMemberOrderByRelevanceFieldEnum]
-
-
-export const ApiKeyOrderByRelevanceFieldEnum = {
-  hashKey: 'hashKey',
-  preview: 'preview',
-  displayName: 'displayName'
-} as const
-
-export type ApiKeyOrderByRelevanceFieldEnum = (typeof ApiKeyOrderByRelevanceFieldEnum)[keyof typeof ApiKeyOrderByRelevanceFieldEnum]
-
-
-export const PasskeyOrderByRelevanceFieldEnum = {
-  id: 'id',
-  webAuthnUserID: 'webAuthnUserID',
-  displayName: 'displayName',
-  transports: 'transports',
-  deviceType: 'deviceType'
-} as const
-
-export type PasskeyOrderByRelevanceFieldEnum = (typeof PasskeyOrderByRelevanceFieldEnum)[keyof typeof PasskeyOrderByRelevanceFieldEnum]
-
-
-export const RedemptionCodeOrderByRelevanceFieldEnum = {
-  code: 'code',
-  remark: 'remark'
-} as const
-
-export type RedemptionCodeOrderByRelevanceFieldEnum = (typeof RedemptionCodeOrderByRelevanceFieldEnum)[keyof typeof RedemptionCodeOrderByRelevanceFieldEnum]
-
-
-export const ApiCallRecordOrderByRelevanceFieldEnum = {
-  requestId: 'requestId',
-  model: 'model',
-  errorMessage: 'errorMessage',
-  clientIp: 'clientIp',
-  externalTraceId: 'externalTraceId'
-} as const
-
-export type ApiCallRecordOrderByRelevanceFieldEnum = (typeof ApiCallRecordOrderByRelevanceFieldEnum)[keyof typeof ApiCallRecordOrderByRelevanceFieldEnum]
-
-
-export const AIModelOrderByRelevanceFieldEnum = {
-  name: 'name'
-} as const
-
-export type AIModelOrderByRelevanceFieldEnum = (typeof AIModelOrderByRelevanceFieldEnum)[keyof typeof AIModelOrderByRelevanceFieldEnum]
-
-
-export const UpstreamConfigOrderByRelevanceFieldEnum = {
-  name: 'name',
-  baseUrl: 'baseUrl',
-  apiKey: 'apiKey'
-} as const
-
-export type UpstreamConfigOrderByRelevanceFieldEnum = (typeof UpstreamConfigOrderByRelevanceFieldEnum)[keyof typeof UpstreamConfigOrderByRelevanceFieldEnum]
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1320,6 +1324,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
 
 
 /**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
  * Reference to a field of type 'String'
  */
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
@@ -1327,9 +1338,9 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
 
 
 /**
- * Reference to a field of type 'Boolean'
+ * Reference to a field of type 'String[]'
  */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
     
 
 
@@ -1341,9 +1352,30 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
 
 
 /**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
  * Reference to a field of type 'Decimal'
  */
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1355,6 +1387,13 @@ export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
 
 
 /**
+ * Reference to a field of type 'Bytes[]'
+ */
+export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
+    
+
+
+/**
  * Reference to a field of type 'BigInt'
  */
 export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
@@ -1362,9 +1401,51 @@ export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
 
 
 /**
- * Reference to a field of type 'BillStatus'
+ * Reference to a field of type 'BigInt[]'
  */
-export type EnumBillStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillStatus'>
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionType'
+ */
+export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionType[]'
+ */
+export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionStatus'
+ */
+export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TransactionStatus[]'
+ */
+export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
     
 
 
@@ -1372,6 +1453,13 @@ export type EnumBillStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1386,7 +1474,7 @@ export type Datasource = {
   url?: string
 }
 export type Datasources = {
-  db?: Datasource
+  mainDb?: Datasource
 }
 
 export const defineExtension = runtime.Extensions.defineExtension as unknown as runtime.Types.Extensions.ExtendsHook<"define", TypeMapCb, runtime.Types.Extensions.DefaultArgs>
@@ -1455,7 +1543,7 @@ export type GlobalOmitConfig = {
   apiKey?: Prisma.ApiKeyOmit
   passkey?: Prisma.PasskeyOmit
   redemptionCode?: Prisma.RedemptionCodeOmit
-  apiCallRecord?: Prisma.ApiCallRecordOmit
+  transaction?: Prisma.TransactionOmit
   aIModel?: Prisma.AIModelOmit
   upstreamConfig?: Prisma.UpstreamConfigOmit
 }

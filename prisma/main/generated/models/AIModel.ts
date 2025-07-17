@@ -262,7 +262,6 @@ export type AIModelOrderByWithRelationInput = {
   outputPrice?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  _relevance?: Prisma.AIModelOrderByRelevanceInput
 }
 
 export type AIModelWhereUniqueInput = Prisma.AtLeast<{
@@ -383,12 +382,6 @@ export type AIModelUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type AIModelOrderByRelevanceInput = {
-  fields: Prisma.AIModelOrderByRelevanceFieldEnum | Prisma.AIModelOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
-}
-
 export type AIModelCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -449,7 +442,27 @@ export type AIModelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   updatedAt?: boolean
 }, ExtArgs["result"]["aIModel"]>
 
+export type AIModelSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  name?: boolean
+  providerId?: boolean
+  isActive?: boolean
+  inputPrice?: boolean
+  outputPrice?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+}, ExtArgs["result"]["aIModel"]>
 
+export type AIModelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  name?: boolean
+  providerId?: boolean
+  isActive?: boolean
+  inputPrice?: boolean
+  outputPrice?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+}, ExtArgs["result"]["aIModel"]>
 
 export type AIModelSelectScalar = {
   id?: boolean
@@ -594,6 +607,30 @@ export interface AIModelDelegate<ExtArgs extends runtime.Types.Extensions.Intern
   createMany<T extends AIModelCreateManyArgs>(args?: Prisma.SelectSubset<T, AIModelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many AIModels and returns the data saved in the database.
+   * @param {AIModelCreateManyAndReturnArgs} args - Arguments to create many AIModels.
+   * @example
+   * // Create many AIModels
+   * const aIModel = await prisma.aIModel.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many AIModels and only return the `id`
+   * const aIModelWithIdOnly = await prisma.aIModel.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends AIModelCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, AIModelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AIModelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a AIModel.
    * @param {AIModelDeleteArgs} args - Arguments to delete one AIModel.
    * @example
@@ -656,6 +693,36 @@ export interface AIModelDelegate<ExtArgs extends runtime.Types.Extensions.Intern
    * 
    */
   updateMany<T extends AIModelUpdateManyArgs>(args: Prisma.SelectSubset<T, AIModelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more AIModels and returns the data updated in the database.
+   * @param {AIModelUpdateManyAndReturnArgs} args - Arguments to update many AIModels.
+   * @example
+   * // Update many AIModels
+   * const aIModel = await prisma.aIModel.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more AIModels and only return the `id`
+   * const aIModelWithIdOnly = await prisma.aIModel.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends AIModelUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, AIModelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AIModelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one AIModel.
@@ -1062,6 +1129,25 @@ export type AIModelCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * AIModel createManyAndReturn
+ */
+export type AIModelCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AIModel
+   */
+  select?: Prisma.AIModelSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the AIModel
+   */
+  omit?: Prisma.AIModelOmit<ExtArgs> | null
+  /**
+   * The data used to create many AIModels.
+   */
+  data: Prisma.AIModelCreateManyInput | Prisma.AIModelCreateManyInput[]
+  skipDuplicates?: boolean
+}
+
+/**
  * AIModel update
  */
 export type AIModelUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1087,6 +1173,32 @@ export type AIModelUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
  * AIModel updateMany
  */
 export type AIModelUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The data used to update AIModels.
+   */
+  data: Prisma.XOR<Prisma.AIModelUpdateManyMutationInput, Prisma.AIModelUncheckedUpdateManyInput>
+  /**
+   * Filter which AIModels to update
+   */
+  where?: Prisma.AIModelWhereInput
+  /**
+   * Limit how many AIModels to update.
+   */
+  limit?: number
+}
+
+/**
+ * AIModel updateManyAndReturn
+ */
+export type AIModelUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AIModel
+   */
+  select?: Prisma.AIModelSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the AIModel
+   */
+  omit?: Prisma.AIModelOmit<ExtArgs> | null
   /**
    * The data used to update AIModels.
    */

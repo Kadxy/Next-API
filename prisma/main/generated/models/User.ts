@@ -44,8 +44,6 @@ export type UserMinAggregateOutputType = {
   googleId: string | null
   feishuId: string | null
   microsoftId: string | null
-  isDeleted: boolean | null
-  isAdmin: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   lastLoginAt: Date | null
@@ -62,8 +60,6 @@ export type UserMaxAggregateOutputType = {
   googleId: string | null
   feishuId: string | null
   microsoftId: string | null
-  isDeleted: boolean | null
-  isAdmin: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   lastLoginAt: Date | null
@@ -80,8 +76,6 @@ export type UserCountAggregateOutputType = {
   googleId: number
   feishuId: number
   microsoftId: number
-  isDeleted: number
-  isAdmin: number
   createdAt: number
   updatedAt: number
   lastLoginAt: number
@@ -108,8 +102,6 @@ export type UserMinAggregateInputType = {
   googleId?: true
   feishuId?: true
   microsoftId?: true
-  isDeleted?: true
-  isAdmin?: true
   createdAt?: true
   updatedAt?: true
   lastLoginAt?: true
@@ -126,8 +118,6 @@ export type UserMaxAggregateInputType = {
   googleId?: true
   feishuId?: true
   microsoftId?: true
-  isDeleted?: true
-  isAdmin?: true
   createdAt?: true
   updatedAt?: true
   lastLoginAt?: true
@@ -144,8 +134,6 @@ export type UserCountAggregateInputType = {
   googleId?: true
   feishuId?: true
   microsoftId?: true
-  isDeleted?: true
-  isAdmin?: true
   createdAt?: true
   updatedAt?: true
   lastLoginAt?: true
@@ -249,8 +237,6 @@ export type UserGroupByOutputType = {
   googleId: string | null
   feishuId: string | null
   microsoftId: string | null
-  isDeleted: boolean
-  isAdmin: boolean
   createdAt: Date
   updatedAt: Date
   lastLoginAt: Date | null
@@ -290,8 +276,6 @@ export type UserWhereInput = {
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   feishuId?: Prisma.StringNullableFilter<"User"> | string | null
   microsoftId?: Prisma.StringNullableFilter<"User"> | string | null
-  isDeleted?: Prisma.BoolFilter<"User"> | boolean
-  isAdmin?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
@@ -300,6 +284,7 @@ export type UserWhereInput = {
   passkeys?: Prisma.PasskeyListRelationFilter
   redeemCodes?: Prisma.RedemptionCodeListRelationFilter
   createdApiKeys?: Prisma.ApiKeyListRelationFilter
+  transactions?: Prisma.TransactionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -313,8 +298,6 @@ export type UserOrderByWithRelationInput = {
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   feishuId?: Prisma.SortOrderInput | Prisma.SortOrder
   microsoftId?: Prisma.SortOrderInput | Prisma.SortOrder
-  isDeleted?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -323,7 +306,7 @@ export type UserOrderByWithRelationInput = {
   passkeys?: Prisma.PasskeyOrderByRelationAggregateInput
   redeemCodes?: Prisma.RedemptionCodeOrderByRelationAggregateInput
   createdApiKeys?: Prisma.ApiKeyOrderByRelationAggregateInput
-  _relevance?: Prisma.UserOrderByRelevanceInput
+  transactions?: Prisma.TransactionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -340,8 +323,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   displayName?: Prisma.StringNullableFilter<"User"> | string | null
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
-  isDeleted?: Prisma.BoolFilter<"User"> | boolean
-  isAdmin?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
@@ -350,6 +331,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passkeys?: Prisma.PasskeyListRelationFilter
   redeemCodes?: Prisma.RedemptionCodeListRelationFilter
   createdApiKeys?: Prisma.ApiKeyListRelationFilter
+  transactions?: Prisma.TransactionListRelationFilter
 }, "id" | "uid" | "email" | "phone" | "gitHubId" | "googleId" | "feishuId" | "microsoftId">
 
 export type UserOrderByWithAggregationInput = {
@@ -363,8 +345,6 @@ export type UserOrderByWithAggregationInput = {
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   feishuId?: Prisma.SortOrderInput | Prisma.SortOrder
   microsoftId?: Prisma.SortOrderInput | Prisma.SortOrder
-  isDeleted?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -389,8 +369,6 @@ export type UserScalarWhereWithAggregatesInput = {
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   feishuId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   microsoftId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  isDeleted?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  isAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -406,8 +384,6 @@ export type UserCreateInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -416,6 +392,7 @@ export type UserCreateInput = {
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -429,8 +406,6 @@ export type UserUncheckedCreateInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -439,6 +414,7 @@ export type UserUncheckedCreateInput = {
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -451,8 +427,6 @@ export type UserUpdateInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -461,6 +435,7 @@ export type UserUpdateInput = {
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -474,8 +449,6 @@ export type UserUncheckedUpdateInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -484,6 +457,7 @@ export type UserUncheckedUpdateInput = {
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -497,8 +471,6 @@ export type UserCreateManyInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -514,8 +486,6 @@ export type UserUpdateManyMutationInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -532,17 +502,9 @@ export type UserUncheckedUpdateManyInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type UserOrderByRelevanceInput = {
-  fields: Prisma.UserOrderByRelevanceFieldEnum | Prisma.UserOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -556,8 +518,6 @@ export type UserCountOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   feishuId?: Prisma.SortOrder
   microsoftId?: Prisma.SortOrder
-  isDeleted?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
@@ -578,8 +538,6 @@ export type UserMaxOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   feishuId?: Prisma.SortOrder
   microsoftId?: Prisma.SortOrder
-  isDeleted?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
@@ -596,8 +554,6 @@ export type UserMinOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   feishuId?: Prisma.SortOrder
   microsoftId?: Prisma.SortOrder
-  isDeleted?: Prisma.SortOrder
-  isAdmin?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
@@ -623,10 +579,6 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -717,6 +669,20 @@ export type UserUpdateOneWithoutRedeemCodesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRedeemCodesInput, Prisma.UserUpdateWithoutRedeemCodesInput>, Prisma.UserUncheckedUpdateWithoutRedeemCodesInput>
 }
 
+export type UserCreateNestedOneWithoutTransactionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransactionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransactionsInput
+  upsert?: Prisma.UserUpsertWithoutTransactionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTransactionsInput, Prisma.UserUpdateWithoutTransactionsInput>, Prisma.UserUncheckedUpdateWithoutTransactionsInput>
+}
+
 export type UserCreateWithoutWalletInput = {
   uid?: string
   displayName?: string | null
@@ -727,8 +693,6 @@ export type UserCreateWithoutWalletInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -736,6 +700,7 @@ export type UserCreateWithoutWalletInput = {
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -749,8 +714,6 @@ export type UserUncheckedCreateWithoutWalletInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -758,6 +721,7 @@ export type UserUncheckedCreateWithoutWalletInput = {
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -786,8 +750,6 @@ export type UserUpdateWithoutWalletInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -795,6 +757,7 @@ export type UserUpdateWithoutWalletInput = {
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -808,8 +771,6 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -817,6 +778,7 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWalletMembersInput = {
@@ -829,8 +791,6 @@ export type UserCreateWithoutWalletMembersInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -838,6 +798,7 @@ export type UserCreateWithoutWalletMembersInput = {
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWalletMembersInput = {
@@ -851,8 +812,6 @@ export type UserUncheckedCreateWithoutWalletMembersInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -860,6 +819,7 @@ export type UserUncheckedCreateWithoutWalletMembersInput = {
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWalletMembersInput = {
@@ -888,8 +848,6 @@ export type UserUpdateWithoutWalletMembersInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -897,6 +855,7 @@ export type UserUpdateWithoutWalletMembersInput = {
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletMembersInput = {
@@ -910,8 +869,6 @@ export type UserUncheckedUpdateWithoutWalletMembersInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -919,6 +876,7 @@ export type UserUncheckedUpdateWithoutWalletMembersInput = {
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedApiKeysInput = {
@@ -931,8 +889,6 @@ export type UserCreateWithoutCreatedApiKeysInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -940,6 +896,7 @@ export type UserCreateWithoutCreatedApiKeysInput = {
   walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedApiKeysInput = {
@@ -953,8 +910,6 @@ export type UserUncheckedCreateWithoutCreatedApiKeysInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -962,6 +917,7 @@ export type UserUncheckedCreateWithoutCreatedApiKeysInput = {
   walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedApiKeysInput = {
@@ -990,8 +946,6 @@ export type UserUpdateWithoutCreatedApiKeysInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -999,6 +953,7 @@ export type UserUpdateWithoutCreatedApiKeysInput = {
   walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedApiKeysInput = {
@@ -1012,8 +967,6 @@ export type UserUncheckedUpdateWithoutCreatedApiKeysInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1021,6 +974,7 @@ export type UserUncheckedUpdateWithoutCreatedApiKeysInput = {
   walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPasskeysInput = {
@@ -1033,8 +987,6 @@ export type UserCreateWithoutPasskeysInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -1042,6 +994,7 @@ export type UserCreateWithoutPasskeysInput = {
   walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPasskeysInput = {
@@ -1055,8 +1008,6 @@ export type UserUncheckedCreateWithoutPasskeysInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -1064,6 +1015,7 @@ export type UserUncheckedCreateWithoutPasskeysInput = {
   walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPasskeysInput = {
@@ -1092,8 +1044,6 @@ export type UserUpdateWithoutPasskeysInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1101,6 +1051,7 @@ export type UserUpdateWithoutPasskeysInput = {
   walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasskeysInput = {
@@ -1114,8 +1065,6 @@ export type UserUncheckedUpdateWithoutPasskeysInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1123,6 +1072,7 @@ export type UserUncheckedUpdateWithoutPasskeysInput = {
   walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
   redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRedeemCodesInput = {
@@ -1135,8 +1085,6 @@ export type UserCreateWithoutRedeemCodesInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -1144,6 +1092,7 @@ export type UserCreateWithoutRedeemCodesInput = {
   walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
   createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRedeemCodesInput = {
@@ -1157,8 +1106,6 @@ export type UserUncheckedCreateWithoutRedeemCodesInput = {
   googleId?: string | null
   feishuId?: string | null
   microsoftId?: string | null
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   lastLoginAt?: Date | string | null
@@ -1166,6 +1113,7 @@ export type UserUncheckedCreateWithoutRedeemCodesInput = {
   walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
   passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
   createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRedeemCodesInput = {
@@ -1194,8 +1142,6 @@ export type UserUpdateWithoutRedeemCodesInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1203,6 +1149,7 @@ export type UserUpdateWithoutRedeemCodesInput = {
   walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
   createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRedeemCodesInput = {
@@ -1216,14 +1163,111 @@ export type UserUncheckedUpdateWithoutRedeemCodesInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   wallet?: Prisma.WalletUncheckedUpdateManyWithoutOwnerNestedInput
   walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
   passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
+  createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTransactionsInput = {
+  uid?: string
+  displayName?: string | null
+  avatar?: string | null
+  email?: string | null
+  phone?: string | null
+  gitHubId?: string | null
+  googleId?: string | null
+  feishuId?: string | null
+  microsoftId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  wallet?: Prisma.WalletCreateNestedManyWithoutOwnerInput
+  walletMembers?: Prisma.WalletMemberCreateNestedManyWithoutUserInput
+  passkeys?: Prisma.PasskeyCreateNestedManyWithoutUserInput
+  redeemCodes?: Prisma.RedemptionCodeCreateNestedManyWithoutRedeemerInput
+  createdApiKeys?: Prisma.ApiKeyCreateNestedManyWithoutCreatorInput
+}
+
+export type UserUncheckedCreateWithoutTransactionsInput = {
+  id?: number
+  uid?: string
+  displayName?: string | null
+  avatar?: string | null
+  email?: string | null
+  phone?: string | null
+  gitHubId?: string | null
+  googleId?: string | null
+  feishuId?: string | null
+  microsoftId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastLoginAt?: Date | string | null
+  wallet?: Prisma.WalletUncheckedCreateNestedManyWithoutOwnerInput
+  walletMembers?: Prisma.WalletMemberUncheckedCreateNestedManyWithoutUserInput
+  passkeys?: Prisma.PasskeyUncheckedCreateNestedManyWithoutUserInput
+  redeemCodes?: Prisma.RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput
+  createdApiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutCreatorInput
+}
+
+export type UserCreateOrConnectWithoutTransactionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
+}
+
+export type UserUpsertWithoutTransactionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTransactionsInput, Prisma.UserUncheckedUpdateWithoutTransactionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTransactionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTransactionsInput, Prisma.UserUncheckedUpdateWithoutTransactionsInput>
+}
+
+export type UserUpdateWithoutTransactionsInput = {
+  uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  wallet?: Prisma.WalletUpdateManyWithoutOwnerNestedInput
+  walletMembers?: Prisma.WalletMemberUpdateManyWithoutUserNestedInput
+  passkeys?: Prisma.PasskeyUpdateManyWithoutUserNestedInput
+  redeemCodes?: Prisma.RedemptionCodeUpdateManyWithoutRedeemerNestedInput
+  createdApiKeys?: Prisma.ApiKeyUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTransactionsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  uid?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gitHubId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feishuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  microsoftId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  wallet?: Prisma.WalletUncheckedUpdateManyWithoutOwnerNestedInput
+  walletMembers?: Prisma.WalletMemberUncheckedUpdateManyWithoutUserNestedInput
+  passkeys?: Prisma.PasskeyUncheckedUpdateManyWithoutUserNestedInput
+  redeemCodes?: Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput
   createdApiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
@@ -1238,6 +1282,7 @@ export type UserCountOutputType = {
   passkeys: number
   redeemCodes: number
   createdApiKeys: number
+  transactions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1246,6 +1291,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   passkeys?: boolean | UserCountOutputTypeCountPasskeysArgs
   redeemCodes?: boolean | UserCountOutputTypeCountRedeemCodesArgs
   createdApiKeys?: boolean | UserCountOutputTypeCountCreatedApiKeysArgs
+  transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
 }
 
 /**
@@ -1293,6 +1339,13 @@ export type UserCountOutputTypeCountCreatedApiKeysArgs<ExtArgs extends runtime.T
   where?: Prisma.ApiKeyWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransactionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1305,8 +1358,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   googleId?: boolean
   feishuId?: boolean
   microsoftId?: boolean
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lastLoginAt?: boolean
@@ -1315,10 +1366,41 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passkeys?: boolean | Prisma.User$passkeysArgs<ExtArgs>
   redeemCodes?: boolean | Prisma.User$redeemCodesArgs<ExtArgs>
   createdApiKeys?: boolean | Prisma.User$createdApiKeysArgs<ExtArgs>
+  transactions?: boolean | Prisma.User$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
+export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  uid?: boolean
+  displayName?: boolean
+  avatar?: boolean
+  email?: boolean
+  phone?: boolean
+  gitHubId?: boolean
+  googleId?: boolean
+  feishuId?: boolean
+  microsoftId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  lastLoginAt?: boolean
+}, ExtArgs["result"]["user"]>
 
+export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  uid?: boolean
+  displayName?: boolean
+  avatar?: boolean
+  email?: boolean
+  phone?: boolean
+  gitHubId?: boolean
+  googleId?: boolean
+  feishuId?: boolean
+  microsoftId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  lastLoginAt?: boolean
+}, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
@@ -1331,22 +1413,23 @@ export type UserSelectScalar = {
   googleId?: boolean
   feishuId?: boolean
   microsoftId?: boolean
-  isDeleted?: boolean
-  isAdmin?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lastLoginAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "feishuId" | "microsoftId" | "isDeleted" | "isAdmin" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uid" | "displayName" | "avatar" | "email" | "phone" | "gitHubId" | "googleId" | "feishuId" | "microsoftId" | "createdAt" | "updatedAt" | "lastLoginAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   walletMembers?: boolean | Prisma.User$walletMembersArgs<ExtArgs>
   passkeys?: boolean | Prisma.User$passkeysArgs<ExtArgs>
   redeemCodes?: boolean | Prisma.User$redeemCodesArgs<ExtArgs>
   createdApiKeys?: boolean | Prisma.User$createdApiKeysArgs<ExtArgs>
+  transactions?: boolean | Prisma.User$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -1356,6 +1439,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     passkeys: Prisma.$PasskeyPayload<ExtArgs>[]
     redeemCodes: Prisma.$RedemptionCodePayload<ExtArgs>[]
     createdApiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
+    transactions: Prisma.$TransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1368,8 +1452,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     googleId: string | null
     feishuId: string | null
     microsoftId: string | null
-    isDeleted: boolean
-    isAdmin: boolean
     createdAt: Date
     updatedAt: Date
     lastLoginAt: Date | null
@@ -1491,6 +1573,30 @@ export interface UserDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
   createMany<T extends UserCreateManyArgs>(args?: Prisma.SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many Users and returns the data saved in the database.
+   * @param {UserCreateManyAndReturnArgs} args - Arguments to create many Users.
+   * @example
+   * // Create many Users
+   * const user = await prisma.user.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many Users and only return the `id`
+   * const userWithIdOnly = await prisma.user.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a User.
    * @param {UserDeleteArgs} args - Arguments to delete one User.
    * @example
@@ -1553,6 +1659,36 @@ export interface UserDelegate<ExtArgs extends runtime.Types.Extensions.InternalA
    * 
    */
   updateMany<T extends UserUpdateManyArgs>(args: Prisma.SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more Users and returns the data updated in the database.
+   * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
+   * @example
+   * // Update many Users
+   * const user = await prisma.user.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more Users and only return the `id`
+   * const userWithIdOnly = await prisma.user.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one User.
@@ -1718,6 +1854,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   passkeys<T extends Prisma.User$passkeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passkeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasskeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   redeemCodes<T extends Prisma.User$redeemCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$redeemCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RedemptionCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdApiKeys<T extends Prisma.User$createdApiKeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdApiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transactions<T extends Prisma.User$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1757,8 +1894,6 @@ export interface UserFieldRefs {
   readonly googleId: Prisma.FieldRef<"User", 'String'>
   readonly feishuId: Prisma.FieldRef<"User", 'String'>
   readonly microsoftId: Prisma.FieldRef<"User", 'String'>
-  readonly isDeleted: Prisma.FieldRef<"User", 'Boolean'>
-  readonly isAdmin: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -1995,6 +2130,25 @@ export type UserCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User createManyAndReturn
+ */
+export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * The data used to create many Users.
+   */
+  data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
+  skipDuplicates?: boolean
+}
+
+/**
  * User update
  */
 export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2024,6 +2178,32 @@ export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
  * User updateMany
  */
 export type UserUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The data used to update Users.
+   */
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyInput>
+  /**
+   * Filter which Users to update
+   */
+  where?: Prisma.UserWhereInput
+  /**
+   * Limit how many Users to update.
+   */
+  limit?: number
+}
+
+/**
+ * User updateManyAndReturn
+ */
+export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
   /**
    * The data used to update Users.
    */
@@ -2222,6 +2402,30 @@ export type User$createdApiKeysArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ApiKeyScalarFieldEnum | Prisma.ApiKeyScalarFieldEnum[]
+}
+
+/**
+ * User.transactions
+ */
+export type User$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transaction
+   */
+  select?: Prisma.TransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transaction
+   */
+  omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  where?: Prisma.TransactionWhereInput
+  orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[]
+  cursor?: Prisma.TransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
 }
 
 /**

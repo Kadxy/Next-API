@@ -24,8 +24,8 @@ export * as $Enums from './enums'
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more ApiCallLogs
- * const apiCallLogs = await prisma.apiCallLog.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -37,12 +37,56 @@ export { Prisma }
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node")
-path.join(process.cwd(), "prisma/postgresql/generated/libquery_engine-darwin-arm64.dylib.node")
+path.join(process.cwd(), "prisma/mysql/generated/libquery_engine-darwin-arm64.dylib.node")
 
 /**
- * Model ApiCallLog
+ * Model User
  * 
  */
-export type ApiCallLog = Prisma.ApiCallLogModel
+export type User = Prisma.UserModel
+/**
+ * Model Wallet
+ * 
+ */
+export type Wallet = Prisma.WalletModel
+/**
+ * Model WalletMember
+ * 
+ */
+export type WalletMember = Prisma.WalletMemberModel
+/**
+ * Model ApiKey
+ * 
+ */
+export type ApiKey = Prisma.ApiKeyModel
+/**
+ * Model Passkey
+ * 
+ */
+export type Passkey = Prisma.PasskeyModel
+/**
+ * Model RedemptionCode
+ * 
+ */
+export type RedemptionCode = Prisma.RedemptionCodeModel
+/**
+ * Model Transaction
+ * 
+ */
+export type Transaction = Prisma.TransactionModel
+/**
+ * Model AIModel
+ * 
+ */
+export type AIModel = Prisma.AIModelModel
+/**
+ * Model UpstreamConfig
+ * 
+ */
+export type UpstreamConfig = Prisma.UpstreamConfigModel
 
+export type TransactionStatus = $Enums.TransactionStatus
+export const TransactionStatus = $Enums.TransactionStatus
 
+export type TransactionType = $Enums.TransactionType
+export const TransactionType = $Enums.TransactionType

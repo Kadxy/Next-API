@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource detailDb {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL_DETAIL")
+}
+
+model ApiCallRecord {
+  id              Int      @id @default(autoincrement())
+  businessId      String   @unique @detailDb.VarChar(26) // ULID, 全局唯一请求ID
+  userId          Int      @detailDb.Integer // [冗余]用户ID
+  walletId        Int      @detailDb.Integer // [冗余]钱包ID
+  apiKeyId        Int      @detailDb.Integer // [冗余]API Key ID
+  model           String   @detailDb.VarChar(63) // [调用]模型名称
+  upstreamId      Int      @detailDb.Integer // [调用]上游ID
+  clientIp        String   @detailDb.VarChar(45) // [请求上下文]客户端IP
+  userAgent       String   @detailDb.VarChar(255) // [请求上下文]客户端UA
+  externalTraceId String   @detailDb.VarChar(255) // [请求上下文]外部追踪ID
+  startTime       DateTime @detailDb.Timestamp // [时间和性能]开始时间
+  endTime         DateTime @detailDb.Timestamp // [时间和性能]结束时间
+  durationMs      Int      @detailDb.Integer // [时间和性能]持续时间(毫秒)
+  firstTokenMs    Int      @detailDb.Integer // [时间和性能]第一个token时间（流式）
+  inputTokens     Int      @detailDb.Integer // [计费]输入token
+  outputTokens    Int      @detailDb.Integer // [计费]输出token
+  totalTokens     Int      @detailDb.Integer // [计费]总token
+  isFailed        Boolean  @default(false) // [错误]是否失败
+  createdAt       DateTime @default(now())
+
+  @@index([walletId, createdAt(sort: Desc)])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([model, createdAt(sort: Desc)])
+  @@map("api_call_records")
+}
+
+model ApiCallDetail {
+  id                Int      @id @default(autoincrement())
+  businessId        String   @detailDb.VarChar(26) // ULID, 与 ApiCallRecord.businessId 和 Transaction.businessId 保持一致
+  requestHeaders    Json?    @detailDb.Json // 请求头
+  requestBody       Json?    @detailDb.Json // 请求体
+  responseHeaders   Json?    @detailDb.Json // 响应头
+  responseBody      Json?    @detailDb.Json // 非流式响应体
+  responseText      String?  @detailDb.Text // 流式响应的纯文本
+  internalErrorInfo String?  @detailDb.VarChar(1024) // 内部错误信息(如有)
+  upstreamErrorInfo String?  @detailDb.VarChar(1024) // 上游错误信息(如有)
+  createdAt         DateTime @default(now())
+
+  @@map("api_call_details")
+}

@@ -301,7 +301,6 @@ export type PasskeyOrderByWithRelationInput = {
   lastUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.PasskeyOrderByRelevanceInput
 }
 
 export type PasskeyWhereUniqueInput = Prisma.AtLeast<{
@@ -484,12 +483,6 @@ export type PasskeyListRelationFilter = {
 
 export type PasskeyOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type PasskeyOrderByRelevanceInput = {
-  fields: Prisma.PasskeyOrderByRelevanceFieldEnum | Prisma.PasskeyOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
 }
 
 export type PasskeyWebAuthnUserIDUserIdCompoundUniqueInput = {
@@ -763,7 +756,39 @@ export type PasskeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["passkey"]>
 
+export type PasskeySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  publicKey?: boolean
+  webAuthnUserID?: boolean
+  counter?: boolean
+  displayName?: boolean
+  transports?: boolean
+  deviceType?: boolean
+  backedUp?: boolean
+  isDeleted?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  lastUsedAt?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["passkey"]>
 
+export type PasskeySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  publicKey?: boolean
+  webAuthnUserID?: boolean
+  counter?: boolean
+  displayName?: boolean
+  transports?: boolean
+  deviceType?: boolean
+  backedUp?: boolean
+  isDeleted?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  lastUsedAt?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}, ExtArgs["result"]["passkey"]>
 
 export type PasskeySelectScalar = {
   id?: boolean
@@ -783,6 +808,12 @@ export type PasskeySelectScalar = {
 
 export type PasskeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "publicKey" | "webAuthnUserID" | "counter" | "displayName" | "transports" | "deviceType" | "backedUp" | "isDeleted" | "createdAt" | "updatedAt" | "lastUsedAt" | "userId", ExtArgs["result"]["passkey"]>
 export type PasskeyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type PasskeyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type PasskeyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -923,6 +954,30 @@ export interface PasskeyDelegate<ExtArgs extends runtime.Types.Extensions.Intern
   createMany<T extends PasskeyCreateManyArgs>(args?: Prisma.SelectSubset<T, PasskeyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many Passkeys and returns the data saved in the database.
+   * @param {PasskeyCreateManyAndReturnArgs} args - Arguments to create many Passkeys.
+   * @example
+   * // Create many Passkeys
+   * const passkey = await prisma.passkey.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many Passkeys and only return the `id`
+   * const passkeyWithIdOnly = await prisma.passkey.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends PasskeyCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, PasskeyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasskeyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a Passkey.
    * @param {PasskeyDeleteArgs} args - Arguments to delete one Passkey.
    * @example
@@ -985,6 +1040,36 @@ export interface PasskeyDelegate<ExtArgs extends runtime.Types.Extensions.Intern
    * 
    */
   updateMany<T extends PasskeyUpdateManyArgs>(args: Prisma.SelectSubset<T, PasskeyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more Passkeys and returns the data updated in the database.
+   * @param {PasskeyUpdateManyAndReturnArgs} args - Arguments to update many Passkeys.
+   * @example
+   * // Update many Passkeys
+   * const passkey = await prisma.passkey.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more Passkeys and only return the `id`
+   * const passkeyWithIdOnly = await prisma.passkey.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends PasskeyUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, PasskeyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasskeyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Passkey.
@@ -1421,6 +1506,29 @@ export type PasskeyCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * Passkey createManyAndReturn
+ */
+export type PasskeyCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Passkey
+   */
+  select?: Prisma.PasskeySelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Passkey
+   */
+  omit?: Prisma.PasskeyOmit<ExtArgs> | null
+  /**
+   * The data used to create many Passkeys.
+   */
+  data: Prisma.PasskeyCreateManyInput | Prisma.PasskeyCreateManyInput[]
+  skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasskeyIncludeCreateManyAndReturn<ExtArgs> | null
+}
+
+/**
  * Passkey update
  */
 export type PasskeyUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1462,6 +1570,36 @@ export type PasskeyUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Passkeys to update.
    */
   limit?: number
+}
+
+/**
+ * Passkey updateManyAndReturn
+ */
+export type PasskeyUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Passkey
+   */
+  select?: Prisma.PasskeySelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the Passkey
+   */
+  omit?: Prisma.PasskeyOmit<ExtArgs> | null
+  /**
+   * The data used to update Passkeys.
+   */
+  data: Prisma.XOR<Prisma.PasskeyUpdateManyMutationInput, Prisma.PasskeyUncheckedUpdateManyInput>
+  /**
+   * Filter which Passkeys to update
+   */
+  where?: Prisma.PasskeyWhereInput
+  /**
+   * Limit how many Passkeys to update.
+   */
+  limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasskeyIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

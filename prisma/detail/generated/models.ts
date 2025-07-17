@@ -7,5 +7,6 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/ApiCallLog'
+export type * from './models/ApiCallRecord'
+export type * from './models/ApiCallDetail'
 export type * from './commonInputTypes'

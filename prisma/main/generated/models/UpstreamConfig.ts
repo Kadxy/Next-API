@@ -236,7 +236,6 @@ export type UpstreamConfigOrderByWithRelationInput = {
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  _relevance?: Prisma.UpstreamConfigOrderByRelevanceInput
 }
 
 export type UpstreamConfigWhereUniqueInput = Prisma.AtLeast<{
@@ -337,12 +336,6 @@ export type UpstreamConfigUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type UpstreamConfigOrderByRelevanceInput = {
-  fields: Prisma.UpstreamConfigOrderByRelevanceFieldEnum | Prisma.UpstreamConfigOrderByRelevanceFieldEnum[]
-  sort: Prisma.SortOrder
-  search: string
-}
-
 export type UpstreamConfigCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -391,7 +384,23 @@ export type UpstreamConfigSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdAt?: boolean
 }, ExtArgs["result"]["upstreamConfig"]>
 
+export type UpstreamConfigSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  name?: boolean
+  weight?: boolean
+  baseUrl?: boolean
+  apiKey?: boolean
+  createdAt?: boolean
+}, ExtArgs["result"]["upstreamConfig"]>
 
+export type UpstreamConfigSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
+  name?: boolean
+  weight?: boolean
+  baseUrl?: boolean
+  apiKey?: boolean
+  createdAt?: boolean
+}, ExtArgs["result"]["upstreamConfig"]>
 
 export type UpstreamConfigSelectScalar = {
   id?: boolean
@@ -532,6 +541,30 @@ export interface UpstreamConfigDelegate<ExtArgs extends runtime.Types.Extensions
   createMany<T extends UpstreamConfigCreateManyArgs>(args?: Prisma.SelectSubset<T, UpstreamConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
+   * Create many UpstreamConfigs and returns the data saved in the database.
+   * @param {UpstreamConfigCreateManyAndReturnArgs} args - Arguments to create many UpstreamConfigs.
+   * @example
+   * // Create many UpstreamConfigs
+   * const upstreamConfig = await prisma.upstreamConfig.createManyAndReturn({
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Create many UpstreamConfigs and only return the `id`
+   * const upstreamConfigWithIdOnly = await prisma.upstreamConfig.createManyAndReturn({
+   *   select: { id: true },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  createManyAndReturn<T extends UpstreamConfigCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, UpstreamConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UpstreamConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+  /**
    * Delete a UpstreamConfig.
    * @param {UpstreamConfigDeleteArgs} args - Arguments to delete one UpstreamConfig.
    * @example
@@ -594,6 +627,36 @@ export interface UpstreamConfigDelegate<ExtArgs extends runtime.Types.Extensions
    * 
    */
   updateMany<T extends UpstreamConfigUpdateManyArgs>(args: Prisma.SelectSubset<T, UpstreamConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+
+  /**
+   * Update zero or more UpstreamConfigs and returns the data updated in the database.
+   * @param {UpstreamConfigUpdateManyAndReturnArgs} args - Arguments to update many UpstreamConfigs.
+   * @example
+   * // Update many UpstreamConfigs
+   * const upstreamConfig = await prisma.upstreamConfig.updateManyAndReturn({
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * 
+   * // Update zero or more UpstreamConfigs and only return the `id`
+   * const upstreamConfigWithIdOnly = await prisma.upstreamConfig.updateManyAndReturn({
+   *   select: { id: true },
+   *   where: {
+   *     // ... provide filter here
+   *   },
+   *   data: [
+   *     // ... provide data here
+   *   ]
+   * })
+   * Note, that providing `undefined` is treated as the value not being there.
+   * Read more here: https://pris.ly/d/null-undefined
+   * 
+   */
+  updateManyAndReturn<T extends UpstreamConfigUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, UpstreamConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UpstreamConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one UpstreamConfig.
@@ -998,6 +1061,25 @@ export type UpstreamConfigCreateManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * UpstreamConfig createManyAndReturn
+ */
+export type UpstreamConfigCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UpstreamConfig
+   */
+  select?: Prisma.UpstreamConfigSelectCreateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the UpstreamConfig
+   */
+  omit?: Prisma.UpstreamConfigOmit<ExtArgs> | null
+  /**
+   * The data used to create many UpstreamConfigs.
+   */
+  data: Prisma.UpstreamConfigCreateManyInput | Prisma.UpstreamConfigCreateManyInput[]
+  skipDuplicates?: boolean
+}
+
+/**
  * UpstreamConfig update
  */
 export type UpstreamConfigUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1023,6 +1105,32 @@ export type UpstreamConfigUpdateArgs<ExtArgs extends runtime.Types.Extensions.In
  * UpstreamConfig updateMany
  */
 export type UpstreamConfigUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * The data used to update UpstreamConfigs.
+   */
+  data: Prisma.XOR<Prisma.UpstreamConfigUpdateManyMutationInput, Prisma.UpstreamConfigUncheckedUpdateManyInput>
+  /**
+   * Filter which UpstreamConfigs to update
+   */
+  where?: Prisma.UpstreamConfigWhereInput
+  /**
+   * Limit how many UpstreamConfigs to update.
+   */
+  limit?: number
+}
+
+/**
+ * UpstreamConfig updateManyAndReturn
+ */
+export type UpstreamConfigUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UpstreamConfig
+   */
+  select?: Prisma.UpstreamConfigSelectUpdateManyAndReturn<ExtArgs> | null
+  /**
+   * Omit specific fields from the UpstreamConfig
+   */
+  omit?: Prisma.UpstreamConfigOmit<ExtArgs> | null
   /**
    * The data used to update UpstreamConfigs.
    */
