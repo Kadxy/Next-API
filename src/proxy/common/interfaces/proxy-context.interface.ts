@@ -47,7 +47,7 @@ export abstract class ProxyContext {
 
   // 抽象方法 - 计费相关
   abstract calculateCost(): Decimal; // 计算费用
-  abstract getBillingData(): BillingTokenData; // 获取计费数据
+  abstract getBillingData(): BillingData; // 获取计费数据
 
   // 详细日志信息
   requestBody: any; // 请求体
@@ -160,7 +160,14 @@ export type BillingRequestData = {
   request_count: number;
 };
 
+export type BillingBytesData = {
+  input_bytes: number;
+  output_bytes?: number;
+  total_bytes?: number;
+};
+
 export type BillingData =
   | BillingTokenData
   | BillingDurationData
-  | BillingRequestData;
+  | BillingRequestData
+  | BillingBytesData;

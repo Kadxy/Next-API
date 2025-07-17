@@ -11,11 +11,11 @@ import { ConfigModule } from './core/config/config.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { RedemptionModule } from './redemption/redemption.module';
 import { TransactionModule } from './transaction/transaction.module';
-import { ProxyModule } from './proxy/proxy.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WalletModule } from './wallet/wallet.module';
 import { FeishuAppService } from './feishu-app/feishu-app.service';
 import { FeishuAppModule } from './feishu-app/feishu-app.module';
+import { ProxyModule } from './proxy/proxy.module';
 
 @Module({
   imports: [
@@ -41,9 +41,9 @@ import { FeishuAppModule } from './feishu-app/feishu-app.module';
     CoreModule,
     RedemptionModule,
     TransactionModule,
-    ProxyModule,
     WalletModule,
     FeishuAppModule,
+    ProxyModule,
   ],
   providers: [FeishuAppService],
 })

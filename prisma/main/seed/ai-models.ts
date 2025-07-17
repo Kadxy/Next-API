@@ -1,4 +1,6 @@
+import { AudioModelUncheckedCreateInput } from '@prisma-main-client/models';
 import {
+  AudioModel,
   LLMModel,
   PrismaClient,
   UpstreamConfig,
@@ -76,6 +78,40 @@ const upstreamConfigs: SeedUpstreamConfig[] = [
     apiKey: 'sk-1234567890',
     type: UpstreamProvider.OPENAI,
   },
+  {
+    name: 'fish-audio-upstream',
+    weight: 30,
+    baseUrl: 'https://api.fish.audio',
+    apiKey: '08701ed676144e30847046ef5e708d28',
+    type: UpstreamProvider.FISH_AUDIO,
+  },
+];
+
+const audioModels: AudioModelUncheckedCreateInput[] = [
+  {
+    name: 'fish-audio-speech-1.5',
+    provider: UpstreamProvider.FISH_AUDIO,
+    description: '',
+    pricePerMillionBytes: new Decimal(15),
+  },
+  {
+    name: 'fish-audio-speech-1.6',
+    provider: UpstreamProvider.FISH_AUDIO,
+    description: '',
+    pricePerMillionBytes: new Decimal(15),
+  },
+  {
+    name: 'fish-audio-s1',
+    provider: UpstreamProvider.FISH_AUDIO,
+    description: '',
+    pricePerMillionBytes: new Decimal(15),
+  },
+  {
+    name: 'fish-audio-transcribe-1',
+    provider: UpstreamProvider.FISH_AUDIO,
+    description: '',
+    pricePerHour: new Decimal(0.36),
+  },
 ];
 
 async function main() {
@@ -86,6 +122,15 @@ async function main() {
         where: { name: aiModel.name },
         update: aiModel,
         create: aiModel,
+      });
+    }),
+
+    audioModels.map(async (audioModel, index) => {
+      console.log(`🔄 Audio Model ${index + 1}/${audioModels.length}`);
+      await prisma.audioModel.upsert({
+        where: { name: audioModel.name },
+        update: audioModel,
+        create: audioModel,
       });
     }),
 

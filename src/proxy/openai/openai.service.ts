@@ -112,6 +112,7 @@ export class OpenAIService
     retry: RetryInfo = { count: 0, excludeIds: [] },
   ): Promise<AIModelNonStreamResponse> {
     const { id, url, config } = await this.getUpstream(
+      context,
       retry.excludeIds,
       this.paths.chatCompletions,
     );
@@ -153,6 +154,7 @@ export class OpenAIService
     retry: RetryInfo = { count: 0, excludeIds: [] },
   ): Promise<NodeJS.ReadableStream> {
     const { id, url, config } = await this.getUpstream(
+      context,
       retry.excludeIds,
       this.paths.chatCompletions,
     );

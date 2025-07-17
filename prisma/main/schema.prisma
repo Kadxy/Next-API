@@ -191,6 +191,18 @@ model LLMModel {
   @@map("llm_models")
 }
 
+model AudioModel {
+  name                 String           @id @mainDb.VarChar(63) // 模型名称, 全局唯一
+  provider             UpstreamProvider // 模型提供商
+  description          String           @default("") @mainDb.VarChar(255) // 模型描述
+  pricePerMillionBytes Decimal          @default(-1) @mainDb.Decimal(15, 6) // 每百万UTF-8字符价格(单位: 美元/百万字符)
+  pricePerSecond       Decimal          @default(-1) @mainDb.Decimal(15, 6) // 每秒价格(单位: 美元/秒)
+  pricePerMinute       Decimal          @default(-1) @mainDb.Decimal(15, 6) // 每分钟价格(单位: 美元/分钟)
+  pricePerHour         Decimal          @default(-1) @mainDb.Decimal(15, 6) // 每小时价格(单位: 美元/小时)
+
+  @@map("audio_models")
+}
+
 // 模型渠道(上游, 不一定是一级供应商) - 默认渠道支持全部模型, 所以不关联模型表
 model UpstreamConfig {
   id      Int              @id @default(autoincrement())

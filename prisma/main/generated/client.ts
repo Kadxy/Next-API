@@ -80,6 +80,11 @@ export type Transaction = Prisma.TransactionModel
  */
 export type LLMModel = Prisma.LLMModelModel
 /**
+ * Model AudioModel
+ * 
+ */
+export type AudioModel = Prisma.AudioModelModel
+/**
  * Model UpstreamConfig
  * 
  */

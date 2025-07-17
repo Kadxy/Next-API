@@ -34,7 +34,7 @@ export class TooManyRequestsException extends BusinessException {
 
 // 500 Internal Server Error - 调用上游API失败
 export class APICallException extends BusinessException {
-  constructor(context: ProxyContext, message: string = 'service error') {
+  constructor(context: ProxyContext, message: string = 'service temporarily unavailable') {
     const errorMessage = `${message}(RequestId:${context.businessId})`;
 
     super(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);

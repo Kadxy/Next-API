@@ -402,6 +402,7 @@ export const ModelName = {
   RedemptionCode: 'RedemptionCode',
   Transaction: 'Transaction',
   LLMModel: 'LLMModel',
+  AudioModel: 'AudioModel',
   UpstreamConfig: 'UpstreamConfig'
 } as const
 
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "transaction" | "lLMModel" | "upstreamConfig"
+    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "transaction" | "lLMModel" | "audioModel" | "upstreamConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1014,6 +1015,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AudioModel: {
+      payload: Prisma.$AudioModelPayload<ExtArgs>
+      fields: Prisma.AudioModelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AudioModelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AudioModelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>
+        }
+        findFirst: {
+          args: Prisma.AudioModelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AudioModelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>
+        }
+        findMany: {
+          args: Prisma.AudioModelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>[]
+        }
+        create: {
+          args: Prisma.AudioModelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>
+        }
+        createMany: {
+          args: Prisma.AudioModelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AudioModelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>[]
+        }
+        delete: {
+          args: Prisma.AudioModelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>
+        }
+        update: {
+          args: Prisma.AudioModelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>
+        }
+        deleteMany: {
+          args: Prisma.AudioModelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AudioModelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AudioModelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>[]
+        }
+        upsert: {
+          args: Prisma.AudioModelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AudioModelPayload>
+        }
+        aggregate: {
+          args: Prisma.AudioModelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAudioModel>
+        }
+        groupBy: {
+          args: Prisma.AudioModelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AudioModelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AudioModelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AudioModelCountAggregateOutputType> | number
+        }
+      }
+    }
     UpstreamConfig: {
       payload: Prisma.$UpstreamConfigPayload<ExtArgs>
       fields: Prisma.UpstreamConfigFieldRefs
@@ -1252,6 +1327,19 @@ export const LLMModelScalarFieldEnum = {
 } as const
 
 export type LLMModelScalarFieldEnum = (typeof LLMModelScalarFieldEnum)[keyof typeof LLMModelScalarFieldEnum]
+
+
+export const AudioModelScalarFieldEnum = {
+  name: 'name',
+  provider: 'provider',
+  description: 'description',
+  pricePerMillionBytes: 'pricePerMillionBytes',
+  pricePerSecond: 'pricePerSecond',
+  pricePerMinute: 'pricePerMinute',
+  pricePerHour: 'pricePerHour'
+} as const
+
+export type AudioModelScalarFieldEnum = (typeof AudioModelScalarFieldEnum)[keyof typeof AudioModelScalarFieldEnum]
 
 
 export const UpstreamConfigScalarFieldEnum = {
@@ -1525,6 +1613,7 @@ export type GlobalOmitConfig = {
   redemptionCode?: Prisma.RedemptionCodeOmit
   transaction?: Prisma.TransactionOmit
   lLMModel?: Prisma.LLMModelOmit
+  audioModel?: Prisma.AudioModelOmit
   upstreamConfig?: Prisma.UpstreamConfigOmit
 }
 

@@ -37,6 +37,7 @@
     "@fastify/static": "^8.2.0",
     "@keyv/redis": "^4.4.0",
     "@larksuiteoapi/node-sdk": "^1.53.0",
+    "@msgpack/msgpack": "^3.1.2",
     "@nestjs/axios": "^4.0.0",
     "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.1.2",

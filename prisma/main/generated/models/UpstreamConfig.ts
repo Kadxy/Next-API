@@ -373,10 +373,6 @@ export type UpstreamConfigSumOrderByAggregateInput = {
   weight?: Prisma.SortOrder
 }
 
-export type EnumUpstreamProviderFieldUpdateOperationsInput = {
-  set?: $Enums.UpstreamProvider
-}
-
 
 
 export type UpstreamConfigSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{

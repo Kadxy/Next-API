@@ -7,8 +7,9 @@ import { ProxyContext } from './interfaces/proxy-context.interface';
 import { UpstreamConfig } from '@prisma-main-client/client';
 import { ApiKey } from '@prisma-main-client/client';
 import { AxiosRequestConfig } from 'axios';
-import { BusinessException } from '../../common/exceptions';
+import { APICallException, BusinessException } from '../../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { FishAudioContext } from '../fishaudio/interfaces/fishaudio-context.interface';
 
 /**
  * 代理服务的抽象基类
@@ -99,14 +100,16 @@ export abstract class ProxyBaseService<
 
   /**
    * 基于权重选择上游服务
+   * @param context
    * @param excludeIds 需要排除的上游ID列表（用于重试）
    * @param path API路径（如 /v1/chat/completions）
    * @returns 上游ID和请求配置
    */
   protected async getUpstream(
+    context: ProxyContext,
     excludeIds: UpstreamConfig['id'][] = [],
     path: string, // 直接传入路径字符串
-  ): Promise<{ id: number; url: string; config: AxiosRequestConfig }> {
+  ): Promise<{ id: number; url: string; config: AxiosRequestConfig }|null> {
     let availableTotalWeight = 0;
     const availableUpstreams: UpstreamConfig[] = [];
 
@@ -120,7 +123,7 @@ export abstract class ProxyBaseService<
 
     // 如果没有可用上游，抛出异常
     if (availableUpstreams.length === 0) {
-      throw new BusinessException('no available upstream');
+      throw new APICallException(context,'no available upstream');
     }
 
     // 权重随机选择上游
