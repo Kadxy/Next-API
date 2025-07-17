@@ -8,12 +8,12 @@ import {
   User,
   Wallet,
   WalletMember,
-} from '@prisma-mysql-client/client';
+} from '@prisma-main-client/client';
 import {
   OWNER_WALLET_QUERY_OMIT,
   OWNER_WALLET_QUERY_WALLET_MEMBER_SELECT,
   SIMPLE_WALLET_QUERY_SELECT,
-} from 'prisma/mysql/query.constant';
+} from 'prisma/main/query.constant';
 import { UserService } from '../identity/user/user.service';
 import { Decimal } from '@prisma/client/runtime/library';
 import { PrismaService } from '../core/prisma/prisma.service';
@@ -67,25 +67,27 @@ export class WalletService {
   }
 
   async listUserAccessibleWallets(userId: User['id']) {
-    const joinedWallet = await this.prisma.mysql.walletMember.findMany({
+    const joinedWallet = await this.prisma.main.walletMember.findMany({
       where: { userId, isActive: true },
       select: {
-        isOwner: true,
         creditUsed: true,
         creditLimit: true,
         wallet: { select: SIMPLE_WALLET_QUERY_SELECT },
       },
       orderBy: [
-        { isOwner: 'desc' }, // 是钱包所有者的在前
         { createdAt: 'asc' }, // 创建时间早的在前
       ],
     });
 
-    return joinedWallet.map((wallet) => ({
-      isOwner: wallet.isOwner,
-      creditUsed: wallet.creditUsed.toString(),
-      creditLimit: wallet.creditLimit.toString(),
-      ...wallet.wallet,
+    // NOTE: if you update schema, you need to update this function
+    return joinedWallet.map((member) => ({
+      uid: member.wallet.uid,
+      balance: member.wallet.balance.toString(),
+      displayName: member.wallet.displayName,
+      owner: member.wallet.owner,
+      isOwner: member.wallet.ownerId === userId, // 是否是钱包所有者
+      creditUsed: member.creditUsed.toString(),
+      creditLimit: member.creditLimit.toString(),
     }));
   }
 
@@ -102,7 +104,7 @@ export class WalletService {
     );
 
     // 2. 更新钱包名称
-    await this.prisma.mysql.wallet.update({
+    await this.prisma.main.wallet.update({
       where: { id: wallet.id },
       data: { displayName },
     });
@@ -131,7 +133,7 @@ export class WalletService {
     }
 
     // 创建成员记录
-    await this.prisma.mysql.walletMember.create({
+    await this.prisma.main.walletMember.create({
       data: {
         alias,
         creditLimit,
@@ -165,13 +167,13 @@ export class WalletService {
       throw new BusinessException('Member already removed');
     }
 
-    if (existRecord.isOwner) {
+    if (existRecord.userId === wallet.ownerId) {
       throw new BusinessException('Cannot remove wallet owner');
     }
 
     await Promise.all([
       // 更新 walletMember, isActive = false
-      this.prisma.mysql.walletMember.update({
+      this.prisma.main.walletMember.update({
         where: { id: existRecord.id },
         data: { isActive: false },
       }),
@@ -204,7 +206,7 @@ export class WalletService {
     }
 
     // 更新记录
-    await this.prisma.mysql.walletMember.update({
+    await this.prisma.main.walletMember.update({
       where: { id: existRecord.id },
       data: {
         ...(alias && { alias }),
@@ -239,7 +241,7 @@ export class WalletService {
     }
 
     // 更新记录
-    await this.prisma.mysql.walletMember.update({
+    await this.prisma.main.walletMember.update({
       where: { id: existRecord.id },
       data: {
         isActive: true,
@@ -278,7 +280,7 @@ export class WalletService {
 
     await Promise.all([
       // 2.1 更新 walletMember
-      await this.prisma.mysql.walletMember.update({
+      await this.prisma.main.walletMember.update({
         where: {
           walletId_userId: { walletId: wallet.id, userId },
         },
@@ -294,13 +296,12 @@ export class WalletService {
   }
 
   async getWalletDetail(walletUid: Wallet['uid'], userId: User['id']) {
-    return this.prisma.mysql.wallet.findUnique({
+    return this.prisma.main.wallet.findUnique({
       where: { uid: walletUid, ownerId: userId },
       include: {
         members: {
           select: OWNER_WALLET_QUERY_WALLET_MEMBER_SELECT,
           orderBy: [
-            { isOwner: 'desc' }, // 是钱包所有者的在前
             { isActive: 'desc' }, // 有效的在前
             { createdAt: 'asc' }, // 创建时间早的在前
           ],
@@ -358,11 +359,11 @@ export class WalletService {
     // 2. 查询目标用户
     const memberUser = useCachedUser
       ? await this.userService.getCachedUser(memberUid)
-      : await this.prisma.mysql.user.findUnique({
-          where: { uid: memberUid, isDeleted: false },
+      : await this.prisma.main.user.findUnique({
+          where: { uid: memberUid },
         });
 
-    if (!memberUser || memberUser.isDeleted) {
+    if (!memberUser) {
       throw new BusinessException('User not found');
     }
 
@@ -401,7 +402,7 @@ export class WalletService {
   }
 
   private async getDbWallet(where: Prisma.WalletWhereUniqueInput) {
-    const wallet = await this.prisma.mysql.wallet.findUnique({
+    const wallet = await this.prisma.main.wallet.findUnique({
       where,
       include: { members: true },
     });
@@ -432,14 +433,14 @@ export class WalletService {
 
   // Inactivate all api keys belong to a wallet member
   private async inactiveApiKeys(walletId: Wallet['id'], creatorId: User['id']) {
-    const apiKeys = await this.prisma.mysql.apiKey.findMany({
+    const apiKeys = await this.prisma.main.apiKey.findMany({
       where: { walletId, creatorId, isActive: true },
     });
 
     if (apiKeys.length > 0) {
       for (const key of apiKeys) {
         await Promise.all([
-          this.prisma.mysql.apiKey.update({
+          this.prisma.main.apiKey.update({
             where: { hashKey: key.hashKey },
             data: { isActive: false },
           }),

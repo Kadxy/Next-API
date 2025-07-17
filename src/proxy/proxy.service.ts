@@ -15,9 +15,10 @@ import {
 import { BillingService } from '../billing/billing.service';
 import {
   AIModel,
-  BillStatus,
+  TransactionStatus,
+  TransactionType,
   UpstreamConfig,
-} from '@prisma-mysql-client/client';
+} from '@prisma-main-client/client';
 import { APICallException, BusinessException } from '../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { AxiosRequestConfig } from 'axios';
@@ -26,7 +27,7 @@ import {
   extractTokenUsage,
 } from 'src/billing/dto/billing-context';
 import { TiktokenService } from 'src/billing/tiktoken/tiktoken.service';
-import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
+import { Decimal } from '@prisma-main-client/internal/prismaNamespace';
 import { ULID } from 'ulid';
 import { PrismaService } from '../core/prisma/prisma.service';
 
@@ -218,21 +219,16 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
 
   // 记录失败的计费信息（公开方法，供 Controller 调用）
   async recordFailedBilling(context: BillingContext): Promise<void> {
-    await this.billingService.createBillingRecord({
-      requestId: context.requestId,
-      userId: context.userId,
+    await this.billingService.createTransaction({
+      businessId: context.requestId,
+      user: { connect: { id: context.userId } },
       wallet: { connect: { id: context.walletId } },
-      apikeyId: context.apikeyId,
-      model: context.model.name,
-      clientIp: context.clientIp,
-      externalTraceId: context.externalTraceId,
-      startTime: context.startTime,
-      endTime: context.endTime || new Date(),
-      durationMs: context.durationMs,
-      inputToken: 0,
-      outputToken: 0,
-      cost: new Decimal(0),
-      billStatus: BillStatus.COMPLETED, // 失败请求无需扣费，直接标记为已完成
+      apiKey: { connect: { id: context.apikeyId } },
+      type: TransactionType.CONSUME,
+      amount: new Decimal(0),
+      description: context.model.name,
+      errorMessage: 'failed to process stream billing',
+      status: TransactionStatus.FAILED,
     });
 
     this.logger.debug(`Failed billing recorded for ${context.requestId}`);
@@ -242,12 +238,12 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   @Cron(CronExpression.EVERY_5_MINUTES)
   private async initialize() {
     // load ai models
-    await this.prisma.mysql.aIModel
+    await this.prisma.main.aIModel
       .findMany({ where: { isActive: true } })
       .then((m) => m.forEach((m) => this.models.set(m.name, m)));
 
     // load upstream configs
-    await this.prisma.mysql.upstreamConfig
+    await this.prisma.main.upstreamConfig
       .findMany()
       .then((c) => c.forEach((c) => this.upstreams.set(c.id, c)));
 
@@ -344,22 +340,19 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   private async recordSuccessfulBilling(
     context: BillingContext,
   ): Promise<void> {
-    await this.billingService.createBillingRecord({
-      requestId: context.requestId,
-      userId: context.userId,
+    await this.billingService.createTransaction({
+      businessId: context.requestId,
+      user: { connect: { id: context.userId } },
       wallet: { connect: { id: context.walletId } },
-      apikeyId: context.apikeyId,
-      model: context.model.name,
-      clientIp: context.clientIp,
-      externalTraceId: context.externalTraceId,
-      startTime: context.startTime,
-      endTime: context.endTime || new Date(),
-      durationMs: context.durationMs,
-      errorMessage: null,
-      inputToken: context.inputTokens || 0,
-      outputToken: context.outputTokens || 0,
-      cost: context.cost || new Decimal(0),
-      billStatus: BillStatus.PENDING,
+      apiKey: { connect: { id: context.apikeyId } },
+      type: TransactionType.CONSUME,
+      amount: context.cost || new Decimal(0),
+      description: context.model.name,
+      metadata: {
+        inputTokens: context.inputTokens || 0,
+        outputTokens: context.outputTokens || 0,
+      },
+      status: TransactionStatus.PENDING,
     });
 
     this.logger.debug(

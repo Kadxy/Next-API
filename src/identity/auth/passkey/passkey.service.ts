@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Passkey, User } from '@prisma-mysql-client/client';
+import { Passkey, User } from '@prisma-main-client/client';
 import type {
   AuthenticationResponseJSON,
   AuthenticatorTransportFuture,
@@ -311,7 +311,7 @@ export class PasskeyService {
    * @param userId 用户ID
    */
   async listUserPasskeys(userId: User['id']) {
-    return this.prisma.mysql.passkey.findMany({
+    return this.prisma.main.passkey.findMany({
       where: { userId, isDeleted: false },
       select: {
         id: true,
@@ -334,7 +334,7 @@ export class PasskeyService {
     passkeyId: Passkey['id'],
     displayName: Passkey['displayName'],
   ) {
-    return this.prisma.mysql.passkey.update({
+    return this.prisma.main.passkey.update({
       where: { id: passkeyId, userId, isDeleted: false },
       data: { displayName },
     });
@@ -347,7 +347,7 @@ export class PasskeyService {
    */
   async deletePasskey(userId: User['id'], passkeyId: Passkey['id']) {
     // not return, because it contains bigint type, which cannot be serialized
-    await this.prisma.mysql.passkey.update({
+    await this.prisma.main.passkey.update({
       where: { id: passkeyId, userId, isDeleted: false },
       data: { isDeleted: true },
     });
@@ -358,7 +358,7 @@ export class PasskeyService {
    * @param userId 用户ID
    */
   private async getUserPasskeys(userId: User['id']) {
-    return this.prisma.mysql.passkey.findMany({
+    return this.prisma.main.passkey.findMany({
       where: { userId, isDeleted: false },
       select: { id: true, transports: true },
     });
@@ -369,7 +369,7 @@ export class PasskeyService {
    * @param id passkey ID
    */
   private async getPasskey(id: Passkey['id']) {
-    return this.prisma.mysql.passkey.findUnique({
+    return this.prisma.main.passkey.findUnique({
       where: { id, isDeleted: false },
     });
   }
@@ -390,7 +390,7 @@ export class PasskeyService {
   ) {
     const { credential, credentialDeviceType, credentialBackedUp } = info;
 
-    await this.prisma.mysql.passkey.create({
+    await this.prisma.main.passkey.create({
       data: {
         userId,
 
@@ -427,7 +427,7 @@ export class PasskeyService {
     passkeyId: Passkey['id'],
     newCounter: number,
   ) {
-    return this.prisma.mysql.passkey.update({
+    return this.prisma.main.passkey.update({
       where: { id: passkeyId, isDeleted: false },
       data: { counter: BigInt(newCounter), lastUsedAt: new Date() },
     });

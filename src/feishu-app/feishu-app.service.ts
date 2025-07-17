@@ -81,11 +81,10 @@ export class FeishuAppService implements OnModuleInit {
       },
       data: {
         receive_id: chat_id,
-        content: Lark.messageCard.defaultCard({
-          title: '欢迎加入聊天',
-          content: '你好, 欢迎加入聊天',
+        content: JSON.stringify({
+          text: '你好, 欢迎加入聊天',
         }),
-        msg_type: 'interactive',
+        msg_type: 'text',
       },
     });
   };

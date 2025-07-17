@@ -1,5 +1,5 @@
-import { AIModel } from '@prisma-mysql-client/client';
-import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
+import { AIModel } from '@prisma-main-client/client';
+import { Decimal } from '@prisma-main-client/internal/prismaNamespace';
 import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
 
 // 请求上下文，贯穿整个请求生命周期

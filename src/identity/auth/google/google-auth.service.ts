@@ -19,7 +19,7 @@ import {
 } from '../oauth/oauth.interface';
 import { BaseOAuth2Service } from '../oauth/oauth-base.service';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
-import { User } from '@prisma-mysql-client/client';
+import { User } from '@prisma-main-client/client';
 
 @Injectable()
 export class GoogleAuthService extends BaseOAuth2Service {

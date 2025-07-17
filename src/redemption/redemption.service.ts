@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RedemptionCode, User } from '@prisma-mysql-client/client';
-import { Decimal } from '@prisma-mysql-client/internal/prismaNamespace';
+import { RedemptionCode, User } from '@prisma-main-client/client';
+import { Decimal } from '@prisma-main-client/internal/prismaNamespace';
 import { BusinessException } from 'src/common/exceptions';
 import { CryptoService } from 'src/core/crypto/crypto.service';
 import { PrismaService } from '../core/prisma/prisma.service';
@@ -30,7 +30,7 @@ export class RedemptionService {
   ): Promise<RedemptionCode> {
     const code = this.generateRedemptionCode();
 
-    return this.prisma.mysql.redemptionCode.create({
+    return this.prisma.main.redemptionCode.create({
       data: {
         code,
         amount,
@@ -46,7 +46,7 @@ export class RedemptionService {
    */
   async doRedeem(code: string, redeemerId: User['id']): Promise<Decimal> {
     try {
-      const result = await this.prisma.mysql.$transaction(async (tx) => {
+      const result = await this.prisma.main.$transaction(async (tx) => {
         // 1. 查询兑换码记录
         const record = await tx.redemptionCode.findUnique({ where: { code } });
 
@@ -92,7 +92,7 @@ export class RedemptionService {
    * @returns 兑换码列表
    */
   async getAllRedemptionCodes() {
-    return this.prisma.mysql.redemptionCode.findMany();
+    return this.prisma.main.redemptionCode.findMany();
   }
 
   /**

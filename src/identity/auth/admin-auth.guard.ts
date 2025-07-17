@@ -1,6 +1,6 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { ForbiddenException } from 'src/common/exceptions';
-import { AuthGuard, RequestWithUser } from './auth.guard';
+import { AuthGuard } from './auth.guard';
 
 @Injectable()
 export class AdminAuthGuard extends AuthGuard {
@@ -10,12 +10,11 @@ export class AdminAuthGuard extends AuthGuard {
       return false;
     }
 
-    const request = context.switchToHttp().getRequest<RequestWithUser>();
+    // const request = context.switchToHttp().getRequest<RequestWithUser>();
 
-    if (!request.user?.isAdmin) {
-      throw new ForbiddenException('Admin only');
-    }
+    // 暂时不允许任何请求
+    throw new ForbiddenException('Admin only');
 
-    return true;
+    // return true;
   }
 }

@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma-mysql-client/client';
+import { Prisma } from '@prisma-main-client/client';
 
 // -- USER --
 export const USER_QUERY_OMIT: Prisma.UserOmit = {

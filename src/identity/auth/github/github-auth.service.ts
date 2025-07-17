@@ -19,7 +19,7 @@ import {
   IOAuth2LoginDto,
   OAuthActionType,
 } from '../oauth/oauth.interface';
-import { User } from '@prisma-mysql-client/client';
+import { User } from '@prisma-main-client/client';
 
 @Injectable()
 export class GitHubAuthService extends BaseOAuth2Service {

@@ -22,7 +22,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "/Users/kadxy/PersonalProjects/Next-API/prisma/mysql/generated",
+      "value": "/Users/kadxy/PersonalProjects/Next-API/prisma/main/generated",
       "fromEnvVar": null
     },
     "config": {
@@ -36,16 +36,17 @@ const config: runtime.GetPrismaClientConfig = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/kadxy/PersonalProjects/Next-API/prisma/mysql/schema.prisma",
+    "sourceFilePath": "/Users/kadxy/PersonalProjects/Next-API/prisma/main/schema.prisma",
     "isCustomOutput": true
   },
   "relativePath": "..",
-  "clientVersion": "6.11.1",
-  "engineVersion": "f40f79ec31188888a2e33acda0ecc8fd10a853a9",
+  "clientVersion": "6.12.0",
+  "engineVersion": "8047c96bbd92db98a2abc7c9323ce77c02c89dbc",
   "datasourceNames": [
     "mainDb"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "mainDb": {
       "url": {

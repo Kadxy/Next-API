@@ -1,4 +1,4 @@
-import { User } from '@prisma-mysql-client/client';
+import { User } from '@prisma-main-client/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { CACHE_KEYS } from '../../../core/cache/chche.constant';
 import { IsString, IsNotEmpty, IsEnum } from 'class-validator';

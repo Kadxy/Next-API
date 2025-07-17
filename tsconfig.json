@@ -18,10 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@prisma-mysql-client": ["./prisma/mysql/generated"],
-      "@prisma-mysql-client/*": ["./prisma/mysql/generated/*"],
-      "@prisma-postgresql-client": ["./prisma/postgresql/generated"],
-      "@prisma-postgresql-client/*": ["./prisma/postgresql/generated/*"],
+      "@prisma-main-client": ["./prisma/main/generated"],
+      "@prisma-main-client/*": ["./prisma/main/generated/*"],
+      "@prisma-detail-client": ["./prisma/detail/generated"],
+      "@prisma-detail-client/*": ["./prisma/detail/generated/*"],
     }
   }
 }

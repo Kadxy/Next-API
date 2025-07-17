@@ -14,7 +14,6 @@ import { BillingModule } from './billing/billing.module';
 import { ProxyModule } from './proxy/proxy.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WalletModule } from './wallet/wallet.module';
-import { BillingLogModule } from './billing-log/billing-log.module';
 import { FeishuAppService } from './feishu-app/feishu-app.service';
 import { FeishuAppModule } from './feishu-app/feishu-app.module';
 
@@ -44,7 +43,6 @@ import { FeishuAppModule } from './feishu-app/feishu-app.module';
     BillingModule,
     ProxyModule,
     WalletModule,
-    BillingLogModule,
     FeishuAppModule,
   ],
   providers: [FeishuAppService],

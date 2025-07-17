@@ -15,7 +15,7 @@ import {
   IOAuth2LoginResponse,
   OAuthActionType,
 } from '../oauth/oauth.interface';
-import { User } from '@prisma-mysql-client/client';
+import { User } from '@prisma-main-client/client';
 
 // https://open.feishu.cn/document/authentication-management/access-token/obtain-oauth-code
 

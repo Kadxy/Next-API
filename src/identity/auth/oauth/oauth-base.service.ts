@@ -9,7 +9,7 @@ import {
   OAuthActionType,
 } from './oauth.interface';
 import { Agent } from 'https';
-import { User } from '@prisma-mysql-client/client';
+import { User } from '@prisma-main-client/client';
 import { LimitedUser } from '../../user/user.service';
 
 export abstract class BaseOAuth2Service {
