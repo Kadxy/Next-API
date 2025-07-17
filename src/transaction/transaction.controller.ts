@@ -2,9 +2,9 @@ import { Controller } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Billing')
-@Controller('billing')
+@ApiTags('Transaction')
+@Controller('transaction')
 @ApiBearerAuth()
 export class TransactionController {
-  constructor(private readonly billingService: TransactionService) {}
+  constructor(private readonly transactionService: TransactionService) {}
 }

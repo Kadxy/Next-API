@@ -3,7 +3,7 @@ import { Decimal } from '@prisma-main-client/internal/prismaNamespace';
 import { AIModelRequest } from 'src/proxy/interfaces/proxy.interface';
 
 // 请求上下文，贯穿整个请求生命周期
-export class BillingContext {
+export class TransactionContext {
   // 核心标识
   requestId: string; // 请求ID (ULID)
   userId: number; // 用户ID

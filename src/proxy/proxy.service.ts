@@ -12,7 +12,7 @@ import {
   AIModelStreamResponse,
   AIModelUsage,
 } from './interfaces/proxy.interface';
-import { BillingService } from '../billing/billing.service';
+import { TransactionService } from '../transaction/transaction.service';
 import {
   AIModel,
   TransactionStatus,
@@ -23,10 +23,10 @@ import { APICallException, BusinessException } from '../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { AxiosRequestConfig } from 'axios';
 import {
-  BillingContext,
+  TransactionContext,
   extractTokenUsage,
-} from 'src/billing/dto/billing-context';
-import { TiktokenService } from 'src/billing/tiktoken/tiktoken.service';
+} from 'src/transaction/dto/transaction-context';
+import { TiktokenService } from 'src/transaction/tiktoken/tiktoken.service';
 import { Decimal } from '@prisma-main-client/internal/prismaNamespace';
 import { ULID } from 'ulid';
 import { PrismaService } from '../core/prisma/prisma.service';
@@ -48,7 +48,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
-    private readonly billingService: BillingService,
+    private readonly transactionService: TransactionService,
     private readonly tiktokenService: TiktokenService,
   ) {}
 
@@ -73,58 +73,58 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   // 转发请求到上游服务
   async forwardNonStreamRequest(
     body: AIModelRequest,
-    billingContext: BillingContext,
+    transactionContext: TransactionContext,
   ): Promise<AIModelNonStreamResponse> {
-    const { requestId } = billingContext;
+    const { requestId } = transactionContext;
 
     // 1. 检查并记录模型信息
-    billingContext.model = this.checkModel(requestId, body.model);
+    transactionContext.model = this.checkModel(requestId, body.model);
 
     // 2. 存储请求体到 context
-    billingContext.requestBody = body;
+    transactionContext.requestBody = body;
 
     try {
       // 3. 转发请求
-      const response = await this.sendNonStreamToUpstream(body, billingContext);
+      const response = await this.sendNonStreamToUpstream(body, transactionContext);
 
       // 4. 记录结束时间
-      billingContext.endTime = new Date();
+      transactionContext.endTime = new Date();
 
       // 5. 存储响应体
-      billingContext.responseBody = response;
+      transactionContext.responseBody = response;
 
       // 6. 提取或计算 token 使用量
       const usage = extractTokenUsage(response);
       if (usage) {
         // 如果响应中包含 usage 信息，直接使用
-        billingContext.inputTokens = usage.promptTokens;
-        billingContext.outputTokens = usage.completionTokens;
+        transactionContext.inputTokens = usage.promptTokens;
+        transactionContext.outputTokens = usage.completionTokens;
       } else {
         // 否则使用 tiktoken 计算
         const responseText = this.extractResponseText(response);
-        billingContext.responseText = responseText; // 存储提取的文本
+        transactionContext.responseText = responseText; // 存储提取的文本
 
         const tokenResult = await this.tiktokenService.countTokens(
           body,
           responseText,
         );
 
-        billingContext.inputTokens = tokenResult.inputTokens;
-        billingContext.outputTokens = tokenResult.outputTokens;
+        transactionContext.inputTokens = tokenResult.inputTokens;
+        transactionContext.outputTokens = tokenResult.outputTokens;
       }
 
       // 7. 计算费用
-      billingContext.cost = this.calculateCost(
-        billingContext.model,
-        billingContext.inputTokens,
-        billingContext.outputTokens,
+      transactionContext.cost = this.calculateCost(
+        transactionContext.model,
+        transactionContext.inputTokens,
+        transactionContext.outputTokens,
       );
 
       // 8. 异步记录计费信息（不阻塞响应）
       setImmediate(() => {
-        this.recordSuccessfulBilling(billingContext).catch((err) => {
+        this.recordSuccessfulTransaction(transactionContext).catch((err) => {
           this.logger.error(
-            `Failed to record billing for ${requestId}: ${err.message}`,
+            `Failed to record transaction for ${requestId}: ${err.message}`,
           );
         });
       });
@@ -132,7 +132,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       return response;
     } catch (error) {
       // 记录错误并重新抛出
-      billingContext.endTime = new Date();
+      transactionContext.endTime = new Date();
       throw error;
     }
   }
@@ -140,86 +140,86 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   // 转发流式请求到上游服务
   async forwardStreamRequest(
     body: AIModelRequest,
-    billingContext: BillingContext,
+    transactionContext: TransactionContext,
   ): Promise<NodeJS.ReadableStream> {
-    const { requestId } = billingContext;
+    const { requestId } = transactionContext;
 
     // 1. 检查并记录模型信息
-    billingContext.model = this.checkModel(requestId, body.model);
+    transactionContext.model = this.checkModel(requestId, body.model);
 
     // 2. 存储请求体到 context
-    billingContext.requestBody = body;
+    transactionContext.requestBody = body;
 
     try {
       // 3. 获取上游配置并发送流式请求
-      const response = await this.sendStreamToUpstream(body, billingContext);
+      const response = await this.sendStreamToUpstream(body, transactionContext);
       return response;
     } catch (error) {
       // 记录错误并重新抛出
-      billingContext.endTime = new Date();
+      transactionContext.endTime = new Date();
       throw error;
     }
   }
 
   // 处理流式响应的计费
-  async processStreamBilling(
+  async processStreamTransaction(
     body: AIModelRequest,
     fullResponse: string,
-    billingContext: BillingContext,
+    transactionContext: TransactionContext,
   ): Promise<void> {
     try {
       // 1. 解析SSE格式的响应，提取所有内容
       const { text, usage } = this.parseSSEResponse(fullResponse);
-      billingContext.responseText = text; // 存储提取的文本
+      transactionContext.responseText = text; // 存储提取的文本
 
       // 2. 获取模型信息
       const modelInfo = this.models.get(body.model);
       if (!modelInfo) {
-        this.logger.warn(`Model ${body.model} not found for billing`);
+        this.logger.warn(`Model ${body.model} not found for transaction`);
         return;
       }
 
       // 3.1 如果上游返回了 usage 信息，直接使用
       if (usage) {
         this.logger.debug(
-          `request[${billingContext.requestId}] using upstream usage info`,
+          `request[${transactionContext.requestId}] using upstream usage info`,
         );
-        billingContext.inputTokens = usage.prompt_tokens;
-        billingContext.outputTokens = usage.completion_tokens;
+        transactionContext.inputTokens = usage.prompt_tokens;
+        transactionContext.outputTokens = usage.completion_tokens;
       } else {
         // 3.2 否则使用 tiktoken 计算 tokens
         this.logger.debug(
-          `request[${billingContext.requestId}] using tiktoken to count tokens`,
+          `request[${transactionContext.requestId}] using tiktoken to count tokens`,
         );
         const tokenResult = await this.tiktokenService.countTokens(body, text);
-        billingContext.inputTokens = tokenResult.inputTokens;
-        billingContext.outputTokens = tokenResult.outputTokens;
+        transactionContext.inputTokens = tokenResult.inputTokens;
+        transactionContext.outputTokens = tokenResult.outputTokens;
       }
 
       // 4. 计算费用
-      billingContext.cost = this.calculateCost(
+      transactionContext.cost = this.calculateCost(
         modelInfo,
-        billingContext.inputTokens,
-        billingContext.outputTokens,
+        transactionContext.inputTokens,
+        transactionContext.outputTokens,
       );
 
       // 5. 记录计费
-      await this.recordSuccessfulBilling(billingContext);
+      await this.recordSuccessfulTransaction(transactionContext);
 
       this.logger.debug(
-        `Stream billing recorded for ${billingContext.requestId}: ${billingContext.inputTokens}+${billingContext.outputTokens} tokens, cost: ${billingContext.cost}`,
+        `Stream transaction recorded for ${transactionContext.requestId}: ${transactionContext.inputTokens}+${transactionContext.outputTokens} tokens, cost: ${transactionContext.cost}`,
       );
     } catch (error) {
-      this.logger.error(`Failed to process stream billing: ${error.message}`);
+      this.logger.error(`Failed to process stream transaction: ${error.message}`);
       // 即使计费处理失败，也要记录（费用为0）
-      billingContext.cost = new Decimal(0);
-      await this.recordSuccessfulBilling(billingContext);
+      transactionContext.cost = new Decimal(0);
+      await this.recordSuccessfulTransaction(transactionContext);
     }
   }
 
   // 记录失败的计费信息（公开方法，供 Controller 调用）
-  async recordFailedBilling(context: BillingContext): Promise<void> {
-    await this.billingService.createTransaction({
+  async recordFailedTransaction(context: TransactionContext): Promise<void> {
+    await this.transactionService.createTransaction({
       businessId: context.requestId,
       user: { connect: { id: context.userId } },
       wallet: { connect: { id: context.walletId } },
@@ -227,11 +227,11 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       type: TransactionType.CONSUME,
       amount: new Decimal(0),
       description: context.model.name,
-      errorMessage: 'failed to process stream billing',
+      errorMessage: 'failed to process stream transaction',
       status: TransactionStatus.FAILED,
     });
 
-    this.logger.debug(`Failed billing recorded for ${context.requestId}`);
+    this.logger.debug(`Failed transaction recorded for ${context.requestId}`);
   }
 
   // 初始化: 加载上游渠道和模型
@@ -337,10 +337,10 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   }
 
   // 记录成功请求计费信息
-  private async recordSuccessfulBilling(
-    context: BillingContext,
+  private async recordSuccessfulTransaction(
+    context: TransactionContext,
   ): Promise<void> {
-    await this.billingService.createTransaction({
+    await this.transactionService.createTransaction({
       businessId: context.requestId,
       user: { connect: { id: context.userId } },
       wallet: { connect: { id: context.walletId } },
@@ -356,14 +356,14 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
     });
 
     this.logger.debug(
-      `Billing recorded for ${context.requestId}: ${context.inputTokens}+${context.outputTokens} tokens, cost: ${context.cost}`,
+      `Transaction recorded for ${context.requestId}: ${context.inputTokens}+${context.outputTokens} tokens, cost: ${context.cost}`,
     );
   }
 
   // 发送非流式请求到上游
   private async sendNonStreamToUpstream(
     body: AIModelRequest,
-    billingContext: BillingContext,
+    transactionContext: TransactionContext,
     retry: RetryInfo = { count: 0, excludeIds: [] },
   ): Promise<AIModelNonStreamResponse> {
     const { id, config } = await this.getUpstream(retry.excludeIds);
@@ -378,12 +378,12 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       this.logger.error(`Upstream request failed: ${error.message}`);
 
       if (retry.count < this.maxRetryTime) {
-        return this.sendNonStreamToUpstream(body, billingContext, {
+        return this.sendNonStreamToUpstream(body, transactionContext, {
           count: retry.count + 1,
           excludeIds: [...retry.excludeIds, id],
         });
       } else {
-        throw new APICallException(billingContext.requestId, 'service error');
+        throw new APICallException(transactionContext.requestId, 'service error');
       }
     }
   }
@@ -391,7 +391,7 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
   // 发送流式请求到上游
   private async sendStreamToUpstream(
     body: AIModelRequest,
-    billingContext: BillingContext,
+    transactionContext: TransactionContext,
     retry: RetryInfo = { count: 0, excludeIds: [] },
   ): Promise<NodeJS.ReadableStream> {
     const { id, config } = await this.getUpstream(retry.excludeIds);
@@ -412,12 +412,12 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       // 添加流的基本日志和错误处理
       upstreamStream.on('error', (error: unknown) => {
         this.logger.error(
-          `[${billingContext.requestId}] raw stream error: ${error instanceof Error ? error.message : error}`,
+          `[${transactionContext.requestId}] raw stream error: ${error instanceof Error ? error.message : error}`,
         );
       });
 
       upstreamStream.on('end', () => {
-        this.logger.debug(`[${billingContext.requestId}] raw stream ended`);
+        this.logger.debug(`[${transactionContext.requestId}] raw stream ended`);
       });
 
       return upstreamStream;
@@ -425,12 +425,12 @@ export class ProxyService implements OnModuleInit, OnModuleDestroy {
       this.logger.error(`Upstream stream request failed: ${error.message}`);
 
       if (retry.count < this.maxRetryTime) {
-        return this.sendStreamToUpstream(body, billingContext, {
+        return this.sendStreamToUpstream(body, transactionContext, {
           count: retry.count + 1,
           excludeIds: [...retry.excludeIds, id],
         });
       } else {
-        throw new APICallException(billingContext.requestId, 'service error');
+        throw new APICallException(transactionContext.requestId, 'service error');
       }
     }
   }

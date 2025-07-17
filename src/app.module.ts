@@ -10,7 +10,7 @@ import { CoreModule } from './core/core.module';
 import { ConfigModule } from './core/config/config.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { RedemptionModule } from './redemption/redemption.module';
-import { BillingModule } from './billing/billing.module';
+import { TransactionModule } from './transaction/transaction.module';
 import { ProxyModule } from './proxy/proxy.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WalletModule } from './wallet/wallet.module';
@@ -40,7 +40,7 @@ import { FeishuAppModule } from './feishu-app/feishu-app.module';
     ApikeyModule,
     CoreModule,
     RedemptionModule,
-    BillingModule,
+    TransactionModule,
     ProxyModule,
     WalletModule,
     FeishuAppModule,

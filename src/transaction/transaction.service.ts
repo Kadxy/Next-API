@@ -40,9 +40,9 @@ export class TransactionService {
       }
 
       // 其他错误，记录并抛出异常
-      this.logger.error(`Failed to create billing record: ${error.message}`);
+      this.logger.error(`Failed to create transaction record: ${error.message}`);
       this.feishuWebhookService
-        .sendText('Failed to create billing record: ' + error)
+        .sendText('Failed to create transaction record: ' + error)
         .catch();
       throw error;
     }
@@ -51,7 +51,7 @@ export class TransactionService {
   // 定时批量处理计费（每整分钟执行）
   @Cron('0 * * * * *')
   async processPendingTransactions() {
-    this.logger.log('Starting billing processing');
+    this.logger.log('Starting transaction processing');
 
     try {
       const processed = await this.processTransactionBatch();
@@ -60,7 +60,7 @@ export class TransactionService {
         this.logger.log(`${processed} records processed`);
       }
     } catch (error) {
-      this.logger.error(`Billing processing error: ${error.message}`);
+      this.logger.error(`Transaction processing error: ${error.message}`);
     }
   }
 
@@ -128,7 +128,7 @@ export class TransactionService {
         groupedRecords,
       )) {
         try {
-          await this.processWalletBillingInTx(
+          await this.processWalletTransactionInTx(
             tx,
             parseInt(walletId),
             walletUserRecords,
@@ -191,7 +191,7 @@ export class TransactionService {
   }
 
   // 在事务中处理单个钱包的计费（分开算的实现）
-  private async processWalletBillingInTx(
+  private async processWalletTransactionInTx(
     tx: TransactionClient,
     walletId: Wallet['id'],
     recordsByUser: Record<User['id'], TransactionGroup[]>,
