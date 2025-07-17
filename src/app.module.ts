@@ -16,6 +16,7 @@ import { WalletModule } from './wallet/wallet.module';
 import { FeishuAppService } from './feishu-app/feishu-app.service';
 import { FeishuAppModule } from './feishu-app/feishu-app.module';
 import { ProxyModule } from './proxy/proxy.module';
+import { EpayModule } from './epay/epay.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ProxyModule } from './proxy/proxy.module';
     WalletModule,
     FeishuAppModule,
     ProxyModule,
+    EpayModule,
   ],
   providers: [FeishuAppService],
 })
