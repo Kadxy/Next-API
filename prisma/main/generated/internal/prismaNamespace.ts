@@ -401,7 +401,7 @@ export const ModelName = {
   Passkey: 'Passkey',
   RedemptionCode: 'RedemptionCode',
   Transaction: 'Transaction',
-  AIModel: 'AIModel',
+  LLMModel: 'LLMModel',
   UpstreamConfig: 'UpstreamConfig'
 } as const
 
@@ -418,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "transaction" | "aIModel" | "upstreamConfig"
+    modelProps: "user" | "wallet" | "walletMember" | "apiKey" | "passkey" | "redemptionCode" | "transaction" | "lLMModel" | "upstreamConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -940,77 +940,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    AIModel: {
-      payload: Prisma.$AIModelPayload<ExtArgs>
-      fields: Prisma.AIModelFieldRefs
+    LLMModel: {
+      payload: Prisma.$LLMModelPayload<ExtArgs>
+      fields: Prisma.LLMModelFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.AIModelFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload> | null
+          args: Prisma.LLMModelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.AIModelFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+          args: Prisma.LLMModelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>
         }
         findFirst: {
-          args: Prisma.AIModelFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload> | null
+          args: Prisma.LLMModelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.AIModelFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+          args: Prisma.LLMModelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>
         }
         findMany: {
-          args: Prisma.AIModelFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>[]
+          args: Prisma.LLMModelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>[]
         }
         create: {
-          args: Prisma.AIModelCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+          args: Prisma.LLMModelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>
         }
         createMany: {
-          args: Prisma.AIModelCreateManyArgs<ExtArgs>
+          args: Prisma.LLMModelCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.AIModelCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>[]
+          args: Prisma.LLMModelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>[]
         }
         delete: {
-          args: Prisma.AIModelDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+          args: Prisma.LLMModelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>
         }
         update: {
-          args: Prisma.AIModelUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+          args: Prisma.LLMModelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>
         }
         deleteMany: {
-          args: Prisma.AIModelDeleteManyArgs<ExtArgs>
+          args: Prisma.LLMModelDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.AIModelUpdateManyArgs<ExtArgs>
+          args: Prisma.LLMModelUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.AIModelUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>[]
+          args: Prisma.LLMModelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>[]
         }
         upsert: {
-          args: Prisma.AIModelUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AIModelPayload>
+          args: Prisma.LLMModelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LLMModelPayload>
         }
         aggregate: {
-          args: Prisma.AIModelAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAIModel>
+          args: Prisma.LLMModelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLLMModel>
         }
         groupBy: {
-          args: Prisma.AIModelGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AIModelGroupByOutputType>[]
+          args: Prisma.LLMModelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LLMModelGroupByOutputType>[]
         }
         count: {
-          args: Prisma.AIModelCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AIModelCountAggregateOutputType> | number
+          args: Prisma.LLMModelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LLMModelCountAggregateOutputType> | number
         }
       }
     }
@@ -1234,7 +1234,6 @@ export const TransactionScalarFieldEnum = {
   type: 'type',
   amount: 'amount',
   description: 'description',
-  metadata: 'metadata',
   status: 'status',
   errorMessage: 'errorMessage',
   createdAt: 'createdAt',
@@ -1244,27 +1243,24 @@ export const TransactionScalarFieldEnum = {
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
-export const AIModelScalarFieldEnum = {
-  id: 'id',
+export const LLMModelScalarFieldEnum = {
   name: 'name',
-  providerId: 'providerId',
-  isActive: 'isActive',
   inputPrice: 'inputPrice',
   outputPrice: 'outputPrice',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  releaseDate: 'releaseDate',
+  description: 'description'
 } as const
 
-export type AIModelScalarFieldEnum = (typeof AIModelScalarFieldEnum)[keyof typeof AIModelScalarFieldEnum]
+export type LLMModelScalarFieldEnum = (typeof LLMModelScalarFieldEnum)[keyof typeof LLMModelScalarFieldEnum]
 
 
 export const UpstreamConfigScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  type: 'type',
   weight: 'weight',
   baseUrl: 'baseUrl',
-  apiKey: 'apiKey',
-  createdAt: 'createdAt'
+  apiKey: 'apiKey'
 } as const
 
 export type UpstreamConfigScalarFieldEnum = (typeof UpstreamConfigScalarFieldEnum)[keyof typeof UpstreamConfigScalarFieldEnum]
@@ -1276,13 +1272,6 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1299,15 +1288,6 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-export const JsonNullValueFilter = {
-  DbNull: DbNull,
-  JsonNull: JsonNull,
-  AnyNull: AnyNull
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1422,20 +1402,6 @@ export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
  * Reference to a field of type 'TransactionStatus'
  */
 export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus'>
@@ -1446,6 +1412,20 @@ export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'TransactionStatus[]'
  */
 export type ListEnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UpstreamProvider'
+ */
+export type EnumUpstreamProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UpstreamProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'UpstreamProvider[]'
+ */
+export type ListEnumUpstreamProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UpstreamProvider[]'>
     
 
 
@@ -1544,7 +1524,7 @@ export type GlobalOmitConfig = {
   passkey?: Prisma.PasskeyOmit
   redemptionCode?: Prisma.RedemptionCodeOmit
   transaction?: Prisma.TransactionOmit
-  aIModel?: Prisma.AIModelOmit
+  lLMModel?: Prisma.LLMModelOmit
   upstreamConfig?: Prisma.UpstreamConfigOmit
 }
 

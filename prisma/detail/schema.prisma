@@ -8,26 +8,39 @@ datasource detailDb {
   url      = env("POSTGRESQL_URL_DETAIL")
 }
 
+enum BillingType {
+  TOKEN // 按token计费（LLM）
+  TIME // 按时长计费（语音）
+  RESOLUTION // 按分辨率计费（图像）
+  PER_REQUEST // 按请求计费（其他）
+  OTHER // 其他
+}
+
+// *** NOTE: UpstreamProvider  MUST keep same as main DB ***
+enum UpstreamProvider {
+  OPENAI // OpenAI
+  FISH_AUDIO // Fish Audio
+}
+
 model ApiCallRecord {
-  id              Int      @id @default(autoincrement())
-  businessId      String   @unique @detailDb.VarChar(26) // ULID, 全局唯一请求ID
-  userId          Int      @detailDb.Integer // [冗余]用户ID
-  walletId        Int      @detailDb.Integer // [冗余]钱包ID
-  apiKeyId        Int      @detailDb.Integer // [冗余]API Key ID
-  model           String   @detailDb.VarChar(63) // [调用]模型名称
-  upstreamId      Int      @detailDb.Integer // [调用]上游ID
-  clientIp        String   @detailDb.VarChar(45) // [请求上下文]客户端IP
-  userAgent       String   @detailDb.VarChar(255) // [请求上下文]客户端UA
-  externalTraceId String   @detailDb.VarChar(255) // [请求上下文]外部追踪ID
-  startTime       DateTime @detailDb.Timestamp // [时间和性能]开始时间
-  endTime         DateTime @detailDb.Timestamp // [时间和性能]结束时间
-  durationMs      Int      @detailDb.Integer // [时间和性能]持续时间(毫秒)
-  firstTokenMs    Int      @detailDb.Integer // [时间和性能]第一个token时间（流式）
-  inputTokens     Int      @detailDb.Integer // [计费]输入token
-  outputTokens    Int      @detailDb.Integer // [计费]输出token
-  totalTokens     Int      @detailDb.Integer // [计费]总token
-  isFailed        Boolean  @default(false) // [错误]是否失败
-  createdAt       DateTime @default(now())
+  id              Int              @id @default(autoincrement())
+  businessId      String           @unique @detailDb.VarChar(26) // ULID, 全局唯一请求ID
+  userId          Int              @detailDb.Integer // [冗余、鉴权]用户ID
+  walletId        Int              @detailDb.Integer // [冗余、鉴权]钱包ID
+  apiKeyId        Int              @detailDb.Integer // [冗余、鉴权]API Key ID
+  clientIp        String           @detailDb.VarChar(45) // [请求上下文]客户端IP
+  userAgent       String           @detailDb.VarChar(255) // [请求上下文]客户端UA
+  externalTraceId String           @detailDb.VarChar(255) // [请求上下文]外部追踪ID
+  startTime       DateTime         @detailDb.Timestamp // [时间和性能]开始时间
+  endTime         DateTime         @detailDb.Timestamp // [时间和性能]结束时间
+  durationMs      Int              @detailDb.Integer // [时间和性能]持续时间(毫秒)
+  upstreamId      Int              @detailDb.Integer // [调用]上游ID
+  model           String           @detailDb.VarChar(63) // [调用]模型名称(不局限于LLM, 可能是自定义的比如: fish-tts-pro, fish-tts-max, 主要用于分析使用情况)
+  provider        UpstreamProvider // [计费]服务提供商
+  billingType     BillingType      @default(OTHER) // [计费]计费类型
+  billingData     Json             @detailDb.Json // [计费]计费数据, 例如 { inputTokens: 100, outputTokens: 100 }
+  isFailed        Boolean          @default(false) // [错误]是否失败
+  createdAt       DateTime         @default(now())
 
   @@index([walletId, createdAt(sort: Desc)])
   @@index([userId, createdAt(sort: Desc)])

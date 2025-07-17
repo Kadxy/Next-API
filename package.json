@@ -25,8 +25,10 @@
     "prisma:detail:push": "prisma db push --schema=./prisma/detail/schema.prisma",
     "prisma:detail:studio": "prisma studio --schema=./prisma/detail/schema.prisma",
     "prisma:detail:generate": "prisma generate --schema=./prisma/detail/schema.prisma",
-    "prisma:generate": "npm run prisma:main:generate && npm run prisma:detail:generate",
-    "prisma:seed": "ts-node prisma/main/seed/ai-models.ts"
+    "prisma:seed": "ts-node prisma/main/seed/ai-models.ts",
+    "prisma:push": "pnpm prisma:main:push && pnpm prisma:detail:push",
+    "prisma:push:forse": "pnpm prisma:main:push --force-reset && pnpm prisma:detail:push --force-reset",
+    "prisma:generate": "pnpm prisma:main:generate && pnpm prisma:detail:generate"
   },
   "dependencies": {
     "@fastify/compress": "^8.0.1",

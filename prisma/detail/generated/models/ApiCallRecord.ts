@@ -30,12 +30,8 @@ export type ApiCallRecordAvgAggregateOutputType = {
   userId: number | null
   walletId: number | null
   apiKeyId: number | null
-  upstreamId: number | null
   durationMs: number | null
-  firstTokenMs: number | null
-  inputTokens: number | null
-  outputTokens: number | null
-  totalTokens: number | null
+  upstreamId: number | null
 }
 
 export type ApiCallRecordSumAggregateOutputType = {
@@ -43,12 +39,8 @@ export type ApiCallRecordSumAggregateOutputType = {
   userId: number | null
   walletId: number | null
   apiKeyId: number | null
-  upstreamId: number | null
   durationMs: number | null
-  firstTokenMs: number | null
-  inputTokens: number | null
-  outputTokens: number | null
-  totalTokens: number | null
+  upstreamId: number | null
 }
 
 export type ApiCallRecordMinAggregateOutputType = {
@@ -57,18 +49,16 @@ export type ApiCallRecordMinAggregateOutputType = {
   userId: number | null
   walletId: number | null
   apiKeyId: number | null
-  model: string | null
-  upstreamId: number | null
   clientIp: string | null
   userAgent: string | null
   externalTraceId: string | null
   startTime: Date | null
   endTime: Date | null
   durationMs: number | null
-  firstTokenMs: number | null
-  inputTokens: number | null
-  outputTokens: number | null
-  totalTokens: number | null
+  upstreamId: number | null
+  model: string | null
+  provider: $Enums.UpstreamProvider | null
+  billingType: $Enums.BillingType | null
   isFailed: boolean | null
   createdAt: Date | null
 }
@@ -79,18 +69,16 @@ export type ApiCallRecordMaxAggregateOutputType = {
   userId: number | null
   walletId: number | null
   apiKeyId: number | null
-  model: string | null
-  upstreamId: number | null
   clientIp: string | null
   userAgent: string | null
   externalTraceId: string | null
   startTime: Date | null
   endTime: Date | null
   durationMs: number | null
-  firstTokenMs: number | null
-  inputTokens: number | null
-  outputTokens: number | null
-  totalTokens: number | null
+  upstreamId: number | null
+  model: string | null
+  provider: $Enums.UpstreamProvider | null
+  billingType: $Enums.BillingType | null
   isFailed: boolean | null
   createdAt: Date | null
 }
@@ -101,18 +89,17 @@ export type ApiCallRecordCountAggregateOutputType = {
   userId: number
   walletId: number
   apiKeyId: number
-  model: number
-  upstreamId: number
   clientIp: number
   userAgent: number
   externalTraceId: number
   startTime: number
   endTime: number
   durationMs: number
-  firstTokenMs: number
-  inputTokens: number
-  outputTokens: number
-  totalTokens: number
+  upstreamId: number
+  model: number
+  provider: number
+  billingType: number
+  billingData: number
   isFailed: number
   createdAt: number
   _all: number
@@ -124,12 +111,8 @@ export type ApiCallRecordAvgAggregateInputType = {
   userId?: true
   walletId?: true
   apiKeyId?: true
-  upstreamId?: true
   durationMs?: true
-  firstTokenMs?: true
-  inputTokens?: true
-  outputTokens?: true
-  totalTokens?: true
+  upstreamId?: true
 }
 
 export type ApiCallRecordSumAggregateInputType = {
@@ -137,12 +120,8 @@ export type ApiCallRecordSumAggregateInputType = {
   userId?: true
   walletId?: true
   apiKeyId?: true
-  upstreamId?: true
   durationMs?: true
-  firstTokenMs?: true
-  inputTokens?: true
-  outputTokens?: true
-  totalTokens?: true
+  upstreamId?: true
 }
 
 export type ApiCallRecordMinAggregateInputType = {
@@ -151,18 +130,16 @@ export type ApiCallRecordMinAggregateInputType = {
   userId?: true
   walletId?: true
   apiKeyId?: true
-  model?: true
-  upstreamId?: true
   clientIp?: true
   userAgent?: true
   externalTraceId?: true
   startTime?: true
   endTime?: true
   durationMs?: true
-  firstTokenMs?: true
-  inputTokens?: true
-  outputTokens?: true
-  totalTokens?: true
+  upstreamId?: true
+  model?: true
+  provider?: true
+  billingType?: true
   isFailed?: true
   createdAt?: true
 }
@@ -173,18 +150,16 @@ export type ApiCallRecordMaxAggregateInputType = {
   userId?: true
   walletId?: true
   apiKeyId?: true
-  model?: true
-  upstreamId?: true
   clientIp?: true
   userAgent?: true
   externalTraceId?: true
   startTime?: true
   endTime?: true
   durationMs?: true
-  firstTokenMs?: true
-  inputTokens?: true
-  outputTokens?: true
-  totalTokens?: true
+  upstreamId?: true
+  model?: true
+  provider?: true
+  billingType?: true
   isFailed?: true
   createdAt?: true
 }
@@ -195,18 +170,17 @@ export type ApiCallRecordCountAggregateInputType = {
   userId?: true
   walletId?: true
   apiKeyId?: true
-  model?: true
-  upstreamId?: true
   clientIp?: true
   userAgent?: true
   externalTraceId?: true
   startTime?: true
   endTime?: true
   durationMs?: true
-  firstTokenMs?: true
-  inputTokens?: true
-  outputTokens?: true
-  totalTokens?: true
+  upstreamId?: true
+  model?: true
+  provider?: true
+  billingType?: true
+  billingData?: true
   isFailed?: true
   createdAt?: true
   _all?: true
@@ -304,18 +278,17 @@ export type ApiCallRecordGroupByOutputType = {
   userId: number
   walletId: number
   apiKeyId: number
-  model: string
-  upstreamId: number
   clientIp: string
   userAgent: string
   externalTraceId: string
   startTime: Date
   endTime: Date
   durationMs: number
-  firstTokenMs: number
-  inputTokens: number
-  outputTokens: number
-  totalTokens: number
+  upstreamId: number
+  model: string
+  provider: $Enums.UpstreamProvider
+  billingType: $Enums.BillingType
+  billingData: runtime.JsonValue
   isFailed: boolean
   createdAt: Date
   _count: ApiCallRecordCountAggregateOutputType | null
@@ -349,18 +322,17 @@ export type ApiCallRecordWhereInput = {
   userId?: Prisma.IntFilter<"ApiCallRecord"> | number
   walletId?: Prisma.IntFilter<"ApiCallRecord"> | number
   apiKeyId?: Prisma.IntFilter<"ApiCallRecord"> | number
-  model?: Prisma.StringFilter<"ApiCallRecord"> | string
-  upstreamId?: Prisma.IntFilter<"ApiCallRecord"> | number
   clientIp?: Prisma.StringFilter<"ApiCallRecord"> | string
   userAgent?: Prisma.StringFilter<"ApiCallRecord"> | string
   externalTraceId?: Prisma.StringFilter<"ApiCallRecord"> | string
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   durationMs?: Prisma.IntFilter<"ApiCallRecord"> | number
-  firstTokenMs?: Prisma.IntFilter<"ApiCallRecord"> | number
-  inputTokens?: Prisma.IntFilter<"ApiCallRecord"> | number
-  outputTokens?: Prisma.IntFilter<"ApiCallRecord"> | number
-  totalTokens?: Prisma.IntFilter<"ApiCallRecord"> | number
+  upstreamId?: Prisma.IntFilter<"ApiCallRecord"> | number
+  model?: Prisma.StringFilter<"ApiCallRecord"> | string
+  provider?: Prisma.EnumUpstreamProviderFilter<"ApiCallRecord"> | $Enums.UpstreamProvider
+  billingType?: Prisma.EnumBillingTypeFilter<"ApiCallRecord"> | $Enums.BillingType
+  billingData?: Prisma.JsonFilter<"ApiCallRecord">
   isFailed?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
 }
@@ -371,18 +343,17 @@ export type ApiCallRecordOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   apiKeyId?: Prisma.SortOrder
-  model?: Prisma.SortOrder
-  upstreamId?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  firstTokenMs?: Prisma.SortOrder
-  inputTokens?: Prisma.SortOrder
-  outputTokens?: Prisma.SortOrder
-  totalTokens?: Prisma.SortOrder
+  upstreamId?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  billingType?: Prisma.SortOrder
+  billingData?: Prisma.SortOrder
   isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -396,18 +367,17 @@ export type ApiCallRecordWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.IntFilter<"ApiCallRecord"> | number
   walletId?: Prisma.IntFilter<"ApiCallRecord"> | number
   apiKeyId?: Prisma.IntFilter<"ApiCallRecord"> | number
-  model?: Prisma.StringFilter<"ApiCallRecord"> | string
-  upstreamId?: Prisma.IntFilter<"ApiCallRecord"> | number
   clientIp?: Prisma.StringFilter<"ApiCallRecord"> | string
   userAgent?: Prisma.StringFilter<"ApiCallRecord"> | string
   externalTraceId?: Prisma.StringFilter<"ApiCallRecord"> | string
   startTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
   durationMs?: Prisma.IntFilter<"ApiCallRecord"> | number
-  firstTokenMs?: Prisma.IntFilter<"ApiCallRecord"> | number
-  inputTokens?: Prisma.IntFilter<"ApiCallRecord"> | number
-  outputTokens?: Prisma.IntFilter<"ApiCallRecord"> | number
-  totalTokens?: Prisma.IntFilter<"ApiCallRecord"> | number
+  upstreamId?: Prisma.IntFilter<"ApiCallRecord"> | number
+  model?: Prisma.StringFilter<"ApiCallRecord"> | string
+  provider?: Prisma.EnumUpstreamProviderFilter<"ApiCallRecord"> | $Enums.UpstreamProvider
+  billingType?: Prisma.EnumBillingTypeFilter<"ApiCallRecord"> | $Enums.BillingType
+  billingData?: Prisma.JsonFilter<"ApiCallRecord">
   isFailed?: Prisma.BoolFilter<"ApiCallRecord"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApiCallRecord"> | Date | string
 }, "id" | "businessId">
@@ -418,18 +388,17 @@ export type ApiCallRecordOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   apiKeyId?: Prisma.SortOrder
-  model?: Prisma.SortOrder
-  upstreamId?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  firstTokenMs?: Prisma.SortOrder
-  inputTokens?: Prisma.SortOrder
-  outputTokens?: Prisma.SortOrder
-  totalTokens?: Prisma.SortOrder
+  upstreamId?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  billingType?: Prisma.SortOrder
+  billingData?: Prisma.SortOrder
   isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ApiCallRecordCountOrderByAggregateInput
@@ -448,18 +417,17 @@ export type ApiCallRecordScalarWhereWithAggregatesInput = {
   userId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   walletId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   apiKeyId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  model?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
-  upstreamId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
   clientIp?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
   userAgent?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
   externalTraceId?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
   startTime?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
   endTime?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
   durationMs?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  firstTokenMs?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  inputTokens?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  outputTokens?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
-  totalTokens?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
+  upstreamId?: Prisma.IntWithAggregatesFilter<"ApiCallRecord"> | number
+  model?: Prisma.StringWithAggregatesFilter<"ApiCallRecord"> | string
+  provider?: Prisma.EnumUpstreamProviderWithAggregatesFilter<"ApiCallRecord"> | $Enums.UpstreamProvider
+  billingType?: Prisma.EnumBillingTypeWithAggregatesFilter<"ApiCallRecord"> | $Enums.BillingType
+  billingData?: Prisma.JsonWithAggregatesFilter<"ApiCallRecord">
   isFailed?: Prisma.BoolWithAggregatesFilter<"ApiCallRecord"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApiCallRecord"> | Date | string
 }
@@ -469,18 +437,17 @@ export type ApiCallRecordCreateInput = {
   userId: number
   walletId: number
   apiKeyId: number
-  model: string
-  upstreamId: number
   clientIp: string
   userAgent: string
   externalTraceId: string
   startTime: Date | string
   endTime: Date | string
   durationMs: number
-  firstTokenMs: number
-  inputTokens: number
-  outputTokens: number
-  totalTokens: number
+  upstreamId: number
+  model: string
+  provider: $Enums.UpstreamProvider
+  billingType?: $Enums.BillingType
+  billingData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isFailed?: boolean
   createdAt?: Date | string
 }
@@ -491,18 +458,17 @@ export type ApiCallRecordUncheckedCreateInput = {
   userId: number
   walletId: number
   apiKeyId: number
-  model: string
-  upstreamId: number
   clientIp: string
   userAgent: string
   externalTraceId: string
   startTime: Date | string
   endTime: Date | string
   durationMs: number
-  firstTokenMs: number
-  inputTokens: number
-  outputTokens: number
-  totalTokens: number
+  upstreamId: number
+  model: string
+  provider: $Enums.UpstreamProvider
+  billingType?: $Enums.BillingType
+  billingData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isFailed?: boolean
   createdAt?: Date | string
 }
@@ -512,18 +478,17 @@ export type ApiCallRecordUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   walletId?: Prisma.IntFieldUpdateOperationsInput | number
   apiKeyId?: Prisma.IntFieldUpdateOperationsInput | number
-  model?: Prisma.StringFieldUpdateOperationsInput | string
-  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   userAgent?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  firstTokenMs?: Prisma.IntFieldUpdateOperationsInput | number
-  inputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  outputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  totalTokens?: Prisma.IntFieldUpdateOperationsInput | number
+  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
+  billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
+  billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -534,18 +499,17 @@ export type ApiCallRecordUncheckedUpdateInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   walletId?: Prisma.IntFieldUpdateOperationsInput | number
   apiKeyId?: Prisma.IntFieldUpdateOperationsInput | number
-  model?: Prisma.StringFieldUpdateOperationsInput | string
-  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   userAgent?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  firstTokenMs?: Prisma.IntFieldUpdateOperationsInput | number
-  inputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  outputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  totalTokens?: Prisma.IntFieldUpdateOperationsInput | number
+  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
+  billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
+  billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -556,18 +520,17 @@ export type ApiCallRecordCreateManyInput = {
   userId: number
   walletId: number
   apiKeyId: number
-  model: string
-  upstreamId: number
   clientIp: string
   userAgent: string
   externalTraceId: string
   startTime: Date | string
   endTime: Date | string
   durationMs: number
-  firstTokenMs: number
-  inputTokens: number
-  outputTokens: number
-  totalTokens: number
+  upstreamId: number
+  model: string
+  provider: $Enums.UpstreamProvider
+  billingType?: $Enums.BillingType
+  billingData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isFailed?: boolean
   createdAt?: Date | string
 }
@@ -577,18 +540,17 @@ export type ApiCallRecordUpdateManyMutationInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   walletId?: Prisma.IntFieldUpdateOperationsInput | number
   apiKeyId?: Prisma.IntFieldUpdateOperationsInput | number
-  model?: Prisma.StringFieldUpdateOperationsInput | string
-  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   userAgent?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  firstTokenMs?: Prisma.IntFieldUpdateOperationsInput | number
-  inputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  outputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  totalTokens?: Prisma.IntFieldUpdateOperationsInput | number
+  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
+  billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
+  billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -599,18 +561,17 @@ export type ApiCallRecordUncheckedUpdateManyInput = {
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   walletId?: Prisma.IntFieldUpdateOperationsInput | number
   apiKeyId?: Prisma.IntFieldUpdateOperationsInput | number
-  model?: Prisma.StringFieldUpdateOperationsInput | string
-  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
   clientIp?: Prisma.StringFieldUpdateOperationsInput | string
   userAgent?: Prisma.StringFieldUpdateOperationsInput | string
   externalTraceId?: Prisma.StringFieldUpdateOperationsInput | string
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMs?: Prisma.IntFieldUpdateOperationsInput | number
-  firstTokenMs?: Prisma.IntFieldUpdateOperationsInput | number
-  inputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  outputTokens?: Prisma.IntFieldUpdateOperationsInput | number
-  totalTokens?: Prisma.IntFieldUpdateOperationsInput | number
+  upstreamId?: Prisma.IntFieldUpdateOperationsInput | number
+  model?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
+  billingType?: Prisma.EnumBillingTypeFieldUpdateOperationsInput | $Enums.BillingType
+  billingData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   isFailed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -621,18 +582,17 @@ export type ApiCallRecordCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   apiKeyId?: Prisma.SortOrder
-  model?: Prisma.SortOrder
-  upstreamId?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  firstTokenMs?: Prisma.SortOrder
-  inputTokens?: Prisma.SortOrder
-  outputTokens?: Prisma.SortOrder
-  totalTokens?: Prisma.SortOrder
+  upstreamId?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  billingType?: Prisma.SortOrder
+  billingData?: Prisma.SortOrder
   isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -642,12 +602,8 @@ export type ApiCallRecordAvgOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   apiKeyId?: Prisma.SortOrder
-  upstreamId?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  firstTokenMs?: Prisma.SortOrder
-  inputTokens?: Prisma.SortOrder
-  outputTokens?: Prisma.SortOrder
-  totalTokens?: Prisma.SortOrder
+  upstreamId?: Prisma.SortOrder
 }
 
 export type ApiCallRecordMaxOrderByAggregateInput = {
@@ -656,18 +612,16 @@ export type ApiCallRecordMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   apiKeyId?: Prisma.SortOrder
-  model?: Prisma.SortOrder
-  upstreamId?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  firstTokenMs?: Prisma.SortOrder
-  inputTokens?: Prisma.SortOrder
-  outputTokens?: Prisma.SortOrder
-  totalTokens?: Prisma.SortOrder
+  upstreamId?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  billingType?: Prisma.SortOrder
   isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -678,18 +632,16 @@ export type ApiCallRecordMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   apiKeyId?: Prisma.SortOrder
-  model?: Prisma.SortOrder
-  upstreamId?: Prisma.SortOrder
   clientIp?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
   externalTraceId?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  firstTokenMs?: Prisma.SortOrder
-  inputTokens?: Prisma.SortOrder
-  outputTokens?: Prisma.SortOrder
-  totalTokens?: Prisma.SortOrder
+  upstreamId?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  provider?: Prisma.SortOrder
+  billingType?: Prisma.SortOrder
   isFailed?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -699,12 +651,8 @@ export type ApiCallRecordSumOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   walletId?: Prisma.SortOrder
   apiKeyId?: Prisma.SortOrder
-  upstreamId?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
-  firstTokenMs?: Prisma.SortOrder
-  inputTokens?: Prisma.SortOrder
-  outputTokens?: Prisma.SortOrder
-  totalTokens?: Prisma.SortOrder
+  upstreamId?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -723,6 +671,14 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type EnumUpstreamProviderFieldUpdateOperationsInput = {
+  set?: $Enums.UpstreamProvider
+}
+
+export type EnumBillingTypeFieldUpdateOperationsInput = {
+  set?: $Enums.BillingType
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -735,18 +691,17 @@ export type ApiCallRecordSelect<ExtArgs extends runtime.Types.Extensions.Interna
   userId?: boolean
   walletId?: boolean
   apiKeyId?: boolean
-  model?: boolean
-  upstreamId?: boolean
   clientIp?: boolean
   userAgent?: boolean
   externalTraceId?: boolean
   startTime?: boolean
   endTime?: boolean
   durationMs?: boolean
-  firstTokenMs?: boolean
-  inputTokens?: boolean
-  outputTokens?: boolean
-  totalTokens?: boolean
+  upstreamId?: boolean
+  model?: boolean
+  provider?: boolean
+  billingType?: boolean
+  billingData?: boolean
   isFailed?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallRecord"]>
@@ -757,18 +712,17 @@ export type ApiCallRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   userId?: boolean
   walletId?: boolean
   apiKeyId?: boolean
-  model?: boolean
-  upstreamId?: boolean
   clientIp?: boolean
   userAgent?: boolean
   externalTraceId?: boolean
   startTime?: boolean
   endTime?: boolean
   durationMs?: boolean
-  firstTokenMs?: boolean
-  inputTokens?: boolean
-  outputTokens?: boolean
-  totalTokens?: boolean
+  upstreamId?: boolean
+  model?: boolean
+  provider?: boolean
+  billingType?: boolean
+  billingData?: boolean
   isFailed?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallRecord"]>
@@ -779,18 +733,17 @@ export type ApiCallRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   userId?: boolean
   walletId?: boolean
   apiKeyId?: boolean
-  model?: boolean
-  upstreamId?: boolean
   clientIp?: boolean
   userAgent?: boolean
   externalTraceId?: boolean
   startTime?: boolean
   endTime?: boolean
   durationMs?: boolean
-  firstTokenMs?: boolean
-  inputTokens?: boolean
-  outputTokens?: boolean
-  totalTokens?: boolean
+  upstreamId?: boolean
+  model?: boolean
+  provider?: boolean
+  billingType?: boolean
+  billingData?: boolean
   isFailed?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["apiCallRecord"]>
@@ -801,23 +754,22 @@ export type ApiCallRecordSelectScalar = {
   userId?: boolean
   walletId?: boolean
   apiKeyId?: boolean
-  model?: boolean
-  upstreamId?: boolean
   clientIp?: boolean
   userAgent?: boolean
   externalTraceId?: boolean
   startTime?: boolean
   endTime?: boolean
   durationMs?: boolean
-  firstTokenMs?: boolean
-  inputTokens?: boolean
-  outputTokens?: boolean
-  totalTokens?: boolean
+  upstreamId?: boolean
+  model?: boolean
+  provider?: boolean
+  billingType?: boolean
+  billingData?: boolean
   isFailed?: boolean
   createdAt?: boolean
 }
 
-export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "userId" | "walletId" | "apiKeyId" | "model" | "upstreamId" | "clientIp" | "userAgent" | "externalTraceId" | "startTime" | "endTime" | "durationMs" | "firstTokenMs" | "inputTokens" | "outputTokens" | "totalTokens" | "isFailed" | "createdAt", ExtArgs["result"]["apiCallRecord"]>
+export type ApiCallRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "userId" | "walletId" | "apiKeyId" | "clientIp" | "userAgent" | "externalTraceId" | "startTime" | "endTime" | "durationMs" | "upstreamId" | "model" | "provider" | "billingType" | "billingData" | "isFailed" | "createdAt", ExtArgs["result"]["apiCallRecord"]>
 
 export type $ApiCallRecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ApiCallRecord"
@@ -828,18 +780,17 @@ export type $ApiCallRecordPayload<ExtArgs extends runtime.Types.Extensions.Inter
     userId: number
     walletId: number
     apiKeyId: number
-    model: string
-    upstreamId: number
     clientIp: string
     userAgent: string
     externalTraceId: string
     startTime: Date
     endTime: Date
     durationMs: number
-    firstTokenMs: number
-    inputTokens: number
-    outputTokens: number
-    totalTokens: number
+    upstreamId: number
+    model: string
+    provider: $Enums.UpstreamProvider
+    billingType: $Enums.BillingType
+    billingData: runtime.JsonValue
     isFailed: boolean
     createdAt: Date
   }, ExtArgs["result"]["apiCallRecord"]>
@@ -1270,18 +1221,17 @@ export interface ApiCallRecordFieldRefs {
   readonly userId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly walletId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly apiKeyId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly model: Prisma.FieldRef<"ApiCallRecord", 'String'>
-  readonly upstreamId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
   readonly clientIp: Prisma.FieldRef<"ApiCallRecord", 'String'>
   readonly userAgent: Prisma.FieldRef<"ApiCallRecord", 'String'>
   readonly externalTraceId: Prisma.FieldRef<"ApiCallRecord", 'String'>
   readonly startTime: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
   readonly durationMs: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly firstTokenMs: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly inputTokens: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly outputTokens: Prisma.FieldRef<"ApiCallRecord", 'Int'>
-  readonly totalTokens: Prisma.FieldRef<"ApiCallRecord", 'Int'>
+  readonly upstreamId: Prisma.FieldRef<"ApiCallRecord", 'Int'>
+  readonly model: Prisma.FieldRef<"ApiCallRecord", 'String'>
+  readonly provider: Prisma.FieldRef<"ApiCallRecord", 'UpstreamProvider'>
+  readonly billingType: Prisma.FieldRef<"ApiCallRecord", 'BillingType'>
+  readonly billingData: Prisma.FieldRef<"ApiCallRecord", 'Json'>
   readonly isFailed: Prisma.FieldRef<"ApiCallRecord", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ApiCallRecord", 'DateTime'>
 }

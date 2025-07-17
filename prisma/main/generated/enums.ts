@@ -28,3 +28,11 @@ export const TransactionType = {
 } as const
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
+
+
+export const UpstreamProvider = {
+  OPENAI: 'OPENAI',
+  FISH_AUDIO: 'FISH_AUDIO'
+} as const
+
+export type UpstreamProvider = (typeof UpstreamProvider)[keyof typeof UpstreamProvider]

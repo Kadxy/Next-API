@@ -38,28 +38,28 @@ export type UpstreamConfigSumAggregateOutputType = {
 export type UpstreamConfigMinAggregateOutputType = {
   id: number | null
   name: string | null
+  type: $Enums.UpstreamProvider | null
   weight: number | null
   baseUrl: string | null
   apiKey: string | null
-  createdAt: Date | null
 }
 
 export type UpstreamConfigMaxAggregateOutputType = {
   id: number | null
   name: string | null
+  type: $Enums.UpstreamProvider | null
   weight: number | null
   baseUrl: string | null
   apiKey: string | null
-  createdAt: Date | null
 }
 
 export type UpstreamConfigCountAggregateOutputType = {
   id: number
   name: number
+  type: number
   weight: number
   baseUrl: number
   apiKey: number
-  createdAt: number
   _all: number
 }
 
@@ -77,28 +77,28 @@ export type UpstreamConfigSumAggregateInputType = {
 export type UpstreamConfigMinAggregateInputType = {
   id?: true
   name?: true
+  type?: true
   weight?: true
   baseUrl?: true
   apiKey?: true
-  createdAt?: true
 }
 
 export type UpstreamConfigMaxAggregateInputType = {
   id?: true
   name?: true
+  type?: true
   weight?: true
   baseUrl?: true
   apiKey?: true
-  createdAt?: true
 }
 
 export type UpstreamConfigCountAggregateInputType = {
   id?: true
   name?: true
+  type?: true
   weight?: true
   baseUrl?: true
   apiKey?: true
-  createdAt?: true
   _all?: true
 }
 
@@ -191,10 +191,10 @@ export type UpstreamConfigGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type UpstreamConfigGroupByOutputType = {
   id: number
   name: string
+  type: $Enums.UpstreamProvider
   weight: number
   baseUrl: string
   apiKey: string
-  createdAt: Date
   _count: UpstreamConfigCountAggregateOutputType | null
   _avg: UpstreamConfigAvgAggregateOutputType | null
   _sum: UpstreamConfigSumAggregateOutputType | null
@@ -223,19 +223,19 @@ export type UpstreamConfigWhereInput = {
   NOT?: Prisma.UpstreamConfigWhereInput | Prisma.UpstreamConfigWhereInput[]
   id?: Prisma.IntFilter<"UpstreamConfig"> | number
   name?: Prisma.StringFilter<"UpstreamConfig"> | string
+  type?: Prisma.EnumUpstreamProviderFilter<"UpstreamConfig"> | $Enums.UpstreamProvider
   weight?: Prisma.IntFilter<"UpstreamConfig"> | number
   baseUrl?: Prisma.StringFilter<"UpstreamConfig"> | string
   apiKey?: Prisma.StringFilter<"UpstreamConfig"> | string
-  createdAt?: Prisma.DateTimeFilter<"UpstreamConfig"> | Date | string
 }
 
 export type UpstreamConfigOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
 }
 
 export type UpstreamConfigWhereUniqueInput = Prisma.AtLeast<{
@@ -244,19 +244,19 @@ export type UpstreamConfigWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UpstreamConfigWhereInput | Prisma.UpstreamConfigWhereInput[]
   OR?: Prisma.UpstreamConfigWhereInput[]
   NOT?: Prisma.UpstreamConfigWhereInput | Prisma.UpstreamConfigWhereInput[]
+  type?: Prisma.EnumUpstreamProviderFilter<"UpstreamConfig"> | $Enums.UpstreamProvider
   weight?: Prisma.IntFilter<"UpstreamConfig"> | number
   baseUrl?: Prisma.StringFilter<"UpstreamConfig"> | string
   apiKey?: Prisma.StringFilter<"UpstreamConfig"> | string
-  createdAt?: Prisma.DateTimeFilter<"UpstreamConfig"> | Date | string
 }, "id" | "name">
 
 export type UpstreamConfigOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   _count?: Prisma.UpstreamConfigCountOrderByAggregateInput
   _avg?: Prisma.UpstreamConfigAvgOrderByAggregateInput
   _max?: Prisma.UpstreamConfigMaxOrderByAggregateInput
@@ -270,79 +270,79 @@ export type UpstreamConfigScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UpstreamConfigScalarWhereWithAggregatesInput | Prisma.UpstreamConfigScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"UpstreamConfig"> | number
   name?: Prisma.StringWithAggregatesFilter<"UpstreamConfig"> | string
+  type?: Prisma.EnumUpstreamProviderWithAggregatesFilter<"UpstreamConfig"> | $Enums.UpstreamProvider
   weight?: Prisma.IntWithAggregatesFilter<"UpstreamConfig"> | number
   baseUrl?: Prisma.StringWithAggregatesFilter<"UpstreamConfig"> | string
   apiKey?: Prisma.StringWithAggregatesFilter<"UpstreamConfig"> | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"UpstreamConfig"> | Date | string
 }
 
 export type UpstreamConfigCreateInput = {
   name: string
+  type: $Enums.UpstreamProvider
   weight?: number
   baseUrl: string
   apiKey: string
-  createdAt?: Date | string
 }
 
 export type UpstreamConfigUncheckedCreateInput = {
   id?: number
   name: string
+  type: $Enums.UpstreamProvider
   weight?: number
   baseUrl: string
   apiKey: string
-  createdAt?: Date | string
 }
 
 export type UpstreamConfigUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UpstreamConfigUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UpstreamConfigCreateManyInput = {
   id?: number
   name: string
+  type: $Enums.UpstreamProvider
   weight?: number
   baseUrl: string
   apiKey: string
-  createdAt?: Date | string
 }
 
 export type UpstreamConfigUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UpstreamConfigUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumUpstreamProviderFieldUpdateOperationsInput | $Enums.UpstreamProvider
   weight?: Prisma.IntFieldUpdateOperationsInput | number
   baseUrl?: Prisma.StringFieldUpdateOperationsInput | string
   apiKey?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UpstreamConfigCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
 }
 
 export type UpstreamConfigAvgOrderByAggregateInput = {
@@ -353,19 +353,19 @@ export type UpstreamConfigAvgOrderByAggregateInput = {
 export type UpstreamConfigMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
 }
 
 export type UpstreamConfigMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   baseUrl?: Prisma.SortOrder
   apiKey?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
 }
 
 export type UpstreamConfigSumOrderByAggregateInput = {
@@ -373,45 +373,49 @@ export type UpstreamConfigSumOrderByAggregateInput = {
   weight?: Prisma.SortOrder
 }
 
+export type EnumUpstreamProviderFieldUpdateOperationsInput = {
+  set?: $Enums.UpstreamProvider
+}
+
 
 
 export type UpstreamConfigSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  type?: boolean
   weight?: boolean
   baseUrl?: boolean
   apiKey?: boolean
-  createdAt?: boolean
 }, ExtArgs["result"]["upstreamConfig"]>
 
 export type UpstreamConfigSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  type?: boolean
   weight?: boolean
   baseUrl?: boolean
   apiKey?: boolean
-  createdAt?: boolean
 }, ExtArgs["result"]["upstreamConfig"]>
 
 export type UpstreamConfigSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  type?: boolean
   weight?: boolean
   baseUrl?: boolean
   apiKey?: boolean
-  createdAt?: boolean
 }, ExtArgs["result"]["upstreamConfig"]>
 
 export type UpstreamConfigSelectScalar = {
   id?: boolean
   name?: boolean
+  type?: boolean
   weight?: boolean
   baseUrl?: boolean
   apiKey?: boolean
-  createdAt?: boolean
 }
 
-export type UpstreamConfigOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "weight" | "baseUrl" | "apiKey" | "createdAt", ExtArgs["result"]["upstreamConfig"]>
+export type UpstreamConfigOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "weight" | "baseUrl" | "apiKey", ExtArgs["result"]["upstreamConfig"]>
 
 export type $UpstreamConfigPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "UpstreamConfig"
@@ -419,10 +423,10 @@ export type $UpstreamConfigPayload<ExtArgs extends runtime.Types.Extensions.Inte
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
+    type: $Enums.UpstreamProvider
     weight: number
     baseUrl: string
     apiKey: string
-    createdAt: Date
   }, ExtArgs["result"]["upstreamConfig"]>
   composites: {}
 }
@@ -848,10 +852,10 @@ export interface Prisma__UpstreamConfigClient<T, Null = never, ExtArgs extends r
 export interface UpstreamConfigFieldRefs {
   readonly id: Prisma.FieldRef<"UpstreamConfig", 'Int'>
   readonly name: Prisma.FieldRef<"UpstreamConfig", 'String'>
+  readonly type: Prisma.FieldRef<"UpstreamConfig", 'UpstreamProvider'>
   readonly weight: Prisma.FieldRef<"UpstreamConfig", 'Int'>
   readonly baseUrl: Prisma.FieldRef<"UpstreamConfig", 'String'>
   readonly apiKey: Prisma.FieldRef<"UpstreamConfig", 'String'>
-  readonly createdAt: Prisma.FieldRef<"UpstreamConfig", 'DateTime'>
 }
     
 

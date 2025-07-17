@@ -75,10 +75,10 @@ export type RedemptionCode = Prisma.RedemptionCodeModel
  */
 export type Transaction = Prisma.TransactionModel
 /**
- * Model AIModel
+ * Model LLMModel
  * 
  */
-export type AIModel = Prisma.AIModelModel
+export type LLMModel = Prisma.LLMModelModel
 /**
  * Model UpstreamConfig
  * 
@@ -90,3 +90,6 @@ export const TransactionStatus = $Enums.TransactionStatus
 
 export type TransactionType = $Enums.TransactionType
 export const TransactionType = $Enums.TransactionType
+
+export type UpstreamProvider = $Enums.UpstreamProvider
+export const UpstreamProvider = $Enums.UpstreamProvider

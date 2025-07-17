@@ -7,7 +7,20 @@
 *
 * 🟢 You can import this file directly.
 */
+export const BillingType = {
+  TOKEN: 'TOKEN',
+  TIME: 'TIME',
+  RESOLUTION: 'RESOLUTION',
+  PER_REQUEST: 'PER_REQUEST',
+  OTHER: 'OTHER'
+} as const
+
+export type BillingType = (typeof BillingType)[keyof typeof BillingType]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const UpstreamProvider = {
+  OPENAI: 'OPENAI',
+  FISH_AUDIO: 'FISH_AUDIO'
+} as const
+
+export type UpstreamProvider = (typeof UpstreamProvider)[keyof typeof UpstreamProvider]

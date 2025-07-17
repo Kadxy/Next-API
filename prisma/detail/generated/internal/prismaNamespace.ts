@@ -608,18 +608,17 @@ export const ApiCallRecordScalarFieldEnum = {
   userId: 'userId',
   walletId: 'walletId',
   apiKeyId: 'apiKeyId',
-  model: 'model',
-  upstreamId: 'upstreamId',
   clientIp: 'clientIp',
   userAgent: 'userAgent',
   externalTraceId: 'externalTraceId',
   startTime: 'startTime',
   endTime: 'endTime',
   durationMs: 'durationMs',
-  firstTokenMs: 'firstTokenMs',
-  inputTokens: 'inputTokens',
-  outputTokens: 'outputTokens',
-  totalTokens: 'totalTokens',
+  upstreamId: 'upstreamId',
+  model: 'model',
+  provider: 'provider',
+  billingType: 'billingType',
+  billingData: 'billingData',
   isFailed: 'isFailed',
   createdAt: 'createdAt'
 } as const
@@ -649,6 +648,13 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
@@ -733,9 +739,30 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Boolean'
+ * Reference to a field of type 'UpstreamProvider'
  */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type EnumUpstreamProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UpstreamProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'UpstreamProvider[]'
+ */
+export type ListEnumUpstreamProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UpstreamProvider[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingType'
+ */
+export type EnumBillingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingType'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingType[]'
+ */
+export type ListEnumBillingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingType[]'>
     
 
 
@@ -750,6 +777,13 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

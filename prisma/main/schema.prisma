@@ -132,7 +132,6 @@ model RedemptionCode {
 }
 
 model Transaction {
-  // 标识字段
   id           Int               @id @default(autoincrement()) // 内部自增id
   businessId   String            @unique @mainDb.VarChar(26) // 业务id, ULID
   wallet       Wallet            @relation(fields: [walletId], references: [id])
@@ -143,8 +142,7 @@ model Transaction {
   apiKeyId     Int?              @mainDb.Integer
   type         TransactionType // 交易类型
   amount       Decimal           @mainDb.Decimal(15, 6) // 金额（正=入账，负=出账）
-  description  String?           @mainDb.Text // 详细描述（可选）
-  metadata     Json              @default("{}") @mainDb.Json // 结构化元数据
+  description  String            @mainDb.Text // 交易描述
   status       TransactionStatus @default(PENDING)
   errorMessage String?           @mainDb.Text
   createdAt    DateTime          @default(now()) // 创建时间
@@ -177,31 +175,30 @@ enum TransactionType {
   OTHER // 其他
 }
 
-// ----- AI Models & Channels -----
+// *** NOTE:  UpstreamProvider MUST keep same as detail DB ***
+enum UpstreamProvider {
+  OPENAI // OpenAI
+  FISH_AUDIO // Fish Audio
+}
 
-// 模型
-model AIModel {
-  id          Int      @id @default(autoincrement()) // 内部id
-  name        String   @unique @mainDb.VarChar(63) // 模型名称, 请求名称, 全局唯一
-  providerId  Int      @default(0) // 0: 其他, 1: OpenAI, 2: Anthropic... [内部约定, 不关联表]
-  isActive    Boolean  @default(true) // 是否可用
-  inputPrice  Decimal  @mainDb.Decimal(15, 6) // 输入价格(单位: 个 token)
-  outputPrice Decimal  @mainDb.Decimal(15, 6) // 输出价格(单位: 个 token)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model LLMModel {
+  name        String   @id @mainDb.VarChar(63) // 模型名称, 请求名称, 全局唯一
+  inputPrice  Decimal  @mainDb.Decimal(15, 6) // 输入价格(单位: 美元/M token)
+  outputPrice Decimal  @mainDb.Decimal(15, 6) // 输出价格(单位: 美元/M token)
+  releaseDate DateTime @default(now()) // 发布日期
+  description String   @default("") @mainDb.VarChar(255) // 模型描述
 
-  @@index([name, isActive])
-  @@map("ai_models")
+  @@map("llm_models")
 }
 
 // 模型渠道(上游, 不一定是一级供应商) - 默认渠道支持全部模型, 所以不关联模型表
 model UpstreamConfig {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique @mainDb.VarChar(31) // 上游名称, 全局唯一
-  weight    Int      @default(100) // 权重, 用于负载均衡, 默认100, 越大权重越高
-  baseUrl   String   @mainDb.VarChar(63) // 上游基础URL
-  apiKey    String   @mainDb.VarChar(63) // 上游API Key
-  createdAt DateTime @default(now())
+  id      Int              @id @default(autoincrement())
+  name    String           @unique @mainDb.VarChar(31) // 上游名称, 全局唯一
+  type    UpstreamProvider // 上游提供商类型
+  weight  Int              @default(100) // 权重, 用于负载均衡, 默认100, 越大权重越高
+  baseUrl String           @mainDb.VarChar(63) // 上游基础URL
+  apiKey  String           @mainDb.VarChar(63) // 上游API Key
 
   @@map("upstream_configs")
 }

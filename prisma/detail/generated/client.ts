@@ -50,4 +50,8 @@ export type ApiCallRecord = Prisma.ApiCallRecordModel
  */
 export type ApiCallDetail = Prisma.ApiCallDetailModel
 
+export type BillingType = $Enums.BillingType
+export const BillingType = $Enums.BillingType
 
+export type UpstreamProvider = $Enums.UpstreamProvider
+export const UpstreamProvider = $Enums.UpstreamProvider
