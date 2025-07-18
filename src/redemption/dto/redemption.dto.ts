@@ -55,13 +55,16 @@ export class CreateRedemptionCodeResponseDto {
 }
 
 export class RedeemCodeDto {
-  @ApiProperty({ description: '兑换码', example: 'abcdabcdabcdabcd' })
+  @ApiProperty({
+    description: '小写原始兑换码, 不得包含连字符, 不得包含大写字母',
+    example: 'abcd1234abcd1234abcd1234',
+  })
   @IsString()
   @Length(
     RedemptionService.REDEMPTION_CODE_LENGTH,
     RedemptionService.REDEMPTION_CODE_LENGTH,
     {
-      message: `code must be ${RedemptionService.REDEMPTION_CODE_LENGTH} characters`,
+      message: `兑换码长度必须为 ${RedemptionService.REDEMPTION_CODE_LENGTH} 个字符`,
     },
   )
   code: string;

@@ -59,9 +59,10 @@ export class EpayService {
     this.merchantMd5Secret = _getConfig('EPAY_MERCHANT_MD5_SECRET');
   }
 
-  /** 获取支付价格, 前端传入美元额度, 返回美元价格和人民币价格 */
+  /** 获取支付价格, 前端传入美元额度, 返回系列价格信息 */
   getPrice(usdQuota: string) {
     const USD_Amount = new Decimal(usdQuota).toDecimalPlaces(2);
+    const ORIGINAL_USD2CNY = new Decimal(8);
 
     if (USD_Amount.lt(0.01) || USD_Amount.gt(100000)) {
       throw new BusinessException('Invalid Quota: ' + usdQuota.toString());
@@ -98,7 +99,7 @@ export class EpayService {
         USD2CNY = new Decimal(7.2);
         break;
       default:
-        USD2CNY = new Decimal(8.0);
+        USD2CNY = ORIGINAL_USD2CNY;
         break;
     }
 
@@ -108,6 +109,10 @@ export class EpayService {
         .toDecimalPlaces(2, Decimal.ROUND_UP)
         .toFixed(2),
       exchangeRate: USD2CNY.toFixed(2),
+      originalExchangeRate: ORIGINAL_USD2CNY.toFixed(2),
+      originalAmount: USD_Amount.mul(ORIGINAL_USD2CNY)
+        .toDecimalPlaces(2, Decimal.ROUND_UP)
+        .toFixed(2),
     };
   }
 

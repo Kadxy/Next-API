@@ -18,7 +18,7 @@ import { WalletService } from 'src/wallet/wallet.service';
 export class RedemptionService {
   private readonly logger = new Logger(RedemptionService.name);
 
-  static readonly REDEMPTION_CODE_LENGTH = 24;
+  static readonly REDEMPTION_CODE_LENGTH = 4 * 6;
 
   constructor(
     private readonly prisma: PrismaService,
@@ -41,9 +41,14 @@ export class RedemptionService {
   ): Promise<RedemptionCode> {
     const code = this.generateRedemptionCode();
 
+    // 转换为大写，每4个字符插入一个连字符
+    const formattedCode = code
+      .toLocaleUpperCase()
+      .replace(/(.{4})(?=.)/g, '$1-');
+
     return this.prisma.main.redemptionCode.create({
       data: {
-        code,
+        code: formattedCode,
         amount,
         ...(expiredAt && { expiredAt }),
         ...(remark && { remark }),
@@ -70,7 +75,7 @@ export class RedemptionService {
 
     // 如果兑换码从一开始就不存在或已被使用，则直接拒绝，避免开启不必要的事务
     if (!initialCodeRecord || initialCodeRecord.redeemedAt) {
-      throw new BusinessException('无效的兑换码或已被使用');
+      throw new BusinessException('兑换码不存在或已被使用');
     }
 
     try {

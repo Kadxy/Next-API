@@ -18,6 +18,12 @@ export class EpayPriceResponseData {
 
   @ApiProperty({ description: '美元兑换人民币汇率, 2位小数', example: '6.50' })
   exchangeRate: string;
+
+  @ApiProperty({ description: '原始汇率, 2位小数', example: '8.00' })
+  originalExchangeRate: string;
+
+  @ApiProperty({ description: '原始金额, 2位小数', example: '800' })
+  originalAmount: string;
 }
 
 export class EpayPriceRequestDto {
