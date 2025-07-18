@@ -42,7 +42,8 @@ export class WalletService {
     const wallet = await this.getWallet(where);
 
     if (!wallet) {
-      throw new BusinessException('wallet not found');
+      this.logger.warn(`Wallet (where:${JSON.stringify(where)}) not found`);
+      throw new BusinessException('钱包不存在或无访问权限');
     }
 
     const { id, ownerId, members } = wallet;
@@ -53,7 +54,10 @@ export class WalletService {
     const accessible = isOwner || (!requireOwner && isMember);
 
     if (!accessible) {
-      throw new BusinessException('permission denied');
+      this.logger.warn(
+        `Wallet (id:${id}) not accessible by user (id:${userId})`,
+      );
+      throw new BusinessException('钱包不存在或无访问权限');
     }
 
     this.logger.debug(`Wallet (id:${id}) accessible by user (id:${userId})`);
