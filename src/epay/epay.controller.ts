@@ -17,6 +17,8 @@ import {
   EpayPriceRequestDto,
   EpayPriceResponseDto,
   EpayRechargeRequestDto,
+  QueryOrderResponseDto,
+  RechargeResponseDto,
 } from './dto/epay.dto';
 import { ApiResponse } from '@nestjs/swagger';
 import { AuthGuard, RequestWithUser } from 'src/identity/auth/auth.guard';
@@ -34,6 +36,7 @@ export class EpayController {
 
   @UseGuards(AuthGuard)
   @Post('recharge/wallet/:walletUid')
+  @ApiResponse({ type: RechargeResponseDto })
   async handleRecharge(
     @Req() req: RequestWithUser,
     @Body() body: EpayRechargeRequestDto,
@@ -53,6 +56,7 @@ export class EpayController {
 
   @UseGuards(AuthGuard)
   @Get('query/:businessId')
+  @ApiResponse({ type: QueryOrderResponseDto })
   async handleQueryOrder(@Param('businessId') businessId: string) {
     return this.epayService.handleQueryOrder(businessId);
   }

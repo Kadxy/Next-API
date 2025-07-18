@@ -2,7 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { createResponseDto } from 'src/common/interceptors/transform.interceptor';
 import { IsEnum, IsString } from 'class-validator';
 import { IsNotEmpty } from 'class-validator';
-import { PaymentMethod } from '../interface/epay.interface';
+import {
+  EpayCreateOrderResponse,
+  EpayQueryOrderResponse,
+  PaymentMethod,
+} from '../interface/epay.interface';
 
 export class EpayPriceResponseData {
   /** 充值美元额度 */
@@ -37,3 +41,11 @@ export class EpayRechargeRequestDto {
   @IsNotEmpty()
   payType: PaymentMethod;
 }
+
+export class QueryOrderResponseDto extends createResponseDto(
+  EpayQueryOrderResponse,
+) {}
+
+export class RechargeResponseDto extends createResponseDto(
+  EpayCreateOrderResponse,
+) {}
