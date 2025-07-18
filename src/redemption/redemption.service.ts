@@ -82,6 +82,16 @@ export class RedemptionService {
       throw new BusinessException('兑换码不存在或已被使用');
     }
 
+    // 2. 检查钱包是否存在
+    const wallet = await this.walletService.getAccessibleWallet(
+      { uid: walletUid },
+      redeemerId,
+    );
+
+    if (!wallet) {
+      throw new BusinessException('钱包不存在或无访问权限');
+    }
+
     try {
       const businessId = this.ulidService.generate();
 
@@ -101,6 +111,7 @@ export class RedemptionService {
             redeemedAt: new Date(),
             redeemerId,
             redeemBusinessId: businessId,
+            walletId: wallet.id,
           },
         });
 
@@ -109,7 +120,7 @@ export class RedemptionService {
         // 4. 更新钱包余额
         const updatedWallet = await this.walletService.onRecharge(
           tx,
-          { uid: walletUid },
+          { id: wallet.id },
           updatedCode.amount, // 使用更新后返回的记录，确保数据一致
         );
 

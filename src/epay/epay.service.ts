@@ -181,7 +181,7 @@ export class EpayService {
       this.logger.warn(
         `[Epay] Non-success trade status received: ${JSON.stringify(query)}`,
       );
-      return true;
+      return false;
     }
 
     try {
@@ -228,9 +228,9 @@ export class EpayService {
         // 在这个场景下，这说明订单要么不存在，要么状态不是PENDING（即已被处理）。
         // 这是预期的幂等性行为，我们应该认为处理是“成功”的，并告知支付网关不要再重试。
         this.logger.log(
-          `[Epay] Order ${query.out_trade_no} already processed or not found. Ignoring notification.`,
+          `[Epay - expected error] Order ${query.out_trade_no} already processed or not found. Ignoring notification.`,
         );
-        return true;
+        return false;
       }
 
       // 对于其他未知错误，记录日志并返回失败，让支付网关后续重试
