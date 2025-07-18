@@ -1,11 +1,9 @@
-import { AudioModelUncheckedCreateInput } from '@prisma-main-client/models';
 import {
-  AudioModel,
-  LLMModel,
-  PrismaClient,
-  UpstreamConfig,
-  UpstreamProvider,
-} from '../generated/client';
+  AudioModelUncheckedCreateInput,
+  LLMModelUncheckedCreateInput,
+  UpstreamConfigUncheckedCreateInput,
+} from '@prisma-main-client/models';
+import { PrismaClient, UpstreamProvider } from '../generated/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import * as dotenv from 'dotenv';
 
@@ -16,8 +14,6 @@ enum PriceUnit {
   KILO,
   MILLION,
 }
-
-type SeedUpstreamConfig = Omit<UpstreamConfig, 'id'>;
 
 const prisma = new PrismaClient();
 
@@ -32,7 +28,7 @@ const getPrice = (price: number, unit: PriceUnit = PriceUnit.MILLION) => {
   }
 };
 
-const aiModels: LLMModel[] = [
+const aiModels: LLMModelUncheckedCreateInput[] = [
   {
     name: 'gpt-4o-mini',
     inputPrice: getPrice(0.15, PriceUnit.MILLION), // $0.15 per 1M tokens
@@ -56,7 +52,7 @@ const aiModels: LLMModel[] = [
   },
 ];
 
-const upstreamConfigs: SeedUpstreamConfig[] = [
+const upstreamConfigs: UpstreamConfigUncheckedCreateInput[] = [
   {
     name: 'openai-next-error-apikey',
     weight: 20,

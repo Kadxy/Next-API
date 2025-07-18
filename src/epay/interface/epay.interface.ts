@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export enum InterfaceType {
   web, // 通用网页支付（会根据device判断，自动返回跳转url/二维码/小程序跳转url等）
   jump, // 跳转支付（仅会返回跳转url）
@@ -44,173 +46,185 @@ export enum PaymentMethod {
 /**
  * 创建订单请求参数
  */
-export interface EpayCreateOrderRequest {
-  /** 商户ID */
+export class EpayCreateOrderRequest {
+  @ApiProperty({ description: '商户ID' })
   pid: number;
 
-  /** 接口类型 */
+  @ApiProperty({ description: '接口类型' })
   method: InterfaceType;
 
-  /** 设备类型，仅通用网页支付需要传 */
+  @ApiProperty({ description: '设备类型，仅通用网页支付需要传' })
   device?: DeviceType;
 
-  /** 支付方式 */
+  @ApiProperty({ description: '支付方式' })
   type: PaymentMethod;
 
-  /** 商户订单号 */
+  @ApiProperty({ description: '商户订单号' })
   out_trade_no: string;
 
-  /** 服务器异步通知地址 */
+  @ApiProperty({ description: '服务器异步通知地址' })
   notify_url: string;
 
-  /** 页面跳转通知地址 */
+  @ApiProperty({ description: '页面跳转通知地址' })
   return_url: string;
 
-  /** 商品名称，超过127字节自动截取 */
+  @ApiProperty({ description: '商品名称，超过127字节自动截取' })
   name: string;
 
-  /** 商品金额，单位：元，最大2位小数 */
+  @ApiProperty({ description: '商品金额，单位：元，最大2位小数' })
   money: string;
 
-  /** 用户发起支付的IP地址 */
+  @ApiProperty({ description: '用户发起支付的IP地址' })
   clientip: string;
 
-  /** 业务扩展参数，支付后原样返回 */
+  @ApiProperty({ description: '业务扩展参数，支付后原样返回' })
   param?: string;
 
-  /** 被扫支付授权码，仅被扫支付需要传 */
+  @ApiProperty({ description: '被扫支付授权码，仅被扫支付需要传' })
   auth_code?: string;
 
-  /** 用户Openid，仅JSAPI支付需要传 */
+  @ApiProperty({ description: '用户Openid，仅JSAPI支付需要传' })
   sub_openid?: string;
 
-  /** 公众号AppId，仅JSAPI支付需要传 */
+  @ApiProperty({ description: '公众号AppId，仅JSAPI支付需要传' })
   sub_appid?: string;
 
-  /** 自定义通道ID，对应进件商户列表的ID，未进件请勿传 */
+  @ApiProperty({
+    description: '自定义通道ID，对应进件商户列表的ID，未进件请勿传',
+  })
   channel_id?: number;
 
-  /** 当前时间戳，10位整数，单位秒 */
+  @ApiProperty({ description: '当前时间戳，10位整数，单位秒' })
   timestamp: string;
 
-  /** 签名字符串 */
+  @ApiProperty({ description: '签名字符串' })
   sign: string;
 
-  /** 签名类型，默认为RSA */
+  @ApiProperty({ description: '签名类型，默认为RSA' })
   sign_type: string;
 }
 
 /**
  * 创建订单响应参数
  */
-export interface EpayCreateOrderResponse {
-  /** 返回状态码，0为成功，其它值为失败 */
+export class EpayCreateOrderResponse {
+  @ApiProperty({ description: '返回状态码，0为成功，其它值为失败' })
   code: 0 | number;
 
-  /** 错误信息，失败时返回原因 */
+  @ApiProperty({ description: '错误信息，失败时返回原因' })
   msg?: string;
 
-  /** 平台内部的订单号 */
+  @ApiProperty({ description: '平台内部的订单号' })
   trade_no?: string;
 
-  /** 发起支付类型 */
+  @ApiProperty({ description: '发起支付类型' })
   pay_type?: PayType;
 
-  /** 发起支付参数，根据不同的发起支付类型，返回内容也不一样 */
+  @ApiProperty({
+    description: '发起支付参数，根据不同的发起支付类型，返回内容也不一样',
+  })
   pay_info?: string;
 
-  /** 当前时间戳，10位整数，单位秒 */
+  @ApiProperty({ description: '当前时间戳，10位整数，单位秒' })
   timestamp?: string;
 
-  /** 签名字符串，参考签名规则 */
+  @ApiProperty({ description: '签名字符串，参考签名规则' })
   sign?: string;
 
-  /** 签名类型，默认为RSA */
+  @ApiProperty({ description: '签名类型，默认为RSA' })
   sign_type?: string;
 }
 
 /**
  * 订单查询请求参数
  */
-export interface EpayQueryOrderRequest {
-  /** 商户ID */
+export class EpayQueryOrderRequest {
+  @ApiProperty({ description: '商户ID' })
   pid: number;
 
-  /** 平台订单号，与商户订单号必传其一 */
+  @ApiProperty({ description: '平台订单号，与商户订单号必传其一' })
   trade_no?: string;
 
-  /** 商户订单号，与平台订单号必传其一 */
+  @ApiProperty({ description: '商户订单号，与平台订单号必传其一' })
   out_trade_no?: string;
 
-  /** 当前时间戳，10位整数，单位秒 */
+  @ApiProperty({ description: '当前时间戳，10位整数，单位秒' })
   timestamp: string;
 
-  /** 签名字符串 */
+  @ApiProperty({ description: '签名字符串' })
   sign: string;
 
-  /** 签名类型，默认为RSA */
+  @ApiProperty({ description: '签名类型，默认为RSA' })
   sign_type: string;
 }
 
 /**
  * 订单查询响应参数
  */
-export interface EpayQueryOrderResponse {
-  /** 返回状态码，0为成功，其它值为失败 */
+export class EpayQueryOrderResponse {
+  @ApiProperty({ description: '返回状态码，0为成功，其它值为失败' })
   code: 0 | number;
 
-  /** 错误信息，失败时返回原因 */
+  @ApiProperty({ description: '错误信息，失败时返回原因' })
   msg?: string;
 
-  /** 平台订单号 */
+  @ApiProperty({ description: '平台订单号' })
   trade_no?: string;
 
-  /** 商户订单号 */
+  @ApiProperty({ description: '商户订单号' })
   out_trade_no?: string;
 
-  /** 接口订单号，微信支付宝返回的单号 */
+  @ApiProperty({ description: '接口订单号，微信支付宝返回的单号' })
   api_trade_no?: string;
 
-  /** 支付方式 */
+  @ApiProperty({
+    description: '支付方式',
+    example: PayType.jump,
+    enum: PayType,
+  })
   type?: PayType;
 
-  /** 支付状态，0未支付，1已支付，2已退款，3已冻结，4预授权 */
+  @ApiProperty({
+    description: '支付状态，0未支付，1已支付，2已退款，3已冻结，4预授权',
+    example: 0,
+    enum: PayStatus,
+  })
   status?: PayStatus;
 
-  /** 商户ID */
+  @ApiProperty({ description: '商户ID' })
   pid?: number;
 
-  /** 订单创建时间 */
+  @ApiProperty({ description: '订单创建时间' })
   addtime?: string;
 
-  /** 订单完成时间，仅完成才返回 */
+  @ApiProperty({ description: '订单完成时间，仅完成才返回' })
   endtime?: string;
 
-  /** 商品名称 */
+  @ApiProperty({ description: '商品名称' })
   name?: string;
 
-  /** 商品金额 */
+  @ApiProperty({ description: '商品金额' })
   money?: string;
 
-  /** 已退款金额，仅部分退款情况才返回 */
+  @ApiProperty({ description: '已退款金额，仅部分退款情况才返回' })
   refundmoney?: string;
 
-  /** 业务扩展参数 */
+  @ApiProperty({ description: '业务扩展参数' })
   param?: string;
 
-  /** 支付用户标识，一般为openid */
+  @ApiProperty({ description: '支付用户标识，一般为openid' })
   buyer?: string;
 
-  /** 支付用户IP */
+  @ApiProperty({ description: '支付用户IP' })
   clientip?: string;
 
-  /** 当前时间戳，10位整数，单位秒 */
+  @ApiProperty({ description: '当前时间戳，10位整数，单位秒' })
   timestamp?: string;
 
-  /** 签名字符串 */
+  @ApiProperty({ description: '签名字符串' })
   sign?: string;
 
-  /** 签名类型，默认为RSA */
+  @ApiProperty({ description: '签名类型，默认为RSA' })
   sign_type?: string;
 }
 
@@ -265,4 +279,18 @@ export interface EpayNotifyResult {
 
   /** 支付平台可能会增加回调字段，需支持扩展 */
   [key: string]: any;
+}
+
+export interface CreateEpayOrderRequire {
+  method: InterfaceType;
+  device: DeviceType;
+  type: PaymentMethod;
+  out_trade_no: string;
+  name: string;
+  money: string;
+  clientip: string;
+}
+
+export interface QueryEpayOrderRequire {
+  out_trade_no?: string;
 }

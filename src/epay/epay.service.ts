@@ -3,28 +3,22 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as crypto from 'crypto';
 import {
-  DeviceType,
+  CreateEpayOrderRequire,
   EpayCreateOrderRequest,
+  PaymentMethod,
   EpayNotifyResult,
   EpayQueryOrderRequest,
+  QueryEpayOrderRequire,
   InterfaceType,
-  PaymentMethod,
+  DeviceType,
 } from './interface/epay.interface';
-import { FastifyReply } from 'fastify';
-
-interface CreateOrderDto {
-  method: InterfaceType;
-  device: DeviceType;
-  type: PaymentMethod;
-  out_trade_no: string;
-  name: string;
-  money: string;
-  clientip: string;
-}
-
-interface QueryOrderDto {
-  out_trade_no?: string;
-}
+import { Decimal } from '@prisma-detail-client/internal/prismaNamespace';
+import { BusinessException } from 'src/common/exceptions';
+import { UlidService } from 'src/core/ulid/ulid.service';
+import { PrismaService } from 'src/core/prisma/prisma.service';
+import { Wallet } from '@prisma-main-client/client';
+import { WalletService } from 'src/wallet/wallet.service';
+import { TransactionStatus, TransactionType } from '@prisma-main-client/enums';
 
 @Injectable()
 export class EpayService {
@@ -44,6 +38,9 @@ export class EpayService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly ulidService: UlidService,
+    private readonly prismaService: PrismaService,
+    private readonly walletService: WalletService,
   ) {
     const _getConfig = (key: string) => this.configService.getOrThrow(key);
 
@@ -54,32 +51,126 @@ export class EpayService {
     this.merchantRsaPrivateKey = _getConfig('EPAY_MERCHANT_RSA_PRIVATE_KEY');
   }
 
-  /** 处理易支付回调, TODO: 检测到成功要更新*/
-  async handleNotify(query: EpayNotifyResult, reply: FastifyReply) {
-    let success: boolean = true;
+  /** 获取支付价格, 前端传入美元额度, 返回美元价格和人民币价格 */
+  getPrice(usdQuota: string) {
+    const USD_Amount = new Decimal(usdQuota).toDecimalPlaces(2);
 
+    if (USD_Amount.lt(0.01) || USD_Amount.gt(100000)) {
+      throw new BusinessException('Invalid Quota: ' + usdQuota.toString());
+    }
+
+    let USD2CNY: Decimal = new Decimal(8);
+
+    switch (true) {
+      case USD_Amount.gte(5000):
+        USD2CNY = new Decimal(4.0);
+        break;
+      case USD_Amount.gte(3000):
+        USD2CNY = new Decimal(4.5);
+        break;
+      case USD_Amount.gte(2000):
+        USD2CNY = new Decimal(4.8);
+        break;
+      case USD_Amount.gte(1000):
+        USD2CNY = new Decimal(5.0);
+        break;
+      case USD_Amount.gte(500):
+        USD2CNY = new Decimal(5.5);
+        break;
+      case USD_Amount.gte(200):
+        USD2CNY = new Decimal(6.0);
+        break;
+      case USD_Amount.gte(100):
+        USD2CNY = new Decimal(6.5);
+        break;
+      case USD_Amount.gte(50):
+        USD2CNY = new Decimal(6.8);
+        break;
+      case USD_Amount.gte(10):
+        USD2CNY = new Decimal(7.2);
+        break;
+      default:
+        USD2CNY = new Decimal(8.0);
+        break;
+    }
+
+    return {
+      quota: USD_Amount.toFixed(2),
+      amount: USD2CNY.mul(USD_Amount)
+        .toDecimalPlaces(2, Decimal.ROUND_UP)
+        .toFixed(2),
+      exchangeRate: USD2CNY.toFixed(2),
+    };
+  }
+
+  async handleRecharge(
+    userId: number,
+    walletUid: Wallet['uid'],
+    quota: string,
+    payType: PaymentMethod,
+    clientIp: string,
+  ) {
+    const price = this.getPrice(quota);
+    const outTradeNo = this.ulidService.generate();
+
+    const wallet = await this.walletService.getAccessibleWallet(
+      { uid: walletUid },
+      userId,
+    );
+
+    await this.prismaService.main.transaction.create({
+      data: {
+        businessId: outTradeNo,
+        wallet: { connect: { id: wallet.id } },
+        user: { connect: { id: userId } },
+        type: TransactionType.RECHARGE,
+        amount: price.amount,
+        description: `Recharge - US$ ${quota}`,
+        status: TransactionStatus.PENDING,
+      },
+    });
+
+    const data: CreateEpayOrderRequire = {
+      method: InterfaceType.web,
+      device: DeviceType.pc,
+      type: payType,
+      out_trade_no: outTradeNo,
+      name: `API-Grip Recharge - US$ ${quota}`,
+      money: price.amount,
+      clientip: clientIp,
+    };
+
+    return await this.createEpayOrder(data);
+  }
+
+  async handleQueryOrder(businessId: string) {
+    return await this.queryEpayOrder({ out_trade_no: businessId });
+  }
+
+  /** 处理易支付回调, TODO: 检测到成功要更新*/
+  async handleNotify(query: EpayNotifyResult) {
     const { sign, sign_type, ...rest } = query;
 
     if (!sign || !sign_type || sign_type.toLowerCase() !== 'rsa') {
-      this.logger.error('Invalid sign or sign_type', query);
-      success = false;
+      this.logger.error(`invalid sign info: ${JSON.stringify(query)}`);
+      return false;
     }
 
     if (!this.verifySignature(rest)) {
-      this.logger.error('Invalid signature', query);
-      success = false;
+      this.logger.error(`failed to verify signature: ${JSON.stringify(query)}`);
+      return false;
     }
 
     if (!query.trade_status || query.trade_status !== 'TRADE_SUCCESS') {
-      this.logger.error('Invalid trade_status', query);
-      success = false;
+      this.logger.error(`invalid trade_status: ${JSON.stringify(query)}`);
+      return false;
     }
 
-    reply.send({ success });
+    return true;
   }
 
   /** 创建易支付订单(内部使用) */
-  private async createEpayOrder(dto: CreateOrderDto) {
+  private async createEpayOrder(dto: CreateEpayOrderRequire) {
     const { method, device, type, out_trade_no, name, money, clientip } = dto;
 
     const data: EpayCreateOrderRequest = {
@@ -104,7 +195,7 @@ export class EpayService {
   }
 
   /** 查询易支付订单(内部使用) */
-  private async queryEpayOrder(dto: QueryOrderDto) {
+  private async queryEpayOrder(dto: QueryEpayOrderRequire) {
     const { out_trade_no } = dto;
 
     const data: EpayQueryOrderRequest = {

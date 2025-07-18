@@ -1,17 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import {
-  Transaction,
-  TransactionStatus,
-  User,
-  Wallet,
-} from '@prisma-main-client/client';
+import { Transaction, User, Wallet } from '@prisma-main-client/client';
 import { FeishuWebhookService } from 'src/core/feishu-webhook/feishu-webhook.service';
 import {
   Decimal,
   TransactionClient,
 } from '@prisma-main-client/internal/prismaNamespace';
 import { PrismaService } from '../core/prisma/prisma.service';
+import { TransactionStatus, TransactionType } from '@prisma-main-client/enums';
 
 type TransactionGroup = Pick<
   Transaction,
@@ -47,7 +43,10 @@ export class TransactionService {
   @Cron(CronExpression.EVERY_30_MINUTES)
   async retryFailedTransactions() {
     const result = await this.prisma.main.transaction.updateMany({
-      where: { status: TransactionStatus.FAILED },
+      where: {
+        status: TransactionStatus.FAILED,
+        type: TransactionType.CONSUME,
+      },
       data: { status: TransactionStatus.PENDING },
     });
 
@@ -71,6 +70,7 @@ export class TransactionService {
       const pendingRecords = await tx.transaction.findMany({
         where: {
           status: TransactionStatus.PENDING,
+          type: TransactionType.CONSUME,
           createdAt: { lte: cutoffTime },
         },
         take: batchSize,
