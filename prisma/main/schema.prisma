@@ -12,23 +12,22 @@ datasource mainDb {
 // Core User & Wallet Management Models
 // -----------------------------------------------------------------------------
 model User {
-  id             Int              @id @default(autoincrement())
-  uid            String           @unique @default(uuid())
-  displayName    String?          @mainDb.VarChar(15)
-  avatar         String?          @mainDb.Text
-  email          String?          @unique
-  phone          String?          @unique
-  gitHubId       String?          @unique
-  googleId       String?          @unique
-  feishuId       String?          @unique
-  microsoftId    String?          @unique
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  id             Int            @id @default(autoincrement())
+  uid            String         @unique @default(uuid())
+  displayName    String?        @mainDb.VarChar(15)
+  avatar         String?        @mainDb.Text
+  email          String?        @unique
+  phone          String?        @unique
+  gitHubId       String?        @unique
+  googleId       String?        @unique
+  feishuId       String?        @unique
+  microsoftId    String?        @unique
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   lastLoginAt    DateTime?
   wallet         Wallet[] // 管理的钱包
   walletMembers  WalletMember[] // 加入的钱包
   passkeys       Passkey[] // 绑定的passkey
-  redeemCodes    RedemptionCode[] // 使用过的兑换码
   createdApiKeys ApiKey[] // 创建的API Keys
   transactions   Transaction[] // 交易记录
 
@@ -118,15 +117,15 @@ model Passkey {
 }
 
 model RedemptionCode {
-  id         Int       @id @default(autoincrement())
-  code       String    @unique @mainDb.VarChar(16)
-  amount     Int       @mainDb.Integer
-  remark     String    @default("")
-  createdAt  DateTime  @default(now())
-  expiredAt  DateTime?
-  redeemedAt DateTime?
-  redeemerId Int?
-  redeemer   User?     @relation(fields: [redeemerId], references: [id])
+  id               Int       @id @default(autoincrement())
+  code             String    @unique @mainDb.VarChar(16)
+  amount           Int       @mainDb.Integer
+  remark           String    @default("")
+  createdAt        DateTime  @default(now())
+  redeemerId       Int?      @mainDb.Integer // 兑换时更新: 冗余兑换人id
+  walletId         Int?      @mainDb.Integer // 兑换时更新: 冗余钱包id
+  redeemedAt       DateTime? // 兑换时更新: 兑换时间
+  redeemBusinessId String?   @mainDb.VarChar(26) // 兑换时更新: 兑换码兑换的业务id(即 transaction.businessId)
 
   @@map("redeem_codes")
 }
@@ -168,6 +167,7 @@ enum TransactionStatus {
 
 enum TransactionType {
   RECHARGE // 充值
+  REDEMPTION // 兑换
   CONSUME // 消费
   REFUND // 退款
   ADJUSTMENT // 调账

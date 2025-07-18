@@ -1,32 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum InterfaceType {
-  web, // 通用网页支付（会根据device判断，自动返回跳转url/二维码/小程序跳转url等）
-  jump, // 跳转支付（仅会返回跳转url）
-  jsapi, // JSAPI支付（小程序内支付使用，仅返回JSAPI参数，需传入sub_openid和sub_appid参数）
-  app, // APP支付（iOS/安卓APP内支付使用，仅返回APP支付参数，或APP拉起微信小程序参数）
-  scan, // 付款码支付（需传入auth_code参数，支付成功后返回订单信息）
-  applet, // 小程序支付（微信小程序内使用，返回微信小程序插件参数或跳转小程序参数）
+  web = 'web', // 通用网页支付（会根据device判断，自动返回跳转url/二维码/小程序跳转url等）
+  jump = 'jump', // 跳转支付（仅会返回跳转url）
+  jsapi = 'jsapi', // JSAPI支付（小程序内支付使用，仅返回JSAPI参数，需传入sub_openid和sub_appid参数）
+  app = 'app', // APP支付（iOS/安卓APP内支付使用，仅返回APP支付参数，或APP拉起微信小程序参数）
+  scan = 'scan', // 付款码支付（需传入auth_code参数，支付成功后返回订单信息）
+  applet = 'applet', // 小程序支付（微信小程序内使用，返回微信小程序插件参数或跳转小程序参数）
 }
 
 export enum DeviceType {
-  pc, // 电脑浏览器（默认）
-  mobile, // 手机浏览器
-  qq, // 手机QQ内浏览器
-  wechat, // 微信内浏览器
-  alipay, // 支付宝客户端
+  pc = 'pc', // 电脑浏览器（默认）
+  mobile = 'mobile', // 手机浏览器
+  qq = 'qq', // 手机QQ内浏览器
+  wechat = 'wechat', // 微信内浏览器
+  alipay = 'alipay', // 支付宝客户端
 }
 
 export enum PayType {
-  jump, // 返回支付跳转url
-  html, // 返回html代码，用于支付跳转
-  qrcode, // 返回支付二维码
-  urlscheme, // 返回微信/支付宝小程序跳转url scheme
-  jsapi, // 返回用于发起JSAPI支付的参数
-  app, // 返回用于发起APP支付的参数
-  scan, // 付款码支付成功,返回支付订单信息
-  wxplugin, // 返回要拉起的微信小程序插件参数，
-  wxapp, // 返回要拉起的微信小程序和路径，用于APP内拉起微信小程序支付
+  jump = 'jump', // 返回支付跳转url
+  html = 'html', // 返回html代码，用于支付跳转
+  qrcode = 'qrcode', // 返回支付二维码
+  urlscheme = 'urlscheme', // 返回微信/支付宝小程序跳转url scheme
+  jsapi = 'jsapi', // 返回用于发起JSAPI支付的参数
+  app = 'app', // 返回用于发起APP支付的参数
+  scan = 'scan', // 付款码支付成功,返回支付订单信息
+  wxplugin = 'wxplugin', // 返回要拉起的微信小程序插件参数，
+  wxapp = 'wxapp', // 返回要拉起的微信小程序和路径，用于APP内拉起微信小程序支付
 }
 
 export enum PayStatus {
@@ -38,9 +38,9 @@ export enum PayStatus {
 }
 
 export enum PaymentMethod {
-  wechat, // 微信支付
-  alipay, // 支付宝
-  qqpay, // QQ钱包
+  wxpay = 'wxpay', // 微信支付
+  alipay = 'alipay', // 支付宝
+  qqpay = 'qqpay', // QQ钱包
 }
 
 /**
@@ -56,7 +56,11 @@ export class EpayCreateOrderRequest {
   @ApiProperty({ description: '设备类型，仅通用网页支付需要传' })
   device?: DeviceType;
 
-  @ApiProperty({ description: '支付方式' })
+  @ApiProperty({
+    description: '支付方式',
+    example: PaymentMethod.wxpay,
+    enum: PaymentMethod,
+  })
   type: PaymentMethod;
 
   @ApiProperty({ description: '商户订单号' })
@@ -107,8 +111,8 @@ export class EpayCreateOrderRequest {
 /**
  * 创建订单响应参数
  */
-export class EpayCreateOrderResponse {
-  @ApiProperty({ description: '返回状态码，0为成功，其它值为失败' })
+export class EpayCreateOrderResponseV2 {
+  @ApiProperty({ description: '返回状态码，0 为成功，其它值为失败' })
   code: 0 | number;
 
   @ApiProperty({ description: '错误信息，失败时返回原因' })
@@ -133,6 +137,26 @@ export class EpayCreateOrderResponse {
 
   @ApiProperty({ description: '签名类型，默认为RSA' })
   sign_type?: string;
+}
+
+export class EpayCreateOrderResponseV1 {
+  @ApiProperty({ description: '返回状态码，1 为成功，其它值为失败' })
+  code: 1 | number;
+
+  @ApiProperty({ description: '错误信息，失败时返回原因' })
+  msg?: string;
+
+  @ApiProperty({ description: '支付订单号' })
+  trade_no?: string;
+
+  @ApiProperty({ description: '支付跳转url, 与qrcode/urlscheme三选一' })
+  payurl?: string;
+
+  @ApiProperty({ description: '二维码链接, 与payurl/urlscheme三选一' })
+  qrcode?: string;
+
+  @ApiProperty({ description: '小程序跳转url, 与payurl/qrcode三选一' })
+  urlscheme?: string;
 }
 
 /**
@@ -162,8 +186,8 @@ export class EpayQueryOrderRequest {
  * 订单查询响应参数
  */
 export class EpayQueryOrderResponse {
-  @ApiProperty({ description: '返回状态码，0为成功，其它值为失败' })
-  code: 0 | number;
+  @ApiProperty({ description: '返回状态码，1 为成功，其它值为失败' })
+  code: 1 | number;
 
   @ApiProperty({ description: '错误信息，失败时返回原因' })
   msg?: string;
@@ -179,13 +203,13 @@ export class EpayQueryOrderResponse {
 
   @ApiProperty({
     description: '支付方式',
-    example: PayType.jump,
-    enum: PayType,
+    example: PaymentMethod.wxpay,
+    enum: PaymentMethod,
   })
-  type?: PayType;
+  type?: PaymentMethod;
 
   @ApiProperty({
-    description: '支付状态，0未支付，1已支付，2已退款，3已冻结，4预授权',
+    description: '支付状态，0未支付，**1已支付**，2已退款，3已冻结，4预授权',
     example: 0,
     enum: PayStatus,
   })
@@ -292,5 +316,6 @@ export interface CreateEpayOrderRequire {
 }
 
 export interface QueryEpayOrderRequire {
+  trade_no?: string;
   out_trade_no?: string;
 }

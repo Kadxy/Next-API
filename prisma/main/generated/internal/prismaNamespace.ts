@@ -1292,9 +1292,10 @@ export const RedemptionCodeScalarFieldEnum = {
   amount: 'amount',
   remark: 'remark',
   createdAt: 'createdAt',
-  expiredAt: 'expiredAt',
+  redeemerId: 'redeemerId',
+  walletId: 'walletId',
   redeemedAt: 'redeemedAt',
-  redeemerId: 'redeemerId'
+  redeemBusinessId: 'redeemBusinessId'
 } as const
 
 export type RedemptionCodeScalarFieldEnum = (typeof RedemptionCodeScalarFieldEnum)[keyof typeof RedemptionCodeScalarFieldEnum]

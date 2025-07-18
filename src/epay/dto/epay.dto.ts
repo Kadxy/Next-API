@@ -3,19 +3,20 @@ import { createResponseDto } from 'src/common/interceptors/transform.interceptor
 import { IsEnum, IsString } from 'class-validator';
 import { IsNotEmpty } from 'class-validator';
 import {
-  EpayCreateOrderResponse,
+  EpayCreateOrderResponseV1,
+  EpayCreateOrderResponseV2,
   EpayQueryOrderResponse,
   PaymentMethod,
 } from '../interface/epay.interface';
 
 export class EpayPriceResponseData {
-  /** 充值美元额度 */
+  @ApiProperty({ description: '充值美元额度, 2位小数', example: '100' })
   quota: string;
 
-  /** 人民币价格 */
+  @ApiProperty({ description: '人民币价格, 2位小数', example: '650' })
   amount: string;
 
-  /** 美元兑换人民币汇率 */
+  @ApiProperty({ description: '美元兑换人民币汇率, 2位小数', example: '6.50' })
   exchangeRate: string;
 }
 
@@ -36,16 +37,25 @@ export class EpayRechargeRequestDto {
   @IsNotEmpty()
   quota: string;
 
-  @ApiProperty({ description: '支付方式', example: 'wechat' })
-  @IsEnum(PaymentMethod)
+  @ApiProperty({
+    description: '支付方式',
+    example: 'wechat',
+    enum: PaymentMethod,
+  })
   @IsNotEmpty()
-  payType: PaymentMethod;
+  @IsString()
+  @IsEnum(PaymentMethod)
+  paymentMethod: PaymentMethod;
 }
 
 export class QueryOrderResponseDto extends createResponseDto(
   EpayQueryOrderResponse,
 ) {}
 
-export class RechargeResponseDto extends createResponseDto(
-  EpayCreateOrderResponse,
+export class RechargeResponseV2Dto extends createResponseDto(
+  EpayCreateOrderResponseV2,
+) {}
+
+export class RechargeResponseV1Dto extends createResponseDto(
+  EpayCreateOrderResponseV1,
 ) {}

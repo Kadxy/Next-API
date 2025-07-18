@@ -20,6 +20,7 @@ export type TransactionStatus = (typeof TransactionStatus)[keyof typeof Transact
 
 export const TransactionType = {
   RECHARGE: 'RECHARGE',
+  REDEMPTION: 'REDEMPTION',
   CONSUME: 'CONSUME',
   REFUND: 'REFUND',
   ADJUSTMENT: 'ADJUSTMENT',

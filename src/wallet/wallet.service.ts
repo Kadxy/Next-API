@@ -3,12 +3,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE_KEYS, getCacheKey } from 'src/core/cache/chche.constant';
 import { BusinessException, ForbiddenException } from 'src/common/exceptions';
-import {
-  Prisma,
-  User,
-  Wallet,
-  WalletMember,
-} from '@prisma-main-client/client';
+import { Prisma, User, Wallet, WalletMember } from '@prisma-main-client/client';
 import {
   OWNER_WALLET_QUERY_OMIT,
   OWNER_WALLET_QUERY_WALLET_MEMBER_SELECT,
@@ -331,6 +326,28 @@ export class WalletService {
     ) {
       throw new ForbiddenException('Insufficient member credit');
     }
+  }
+
+  /**
+   * 充值钱包余额
+   * @param tx - 事务客户端
+   * @param where - 钱包ID或UID
+   * @param amount - 充值金额
+   * @returns 更新后的钱包
+   */
+  async onRecharge(
+    tx: Prisma.TransactionClient,
+    where: Prisma.WalletWhereUniqueInput,
+    amount: number,
+  ): Promise<Wallet> {
+    const wallet = await tx.wallet.update({
+      where,
+      data: { balance: { increment: amount } },
+    });
+
+    await this.cleanCache(wallet);
+
+    return wallet;
   }
 
   /**

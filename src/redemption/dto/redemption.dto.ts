@@ -8,6 +8,7 @@ import {
   IsDateString,
 } from 'class-validator';
 import { RedemptionService } from '../redemption.service';
+import { createResponseDto } from 'src/common/interceptors/transform.interceptor';
 
 export class CreateRedemptionCodeDto {
   @ApiProperty({ description: '充值金额，整数', example: 1 })
@@ -64,12 +65,20 @@ export class RedeemCodeDto {
     },
   )
   code: string;
+
+  @ApiProperty({ description: '钱包UID', example: '1234567890' })
+  @IsString()
+  walletUid: string;
 }
 
-export class RedeemCodeResponseDto {
+export class RedeemCodeResponseData {
   @ApiProperty({ description: '最新余额', example: '2' })
   balance: string;
 }
+
+export class RedeemCodeResponseDto extends createResponseDto(
+  RedeemCodeResponseData,
+) {}
 
 export class GetAllRedemptionCodesResponseDto {
   @ApiProperty({

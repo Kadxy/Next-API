@@ -29,12 +29,14 @@ export type RedemptionCodeAvgAggregateOutputType = {
   id: number | null
   amount: number | null
   redeemerId: number | null
+  walletId: number | null
 }
 
 export type RedemptionCodeSumAggregateOutputType = {
   id: number | null
   amount: number | null
   redeemerId: number | null
+  walletId: number | null
 }
 
 export type RedemptionCodeMinAggregateOutputType = {
@@ -43,9 +45,10 @@ export type RedemptionCodeMinAggregateOutputType = {
   amount: number | null
   remark: string | null
   createdAt: Date | null
-  expiredAt: Date | null
-  redeemedAt: Date | null
   redeemerId: number | null
+  walletId: number | null
+  redeemedAt: Date | null
+  redeemBusinessId: string | null
 }
 
 export type RedemptionCodeMaxAggregateOutputType = {
@@ -54,9 +57,10 @@ export type RedemptionCodeMaxAggregateOutputType = {
   amount: number | null
   remark: string | null
   createdAt: Date | null
-  expiredAt: Date | null
-  redeemedAt: Date | null
   redeemerId: number | null
+  walletId: number | null
+  redeemedAt: Date | null
+  redeemBusinessId: string | null
 }
 
 export type RedemptionCodeCountAggregateOutputType = {
@@ -65,9 +69,10 @@ export type RedemptionCodeCountAggregateOutputType = {
   amount: number
   remark: number
   createdAt: number
-  expiredAt: number
-  redeemedAt: number
   redeemerId: number
+  walletId: number
+  redeemedAt: number
+  redeemBusinessId: number
   _all: number
 }
 
@@ -76,12 +81,14 @@ export type RedemptionCodeAvgAggregateInputType = {
   id?: true
   amount?: true
   redeemerId?: true
+  walletId?: true
 }
 
 export type RedemptionCodeSumAggregateInputType = {
   id?: true
   amount?: true
   redeemerId?: true
+  walletId?: true
 }
 
 export type RedemptionCodeMinAggregateInputType = {
@@ -90,9 +97,10 @@ export type RedemptionCodeMinAggregateInputType = {
   amount?: true
   remark?: true
   createdAt?: true
-  expiredAt?: true
-  redeemedAt?: true
   redeemerId?: true
+  walletId?: true
+  redeemedAt?: true
+  redeemBusinessId?: true
 }
 
 export type RedemptionCodeMaxAggregateInputType = {
@@ -101,9 +109,10 @@ export type RedemptionCodeMaxAggregateInputType = {
   amount?: true
   remark?: true
   createdAt?: true
-  expiredAt?: true
-  redeemedAt?: true
   redeemerId?: true
+  walletId?: true
+  redeemedAt?: true
+  redeemBusinessId?: true
 }
 
 export type RedemptionCodeCountAggregateInputType = {
@@ -112,9 +121,10 @@ export type RedemptionCodeCountAggregateInputType = {
   amount?: true
   remark?: true
   createdAt?: true
-  expiredAt?: true
-  redeemedAt?: true
   redeemerId?: true
+  walletId?: true
+  redeemedAt?: true
+  redeemBusinessId?: true
   _all?: true
 }
 
@@ -210,9 +220,10 @@ export type RedemptionCodeGroupByOutputType = {
   amount: number
   remark: string
   createdAt: Date
-  expiredAt: Date | null
-  redeemedAt: Date | null
   redeemerId: number | null
+  walletId: number | null
+  redeemedAt: Date | null
+  redeemBusinessId: string | null
   _count: RedemptionCodeCountAggregateOutputType | null
   _avg: RedemptionCodeAvgAggregateOutputType | null
   _sum: RedemptionCodeSumAggregateOutputType | null
@@ -244,10 +255,10 @@ export type RedemptionCodeWhereInput = {
   amount?: Prisma.IntFilter<"RedemptionCode"> | number
   remark?: Prisma.StringFilter<"RedemptionCode"> | string
   createdAt?: Prisma.DateTimeFilter<"RedemptionCode"> | Date | string
-  expiredAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
-  redeemedAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
   redeemerId?: Prisma.IntNullableFilter<"RedemptionCode"> | number | null
-  redeemer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  walletId?: Prisma.IntNullableFilter<"RedemptionCode"> | number | null
+  redeemedAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
+  redeemBusinessId?: Prisma.StringNullableFilter<"RedemptionCode"> | string | null
 }
 
 export type RedemptionCodeOrderByWithRelationInput = {
@@ -256,10 +267,10 @@ export type RedemptionCodeOrderByWithRelationInput = {
   amount?: Prisma.SortOrder
   remark?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  redeemedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   redeemerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  redeemer?: Prisma.UserOrderByWithRelationInput
+  walletId?: Prisma.SortOrderInput | Prisma.SortOrder
+  redeemedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  redeemBusinessId?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type RedemptionCodeWhereUniqueInput = Prisma.AtLeast<{
@@ -271,10 +282,10 @@ export type RedemptionCodeWhereUniqueInput = Prisma.AtLeast<{
   amount?: Prisma.IntFilter<"RedemptionCode"> | number
   remark?: Prisma.StringFilter<"RedemptionCode"> | string
   createdAt?: Prisma.DateTimeFilter<"RedemptionCode"> | Date | string
-  expiredAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
-  redeemedAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
   redeemerId?: Prisma.IntNullableFilter<"RedemptionCode"> | number | null
-  redeemer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  walletId?: Prisma.IntNullableFilter<"RedemptionCode"> | number | null
+  redeemedAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
+  redeemBusinessId?: Prisma.StringNullableFilter<"RedemptionCode"> | string | null
 }, "id" | "code">
 
 export type RedemptionCodeOrderByWithAggregationInput = {
@@ -283,9 +294,10 @@ export type RedemptionCodeOrderByWithAggregationInput = {
   amount?: Prisma.SortOrder
   remark?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  redeemedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   redeemerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  walletId?: Prisma.SortOrderInput | Prisma.SortOrder
+  redeemedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  redeemBusinessId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RedemptionCodeCountOrderByAggregateInput
   _avg?: Prisma.RedemptionCodeAvgOrderByAggregateInput
   _max?: Prisma.RedemptionCodeMaxOrderByAggregateInput
@@ -302,9 +314,10 @@ export type RedemptionCodeScalarWhereWithAggregatesInput = {
   amount?: Prisma.IntWithAggregatesFilter<"RedemptionCode"> | number
   remark?: Prisma.StringWithAggregatesFilter<"RedemptionCode"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RedemptionCode"> | Date | string
-  expiredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RedemptionCode"> | Date | string | null
-  redeemedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RedemptionCode"> | Date | string | null
   redeemerId?: Prisma.IntNullableWithAggregatesFilter<"RedemptionCode"> | number | null
+  walletId?: Prisma.IntNullableWithAggregatesFilter<"RedemptionCode"> | number | null
+  redeemedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"RedemptionCode"> | Date | string | null
+  redeemBusinessId?: Prisma.StringNullableWithAggregatesFilter<"RedemptionCode"> | string | null
 }
 
 export type RedemptionCodeCreateInput = {
@@ -312,9 +325,10 @@ export type RedemptionCodeCreateInput = {
   amount: number
   remark?: string
   createdAt?: Date | string
-  expiredAt?: Date | string | null
+  redeemerId?: number | null
+  walletId?: number | null
   redeemedAt?: Date | string | null
-  redeemer?: Prisma.UserCreateNestedOneWithoutRedeemCodesInput
+  redeemBusinessId?: string | null
 }
 
 export type RedemptionCodeUncheckedCreateInput = {
@@ -323,9 +337,10 @@ export type RedemptionCodeUncheckedCreateInput = {
   amount: number
   remark?: string
   createdAt?: Date | string
-  expiredAt?: Date | string | null
-  redeemedAt?: Date | string | null
   redeemerId?: number | null
+  walletId?: number | null
+  redeemedAt?: Date | string | null
+  redeemBusinessId?: string | null
 }
 
 export type RedemptionCodeUpdateInput = {
@@ -333,9 +348,10 @@ export type RedemptionCodeUpdateInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   remark?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  redeemerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  walletId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  redeemer?: Prisma.UserUpdateOneWithoutRedeemCodesNestedInput
+  redeemBusinessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RedemptionCodeUncheckedUpdateInput = {
@@ -344,9 +360,10 @@ export type RedemptionCodeUncheckedUpdateInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   remark?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   redeemerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  walletId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  redeemBusinessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RedemptionCodeCreateManyInput = {
@@ -355,9 +372,10 @@ export type RedemptionCodeCreateManyInput = {
   amount: number
   remark?: string
   createdAt?: Date | string
-  expiredAt?: Date | string | null
-  redeemedAt?: Date | string | null
   redeemerId?: number | null
+  walletId?: number | null
+  redeemedAt?: Date | string | null
+  redeemBusinessId?: string | null
 }
 
 export type RedemptionCodeUpdateManyMutationInput = {
@@ -365,8 +383,10 @@ export type RedemptionCodeUpdateManyMutationInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   remark?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  redeemerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  walletId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  redeemBusinessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RedemptionCodeUncheckedUpdateManyInput = {
@@ -375,19 +395,10 @@ export type RedemptionCodeUncheckedUpdateManyInput = {
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   remark?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   redeemerId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-}
-
-export type RedemptionCodeListRelationFilter = {
-  every?: Prisma.RedemptionCodeWhereInput
-  some?: Prisma.RedemptionCodeWhereInput
-  none?: Prisma.RedemptionCodeWhereInput
-}
-
-export type RedemptionCodeOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+  walletId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  redeemBusinessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RedemptionCodeCountOrderByAggregateInput = {
@@ -396,15 +407,17 @@ export type RedemptionCodeCountOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   remark?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiredAt?: Prisma.SortOrder
-  redeemedAt?: Prisma.SortOrder
   redeemerId?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  redeemedAt?: Prisma.SortOrder
+  redeemBusinessId?: Prisma.SortOrder
 }
 
 export type RedemptionCodeAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   redeemerId?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
 }
 
 export type RedemptionCodeMaxOrderByAggregateInput = {
@@ -413,9 +426,10 @@ export type RedemptionCodeMaxOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   remark?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiredAt?: Prisma.SortOrder
-  redeemedAt?: Prisma.SortOrder
   redeemerId?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  redeemedAt?: Prisma.SortOrder
+  redeemBusinessId?: Prisma.SortOrder
 }
 
 export type RedemptionCodeMinOrderByAggregateInput = {
@@ -424,57 +438,17 @@ export type RedemptionCodeMinOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   remark?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiredAt?: Prisma.SortOrder
-  redeemedAt?: Prisma.SortOrder
   redeemerId?: Prisma.SortOrder
+  walletId?: Prisma.SortOrder
+  redeemedAt?: Prisma.SortOrder
+  redeemBusinessId?: Prisma.SortOrder
 }
 
 export type RedemptionCodeSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   redeemerId?: Prisma.SortOrder
-}
-
-export type RedemptionCodeCreateNestedManyWithoutRedeemerInput = {
-  create?: Prisma.XOR<Prisma.RedemptionCodeCreateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput> | Prisma.RedemptionCodeCreateWithoutRedeemerInput[] | Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
-  connectOrCreate?: Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput | Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
-  createMany?: Prisma.RedemptionCodeCreateManyRedeemerInputEnvelope
-  connect?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-}
-
-export type RedemptionCodeUncheckedCreateNestedManyWithoutRedeemerInput = {
-  create?: Prisma.XOR<Prisma.RedemptionCodeCreateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput> | Prisma.RedemptionCodeCreateWithoutRedeemerInput[] | Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
-  connectOrCreate?: Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput | Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
-  createMany?: Prisma.RedemptionCodeCreateManyRedeemerInputEnvelope
-  connect?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-}
-
-export type RedemptionCodeUpdateManyWithoutRedeemerNestedInput = {
-  create?: Prisma.XOR<Prisma.RedemptionCodeCreateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput> | Prisma.RedemptionCodeCreateWithoutRedeemerInput[] | Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
-  connectOrCreate?: Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput | Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
-  upsert?: Prisma.RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput | Prisma.RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput[]
-  createMany?: Prisma.RedemptionCodeCreateManyRedeemerInputEnvelope
-  set?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  disconnect?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  delete?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  connect?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  update?: Prisma.RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput | Prisma.RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput[]
-  updateMany?: Prisma.RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput | Prisma.RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput[]
-  deleteMany?: Prisma.RedemptionCodeScalarWhereInput | Prisma.RedemptionCodeScalarWhereInput[]
-}
-
-export type RedemptionCodeUncheckedUpdateManyWithoutRedeemerNestedInput = {
-  create?: Prisma.XOR<Prisma.RedemptionCodeCreateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput> | Prisma.RedemptionCodeCreateWithoutRedeemerInput[] | Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput[]
-  connectOrCreate?: Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput | Prisma.RedemptionCodeCreateOrConnectWithoutRedeemerInput[]
-  upsert?: Prisma.RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput | Prisma.RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput[]
-  createMany?: Prisma.RedemptionCodeCreateManyRedeemerInputEnvelope
-  set?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  disconnect?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  delete?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  connect?: Prisma.RedemptionCodeWhereUniqueInput | Prisma.RedemptionCodeWhereUniqueInput[]
-  update?: Prisma.RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput | Prisma.RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput[]
-  updateMany?: Prisma.RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput | Prisma.RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput[]
-  deleteMany?: Prisma.RedemptionCodeScalarWhereInput | Prisma.RedemptionCodeScalarWhereInput[]
+  walletId?: Prisma.SortOrder
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -485,104 +459,6 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type RedemptionCodeCreateWithoutRedeemerInput = {
-  code: string
-  amount: number
-  remark?: string
-  createdAt?: Date | string
-  expiredAt?: Date | string | null
-  redeemedAt?: Date | string | null
-}
-
-export type RedemptionCodeUncheckedCreateWithoutRedeemerInput = {
-  id?: number
-  code: string
-  amount: number
-  remark?: string
-  createdAt?: Date | string
-  expiredAt?: Date | string | null
-  redeemedAt?: Date | string | null
-}
-
-export type RedemptionCodeCreateOrConnectWithoutRedeemerInput = {
-  where: Prisma.RedemptionCodeWhereUniqueInput
-  create: Prisma.XOR<Prisma.RedemptionCodeCreateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput>
-}
-
-export type RedemptionCodeCreateManyRedeemerInputEnvelope = {
-  data: Prisma.RedemptionCodeCreateManyRedeemerInput | Prisma.RedemptionCodeCreateManyRedeemerInput[]
-  skipDuplicates?: boolean
-}
-
-export type RedemptionCodeUpsertWithWhereUniqueWithoutRedeemerInput = {
-  where: Prisma.RedemptionCodeWhereUniqueInput
-  update: Prisma.XOR<Prisma.RedemptionCodeUpdateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedUpdateWithoutRedeemerInput>
-  create: Prisma.XOR<Prisma.RedemptionCodeCreateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedCreateWithoutRedeemerInput>
-}
-
-export type RedemptionCodeUpdateWithWhereUniqueWithoutRedeemerInput = {
-  where: Prisma.RedemptionCodeWhereUniqueInput
-  data: Prisma.XOR<Prisma.RedemptionCodeUpdateWithoutRedeemerInput, Prisma.RedemptionCodeUncheckedUpdateWithoutRedeemerInput>
-}
-
-export type RedemptionCodeUpdateManyWithWhereWithoutRedeemerInput = {
-  where: Prisma.RedemptionCodeScalarWhereInput
-  data: Prisma.XOR<Prisma.RedemptionCodeUpdateManyMutationInput, Prisma.RedemptionCodeUncheckedUpdateManyWithoutRedeemerInput>
-}
-
-export type RedemptionCodeScalarWhereInput = {
-  AND?: Prisma.RedemptionCodeScalarWhereInput | Prisma.RedemptionCodeScalarWhereInput[]
-  OR?: Prisma.RedemptionCodeScalarWhereInput[]
-  NOT?: Prisma.RedemptionCodeScalarWhereInput | Prisma.RedemptionCodeScalarWhereInput[]
-  id?: Prisma.IntFilter<"RedemptionCode"> | number
-  code?: Prisma.StringFilter<"RedemptionCode"> | string
-  amount?: Prisma.IntFilter<"RedemptionCode"> | number
-  remark?: Prisma.StringFilter<"RedemptionCode"> | string
-  createdAt?: Prisma.DateTimeFilter<"RedemptionCode"> | Date | string
-  expiredAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
-  redeemedAt?: Prisma.DateTimeNullableFilter<"RedemptionCode"> | Date | string | null
-  redeemerId?: Prisma.IntNullableFilter<"RedemptionCode"> | number | null
-}
-
-export type RedemptionCodeCreateManyRedeemerInput = {
-  id?: number
-  code: string
-  amount: number
-  remark?: string
-  createdAt?: Date | string
-  expiredAt?: Date | string | null
-  redeemedAt?: Date | string | null
-}
-
-export type RedemptionCodeUpdateWithoutRedeemerInput = {
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
-  remark?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type RedemptionCodeUncheckedUpdateWithoutRedeemerInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
-  remark?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type RedemptionCodeUncheckedUpdateManyWithoutRedeemerInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.IntFieldUpdateOperationsInput | number
-  remark?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  redeemedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
 
 
 export type RedemptionCodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -591,10 +467,10 @@ export type RedemptionCodeSelect<ExtArgs extends runtime.Types.Extensions.Intern
   amount?: boolean
   remark?: boolean
   createdAt?: boolean
-  expiredAt?: boolean
-  redeemedAt?: boolean
   redeemerId?: boolean
-  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
+  walletId?: boolean
+  redeemedAt?: boolean
+  redeemBusinessId?: boolean
 }, ExtArgs["result"]["redemptionCode"]>
 
 export type RedemptionCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -603,10 +479,10 @@ export type RedemptionCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   amount?: boolean
   remark?: boolean
   createdAt?: boolean
-  expiredAt?: boolean
-  redeemedAt?: boolean
   redeemerId?: boolean
-  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
+  walletId?: boolean
+  redeemedAt?: boolean
+  redeemBusinessId?: boolean
 }, ExtArgs["result"]["redemptionCode"]>
 
 export type RedemptionCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -615,10 +491,10 @@ export type RedemptionCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   amount?: boolean
   remark?: boolean
   createdAt?: boolean
-  expiredAt?: boolean
-  redeemedAt?: boolean
   redeemerId?: boolean
-  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
+  walletId?: boolean
+  redeemedAt?: boolean
+  redeemBusinessId?: boolean
 }, ExtArgs["result"]["redemptionCode"]>
 
 export type RedemptionCodeSelectScalar = {
@@ -627,36 +503,27 @@ export type RedemptionCodeSelectScalar = {
   amount?: boolean
   remark?: boolean
   createdAt?: boolean
-  expiredAt?: boolean
-  redeemedAt?: boolean
   redeemerId?: boolean
+  walletId?: boolean
+  redeemedAt?: boolean
+  redeemBusinessId?: boolean
 }
 
-export type RedemptionCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "amount" | "remark" | "createdAt" | "expiredAt" | "redeemedAt" | "redeemerId", ExtArgs["result"]["redemptionCode"]>
-export type RedemptionCodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
-}
-export type RedemptionCodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
-}
-export type RedemptionCodeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  redeemer?: boolean | Prisma.RedemptionCode$redeemerArgs<ExtArgs>
-}
+export type RedemptionCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "amount" | "remark" | "createdAt" | "redeemerId" | "walletId" | "redeemedAt" | "redeemBusinessId", ExtArgs["result"]["redemptionCode"]>
 
 export type $RedemptionCodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "RedemptionCode"
-  objects: {
-    redeemer: Prisma.$UserPayload<ExtArgs> | null
-  }
+  objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     code: string
     amount: number
     remark: string
     createdAt: Date
-    expiredAt: Date | null
-    redeemedAt: Date | null
     redeemerId: number | null
+    walletId: number | null
+    redeemedAt: Date | null
+    redeemBusinessId: string | null
   }, ExtArgs["result"]["redemptionCode"]>
   composites: {}
 }
@@ -1051,7 +918,6 @@ readonly fields: RedemptionCodeFieldRefs;
  */
 export interface Prisma__RedemptionCodeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  redeemer<T extends Prisma.RedemptionCode$redeemerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RedemptionCode$redeemerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1086,9 +952,10 @@ export interface RedemptionCodeFieldRefs {
   readonly amount: Prisma.FieldRef<"RedemptionCode", 'Int'>
   readonly remark: Prisma.FieldRef<"RedemptionCode", 'String'>
   readonly createdAt: Prisma.FieldRef<"RedemptionCode", 'DateTime'>
-  readonly expiredAt: Prisma.FieldRef<"RedemptionCode", 'DateTime'>
-  readonly redeemedAt: Prisma.FieldRef<"RedemptionCode", 'DateTime'>
   readonly redeemerId: Prisma.FieldRef<"RedemptionCode", 'Int'>
+  readonly walletId: Prisma.FieldRef<"RedemptionCode", 'Int'>
+  readonly redeemedAt: Prisma.FieldRef<"RedemptionCode", 'DateTime'>
+  readonly redeemBusinessId: Prisma.FieldRef<"RedemptionCode", 'String'>
 }
     
 
@@ -1105,10 +972,6 @@ export type RedemptionCodeFindUniqueArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the RedemptionCode
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
   /**
    * Filter, which RedemptionCode to fetch.
    */
@@ -1128,10 +991,6 @@ export type RedemptionCodeFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
-  /**
    * Filter, which RedemptionCode to fetch.
    */
   where: Prisma.RedemptionCodeWhereUniqueInput
@@ -1149,10 +1008,6 @@ export type RedemptionCodeFindFirstArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the RedemptionCode
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
   /**
    * Filter, which RedemptionCode to fetch.
    */
@@ -1202,10 +1057,6 @@ export type RedemptionCodeFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
-  /**
    * Filter, which RedemptionCode to fetch.
    */
   where?: Prisma.RedemptionCodeWhereInput
@@ -1254,10 +1105,6 @@ export type RedemptionCodeFindManyArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
-  /**
    * Filter, which RedemptionCodes to fetch.
    */
   where?: Prisma.RedemptionCodeWhereInput
@@ -1301,10 +1148,6 @@ export type RedemptionCodeCreateArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
-  /**
    * The data needed to create a RedemptionCode.
    */
   data: Prisma.XOR<Prisma.RedemptionCodeCreateInput, Prisma.RedemptionCodeUncheckedCreateInput>
@@ -1338,10 +1181,6 @@ export type RedemptionCodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
    */
   data: Prisma.RedemptionCodeCreateManyInput | Prisma.RedemptionCodeCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1356,10 +1195,6 @@ export type RedemptionCodeUpdateArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the RedemptionCode
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
   /**
    * The data needed to update a RedemptionCode.
    */
@@ -1412,10 +1247,6 @@ export type RedemptionCodeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.
    * Limit how many RedemptionCodes to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1430,10 +1261,6 @@ export type RedemptionCodeUpsertArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the RedemptionCode
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
   /**
    * The filter to search for the RedemptionCode to update in case it exists.
    */
@@ -1461,10 +1288,6 @@ export type RedemptionCodeDeleteArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
-  /**
    * Filter which RedemptionCode to delete.
    */
   where: Prisma.RedemptionCodeWhereUniqueInput
@@ -1485,25 +1308,6 @@ export type RedemptionCodeDeleteManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
- * RedemptionCode.redeemer
- */
-export type RedemptionCode$redeemerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the User
-   */
-  select?: Prisma.UserSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the User
-   */
-  omit?: Prisma.UserOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserInclude<ExtArgs> | null
-  where?: Prisma.UserWhereInput
-}
-
-/**
  * RedemptionCode without action
  */
 export type RedemptionCodeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1515,8 +1319,4 @@ export type RedemptionCodeDefaultArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the RedemptionCode
    */
   omit?: Prisma.RedemptionCodeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RedemptionCodeInclude<ExtArgs> | null
 }

@@ -7,8 +7,9 @@ import {
   CreateRedemptionCodeDto,
   CreateRedemptionCodeResponseDto,
   RedeemCodeDto,
-  RedeemCodeResponseDto,
+  RedeemCodeResponseData,
   GetAllRedemptionCodesResponseDto,
+  RedeemCodeResponseDto,
 } from './dto/redemption.dto';
 
 @Controller('redemption')
@@ -43,11 +44,18 @@ export class RedemptionController {
   @ApiBody({ type: RedeemCodeDto })
   @ApiResponse({ type: RedeemCodeResponseDto })
   @UseGuards(AuthGuard)
-  async redeem(@Req() req: RequestWithUser, @Body() body: RedeemCodeDto) {
+  async redeem(
+    @Req() req: RequestWithUser,
+    @Body() body: RedeemCodeDto,
+  ): Promise<RedeemCodeResponseData> {
     const { user } = req;
-    const { code } = body;
+    const { code, walletUid } = body;
 
-    const balance = await this.redemptionService.doRedeem(code, user.id);
+    const balance = await this.redemptionService.doRedeem(
+      code,
+      walletUid,
+      user.id,
+    );
 
     return { balance: balance.toString() };
   }
