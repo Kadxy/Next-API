@@ -36,7 +36,6 @@ export class RedemptionService {
    */
   async createRedemptionCode(
     amount: number,
-    expiredAt?: Date,
     remark?: string,
   ): Promise<RedemptionCode> {
     const code = this.generateRedemptionCode();
@@ -50,7 +49,6 @@ export class RedemptionService {
       data: {
         code: formattedCode,
         amount,
-        ...(expiredAt && { expiredAt }),
         ...(remark && { remark }),
       },
     });
@@ -74,7 +72,13 @@ export class RedemptionService {
     });
 
     // 如果兑换码从一开始就不存在或已被使用，则直接拒绝，避免开启不必要的事务
-    if (!initialCodeRecord || initialCodeRecord.redeemedAt) {
+    if (
+      !initialCodeRecord ||
+      initialCodeRecord.redeemedAt ||
+      initialCodeRecord.redeemBusinessId ||
+      initialCodeRecord.redeemerId ||
+      initialCodeRecord.walletId
+    ) {
       throw new BusinessException('兑换码不存在或已被使用');
     }
 
@@ -117,7 +121,7 @@ export class RedemptionService {
             userId: redeemerId,
             type: TransactionType.REDEMPTION,
             amount: updatedCode.amount,
-            description: `Redemption, code: [${code.slice(0, 2)}***${code.slice(-2)}]`,
+            description: `Redemption, code: [${code.slice(0, 4)}***${code.slice(-4)}]`,
             status: TransactionStatus.COMPLETED, // 直接创建为完成状态
           },
         });

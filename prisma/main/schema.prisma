@@ -118,7 +118,7 @@ model Passkey {
 
 model RedemptionCode {
   id               Int       @id @default(autoincrement())
-  code             String    @unique @mainDb.VarChar(16)
+  code             String    @unique @mainDb.VarChar(24) // 4 * 6
   amount           Int       @mainDb.Integer
   remark           String    @default("")
   createdAt        DateTime  @default(now())

@@ -30,13 +30,9 @@ export class RedemptionController {
   @ApiResponse({ type: CreateRedemptionCodeResponseDto })
   @UseGuards(AdminAuthGuard) // require admin
   async createCode(@Body() body: CreateRedemptionCodeDto) {
-    const { amount, remark, expiredAt } = body;
+    const { amount, remark } = body;
 
-    return await this.redemptionService.createRedemptionCode(
-      amount,
-      expiredAt,
-      remark,
-    );
+    return await this.redemptionService.createRedemptionCode(amount, remark);
   }
 
   @Post('redeem')
@@ -51,12 +47,12 @@ export class RedemptionController {
     const { user } = req;
     const { code, walletUid } = body;
 
-    const balance = await this.redemptionService.doRedeem(
+    const redeemedQuota = await this.redemptionService.doRedeem(
       code,
       walletUid,
       user.id,
     );
 
-    return { balance: balance.toString() };
+    return { quota: redeemedQuota.toString() };
   }
 }
