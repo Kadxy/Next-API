@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    container_name: next-api
+    ports:
+      - "9527:9527"
+    environment:
+      - NODE_ENV=production
+      - PORT=9527
+      - LISTEN_HOST=0.0.0.0
+    env_file:
+      - .env
+    restart: unless-stopped

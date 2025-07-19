@@ -79,15 +79,17 @@ export class WalletService {
     });
 
     // NOTE: if you update schema, you need to update this function
-    return joinedWallet.map((member) => ({
-      uid: member.wallet.uid,
-      balance: member.wallet.balance.toString(),
-      displayName: member.wallet.displayName,
-      owner: member.wallet.owner,
-      isOwner: member.wallet.ownerId === userId, // 是否是钱包所有者
-      creditUsed: member.creditUsed.toString(),
-      creditLimit: member.creditLimit.toString(),
-    }));
+    return joinedWallet
+      .map((member) => ({
+        uid: member.wallet.uid,
+        balance: member.wallet.balance.toString(),
+        displayName: member.wallet.displayName,
+        owner: member.wallet.owner,
+        isOwner: member.wallet.ownerId === userId, // 是否是钱包所有者
+        creditUsed: member.creditUsed.toString(),
+        creditLimit: member.creditLimit.toString(),
+      }))
+      .sort((a, b) => (a.isOwner ? -1 : b.isOwner ? 1 : 0));
   }
 
   async updateDisplayName(
