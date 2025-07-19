@@ -24,7 +24,7 @@ export class FeishuAuthService extends BaseOAuth2Service {
   protected readonly config: IOAuth2ServiceConfig = {
     clientIdKey: 'FEISHU_APP_ID',
     clientSecretKey: 'FEISHU_APP_SECRET',
-    redirectUri: 'http://localhost:5173/callback/feishu/{action}',
+    redirectUri: '{frontendUrl}/callback/feishu/{action}',
     authUrl: 'https://accounts.feishu.cn/open-apis/authen/v1/authorize',
     tokenUrl: 'https://open.feishu.cn/open-apis/authen/v1/access_token',
     userInfoUrl: 'https://open.feishu.cn/open-apis/authen/v1/user_info',
@@ -55,6 +55,7 @@ export class FeishuAuthService extends BaseOAuth2Service {
     const { clientIdKey, clientSecretKey } = this.config;
     this.clientId = this.configService.getOrThrow<string>(clientIdKey);
     this.clientSecret = this.configService.getOrThrow<string>(clientSecretKey);
+    this.frontendUrl = this.configService.getOrThrow<string>('FRONTEND_URL');
 
     try {
       this.client = new lark.Client({
@@ -77,7 +78,9 @@ export class FeishuAuthService extends BaseOAuth2Service {
     oauthUrl.searchParams.set('client_id', clientId);
     oauthUrl.searchParams.set(
       'redirect_uri',
-      redirectUri.replace('{action}', action),
+      redirectUri
+        .replace('{frontendUrl}', this.frontendUrl)
+        .replace('{action}', action),
     );
     oauthUrl.searchParams.set('state', state);
     oauthUrl.searchParams.set('scope', this.scopes.join(' '));

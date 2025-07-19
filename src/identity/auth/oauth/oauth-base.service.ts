@@ -16,6 +16,7 @@ export abstract class BaseOAuth2Service {
   protected logger = new Logger(this.constructor.name);
   protected clientId: string;
   protected clientSecret: string;
+  protected frontendUrl: string;
   protected readonly httpsAgent = new Agent();
 
   protected abstract readonly config: IOAuth2ServiceConfig;

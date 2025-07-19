@@ -26,7 +26,7 @@ export class GitHubAuthService extends BaseOAuth2Service {
   protected readonly config: IOAuth2ServiceConfig = {
     clientIdKey: 'GITHUB_CLIENT_ID',
     clientSecretKey: 'GITHUB_CLIENT_SECRET',
-    redirectUri: 'http://localhost:5173/callback/github/{action}',
+    redirectUri: '{frontendUrl}/callback/github/{action}',
     authUrl: 'https://github.com/login/oauth/authorize',
     tokenUrl: 'https://github.com/login/oauth/access_token',
     userInfoUrl: 'https://api.github.com/user',
@@ -38,8 +38,7 @@ export class GitHubAuthService extends BaseOAuth2Service {
     private readonly userService: UserService,
     private readonly jwtTokenService: JwtTokenService,
     private readonly configService: ConfigService,
-    @Inject(CACHE_MANAGER)
-    private readonly cacheManager: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {
     super();
     this.loadConfig();
@@ -49,6 +48,7 @@ export class GitHubAuthService extends BaseOAuth2Service {
     const { clientIdKey, clientSecretKey } = this.config;
     this.clientId = this.configService.getOrThrow<string>(clientIdKey);
     this.clientSecret = this.configService.getOrThrow<string>(clientSecretKey);
+    this.frontendUrl = this.configService.getOrThrow<string>('FRONTEND_URL');
   }
 
   async getConfig(action: OAuthActionType): Promise<IOAuth2ConfigResponse> {
@@ -61,7 +61,9 @@ export class GitHubAuthService extends BaseOAuth2Service {
     oauthUrl.searchParams.set('client_id', clientId);
     oauthUrl.searchParams.set(
       'redirect_uri',
-      redirectUri.replace('{action}', action),
+      redirectUri
+        .replace('{frontendUrl}', this.frontendUrl)
+        .replace('{action}', action),
     );
     oauthUrl.searchParams.set('state', state);
 

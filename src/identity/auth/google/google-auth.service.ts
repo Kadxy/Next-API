@@ -26,7 +26,7 @@ export class GoogleAuthService extends BaseOAuth2Service {
   protected readonly config: IOAuth2ServiceConfig = {
     clientIdKey: 'GOOGLE_CLIENT_ID',
     clientSecretKey: 'GOOGLE_CLIENT_SECRET',
-    redirectUri: 'http://localhost:5173/callback/google/{action}',
+    redirectUri: '{frontendUrl}/callback/google/{action}',
     authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
     tokenUrl: 'https://oauth2.googleapis.com/token',
     userInfoUrl: 'https://www.googleapis.com/oauth2/v2/userinfo',
@@ -49,6 +49,7 @@ export class GoogleAuthService extends BaseOAuth2Service {
     const { clientIdKey, clientSecretKey } = this.config;
     this.clientId = this.configService.getOrThrow<string>(clientIdKey);
     this.clientSecret = this.configService.getOrThrow<string>(clientSecretKey);
+    this.frontendUrl = this.configService.getOrThrow<string>('FRONTEND_URL');
   }
 
   async getConfig(action: OAuthActionType): Promise<IOAuth2ConfigResponse> {
@@ -61,7 +62,9 @@ export class GoogleAuthService extends BaseOAuth2Service {
     oauthUrl.searchParams.set('client_id', clientId);
     oauthUrl.searchParams.set(
       'redirect_uri',
-      redirectUri.replace('{action}', action),
+      redirectUri
+        .replace('{frontendUrl}', this.frontendUrl)
+        .replace('{action}', action),
     );
     oauthUrl.searchParams.set('response_type', 'code');
     oauthUrl.searchParams.set('state', state);
@@ -86,7 +89,9 @@ export class GoogleAuthService extends BaseOAuth2Service {
             code,
             client_id: this.clientId,
             client_secret: this.clientSecret,
-            redirect_uri: redirectUri.replace('{action}', action),
+            redirect_uri: redirectUri
+              .replace('{frontendUrl}', this.frontendUrl)
+              .replace('{action}', action),
             grant_type: 'authorization_code',
           },
           {

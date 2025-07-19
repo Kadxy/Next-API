@@ -16,12 +16,11 @@ COPY . .
 # Remove .env file from image for security
 RUN rm -f .env
 
-# Generate Prisma clients and build
-RUN pnpm run prisma:generate
+# Build the application (Prisma clients already in git)
 RUN pnpm run build
 
 # Expose port
 EXPOSE 9527
 
 # Start the application
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]

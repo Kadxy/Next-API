@@ -26,7 +26,7 @@ export class MicrosoftAuthService extends BaseOAuth2Service {
   protected readonly config: IOAuth2ServiceConfig = {
     clientIdKey: 'MICROSOFT_CLIENT_ID',
     clientSecretKey: 'MICROSOFT_CLIENT_SECRET',
-    redirectUri: 'http://localhost:5173/callback/microsoft/{action}',
+    redirectUri: '{frontendUrl}/callback/microsoft/{action}',
     authUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
     tokenUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
     userInfoUrl: 'https://graph.microsoft.com/v1.0/me',
@@ -49,6 +49,7 @@ export class MicrosoftAuthService extends BaseOAuth2Service {
     const { clientIdKey, clientSecretKey } = this.config;
     this.clientId = this.configService.getOrThrow<string>(clientIdKey);
     this.clientSecret = this.configService.getOrThrow<string>(clientSecretKey);
+    this.frontendUrl = this.configService.getOrThrow<string>('FRONTEND_URL');
   }
 
   async getConfig(action: OAuthActionType): Promise<IOAuth2ConfigResponse> {
@@ -61,7 +62,9 @@ export class MicrosoftAuthService extends BaseOAuth2Service {
     oauthUrl.searchParams.set('client_id', clientId);
     oauthUrl.searchParams.set(
       'redirect_uri',
-      redirectUri.replace('{action}', action),
+      redirectUri
+        .replace('{frontendUrl}', this.frontendUrl)
+        .replace('{action}', action),
     );
     oauthUrl.searchParams.set('response_type', 'code');
     oauthUrl.searchParams.set('state', state);
@@ -83,7 +86,9 @@ export class MicrosoftAuthService extends BaseOAuth2Service {
         code,
         client_id: this.clientId,
         client_secret: this.clientSecret,
-        redirect_uri: redirectUri.replace('{action}', action),
+        redirect_uri: redirectUri
+          .replace('{frontendUrl}', this.frontendUrl)
+          .replace('{action}', action),
         grant_type: 'authorization_code',
       };
 

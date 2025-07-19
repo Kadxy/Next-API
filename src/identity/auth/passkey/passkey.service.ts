@@ -53,8 +53,12 @@ export class PasskeyService {
     private readonly cacheService: Cache,
   ) {
     this.rpName = this.configService.getOrThrow<string>('WEBAUTHN_RP_NAME');
-    this.rpID = this.configService.getOrThrow<string>('WEBAUTHN_RP_ID');
-    this.origin = this.configService.getOrThrow<string>('WEBAUTHN_ORIGIN');
+    this.origin = this.configService.getOrThrow<string>('FRONTEND_URL');
+    if (this.configService.getOrThrow('NODE_ENV') === 'development') {
+      this.rpID = 'localhost';
+    } else {
+      this.rpID = this.configService.getOrThrow<string>('WEBAUTHN_RP_ID');
+    }
   }
 
   //////////////////////////////////////////////////////
