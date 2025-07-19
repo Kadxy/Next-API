@@ -1,8 +1,8 @@
 {
-  "name": "next-api",
+  "name": "api-grip-server",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "API Grip Server",
+  "author": "Kadxy",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

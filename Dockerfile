@@ -26,8 +26,6 @@ RUN pnpm run build
 RUN cp -r prisma/main/generated dist/prisma/main/ || true
 RUN cp -r prisma/detail/generated dist/prisma/detail/ || true
 
-
-
 # Expose port
 EXPOSE 9527
 
