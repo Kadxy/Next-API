@@ -46,3 +46,21 @@ export const APIKEY_INCLUDE_WALLET_SELECT: Prisma.WalletSelect = {
   uid: true,
   displayName: true,
 };
+
+// -- TRANSACTION --
+export const TRANSACTION_QUERY_OMIT: Prisma.TransactionOmit = {
+  id: true,
+  walletId: true,
+  userId: true,
+  apiKeyId: true,
+};
+
+export const TRANSACTION_QUERY_USER_SELECT: Prisma.UserSelect = {
+  uid: true,
+  displayName: true,
+  avatar: true,
+};
+
+export const TRANSACTION_QUERY_APIKEY_SELECT: Prisma.ApiKeySelect = {
+  displayName: true,
+};

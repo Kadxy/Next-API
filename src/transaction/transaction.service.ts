@@ -8,6 +8,19 @@ import {
 } from '@prisma-main-client/internal/prismaNamespace';
 import { PrismaService } from '../core/prisma/prisma.service';
 import { TransactionStatus, TransactionType } from '@prisma-main-client/enums';
+import { BusinessException } from 'src/common/exceptions/business.exception';
+import { WalletService } from '../wallet/wallet.service';
+import {
+  SelfTransactionQueryDto,
+  TransactionDetailData,
+  TransactionListData,
+  WalletTransactionQueryDto,
+} from './dto/transaction-query.dto';
+import {
+  TRANSACTION_QUERY_APIKEY_SELECT,
+  TRANSACTION_QUERY_OMIT,
+  TRANSACTION_QUERY_USER_SELECT,
+} from 'prisma/main/query.constant';
 
 type TransactionGroup = Pick<
   Transaction,
@@ -20,12 +33,181 @@ export class TransactionService {
 
   constructor(
     private readonly prisma: PrismaService,
+    private readonly walletService: WalletService,
     private readonly feishuWebhookService: FeishuWebhookService,
   ) {}
 
+  // ==================== 查询方法 ====================
+
+  /**
+   * 查询用户自己的交易记录
+   */
+  async getSelfTransactions(
+    userId: User['id'],
+    query: SelfTransactionQueryDto,
+  ): Promise<TransactionListData> {
+    const { page = 1, pageSize = 20 } = query;
+    const where = this.buildTransactionWhere({ ...query, userId });
+
+    const [records, total] = await Promise.all([
+      this.prisma.main.transaction.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { id: 'desc' },
+        omit: TRANSACTION_QUERY_OMIT,
+        include: {
+          apiKey: {
+            select: TRANSACTION_QUERY_APIKEY_SELECT,
+          },
+        },
+      }),
+      this.prisma.main.transaction.count({ where }),
+    ]);
+
+    return this.formatTransactionListResponse(records, total, page, pageSize);
+  }
+
+  /**
+   * 查询钱包的交易记录（仅钱包所有者）
+   */
+  async getWalletTransactions(
+    requestUserId: User['id'],
+    walletUid: string,
+    query: WalletTransactionQueryDto,
+  ): Promise<TransactionListData> {
+    // 验证钱包所有权
+    const wallet = await this.walletService.getAccessibleWallet(
+      { uid: walletUid },
+      requestUserId,
+      true,
+    );
+
+    const { page = 1, pageSize = 20 } = query;
+    const where = this.buildTransactionWhere({ ...query, walletId: wallet.id });
+
+    const [records, total] = await Promise.all([
+      this.prisma.main.transaction.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { id: 'desc' },
+        omit: TRANSACTION_QUERY_OMIT,
+        include: {
+          user: {
+            select: TRANSACTION_QUERY_USER_SELECT,
+          },
+          apiKey: {
+            select: TRANSACTION_QUERY_APIKEY_SELECT,
+          },
+        },
+      }),
+      this.prisma.main.transaction.count({ where }),
+    ]);
+
+    return this.formatTransactionListResponse(records, total, page, pageSize);
+  }
+
+  /**
+   * 查询交易详情
+   */
+  async getTransactionDetail(
+    requestUserId: User['id'],
+    businessId: string,
+  ): Promise<TransactionDetailData> {
+    // 查询ApiCallRecord记录
+    const record = await this.prisma.detail.apiCallRecord.findUnique({
+      where: { businessId },
+    });
+
+    if (!record) {
+      throw new BusinessException('交易记录不存在');
+    }
+
+    // 权限检查：用户本人或钱包所有者
+    const isOwner = record.userId === requestUserId;
+    if (!isOwner) {
+      // 检查是否为钱包所有者
+      await this.walletService.getAccessibleWallet(
+        { id: record.walletId },
+        requestUserId,
+        true,
+      );
+    }
+
+    // 排除敏感数据后返回
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, userId, walletId, apiKeyId, ...safeData } = record;
+    return safeData as TransactionDetailData;
+  }
+
+  // ==================== 辅助方法 ====================
+
+  /**
+   * 构建查询条件
+   */
+  private buildTransactionWhere(params: {
+    userId?: number;
+    walletId?: number;
+    startDate?: string;
+    endDate?: string;
+    type?: TransactionType;
+    status?: TransactionStatus;
+  }) {
+    const where: any = {};
+
+    if (params.userId) {
+      where.userId = params.userId;
+    }
+
+    if (params.walletId) {
+      where.walletId = params.walletId;
+    }
+
+    if (params.startDate || params.endDate) {
+      where.createdAt = {};
+      if (params.startDate) {
+        where.createdAt.gte = new Date(params.startDate);
+      }
+      if (params.endDate) {
+        where.createdAt.lte = new Date(params.endDate + 'T23:59:59.999Z');
+      }
+    }
+
+    if (params.type) {
+      where.type = params.type;
+    }
+
+    if (params.status) {
+      where.status = params.status;
+    }
+
+    return where;
+  }
+
+  /**
+   * 格式化交易列表响应
+   */
+  private formatTransactionListResponse(
+    records: any[],
+    total: number,
+    page: number,
+    pageSize: number,
+  ): TransactionListData {
+    return {
+      records, // 直接返回，让前端处理格式化
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
+  }
+
+  // ==================== 计费处理方法 ====================
+
   // 定时批量处理计费（每整分钟执行）
   @Cron('0 * * * * *')
-  async processPendingTransactions() {
+  protected async _processPendingTransactions() {
     this.logger.log('Starting transaction processing');
 
     try {
@@ -41,7 +223,7 @@ export class TransactionService {
 
   // 定时将 FAILED 的记录重置为 PENDING
   @Cron(CronExpression.EVERY_30_MINUTES)
-  async retryFailedTransactions() {
+  protected async _retryFailedTransactions() {
     const result = await this.prisma.main.transaction.updateMany({
       where: {
         status: TransactionStatus.FAILED,
@@ -51,6 +233,9 @@ export class TransactionService {
     });
 
     if (result.count > 0) {
+      this.feishuWebhookService
+        .sendText(`${result.count} failed records reset to PENDING`)
+        .catch();
       this.logger.log(`${result.count} failed records reset to PENDING`);
     } else {
       this.logger.log('No failed records found');

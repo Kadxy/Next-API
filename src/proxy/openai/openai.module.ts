@@ -5,7 +5,7 @@ import { OpenAIService } from './openai.service';
 import { TransactionModule } from '../../transaction/transaction.module';
 import { ApikeyModule } from '../../apikey/apikey.module';
 import { CoreModule } from '../../core/core.module';
-import { TiktokenService } from 'src/transaction/tiktoken/tiktoken.service';
+import { TiktokenService } from 'src/core/tiktoken/tiktoken.service';
 
 @Module({
   imports: [HttpModule, CoreModule, ApikeyModule, TransactionModule],

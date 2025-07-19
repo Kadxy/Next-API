@@ -151,9 +151,13 @@ model Transaction {
   // 索引优化
   @@index([walletId, id(sort: Desc)]) // 钱包交易列表
   @@index([userId, id(sort: Desc)]) // 用户交易列表
-  @@index([walletId, userId, id(sort: Desc)]) // 钱包成员交易列表
+  @@index([walletId, userId, id(sort: Desc)]) // 钱包成员交易列表（可能冗余，考虑删除）
   @@index([status, createdAt]) // 批处理队列
   @@index([type, createdAt]) // 按类型统计
+  @@index([userId, type, createdAt]) // 用户按类型查询
+  @@index([userId, status, createdAt]) // 用户按状态查询
+  @@index([walletId, type, createdAt]) // 钱包按类型查询
+  @@index([walletId, status, createdAt]) // 钱包按状态查询
   @@map("transactions")
 }
 

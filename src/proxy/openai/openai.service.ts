@@ -13,7 +13,7 @@ import { APICallException } from '../../common/exceptions';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { extractTokenUsage } from 'src/transaction/dto/transaction-context';
 import { OpenAIContext } from './interfaces/openai-context.interface';
-import { TiktokenService } from 'src/transaction/tiktoken/tiktoken.service';
+import { TiktokenService } from 'src/core/tiktoken/tiktoken.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { ProxyBaseService } from '../common/proxy-base.service';
 import { UpstreamProvider } from '@prisma-detail-client/client';
