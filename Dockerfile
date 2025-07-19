@@ -24,4 +24,4 @@ RUN pnpm run build
 EXPOSE 9527
 
 # Start the application
-CMD ["pnpm", "run", "start:prod"]
+CMD ["node", "dist/main.js"]

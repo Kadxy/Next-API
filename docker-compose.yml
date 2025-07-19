@@ -1,7 +1,7 @@
 services:
   app:
-    build: .
-    container_name: next-api
+    image: kadxy/api-grip-server:latest
+    container_name: api-grip-server
     ports:
       - "9527:9527"
     environment:
